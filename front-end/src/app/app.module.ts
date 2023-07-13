@@ -12,9 +12,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { AppSocket } from './socket.service';
+import { InQuePipe } from './inQue.pipe';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    InQuePipe
   ],
   imports: [
     BrowserModule,

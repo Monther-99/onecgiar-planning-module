@@ -35,12 +35,12 @@
                     >
                   </td>
                 </ng-container>
-                <td>{{ sammaryTotal[wp.id] }}%</td>
+                <td>{{ sammaryTotal[wp.id]  | number : '1.2-2' }}%</td>
               </tr>
             </ng-container>
             <tr class="total">
               <td colspan="9">Total</td>
-              <td>{{ wpsTotalSum }}%</td>
+              <td>{{ wpsTotalSum | number : '1.2-2'  }}%</td>
             </tr>
           </table>
         </mat-card-content>
@@ -72,12 +72,12 @@
                       >
                     </td>
                   </ng-container>
-                  <td>{{ sammary[wp.id][item.id] }}%</td>
+                  <td>{{ sammary[wp.id][item.id] | number : '1.2-2' }}%</td>
                 </tr>
               </ng-container>
               <tr class="total">
                 <td colspan="10">Total</td>
-                <td>{{ sammaryTotal[wp.id] }}%</td>
+                <td>{{ sammaryTotal[wp.id] | number : '1.2-2' }}%</td>
               </tr>
             </table>
           </mat-card-content>
@@ -132,6 +132,9 @@
                   <td>
                     <mat-form-field class="per">
                       <input
+                        [disabled]="
+                          perValues[partner.code][wp.id][item.id] | inQue
+                        "
                         (keyup)="changeCalc(partner.code, wp.id)"
                         [(ngModel)]="values[partner.code][wp.id][item.id]"
                         matInput
@@ -143,7 +146,7 @@
               </ng-container>
               <tr class="total">
                 <td colspan="10">Total</td>
-                <td>{{ totals[partner.code][wp.id] }}%</td>
+                <td>{{ totals[partner.code][wp.id] | number : '1.2-2' }}%</td>
               </tr>
             </table>
             <p class="error">{{ errors[partner.code][wp.id] }}</p>
