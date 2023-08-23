@@ -3,6 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { example_data } from './example';
 import { SubmissionService } from './submission.service';
 import { AppSocket } from '../socket.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MeliaComponent } from './melia/melia.component';
+import {
+  ConfirmComponent,
+  ConfirmDialogModel,
+} from '../confirm/confirm.component';
 
 @Component({
   selector: 'app-submission',
@@ -11,7 +17,11 @@ import { AppSocket } from '../socket.service';
 })
 export class SubmissionComponent implements OnInit {
   title = 'planning';
-  constructor(private submissionService: SubmissionService, private socket: AppSocket) {}
+  constructor(
+    private submissionService: SubmissionService,
+    private socket: AppSocket,
+    public dialog: MatDialog
+  ) {}
   data: any = [];
   wps: any = [];
   partners: any = [];
@@ -60,7 +70,6 @@ export class SubmissionComponent implements OnInit {
       return this.totals[code][id];
   }
   changeCalc(code: any, wp_id: any) {
-    console.log('changeCalc', code, wp_id);
     this.socket.emit('setData', {
       perValues: this.perValues,
       values: this.values,
@@ -69,16 +78,6 @@ export class SubmissionComponent implements OnInit {
     // localStorage.setItem('initiatives', JSON.stringify(this.values));
   }
 
-  trackGroup(group_id: string, item_id: string) {
-    const result = this.result.relations.filter((d: any) => d.to == item_id);
-    for (let item of result) {
-      return (
-        this.result.data.filter((d: any) => d.id == item.from)[0]?.group ==
-        group_id
-      );
-    }
-    return false;
-  }
   perValues: any = {};
   perValuesSammary: any = {};
   perAllValues: any = {};
@@ -173,10 +172,12 @@ export class SubmissionComponent implements OnInit {
     for (let wp of this.wps) {
       this.allData[wp.ost_wp.wp_official_code].forEach((item: any) => {
         this.period.forEach((element) => {
-          if (!this.perAllValues[wp.ost_wp.wp_official_code]) this.perAllValues[wp.ost_wp.wp_official_code] = {};
+          if (!this.perAllValues[wp.ost_wp.wp_official_code])
+            this.perAllValues[wp.ost_wp.wp_official_code] = {};
           if (!this.perAllValues[wp.ost_wp.wp_official_code][item.id])
             this.perAllValues[wp.ost_wp.wp_official_code][item.id] = {};
-          this.perAllValues[wp.ost_wp.wp_official_code][item.id][element.id] = false;
+          this.perAllValues[wp.ost_wp.wp_official_code][item.id][element.id] =
+            false;
         });
       });
     }
@@ -204,18 +205,45 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-  async ngOnInit() {
-    this.result = example_data
-    this.wps = this.result.data
+  async refresh() {
+    await this.InitData();
+  }
+  results:any
+  loading = false;
+  async InitData() {
+    this.loading=true;
+    this.wpsTotalSum = 0;
+    this.perValues = {};
+    this.perValuesSammary = {};
+    this.perAllValues = {};
+    this.sammaryTotal = {};
+    this.data = [];
+    this.wps = [];
+    this.partners = [];
+    this.partnersData = {};
+    this.sammary = {};
+    this.allData = {};
+    this.values = {};
+    this.totals = {};
+    this.errors = {};
+
+    this.results = example_data.data;
+    const melia_data = await this.submissionService.getMeliaByInitiative(5);
+    melia_data.map((d: any) => {
+      d['category'] = 'MELIA';
+      return d;
+    });
+    this.results = [...melia_data, ...this.results];
+    this.wps = this.results
       .filter((d: any) => d.category == 'WP' && !d.group)
       .sort((a: any, b: any) => a.title.localeCompare(b.title));
 
-    const partners_result = this.result.data
+    const partners_result = this.results
       .filter((d: any) => d.partners)
       .map((d: any) => d.partners)
       .flat(1);
 
-    this.result.data
+    this.results
       .filter((d: any) => d.responsible_organization)
       .map((d: any) => d.responsible_organization)
       .forEach((element: any) => {
@@ -230,54 +258,85 @@ export class SubmissionComponent implements OnInit {
 
     for (let partner of this.partners) {
       for (let wp of this.wps) {
-        const result = await this.getDataForWp(wp.id, partner.code);
-
+        const result = await this.getDataForWp(
+          wp.id,
+          partner.code,
+          wp.ost_wp.wp_official_code
+        );
         if (result.length) {
           if (!this.partnersData[partner.code])
             this.partnersData[partner.code] = {};
           this.partnersData[partner.code][wp.ost_wp.wp_official_code] = result;
         }
-        if (!this.perValuesSammary[wp.ost_wp.wp_official_code]) this.perValuesSammary[wp.ost_wp.wp_official_code] = {};
+        if (!this.perValuesSammary[wp.ost_wp.wp_official_code])
+          this.perValuesSammary[wp.ost_wp.wp_official_code] = {};
         this.period.forEach((element) => {
           if (!this.perValuesSammary[wp.ost_wp.wp_official_code][element.id])
-            this.perValuesSammary[wp.ost_wp.wp_official_code][element.id] = false;
+            this.perValuesSammary[wp.ost_wp.wp_official_code][element.id] =
+              false;
         });
         result.forEach((item: any) => {
-          this.check(this.values, partner.code, wp.ost_wp.wp_official_code, item.id);
+          this.check(
+            this.values,
+            partner.code,
+            wp.ost_wp.wp_official_code,
+            item.id
+          );
 
           if (!this.perValues[partner.code]) this.perValues[partner.code] = {};
           if (!this.perValues[partner.code][wp.ost_wp.wp_official_code])
             this.perValues[partner.code][wp.ost_wp.wp_official_code] = {};
-          if (!this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id])
-            this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id] = {};
+          if (
+            !this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id]
+          )
+            this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id] =
+              {};
 
           this.period.forEach((element) => {
-            this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id][element.id] = false;
+            this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id][
+              element.id
+            ] = false;
           });
 
           this.period.forEach((element) => {
-            if (!this.perAllValues[wp.ost_wp.wp_official_code]) this.perAllValues[wp.ost_wp.wp_official_code] = {};
+            if (!this.perAllValues[wp.ost_wp.wp_official_code])
+              this.perAllValues[wp.ost_wp.wp_official_code] = {};
             if (!this.perAllValues[wp.ost_wp.wp_official_code][item.id])
               this.perAllValues[wp.ost_wp.wp_official_code][item.id] = {};
 
-            this.perAllValues[wp.ost_wp.wp_official_code][item.id][element.id] = false;
+            this.perAllValues[wp.ost_wp.wp_official_code][item.id][element.id] =
+              false;
 
-            if (!this.sammary[wp.ost_wp.wp_official_code]) this.sammary[wp.ost_wp.wp_official_code] = {};
-            if (!this.sammary[wp.ost_wp.wp_official_code][item.id]) this.sammary[wp.ost_wp.wp_official_code][item.id] = 0;
+            if (!this.sammary[wp.ost_wp.wp_official_code])
+              this.sammary[wp.ost_wp.wp_official_code] = {};
+            if (!this.sammary[wp.ost_wp.wp_official_code][item.id])
+              this.sammary[wp.ost_wp.wp_official_code][item.id] = 0;
 
-            if (!this.sammaryTotal[wp.ost_wp.wp_official_code]) this.sammaryTotal[wp.ost_wp.wp_official_code] = 0;
+            if (!this.sammaryTotal[wp.ost_wp.wp_official_code])
+              this.sammaryTotal[wp.ost_wp.wp_official_code] = 0;
           });
         });
       }
+      this.loading=false;
     }
 
     this.partners = this.partners.filter((d: any) => this.partnersData[d.code]);
     for (let wp of this.wps) {
-      this.allData[wp.ost_wp.wp_official_code] = await this.getDataForWp(wp.id);
+      this.allData[wp.ost_wp.wp_official_code] = await this.getDataForWp(
+        wp.id,
+        null,
+        wp.ost_wp.wp_official_code
+      );
     }
+    if (this.savedValues)
+      this.setvalues(this.savedValues.values, this.savedValues.perValues);
+  }
+  savedValues: any = null;
+  async ngOnInit() {
+    this.InitData();
     this.socket.connect();
     this.socket.on('data', (data: any) => {
-      console.log('data comming from Socket', data);
+      this.savedValues = data;
       this.setvalues(data.values, data.perValues);
     });
   }
@@ -287,8 +346,6 @@ export class SubmissionComponent implements OnInit {
   }
 
   setvalues(valuesToSet: any, perValuesToSet: any) {
-    console.log('valuesToSet', perValuesToSet);
-
     if (valuesToSet != null)
       Object.keys(this.values).forEach((code) => {
         Object.keys(this.values[code]).forEach((wp_id) => {
@@ -306,7 +363,6 @@ export class SubmissionComponent implements OnInit {
           Object.keys(this.perValues[code][wp_id]).forEach((item_id) => {
             Object.keys(this.perValues[code][wp_id][item_id]).forEach(
               (per_id) => {
-                console.log('perValuesToSet');
                 if (
                   perValuesToSet[code] &&
                   perValuesToSet[code][wp_id] &&
@@ -324,22 +380,72 @@ export class SubmissionComponent implements OnInit {
     this.sammaryCalc();
     this.allvalueChange();
   }
-  async getDataForWp(id: string, partner_code: any | null = null) {
-    return this.result.data
-      .filter((d: any) => d?.responsible_organization || d?.partners?.length)
-      .filter((d: any) => {
-        if (partner_code)
-          return (
-            (d.category == 'OUTPUT' || d.category == 'OUTCOME') &&
-            (d.group == id || this.trackGroup(id, d.id))
-            //  &&
-            // (d?.partners.map((d: any) => d.code).indexOf(partner_code) != -1 ||
-            //   d?.responsible_organization?.code == partner_code)
-          );
-        else
-          return (
-            (d.category == 'OUTPUT' || d.category == 'OUTCOME') && d.group == id
-          );
+  async getDataForWp(
+    id: string,
+    partner_code: any | null = null,
+    official_code = null
+  ) {
+    let wp_data = this.results.filter((d: any) => {
+      if (partner_code)
+        return (
+          (d.category == 'OUTPUT' ||
+            d.category == 'OUTCOME' ||
+            d.category == 'MELIA') &&
+          (d.group == id  ||
+            d.wp_id == official_code)
+        );
+      else
+        return (
+          (d.category == 'OUTPUT' ||
+            d.category == 'OUTCOME' ||
+            d.category == 'MELIA') &&
+          (d.group == id || d.wp_id == official_code)
+        );
+    });
+
+    return wp_data;
+  }
+
+  addMelia(wp_official_code: any) {
+    const dialogRef = this.dialog.open(MeliaComponent, {
+      data: { wp_id: wp_official_code, initiative_id: 5 },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.submissionService.newMelia(result);
+        await this.InitData();
+      }
+    });
+  }
+
+  async editMelia(id: number) {
+    const dialogRef = this.dialog.open(MeliaComponent, {
+      data: await this.submissionService.getMeliaById(id),
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.submissionService.updateMelia(id, result);
+        await this.InitData();
+      }
+    });
+  }
+  async deleteMelia(id: number) {
+    this.dialog
+      .open(ConfirmComponent, {
+        maxWidth: '400px',
+        data: new ConfirmDialogModel(
+          'Delete',
+          `Are you sure you want to delete this MELIA?`
+        ),
+      })
+      .afterClosed()
+      .subscribe(async (dialogResult) => {
+        if (dialogResult == true) {
+          let result = await this.submissionService.deleteMelia(id);
+          if (result) await this.InitData();
+        }
       });
   }
 }

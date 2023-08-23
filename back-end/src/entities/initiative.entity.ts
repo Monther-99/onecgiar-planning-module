@@ -47,4 +47,7 @@ export class Initiative {
 
   @OneToMany(() => Submission, (submission) => submission.initiative)
   submissions: Submission[];
+
+  @OneToMany(() => Submission, (melias) => melias.initiative)
+  melias: Submission[];
 }

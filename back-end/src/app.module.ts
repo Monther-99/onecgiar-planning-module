@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { EventsModule } from './events/events.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Initiative } from './entities/initiative.entity';
@@ -20,7 +18,8 @@ import { PeriodsModule } from './periods/periods.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SubmissionModule } from './submission/submission.module';
-
+import { MeliaModule } from './melia/melia.module';
+import { Melia } from './entities/melia.entity';
 @Module({
   imports: [
     
@@ -41,6 +40,7 @@ import { SubmissionModule } from './submission/submission.module';
         ResultPeriodValues,
         User,
         Submission,
+        Melia
       ],
       synchronize: true,
     }),
@@ -53,6 +53,8 @@ import { SubmissionModule } from './submission/submission.module';
     UsersModule,
     SubmissionModule,
     EventsModule,
+    MeliaModule,
+
   ],
 })
 export class AppModule {}

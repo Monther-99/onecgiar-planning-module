@@ -11,7 +11,9 @@ import { Period } from 'src/entities/period.entity';
 import { User } from 'src/entities/user.entity';
 import { Phase } from 'src/entities/phase.entity';
 import { Initiative } from 'src/entities/initiative.entity';
+import { HttpModule } from '@nestjs/axios';
 
+import { CacheModule } from '@nestjs/cache-manager';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -25,6 +27,8 @@ import { Initiative } from 'src/entities/initiative.entity';
       Period,
       ResultPeriodValues,
     ]),
+    HttpModule,
+    CacheModule.register()
   ],
   controllers: [SubmissionController],
   providers: [SubmissionService],
