@@ -13,10 +13,12 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { AppSocket } from './socket.service';
 import { InQuePipe } from './inQue.pipe';
+import { SubmissionComponent } from './submission/submission.component';
 @NgModule({
   declarations: [
     AppComponent,
-    InQuePipe
+    InQuePipe,
+    SubmissionComponent
   ],
   imports: [
     BrowserModule,

@@ -24,7 +24,7 @@ export class EventsGateway implements OnModuleInit {
   changePer(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
     this.planing_data = data;
     this.server.emit('data', this.planing_data);
-    console.log('new message')
+    console.log('new message',JSON.stringify(this.planing_data))
   }
 
   onModuleInit() {
