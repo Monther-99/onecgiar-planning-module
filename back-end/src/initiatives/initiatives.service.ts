@@ -97,6 +97,6 @@ export class InitiativesService {
   }
 
   findOne(id: number) {
-    return this.initiativeRepository.findOneBy({ id });
+    return this.initiativeRepository.findOne({ where:{id},relations:['organizations'] });
   }
 }

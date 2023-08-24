@@ -70,5 +70,11 @@ export class SubmissionService {
       this.http.delete('/api/cross-cutting/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async getInitiative (id: number) {
+    return firstValueFrom(
+      this.http.get('/api/initiatives/' + id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
   
 }

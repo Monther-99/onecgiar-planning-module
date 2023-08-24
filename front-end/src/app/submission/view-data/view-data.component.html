@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>Details</h1>
+<div mat-dialog-content>
+  <ngx-json-viewer [expanded]="false" [json]="data.data"></ngx-json-viewer>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Ok</button>
+</div>

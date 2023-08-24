@@ -10,6 +10,7 @@ import {
   ConfirmDialogModel,
 } from '../confirm/confirm.component';
 import { CrossCuttingComponent } from './cross-cutting/cross-cutting.component';
+import { ViewDataComponent } from './view-data/view-data.component';
 
 @Component({
   selector: 'app-submission',
@@ -231,7 +232,9 @@ export class SubmissionComponent implements OnInit {
     this.results = example_data.data;
     const melia_data = await this.submissionService.getMeliaByInitiative(5);
     const cross_data = await this.submissionService.getCrossByInitiative(5);
-
+    const initiative_data =  await this.submissionService.getInitiative(5);
+    this.partners = await initiative_data.organizations;
+   
     const indicators_data = this.results
       .filter(
         (d: any) =>
@@ -240,10 +243,15 @@ export class SubmissionComponent implements OnInit {
       )
       .map((d: any) => {
         return d.indicators.map((i: any) => {
-          return { ...i, title: i.description,category:'INDICATOR',group:d.group };
+          return {
+            ...i,
+            title: i.description,
+            category: 'INDICATOR',
+            group: d.group,
+          };
         });
-      }) .flat(1);
-    console.log(indicators_data);
+      })
+      .flat(1);
     cross_data.map((d: any) => {
       d['category'] = 'CROSS';
       d['wp_id'] = 'CROSS';
@@ -253,7 +261,12 @@ export class SubmissionComponent implements OnInit {
       d['category'] = 'MELIA';
       return d;
     });
-    this.results = [...cross_data, ...melia_data, ...this.results,...indicators_data];
+    this.results = [
+      ...cross_data,
+      ...melia_data,
+      ...this.results,
+      ...indicators_data,
+    ];
     this.wps = this.results
       .filter((d: any) => d.category == 'WP' && !d.group)
       .sort((a: any, b: any) => a.title.localeCompare(b.title));
@@ -263,32 +276,33 @@ export class SubmissionComponent implements OnInit {
       category: 'CROSS',
       ost_wp: { wp_official_code: 'CROSS' },
     });
-    console.log(this.wps);
-    const partners_result = this.results
-      .filter((d: any) => d.partners)
-      .map((d: any) => d.partners)
-      .flat(1);
+    // const partners_result = this.results
+    //   .filter((d: any) => d.partners)
+    //   .map((d: any) => d.partners)
+    //   .flat(1);
 
-    this.results
-      .filter((d: any) => d.responsible_organization)
-      .map((d: any) => d.responsible_organization)
-      .forEach((element: any) => {
-        partners_result.push(element);
-      });
+    // this.results
+    //   .filter((d: any) => d.responsible_organization)
+    //   .map((d: any) => d.responsible_organization)
+    //   .forEach((element: any) => {
+    //     partners_result.push(element);
+    //   });
 
-    this.partners = [
-      ...new Map(
-        partners_result.map((item: any) => [item['code'], item])
-      ).values(),
-    ];
-
+    // this.partners = [
+    //   ...new Map(
+    //     partners_result.map((item: any) => [item['code'], item])
+    //   ).values(),
+    // ];
+    console.log('partners',this.partners)
     for (let partner of this.partners) {
       for (let wp of this.wps) {
+        console.log('partner',partner)
         const result = await this.getDataForWp(
           wp.id,
           partner.code,
           wp.ost_wp.wp_official_code
         );
+        console.log('result',result)
         if (result.length) {
           if (!this.partnersData[partner.code])
             this.partnersData[partner.code] = {};
@@ -358,7 +372,9 @@ export class SubmissionComponent implements OnInit {
       this.setvalues(this.savedValues.values, this.savedValues.perValues);
   }
   savedValues: any = null;
+
   async ngOnInit() {
+  
     this.InitData();
     this.socket.connect();
     this.socket.on('data', (data: any) => {
@@ -516,5 +532,15 @@ export class SubmissionComponent implements OnInit {
           if (result) await this.InitData();
         }
       });
+  }
+
+  viewData(data: any) {
+    this.dialog
+      .open(ViewDataComponent, {
+        maxWidth: '800px',
+        data: { data, title: 'View' },
+      })
+      .afterClosed()
+      .subscribe(async (dialogResult) => {});
   }
 }

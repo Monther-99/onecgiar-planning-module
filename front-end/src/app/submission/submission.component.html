@@ -100,11 +100,14 @@
                       </button>
                       <mat-menu #menu="matMenu">
                         <button (click)="editMelia(item.id)" mat-menu-item>
-                          Edit
+                            <mat-icon>edit</mat-icon> Edit
                         </button>
                         <button (click)="deleteMelia(item.id)" mat-menu-item>
-                          Delete
+                            <mat-icon>delete</mat-icon> Delete
                         </button>
+                        <button mat-menu-item   (click)="viewData(item)">
+                            <mat-icon>visibility</mat-icon> View Data
+                          </button>
                       </mat-menu>
                     </ng-container>
                     <ng-container *ngIf="item.category == 'CROSS'">
@@ -113,12 +116,20 @@
                         </button>
                         <mat-menu #menu="matMenu">
                           <button (click)="editCross(item.id)" mat-menu-item>
-                            Edit
+                            <mat-icon>edit</mat-icon> Edit
                           </button>
                           <button (click)="deleteCross(item.id)" mat-menu-item>
-                            Delete
+                            <mat-icon>delete</mat-icon> Delete
+                          </button>
+                          <button mat-menu-item   (click)="viewData(item)">
+                            <mat-icon>visibility</mat-icon> View Data
                           </button>
                         </mat-menu>
+                      </ng-container>
+                      <ng-container *ngIf="item.category != 'CROSS' && item.category != 'MELIA' ">
+                        <button  mat-icon-button (click)="viewData(item)">
+                          <mat-icon>visibility</mat-icon>
+                        </button>
                       </ng-container>
                   </td>
                   <td class="wp-title">{{ item.title }}</td>

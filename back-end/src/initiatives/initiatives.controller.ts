@@ -18,14 +18,15 @@ export class InitiativesController {
     await this.initiativesService.importWorkPackages();
     return 'Initiatives imported successfully';
   }
-
+  
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.initiativesService.findOne(+id);
+  }
   @Get()
   async findAll() {
     return this.initiativesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.initiativesService.findOne(+id);
-  }
+
 }

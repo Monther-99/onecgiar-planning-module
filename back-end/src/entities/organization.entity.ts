@@ -12,6 +12,8 @@ export class Organization {
 
   @Column()
   acronym: string;
+  @Column()
+  code: string;
 
   @ManyToMany(() => Initiative, (initiative) => initiative.organizations)
   initiatives: Initiative[];

@@ -21,6 +21,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MeliaComponent } from './submission/melia/melia.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { CrossCuttingComponent } from './submission/cross-cutting/cross-cutting.component';
+import { ViewDataComponent } from './submission/view-data/view-data.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +30,8 @@ import { CrossCuttingComponent } from './submission/cross-cutting/cross-cutting.
     SubmissionComponent,
     MeliaComponent,
     ConfirmComponent,
-    CrossCuttingComponent
+    CrossCuttingComponent,
+    ViewDataComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import { CrossCuttingComponent } from './submission/cross-cutting/cross-cutting.
     FormsModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatMenuModule
+    MatMenuModule,
+    NgxJsonViewerModule
   ],
   providers: [AppSocket],
   bootstrap: [AppComponent],
