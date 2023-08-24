@@ -65,10 +65,18 @@
           <mat-card-content>
             <div class="wp-actions">
               <button
+              *ngIf="wp.id != 'CROSS'"
                 type="button"
                 (click)="addMelia(wp.ost_wp.wp_official_code)"
               >
                 Add MELIA
+              </button>
+              <button
+              *ngIf="wp.id == 'CROSS'"
+                type="button"
+                (click)="addCross()"
+              >
+                Add Cross-Cutting item
               </button>
             </div>
             <table>
@@ -99,6 +107,19 @@
                         </button>
                       </mat-menu>
                     </ng-container>
+                    <ng-container *ngIf="item.category == 'CROSS'">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button (click)="editCross(item.id)" mat-menu-item>
+                            Edit
+                          </button>
+                          <button (click)="deleteCross(item.id)" mat-menu-item>
+                            Delete
+                          </button>
+                        </mat-menu>
+                      </ng-container>
                   </td>
                   <td class="wp-title">{{ item.title }}</td>
                   <td>{{ item.category }}</td>

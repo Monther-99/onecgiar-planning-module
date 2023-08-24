@@ -9,6 +9,7 @@ import {
   ConfirmComponent,
   ConfirmDialogModel,
 } from '../confirm/confirm.component';
+import { CrossCuttingComponent } from './cross-cutting/cross-cutting.component';
 
 @Component({
   selector: 'app-submission',
@@ -208,10 +209,10 @@ export class SubmissionComponent implements OnInit {
   async refresh() {
     await this.InitData();
   }
-  results:any
+  results: any;
   loading = false;
   async InitData() {
-    this.loading=true;
+    this.loading = true;
     this.wpsTotalSum = 0;
     this.perValues = {};
     this.perValuesSammary = {};
@@ -229,15 +230,40 @@ export class SubmissionComponent implements OnInit {
 
     this.results = example_data.data;
     const melia_data = await this.submissionService.getMeliaByInitiative(5);
+    const cross_data = await this.submissionService.getCrossByInitiative(5);
+
+    const indicators_data = this.results
+      .filter(
+        (d: any) =>
+          (d.category == 'OUTPUT' || d.category == 'OUTCOME') &&
+          d.indicators.length
+      )
+      .map((d: any) => {
+        return d.indicators.map((i: any) => {
+          return { ...i, title: i.description,category:'INDICATOR',group:d.group };
+        });
+      }) .flat(1);
+    console.log(indicators_data);
+    cross_data.map((d: any) => {
+      d['category'] = 'CROSS';
+      d['wp_id'] = 'CROSS';
+      return d;
+    });
     melia_data.map((d: any) => {
       d['category'] = 'MELIA';
       return d;
     });
-    this.results = [...melia_data, ...this.results];
+    this.results = [...cross_data, ...melia_data, ...this.results,...indicators_data];
     this.wps = this.results
       .filter((d: any) => d.category == 'WP' && !d.group)
       .sort((a: any, b: any) => a.title.localeCompare(b.title));
-
+    this.wps.push({
+      id: 'CROSS',
+      title: 'Cross Cutting',
+      category: 'CROSS',
+      ost_wp: { wp_official_code: 'CROSS' },
+    });
+    console.log(this.wps);
     const partners_result = this.results
       .filter((d: any) => d.partners)
       .map((d: any) => d.partners)
@@ -317,7 +343,7 @@ export class SubmissionComponent implements OnInit {
           });
         });
       }
-      this.loading=false;
+      this.loading = false;
     }
 
     this.partners = this.partners.filter((d: any) => this.partnersData[d.code]);
@@ -390,14 +416,17 @@ export class SubmissionComponent implements OnInit {
         return (
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
+            d.category == 'CROSS' ||
+            d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
-          (d.group == id  ||
-            d.wp_id == official_code)
+          (d.group == id || d.wp_id == official_code)
         );
       else
         return (
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
+            d.category == 'CROSS' ||
+            d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
           (d.group == id || d.wp_id == official_code)
         );
@@ -405,7 +434,47 @@ export class SubmissionComponent implements OnInit {
 
     return wp_data;
   }
+  addCross() {
+    const dialogRef = this.dialog.open(CrossCuttingComponent, {
+      data: { initiative_id: 5 },
+    });
 
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.submissionService.newCross(result);
+        await this.InitData();
+      }
+    });
+  }
+  async editCross(id: number) {
+    const dialogRef = this.dialog.open(CrossCuttingComponent, {
+      data: await this.submissionService.getCrossById(id),
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.submissionService.updateCross(id, result);
+        await this.InitData();
+      }
+    });
+  }
+  deleteCross(id: number) {
+    this.dialog
+      .open(ConfirmComponent, {
+        maxWidth: '400px',
+        data: new ConfirmDialogModel(
+          'Delete',
+          `Are you sure you want to delete this Cross-cutting item?`
+        ),
+      })
+      .afterClosed()
+      .subscribe(async (dialogResult) => {
+        if (dialogResult == true) {
+          let result = await this.submissionService.deleteCross(id);
+          if (result) await this.InitData();
+        }
+      });
+  }
   addMelia(wp_official_code: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
       data: { wp_id: wp_official_code, initiative_id: 5 },

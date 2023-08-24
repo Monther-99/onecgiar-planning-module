@@ -20,13 +20,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 import { MeliaComponent } from './submission/melia/melia.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { CrossCuttingComponent } from './submission/cross-cutting/cross-cutting.component';
 @NgModule({
   declarations: [
     AppComponent,
     InQuePipe,
     SubmissionComponent,
     MeliaComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    CrossCuttingComponent
   ],
   imports: [
     BrowserModule,

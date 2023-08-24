@@ -20,6 +20,8 @@ import { UsersModule } from './users/users.module';
 import { SubmissionModule } from './submission/submission.module';
 import { MeliaModule } from './melia/melia.module';
 import { Melia } from './entities/melia.entity';
+import { CrossCuttingModule } from './cross-cutting/cross-cutting.module';
+import { CrossCutting } from './entities/cross-cutting.entity';
 @Module({
   imports: [
     
@@ -40,7 +42,7 @@ import { Melia } from './entities/melia.entity';
         ResultPeriodValues,
         User,
         Submission,
-        Melia
+        Melia,CrossCutting
       ],
       synchronize: true,
     }),
@@ -54,6 +56,7 @@ import { Melia } from './entities/melia.entity';
     SubmissionModule,
     EventsModule,
     MeliaModule,
+    CrossCuttingModule,
 
   ],
 })
