@@ -8,16 +8,17 @@ import { firstValueFrom, map } from 'rxjs';
 export class SubmissionService {
   constructor(private http: HttpClient) {}
 
-  async getToc() {
+  async getToc(id: any) {
     return firstValueFrom(
       this.http
         .get(
-          '/api/submission/toc/cbf435de-b727-425f-a941-68915c869328'
+          '/api/submission/toc/'+id
         )
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
+ 
 
   async getMeliaByInitiative(id: any) {
     return firstValueFrom(

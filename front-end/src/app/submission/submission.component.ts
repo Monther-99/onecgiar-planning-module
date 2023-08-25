@@ -214,6 +214,7 @@ export class SubmissionComponent implements OnInit {
   }
   results: any;
   loading = false;
+  params: any
   initiative_data:any={};
   async InitData() {
     this.loading = true;
@@ -232,11 +233,11 @@ export class SubmissionComponent implements OnInit {
     this.totals = {};
     this.errors = {};
 
-    const params: any = this.activatedRoute?.snapshot.params;
-    this.results = await this.submissionService.getToc();
-    const melia_data = await this.submissionService.getMeliaByInitiative(params.id);
-    const cross_data = await this.submissionService.getCrossByInitiative(params.id);
-    this.initiative_data =  await this.submissionService.getInitiative(params.id);
+    this.params = this.activatedRoute?.snapshot.params;
+    this.results = await this.submissionService.getToc(this.params.id);
+    const melia_data = await this.submissionService.getMeliaByInitiative(this.params.id);
+    const cross_data = await this.submissionService.getCrossByInitiative(this.params.id);
+    this.initiative_data =  await this.submissionService.getInitiative(this.params.id);
     this.partners = this.initiative_data.organizations;
    
     const indicators_data = this.results
@@ -456,7 +457,7 @@ export class SubmissionComponent implements OnInit {
   }
   addCross() {
     const dialogRef = this.dialog.open(CrossCuttingComponent, {
-      data: { initiative_id: 5 },
+      data: { initiative_id: this.params.id },
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
@@ -497,7 +498,7 @@ export class SubmissionComponent implements OnInit {
   }
   addMelia(wp_official_code: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
-      data: { wp_id: wp_official_code, initiative_id: 5 },
+      data: { wp_id: wp_official_code, initiative_id: this.params.id },
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
