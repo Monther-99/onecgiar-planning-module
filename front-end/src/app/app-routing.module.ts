@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SubmissionComponent } from './submission/submission.component';
+import { InitiativesComponent } from './initiatives/initiatives.component';
 
 const routes: Routes = [
-  { path: 'submission', component: SubmissionComponent }
+  { path: '', component: InitiativesComponent },
+  { path: 'submission/:id/:code', component: SubmissionComponent }
 ];
 
 @NgModule({

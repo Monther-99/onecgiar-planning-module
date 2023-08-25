@@ -17,12 +17,16 @@ import { SubmissionComponent } from './submission/submission.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { MeliaComponent } from './submission/melia/melia.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { CrossCuttingComponent } from './submission/cross-cutting/cross-cutting.component';
 import { ViewDataComponent } from './submission/view-data/view-data.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { InitiativesComponent } from './initiatives/initiatives.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +35,8 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
     MeliaComponent,
     ConfirmComponent,
     CrossCuttingComponent,
-    ViewDataComponent
+    ViewDataComponent,
+    InitiativesComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,12 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
     MatButtonModule,
     ReactiveFormsModule,
     MatMenuModule,
-    NgxJsonViewerModule
+    NgxJsonViewerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
   ],
   providers: [AppSocket],
   bootstrap: [AppComponent],

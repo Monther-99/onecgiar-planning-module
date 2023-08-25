@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { example_data } from './example';
-import { SubmissionService } from './submission.service';
+import { SubmissionService } from '../services/submission.service';
 import { AppSocket } from '../socket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MeliaComponent } from './melia/melia.component';
@@ -11,6 +11,7 @@ import {
 } from '../confirm/confirm.component';
 import { CrossCuttingComponent } from './cross-cutting/cross-cutting.component';
 import { ViewDataComponent } from './view-data/view-data.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-submission',
@@ -22,7 +23,8 @@ export class SubmissionComponent implements OnInit {
   constructor(
     private submissionService: SubmissionService,
     private socket: AppSocket,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public activatedRoute: ActivatedRoute,
   ) {}
   data: any = [];
   wps: any = [];
@@ -212,6 +214,7 @@ export class SubmissionComponent implements OnInit {
   }
   results: any;
   loading = false;
+  initiative_data:any={};
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -229,11 +232,12 @@ export class SubmissionComponent implements OnInit {
     this.totals = {};
     this.errors = {};
 
-    this.results = example_data.data;
-    const melia_data = await this.submissionService.getMeliaByInitiative(5);
-    const cross_data = await this.submissionService.getCrossByInitiative(5);
-    const initiative_data =  await this.submissionService.getInitiative(5);
-    this.partners = await initiative_data.organizations;
+    const params: any = this.activatedRoute?.snapshot.params;
+    this.results = await this.submissionService.getToc();
+    const melia_data = await this.submissionService.getMeliaByInitiative(params.id);
+    const cross_data = await this.submissionService.getCrossByInitiative(params.id);
+    this.initiative_data =  await this.submissionService.getInitiative(params.id);
+    this.partners = this.initiative_data.organizations;
    
     const indicators_data = this.results
       .filter(
