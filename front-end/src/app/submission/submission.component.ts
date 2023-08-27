@@ -24,7 +24,7 @@ export class SubmissionComponent implements OnInit {
     private submissionService: SubmissionService,
     private socket: AppSocket,
     public dialog: MatDialog,
-    public activatedRoute: ActivatedRoute,
+    public activatedRoute: ActivatedRoute
   ) {}
   data: any = [];
   wps: any = [];
@@ -36,8 +36,7 @@ export class SubmissionComponent implements OnInit {
   values: any = {};
   totals: any = {};
   errors: any = {};
-  period:Array<any> = [
-  ];
+  period: Array<any> = [];
   check(values: any, code: string, id: number, item_id: string) {
     if (values[code] && values[code][id] && values[code][id][item_id]) {
       return true;
@@ -206,8 +205,8 @@ export class SubmissionComponent implements OnInit {
   }
   results: any;
   loading = false;
-  params: any
-  initiative_data:any={};
+  params: any;
+  initiative_data: any = {};
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -227,11 +226,17 @@ export class SubmissionComponent implements OnInit {
 
     this.params = this.activatedRoute?.snapshot.params;
     this.results = await this.submissionService.getToc(this.params.id);
-    const melia_data = await this.submissionService.getMeliaByInitiative(this.params.id);
-    const cross_data = await this.submissionService.getCrossByInitiative(this.params.id);
-    this.initiative_data =  await this.submissionService.getInitiative(this.params.id);
+    const melia_data = await this.submissionService.getMeliaByInitiative(
+      this.params.id
+    );
+    const cross_data = await this.submissionService.getCrossByInitiative(
+      this.params.id
+    );
+    this.initiative_data = await this.submissionService.getInitiative(
+      this.params.id
+    );
     this.partners = await this.submissionService.getOrganizations();
-   
+
     const indicators_data = this.results
       .filter(
         (d: any) =>
@@ -290,16 +295,16 @@ export class SubmissionComponent implements OnInit {
     //     partners_result.map((item: any) => [item['code'], item])
     //   ).values(),
     // ];
-    console.log('partners',this.partners)
+    console.log('partners', this.partners);
     for (let partner of this.partners) {
       for (let wp of this.wps) {
-        console.log('partner',partner)
+        console.log('partner', partner);
         const result = await this.getDataForWp(
           wp.id,
           partner.code,
           wp.ost_wp.wp_official_code
         );
-        console.log('result',result)
+        console.log('result', result);
         if (result.length) {
           if (!this.partnersData[partner.code])
             this.partnersData[partner.code] = {};
@@ -371,9 +376,8 @@ export class SubmissionComponent implements OnInit {
   savedValues: any = null;
 
   async ngOnInit() {
-  
     this.InitData();
-    this.period = await this.submissionService.getPeriods()
+    this.period = await this.submissionService.getPeriods();
     this.socket.connect();
     this.socket.on('data', (data: any) => {
       this.savedValues = data;
@@ -540,5 +544,27 @@ export class SubmissionComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {});
+  }
+
+  submit() {
+    this.dialog
+      .open(ConfirmComponent, {
+        maxWidth: '400px',
+        data: new ConfirmDialogModel(
+          'Submit',
+          `Are you sure you want to Submit?`
+        ),
+      })
+      .afterClosed()
+      .subscribe(async (dialogResult) => {
+        if (dialogResult == true) {
+          let result = await this.submissionService.submit({
+            perValues: this.perValues,
+            values: this.values,
+          });
+          if (result)
+          alert('Submited successfully');
+        }
+      });
   }
 }

@@ -89,4 +89,10 @@ export class SubmissionService {
       this.http.get('/api/periods').pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async submit(data:any){
+    return firstValueFrom(
+      this.http.post('/api/submission',data).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
 }

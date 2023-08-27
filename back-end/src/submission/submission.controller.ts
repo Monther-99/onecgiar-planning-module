@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   InternalServerErrorException,
   Param,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
 import { SubmissionService } from './submission.service';
@@ -22,6 +24,15 @@ export class SubmissionController {
     this.submissionService.importData();
     return 'Data imported successfully';
   }
+
+  @Post('')
+  submit(@Body() data) {
+    
+    console.log(data);
+    // should return submission id
+    return {messge:'submited successfully'};
+  }
+
 
   // @UseInterceptors(CacheInterceptor)
   // @CacheTTL(99999)
