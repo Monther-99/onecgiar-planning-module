@@ -36,15 +36,7 @@ export class SubmissionComponent implements OnInit {
   values: any = {};
   totals: any = {};
   errors: any = {};
-  period = [
-    { id: 1, label: '2022-Q1' },
-    { id: 2, label: '2022-Q2' },
-    { id: 3, label: '2022-Q3' },
-    { id: 4, label: '2022-Q4' },
-    { id: 5, label: '2023-Q1' },
-    { id: 6, label: '2023-Q2' },
-    { id: 7, label: '2023-Q3' },
-    { id: 8, label: '2023-Q4' },
+  period:Array<any> = [
   ];
   check(values: any, code: string, id: number, item_id: string) {
     if (values[code] && values[code][id] && values[code][id][item_id]) {
@@ -238,7 +230,7 @@ export class SubmissionComponent implements OnInit {
     const melia_data = await this.submissionService.getMeliaByInitiative(this.params.id);
     const cross_data = await this.submissionService.getCrossByInitiative(this.params.id);
     this.initiative_data =  await this.submissionService.getInitiative(this.params.id);
-    this.partners = this.initiative_data.organizations;
+    this.partners = await this.submissionService.getOrganizations();
    
     const indicators_data = this.results
       .filter(
@@ -381,6 +373,7 @@ export class SubmissionComponent implements OnInit {
   async ngOnInit() {
   
     this.InitData();
+    this.period = await this.submissionService.getPeriods()
     this.socket.connect();
     this.socket.on('data', (data: any) => {
       this.savedValues = data;

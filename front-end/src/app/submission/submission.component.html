@@ -22,7 +22,7 @@
             <tr>
               <th>WP</th>
               <ng-container *ngFor="let item of period">
-                <th>{{ item.label }}</th>
+                <th>{{item.year}} - {{item.quarter }}</th>
               </ng-container>
 
               <th>Percentage %</th>
@@ -82,7 +82,7 @@
                 <th>WP/Results</th>
                 <th>Type</th>
                 <ng-container *ngFor="let item of period">
-                  <th>{{ item.label }}</th>
+                    <th>{{item.year}} - {{item.quarter }}</th>
                 </ng-container>
                 <th>Percentage %</th>
               </tr>
@@ -188,7 +188,7 @@
                 <th>WP/Results</th>
                 <th>Type</th>
                 <ng-container *ngFor="let item of period">
-                  <th>{{ item.label }}</th>
+                    <th>{{item.year}} - {{item.quarter }}</th>
                 </ng-container>
                 <th>Percentage %</th>
               </tr>

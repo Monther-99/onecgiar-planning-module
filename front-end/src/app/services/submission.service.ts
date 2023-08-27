@@ -77,5 +77,16 @@ export class SubmissionService {
       this.http.get('/api/initiatives/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  
+
+  async getOrganizations () {
+    return firstValueFrom(
+      this.http.get('/api/organizations').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async getPeriods(){
+    return firstValueFrom(
+      this.http.get('/api/periods').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
 }
