@@ -27,6 +27,11 @@ import { InitiativesComponent } from './initiatives/initiatives.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TeamMembersComponent } from './team-members/team-members.component';
+import { NewTeamMemberComponent } from './components/new-team-member/new-team-member.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { MatSelectModule } from '@angular/material/select';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +42,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     CrossCuttingComponent,
     ViewDataComponent,
     InitiativesComponent,
+    TeamMembersComponent,
+    NewTeamMemberComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +69,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    NgSelectModule,
+    MatSelectModule,
+    ToastrModule.forRoot(),
   ],
   providers: [AppSocket],
   bootstrap: [AppComponent],

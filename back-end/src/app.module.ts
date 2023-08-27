@@ -22,9 +22,9 @@ import { MeliaModule } from './melia/melia.module';
 import { Melia } from './entities/melia.entity';
 import { CrossCuttingModule } from './cross-cutting/cross-cutting.module';
 import { CrossCutting } from './entities/cross-cutting.entity';
+import { InitiativeRoles } from './entities/initiative-roles.entity';
 @Module({
   imports: [
-    
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -42,7 +42,9 @@ import { CrossCutting } from './entities/cross-cutting.entity';
         ResultPeriodValues,
         User,
         Submission,
-        Melia,CrossCutting
+        Melia,
+        CrossCutting,
+        InitiativeRoles,
       ],
       synchronize: true,
     }),
@@ -57,7 +59,6 @@ import { CrossCutting } from './entities/cross-cutting.entity';
     EventsModule,
     MeliaModule,
     CrossCuttingModule,
-
   ],
 })
 export class AppModule {}

@@ -5,9 +5,10 @@ import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Initiative } from 'src/entities/initiative.entity';
 import { WorkPackage } from 'src/entities/workPackage.entity';
+import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Initiative, WorkPackage]), HttpModule],
+  imports: [TypeOrmModule.forFeature([Initiative, WorkPackage,InitiativeRoles]), HttpModule],
   controllers: [InitiativesController],
   providers: [InitiativesService],
 })
