@@ -10,7 +10,6 @@ import {
   StreamableFile,
   UseGuards,
 } from '@nestjs/common';
-import * as XLSX from 'xlsx';
 import {
   ApiBearerAuth,
   ApiBody,
