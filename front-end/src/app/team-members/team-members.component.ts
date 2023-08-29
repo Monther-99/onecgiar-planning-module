@@ -46,7 +46,8 @@ export class TeamMembersComponent {
     this.my_roles = this.InitiativeUsers
       .filter((d: any) => d?.user?.id == this?.user_info?.id)
       .map((d: any) => d.role);
-  this.displayedColumns.push('Actions');
+   // if (this.canEdit())
+    this.displayedColumns.push('Actions');
   }
 
   async init() {}
@@ -98,6 +99,7 @@ export class TeamMembersComponent {
             email: result.formValue.email,
             role: result.formValue.userRole,
             user_id: result.formValue.user_id,
+            organizations: result.formValue.organizations,
           }
         ).subscribe(data => {
           if (data) {
@@ -119,6 +121,7 @@ export class TeamMembersComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result?.role == 'edit') {
         console.log('edit');
+        console.log(result.formValue)
         // access edited data => result.formValue
         await this.initiativeService.updateInitiativeRole(
           this.initiativeId,
@@ -129,6 +132,7 @@ export class TeamMembersComponent {
             user_id: result.formValue.user_id,
             email: result.formValue.email,
             role: result.formValue.userRole,
+            organizations: result.formValue.organizations,
           }
         );
         this.toastr.success('Success', `User role has been updated`);
@@ -141,6 +145,7 @@ export class TeamMembersComponent {
     /*'User Name',*/ 'Email',
     'User',
     'Role',
+    'organizations',
     'Creation Date',
     'Status',
   ];
@@ -148,6 +153,9 @@ export class TeamMembersComponent {
 
   @ViewChild(MatPaginator) paginator: any;
 
+  join(data:any){
+   return data.map((d:any)=>d.name).join(', ')
+  }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }

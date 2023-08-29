@@ -30,6 +30,11 @@
             <th class="big bold center  spacing" mat-header-cell *matHeaderCellDef> Role </th>
             <td  class="center" mat-cell *matCellDef="let element" style="min-width: 110px;"> {{element.role}} </td>
           </ng-container>
+          <ng-container matColumnDef="organizations">
+            <th class="big bold center  spacing" mat-header-cell *matHeaderCellDef> Organizations </th>
+            <td  class="center" mat-cell *matCellDef="let element" style="min-width: 110px;"> {{  join(element.organizations)   }} </td>
+          </ng-container>
+
           <ng-container matColumnDef="Status">
             <th class="big bold center  spacing" mat-header-cell *matHeaderCellDef> Status </th>
             <td  class="center" mat-cell *matCellDef="let element" style="min-width: 110px;"> {{ element.user_id ? 'Active' :'Invited'   }} </td>

@@ -136,10 +136,11 @@ export class InitiativesService {
         user_id: +role?.user_id ? role?.user_id : null,
         email: role.email.toLowerCase(),
         role: role.role,
+        organizations: role.organizations,
       };
       //To the user that was added by the Admin or Leader/Coordinator
 
-      return await this.iniRolesRepository.save(newRole, { reload: true });
+      return await this.iniRolesRepository.save(newRole, {  reload: true });
 
   }
 }

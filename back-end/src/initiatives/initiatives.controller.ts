@@ -42,7 +42,7 @@ export class InitiativesController {
   getRoles(@Param('id') id: number): Promise<InitiativeRoles[]> {
     return this.initiativesService.iniRolesRepository.find({
       where: { initiative_id: id },
-      relations: ['user'],
+      relations: ['user','organizations'],
     });
   }
 

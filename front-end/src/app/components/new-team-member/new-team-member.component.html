@@ -31,12 +31,18 @@
         formControlName="user_id"
         (search)="search($event)"
       >
-      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
-        <span >{{ item.full_name }}</span> <span>({{item.email}})</span>
-      </ng-template>
+        <ng-template
+          ng-option-tmp
+          let-item="item"
+          let-search="searchTerm"
+          let-index="index"
+        >
+          <span>{{ item.full_name }}</span> <span>({{ item.email }})</span>
+        </ng-template>
       </ng-select>
+     
 
-      <h1
+      <!-- <h1
         *ngIf="
           memberForm.controls['user_id']?.value == '' ||
           memberForm.controls['user_id']?.value == null
@@ -59,8 +65,18 @@
           *ngIf="memberForm.controls['email'].errors?.['email']"
           >Wrong Email format</mat-error
         >
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
+    <ng-select
+    [multiple]="true"
+    [closeOnSelect]="false"
+    appearance="outline"
+    [items]="organizations"
+    bindLabel="name"
+    placeholder="Select organizations"
+    formControlName="organizations"
+  >
+  </ng-select>
     <mat-form-field class="w-90" appearance="outline">
       <mat-select placeholder="Role" formControlName="userRole">
         <mat-option *ngFor="let role of Roles" [value]="role.value">

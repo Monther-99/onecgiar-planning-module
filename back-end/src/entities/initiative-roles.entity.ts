@@ -10,10 +10,12 @@ import {
   UpdateDateColumn,
   OneToMany,
   JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { Initiative } from './initiative.entity';
 
 import { User } from './user.entity';
+import { Organization } from './organization.entity';
 
 @Entity()
 export class InitiativeRoles {
@@ -49,5 +51,10 @@ export class InitiativeRoles {
   @ApiProperty()
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+
+  @ManyToMany(() => Organization, (organization) => organization.initiatives)
+  @JoinTable()
+  organizations: Organization[];
 
 }

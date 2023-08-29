@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { OrganizationsService } from 'src/app/services/organizations.service';
 import { UserService } from 'src/app/services/user.service';
 
 export enum ROLES {
@@ -18,10 +19,12 @@ export class NewTeamMemberComponent {
     public fb: FormBuilder,
     private dialogRef: MatDialogRef<NewTeamMemberComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any = {},
-    private usersService: UserService
+    private usersService: UserService,
+    private organizationsService: OrganizationsService
   ) {}
 
   confirmation: any = '';
+  organizations: any =[];
   users: any = [];
   showConfirm(content: any) {
     console.log(content);
@@ -36,7 +39,10 @@ export class NewTeamMemberComponent {
       let controls = controlGroup.controls;
       if (controls) {
         // console.log(controls);
-        if (controls.email.value == '' && (controls.user_id.value == '' || controls.user_id.value == null)) {
+        if (
+          controls.email.value == '' &&
+          (controls.user_id.value == '' || controls.user_id.value == null)
+        ) {
           return {
             atLeastOneRequired: {
               text: 'At least one should be selected',
@@ -50,12 +56,16 @@ export class NewTeamMemberComponent {
 
   memberForm: any;
   async populateMemberForm() {
+    this.organizations = await this.organizationsService.getOrganizations();
+    if (this.data?.member?.user_id) {
+      const users: any = await this.usersService.getUsers(
+        { user_id: this.data?.member?.user_id },
+        1,
+        10
+      );
 
-    if(this.data?.member?.user_id ){
-   const users:any = await this.usersService.getUsers({user_id:this.data?.member?.user_id},1,10)
-
-   this.users = users.result
-  }
+      this.users = users.result;
+    }
     this.memberForm = this.fb.group({
       email: [
         this.data.role == 'add' ? '' : this.data.member.email,
@@ -65,31 +75,34 @@ export class NewTeamMemberComponent {
         this.data.role == 'add' ? '' : this.data.member.role,
         Validators.required,
       ],
-      user_id: [this.data?.member?.user_id ? this.data?.member?.user_id  : null],
+      user_id: [this.data?.member?.user_id ? this.data?.member?.user_id : null],
+      organizations: [
+        this.data?.member?.organizations
+          ? this.data?.member?.organizations
+          : null,
+      ],
     });
     this.memberForm.setValidators(this.atLeastOneValidator());
   }
-  showerror:boolean=false
+  showerror: boolean = false;
   submit() {
     this.memberForm.markAllAsTouched();
     this.memberForm.updateValueAndValidity();
     if (this.memberForm.valid) {
-      this.showerror =  false;
+      this.showerror = false;
       this.dialogRef.close({
         role: this.data.role,
         formValue: this.memberForm.value,
       });
-    }else{
-      this.showerror =  true;
+    } else {
+      this.showerror = true;
     }
   }
 
-
   bindValue: any = {
     full_name: 'full_name',
-    email: 'email'
-  }
-
+    email: 'email',
+  };
 
   haveSameChar!: boolean;
   searchValue: string = '';
@@ -98,21 +111,20 @@ export class NewTeamMemberComponent {
     const filters = {
       full_name: this.searchValue,
       email: this.searchValue,
-      search: 'teamMember'
-    }
+      search: 'teamMember',
+    };
     this.users = await this.usersService.getUsersForTeamMember(filters);
     let i = this.searchValue.length;
 
-    for(let user of this.users){
-      if(this.searchValue == user.full_name.substring(0, i)) {
+    for (let user of this.users) {
+      if (this.searchValue == user.full_name.substring(0, i)) {
         this.haveSameChar = true;
-      }
-      else if(this.searchValue == user.email.substring(0, i)){
+      } else if (this.searchValue == user.email.substring(0, i)) {
         this.haveSameChar = false;
       }
     }
   }
-  
+
   async ngOnInit() {
     // this.users = await this.usersService.getUsers();
     // console.log(this.users);

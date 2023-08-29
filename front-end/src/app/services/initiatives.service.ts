@@ -40,12 +40,7 @@ export class InitiativesService {
     return this.http
       .post<any>(
        'api/initiatives/' + initiativeId + '/roles',
-        {
-          initiative_id: role.initiative_id,
-          email: role.email,
-          user_id: role.user_id,
-          role: role.role,
-        }
+       role
       )
   }
 
@@ -53,13 +48,7 @@ export class InitiativesService {
     return this.http
       .put(
        'api/initiatives/' + initiativeId + '/roles/' + roleId,
-        {
-          initiative_id: role.initiative_id,
-          id: role.id,
-          email: role.email,
-          user_id: role.user_id,
-          role: role.role,
-        }
+       role
       )
       .toPromise();
   }

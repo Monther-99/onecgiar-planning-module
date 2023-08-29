@@ -237,23 +237,23 @@ export class SubmissionComponent implements OnInit {
     );
     this.partners = await this.submissionService.getOrganizations();
 
-    const indicators_data = this.results
-      .filter(
-        (d: any) =>
-          (d.category == 'OUTPUT' || d.category == 'OUTCOME') &&
-          d.indicators.length
-      )
-      .map((d: any) => {
-        return d.indicators.map((i: any) => {
-          return {
-            ...i,
-            title: i.description,
-            category: 'INDICATOR',
-            group: d.group,
-          };
-        });
-      })
-      .flat(1);
+    // const indicators_data = this.results
+    //   .filter(
+    //     (d: any) =>
+    //       (d.category == 'OUTPUT' || d.category == 'OUTCOME') &&
+    //       d.indicators.length
+    //   )
+    //   .map((d: any) => {
+    //     return d.indicators.map((i: any) => {
+    //       return {
+    //         ...i,
+    //         title: i.description,
+    //         category: 'INDICATOR',
+    //         group: d.group,
+    //       };
+    //     });
+    //   })
+    //   .flat(1);
     cross_data.map((d: any) => {
       d['category'] = 'CROSS';
       d['wp_id'] = 'CROSS';
@@ -267,7 +267,7 @@ export class SubmissionComponent implements OnInit {
       ...cross_data,
       ...melia_data,
       ...this.results,
-      ...indicators_data,
+      // ...indicators_data,
     ];
     this.wps = this.results
       .filter((d: any) => d.category == 'WP' && !d.group)
@@ -435,7 +435,7 @@ export class SubmissionComponent implements OnInit {
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
             d.category == 'CROSS' ||
-            d.category == 'INDICATOR' ||
+            // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
           (d.group == id || d.wp_id == official_code)
         );
@@ -444,7 +444,7 @@ export class SubmissionComponent implements OnInit {
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
             d.category == 'CROSS' ||
-            d.category == 'INDICATOR' ||
+            // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
           (d.group == id || d.wp_id == official_code)
         );
