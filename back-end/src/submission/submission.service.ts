@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as jsonFile from 'new.json';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResultPeriodValues } from 'src/entities/resultPeriodValues.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Result } from 'src/entities/result.entity';
 import { WorkPackage } from 'src/entities/workPackage.entity';
 import { Organization } from 'src/entities/organization.entity';
@@ -93,6 +93,149 @@ export class SubmissionService {
               newResult.organization = organizationObject;
               newResult.workPackage = workPackageObject;
               newResult.submission = submissionObject;
+              let resultObject = await this.resultRepository.save(newResult);
+
+              let periodsValues =
+                periodValues[organizationId][workPackageId][resultUuid];
+              let periodsIds = Object.keys(periodsValues);
+
+              periodsIds.forEach(async (periodId) => {
+                let periodObject = await this.periodRepository.findOneBy({
+                  id: +periodId,
+                });
+                if (periodObject != null) {
+                  let resultPeriodValueData = {
+                    value: periodsValues[periodId],
+                  };
+
+                  let newResultPeriodValue = this.resultValuesRepository.create(
+                    resultPeriodValueData,
+                  );
+                  newResultPeriodValue.period = periodObject;
+                  newResultPeriodValue.result = resultObject;
+                  this.resultValuesRepository.save(newResultPeriodValue);
+                }
+              });
+            });
+          }
+        });
+      }
+    });
+  }
+  async getSaved(id) {
+    let data = { perValues: {}, values: {} };
+    const saved_data = await this.resultRepository.find({
+      where: { initiative_id: id },
+      relations: ['values', 'workPackage','values.period'],
+    });
+    saved_data.forEach((result: Result) => {
+      if (!data.perValues[result.organization_id])
+        data.perValues[result.organization_id] = {};
+      if (
+        !data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ]
+      )
+        data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ] = {};
+
+      if (
+        !data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid]
+      )
+        data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid] = {};
+      result.values.forEach((d) => {
+        if (
+          data.perValues[result.organization_id][
+            result.workPackage.wp_official_code
+          ][result.result_uuid][d.period.id]
+        )
+          data.perValues[result.organization_id][
+            result.workPackage.wp_official_code
+          ][result.result_uuid][d.period.id] = {};
+        data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid][d.period.id] = d.value;
+      });
+
+      if (!data.values[result.organization_id])
+        data.values[result.organization_id] = {};
+      if (
+        !data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ]
+      )
+        data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ] = {};
+
+      if (
+        !data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid]
+      )
+        data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid] = result.value;
+    });
+    return data;
+  }
+  async saveData(id, data: any) {
+    const initiativeId = id;
+    const phaseId = 1;
+    const userId = 1;
+   await this.resultRepository.delete({initiative_id:id,submission:IsNull()})
+    const periodValues = data.perValues;
+    const values = data.values;
+    const organizationsIds = Object.keys(data.perValues);
+
+    const userObject = await this.userRepository.findOneBy({ id: userId });
+    const phaseObject = await this.phaseRepository.findOneBy({ id: phaseId });
+    const initiativeObject = await this.initiativeRepository.findOneBy({
+      id: initiativeId,
+    });
+    if (userObject == null) {
+      return 'User not found';
+    }
+    if (phaseObject == null) {
+      return 'Phase not found';
+    }
+    if (initiativeObject == null) {
+      return 'Initiative not found';
+    }
+
+    organizationsIds.forEach(async (organizationId) => {
+      let organizationObject = await this.organizationRepository.findOneBy({
+        id: +organizationId,
+      });
+
+      if (organizationObject != null) {
+        let workPackages = values[organizationId];
+        let workPackagesIds = Object.keys(workPackages);
+
+        workPackagesIds.forEach(async (workPackageId) => {
+          let workPackageObject = await this.workPackageRepository.findOneBy({
+            wp_official_code: workPackageId,
+          });
+          console.log(workPackageId);
+          if (workPackageObject != null) {
+            let results = workPackages[workPackageId];
+            let resultsUuids = Object.keys(results);
+
+            resultsUuids.forEach(async (resultUuid) => {
+              let resultValue = results[resultUuid];
+              let resultData = {
+                result_uuid: resultUuid,
+                value: resultValue,
+              };
+              let newResult = this.resultRepository.create(resultData);
+              newResult.organization = organizationObject;
+              newResult.workPackage = workPackageObject;
+              newResult.initiative = initiativeObject;
               let resultObject = await this.resultRepository.save(newResult);
 
               let periodsValues =

@@ -25,14 +25,24 @@ export class SubmissionController {
     return 'Data imported successfully';
   }
 
-  @Post('')
-  submit(@Body() data) {
-    
-    console.log(data);
-    // should return submission id
-    return {messge:'submited successfully'};
+  @Post('save/:id')
+  async save(@Param('id') id, @Body() data) {
+    await this.submissionService.saveData(id, data);
+    return { message: 'Initiatives saved successfully' };
   }
 
+  @Get('save/:id')
+  async getSaved(@Param('id') id) {
+    return this.submissionService.getSaved(id);
+ 
+  }
+
+  @Post('')
+  submit(@Body() data) {
+    console.log(data);
+    // should return submission id
+    return { messge: 'submited successfully' };
+  }
 
   // @UseInterceptors(CacheInterceptor)
   // @CacheTTL(99999)

@@ -10,7 +10,7 @@ export class ResultPeriodValues {
   @Column()
   value: boolean;
 
-  @ManyToOne(() => Result, (result) => result.values)
+  @ManyToOne(() => Result, (result) => result.values,{onDelete:'CASCADE',onUpdate:'CASCADE'})
   result: Result;
 
   @ManyToOne(() => Period, (period) => period.values)

@@ -370,7 +370,8 @@ export class SubmissionComponent implements OnInit {
         wp.ost_wp.wp_official_code
       );
     }
-    if (this.savedValues)
+    
+    this.savedValues = await this.submissionService.getSavedData(this.params.id)
       this.setvalues(this.savedValues.values, this.savedValues.perValues);
   }
   savedValues: any = null;
@@ -380,8 +381,8 @@ export class SubmissionComponent implements OnInit {
     this.period = await this.submissionService.getPeriods();
     this.socket.connect();
     this.socket.on('data', (data: any) => {
-      this.savedValues = data;
-      this.setvalues(data.values, data.perValues);
+     // this.savedValues = data;
+     // this.setvalues(data.values, data.perValues);
     });
   }
 
@@ -558,7 +559,7 @@ export class SubmissionComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.submissionService.submit({
+          let result = await this.submissionService.submit(this.params.id,{
             perValues: this.perValues,
             values: this.values,
           });

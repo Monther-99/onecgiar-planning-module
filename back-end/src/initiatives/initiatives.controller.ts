@@ -26,7 +26,7 @@ export class InitiativesController {
   @Get('import/wp')
   async importWP() {
     await this.initiativesService.importWorkPackages();
-    return 'Initiatives imported successfully';
+    return 'wp imported successfully';
   }
 
   @Get(':id')
