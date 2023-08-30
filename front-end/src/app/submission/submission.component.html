@@ -1,43 +1,151 @@
+<mat-card>
+  <button
+    class="submit"
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="submit()"
+  >
+    Submit
+  </button>
+  <mat-card-title
+    >One CGIAR Initiatives Plan of Results and Budget Template</mat-card-title
+  >
+  <mat-card-subtitle
+    >{{ initiative_data.official_code }} ‐
+    {{ initiative_data.name }}</mat-card-subtitle
+  >
+  <button type="button" mat-button (click)="refresh()">refresh</button>
+</mat-card>
+<mat-card *ngIf="loading">
+  <mat-card-title>Loading</mat-card-title>
+  <mat-card-subtitle>Preparing Items</mat-card-subtitle>
+</mat-card>
+<mat-tab-group *ngIf="!loading">
+  <mat-tab *ngIf="isCenter == false" label="Summary">
+    <mat-card>
+      <mat-card-title>Consolidated</mat-card-title>
+      <mat-card-content>
+        <table>
+          <tr>
+            <th>WP</th>
+            <ng-container *ngFor="let item of period">
+              <th>{{ item.year }} - {{ item.quarter }}</th>
+            </ng-container>
 
- 
-  <mat-card>
-    <button class="submit" type="button" mat-raised-button color="primary" (click)="submit()">Submit</button>
-    <mat-card-title
-      >One CGIAR Initiatives Plan of Results and Budget Template</mat-card-title
-    >
-    <mat-card-subtitle>{{ initiative_data.official_code }} ‐ {{ initiative_data.name }}</mat-card-subtitle>
-    <button type="button" mat-button (click)="refresh()">refresh</button>
-  </mat-card>
-  <mat-card *ngIf="loading">
-    <mat-card-title
-      >Loading</mat-card-title
-    >
-    <mat-card-subtitle>Preparing Items</mat-card-subtitle>
-  </mat-card>
-  <mat-tab-group *ngIf="!loading">
-    <mat-tab label="Summary">
-      <mat-card>
-        <mat-card-title>Consolidated</mat-card-title>
+            <th>Percentage %</th>
+          </tr>
+          <ng-container *ngFor="let wp of wps">
+            <tr>
+              <td class="wp-title">{{ wp.title }}</td>
+              <ng-container *ngFor="let item of period">
+                <td>
+                  <mat-icon
+                    color="primary"
+                    *ngIf="
+                      perValuesSammary[wp.ost_wp.wp_official_code][item.id] ==
+                      true
+                    "
+                    >close</mat-icon
+                  >
+                </td>
+              </ng-container>
+              <td>
+                {{
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                }}%
+              </td>
+            </tr>
+          </ng-container>
+          <tr class="total">
+            <td colspan="9">Total</td>
+            <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+    <ng-container *ngFor="let wp of wps">
+      <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
+        <mat-card-title>{{ wp.title }}</mat-card-title>
         <mat-card-content>
+          <div class="wp-actions">
+            <button
+              *ngIf="wp.id != 'CROSS'"
+              type="button"
+              (click)="addMelia(wp.ost_wp.wp_official_code)"
+            >
+              Add MELIA
+            </button>
+            <button *ngIf="wp.id == 'CROSS'" type="button" (click)="addCross()">
+              Add Cross-Cutting item
+            </button>
+          </div>
           <table>
             <tr>
-              <th>WP</th>
+              <th></th>
+              <th>WP/Results</th>
+              <th>Type</th>
               <ng-container *ngFor="let item of period">
-                <th>{{item.year}} - {{item.quarter }}</th>
+                <th>{{ item.year }} - {{ item.quarter }}</th>
               </ng-container>
-
               <th>Percentage %</th>
             </tr>
-            <ng-container *ngFor="let wp of wps">
+            <ng-container
+              *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
+            >
               <tr>
-                <td class="wp-title">{{ wp.title }}</td>
-                <ng-container *ngFor="let item of period">
+                <td>
+                  <ng-container *ngIf="item.category == 'MELIA'">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button (click)="editMelia(item.id)" mat-menu-item>
+                        <mat-icon>edit</mat-icon> Edit
+                      </button>
+                      <button (click)="deleteMelia(item.id)" mat-menu-item>
+                        <mat-icon>delete</mat-icon> Delete
+                      </button>
+                      <button mat-menu-item (click)="viewData(item)">
+                        <mat-icon>visibility</mat-icon> View Data
+                      </button>
+                    </mat-menu>
+                  </ng-container>
+                  <ng-container *ngIf="item.category == 'CROSS'">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button (click)="editCross(item.id)" mat-menu-item>
+                        <mat-icon>edit</mat-icon> Edit
+                      </button>
+                      <button (click)="deleteCross(item.id)" mat-menu-item>
+                        <mat-icon>delete</mat-icon> Delete
+                      </button>
+                      <button mat-menu-item (click)="viewData(item)">
+                        <mat-icon>visibility</mat-icon> View Data
+                      </button>
+                    </mat-menu>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="item.category != 'CROSS' && item.category != 'MELIA'"
+                  >
+                    <button mat-icon-button (click)="viewData(item)">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </ng-container>
+                </td>
+                <td class="wp-title">{{ item.title }}</td>
+                <td>{{ item.category }}</td>
+                <ng-container *ngFor="let per of period">
                   <td>
+                    <!-- to be checked -->
                     <mat-icon
                       color="primary"
                       *ngIf="
-                        perValuesSammary[wp.ost_wp.wp_official_code][item.id] ==
-                        true
+                        perAllValues[wp.ost_wp.wp_official_code][item.id][
+                          per.id
+                        ] == true
                       "
                       >close</mat-icon
                     >
@@ -45,223 +153,125 @@
                 </ng-container>
                 <td>
                   {{
-                    sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                    sammary[wp.ost_wp.wp_official_code][item.id]
+                      | number : "1.2-2"
                   }}%
                 </td>
               </tr>
             </ng-container>
             <tr class="total">
-              <td colspan="9">Total</td>
-              <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+              <td colspan="10">Total</td>
+              <td>
+                {{
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                }}%
+              </td>
             </tr>
           </table>
         </mat-card-content>
       </mat-card>
-      <ng-container *ngFor="let wp of wps">
-        <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
-          <mat-card-title>{{ wp.title }}</mat-card-title>
-          <mat-card-content>
-            <div class="wp-actions">
-              <button
-              *ngIf="wp.id != 'CROSS'"
-                type="button"
-                (click)="addMelia(wp.ost_wp.wp_official_code)"
-              >
-                Add MELIA
-              </button>
-              <button
-              *ngIf="wp.id == 'CROSS'"
-                type="button"
-                (click)="addCross()"
-              >
-                Add Cross-Cutting item
-              </button>
-            </div>
-            <table>
-              <tr>
-                <th></th>
-                <th>WP/Results</th>
-                <th>Type</th>
-                <ng-container *ngFor="let item of period">
-                    <th>{{item.year}} - {{item.quarter }}</th>
-                </ng-container>
-                <th>Percentage %</th>
-              </tr>
-              <ng-container
-                *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
-              >
-                <tr>
-                  <td>
-                    <ng-container *ngIf="item.category == 'MELIA'">
-                      <button mat-icon-button [matMenuTriggerFor]="menu">
-                        <mat-icon>more_vert</mat-icon>
-                      </button>
-                      <mat-menu #menu="matMenu">
-                        <button (click)="editMelia(item.id)" mat-menu-item>
-                            <mat-icon>edit</mat-icon> Edit
-                        </button>
-                        <button (click)="deleteMelia(item.id)" mat-menu-item>
-                            <mat-icon>delete</mat-icon> Delete
-                        </button>
-                        <button mat-menu-item   (click)="viewData(item)">
-                            <mat-icon>visibility</mat-icon> View Data
-                          </button>
-                      </mat-menu>
-                    </ng-container>
-                    <ng-container *ngIf="item.category == 'CROSS'">
-                        <button mat-icon-button [matMenuTriggerFor]="menu">
-                          <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #menu="matMenu">
-                          <button (click)="editCross(item.id)" mat-menu-item>
-                            <mat-icon>edit</mat-icon> Edit
-                          </button>
-                          <button (click)="deleteCross(item.id)" mat-menu-item>
-                            <mat-icon>delete</mat-icon> Delete
-                          </button>
-                          <button mat-menu-item   (click)="viewData(item)">
-                            <mat-icon>visibility</mat-icon> View Data
-                          </button>
-                        </mat-menu>
-                      </ng-container>
-                      <ng-container *ngIf="item.category != 'CROSS' && item.category != 'MELIA' ">
-                        <button  mat-icon-button (click)="viewData(item)">
-                          <mat-icon>visibility</mat-icon>
-                        </button>
-                      </ng-container>
-                  </td>
-                  <td class="wp-title">{{ item.title }}</td>
-                  <td>{{ item.category }}</td>
-                  <ng-container *ngFor="let per of period">
-                    <td>
-                      <!-- to be checked -->
-                      <mat-icon
-                        color="primary"
-                        *ngIf="
-                          perAllValues[wp.ost_wp.wp_official_code][item.id][
-                            per.id
-                          ] == true
-                        "
-                        >close</mat-icon
-                      >
-                    </td>
-                  </ng-container>
-                  <td>
-                    {{
-                      sammary[wp.ost_wp.wp_official_code][item.id]
-                        | number : "1.2-2"
-                    }}%
-                  </td>
-                </tr>
+    </ng-container>
+  </mat-tab>
+  <mat-tab
+    *ngFor="let partner of partners"
+    [label]="partner?.acronym ? partner?.acronym : partner?.name"
+  >
+    <ng-container *ngFor="let wp of wps">
+      <mat-card
+        *ngIf="
+          partnersData[partner.code] &&
+          partnersData[partner.code][wp.ost_wp.wp_official_code]
+        "
+      >
+        <mat-card-title>{{ wp.title }}</mat-card-title>
+        <mat-card-content>
+          <table
+            [ngClass]="{
+              error: errors[partner.code][wp.ost_wp.wp_official_code]
+            }"
+          >
+            <tr>
+              <th>WP/Results</th>
+              <th>Type</th>
+              <ng-container *ngFor="let item of period">
+                <th>{{ item.year }} - {{ item.quarter }}</th>
               </ng-container>
-              <tr class="total">
-                <td colspan="10">Total</td>
-                <td>
-                  {{
-                    sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
-                  }}%
-                </td>
-              </tr>
-            </table>
-          </mat-card-content>
-        </mat-card>
-      </ng-container>
-    </mat-tab>
-    <mat-tab
-      *ngFor="let partner of partners"
-      [label]="partner?.acronym ? partner?.acronym : partner?.name"
-    >
-      <ng-container *ngFor="let wp of wps">
-        <mat-card
-          *ngIf="
-            partnersData[partner.code] &&
-            partnersData[partner.code][wp.ost_wp.wp_official_code]
-          "
-        >
-          <mat-card-title>{{ wp.title }}</mat-card-title>
-          <mat-card-content>
-            <table
-              [ngClass]="{
-                error: errors[partner.code][wp.ost_wp.wp_official_code]
-              }"
+              <th>Percentage %</th>
+            </tr>
+
+            <ng-container
+              *ngFor="
+                let item of partnersData[partner.code][
+                  wp.ost_wp.wp_official_code
+                ]
+              "
             >
               <tr>
-                <th>WP/Results</th>
-                <th>Type</th>
-                <ng-container *ngFor="let item of period">
-                    <th>{{item.year}} - {{item.quarter }}</th>
-                </ng-container>
-                <th>Percentage %</th>
-              </tr>
-
-              <ng-container
-                *ngFor="
-                  let item of partnersData[partner.code][
-                    wp.ost_wp.wp_official_code
-                  ]
-                "
-              >
-                <tr>
-                  <td class="wp-title">{{ item.title }}</td>
-                  <td>{{ item.category }}</td>
-                  <ng-container *ngFor="let per of period">
-                    <td>
-                      <mat-checkbox
-                        [(ngModel)]="
-                          perValues[partner.code][wp.ost_wp.wp_official_code][
-                            item.id
-                          ][per.id]
-                        "
-                        (change)="
-                          changeEnable(
-                            partner.code,
-                            wp.ost_wp.wp_official_code,
-                            item.id,
-                            per.id,
-                            $event
-                          )
-                        "
-                      ></mat-checkbox>
-                    </td>
-                  </ng-container>
+                <td class="wp-title">{{ item.title }}</td>
+                <td>{{ item.category }}</td>
+                <ng-container *ngFor="let per of period">
                   <td>
-                    <mat-form-field class="per">
-                      <input
-                        [disabled]="
-                          perValues[partner.code][wp.ost_wp.wp_official_code][
-                            item.id
-                          ] | inQue
-                        "
-                        (keyup)="
-                          changeCalc(partner.code, wp.ost_wp.wp_official_code)
-                        "
-                        [(ngModel)]="
-                          values[partner.code][wp.ost_wp.wp_official_code][
-                            item.id
-                          ]
-                        "
-                        matInput
-                      />
-                      <mat-icon matSuffix>%</mat-icon>
-                    </mat-form-field>
+                    <mat-checkbox
+                      [(ngModel)]="
+                        perValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ][per.id]
+                      "
+                      (change)="
+                        changeEnable(
+                          partner.code,
+                          wp.ost_wp.wp_official_code,
+                          item.id,
+                          per.id,
+                          $event
+                        )
+                      "
+                    ></mat-checkbox>
                   </td>
-                </tr>
-              </ng-container>
-              <tr class="total">
-                <td colspan="10">Total</td>
+                </ng-container>
                 <td>
-                  {{
-                    totals[partner.code][wp.ost_wp.wp_official_code]
-                      | number : "1.2-2"
-                  }}%
+                  <mat-form-field class="per">
+                    <input
+                      [disabled]="
+                        perValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ] | inQue
+                      "
+                      (keyup)="
+                        changeCalc(partner.code,
+                        wp.ost_wp.wp_official_code,
+                        item.id,
+                        values[partner.code][wp.ost_wp.wp_official_code][
+                        item.id
+                      ])
+                      "
+                      [(ngModel)]="
+                        values[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ]
+                      "
+                      matInput
+                    />
+                    <mat-icon matSuffix>%</mat-icon>
+                  </mat-form-field>
                 </td>
               </tr>
-            </table>
-            <p class="error">
-              {{ errors[partner.code][wp.ost_wp.wp_official_code] }}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </ng-container>
-    </mat-tab>
-  </mat-tab-group>
+            </ng-container>
+            <tr class="total">
+              <td colspan="10">Total</td>
+              <td>
+                {{
+                  totals[partner.code][wp.ost_wp.wp_official_code]
+                    | number : "1.2-2"
+                }}%
+              </td>
+            </tr>
+          </table>
+          <p class="error">
+            {{ errors[partner.code][wp.ost_wp.wp_official_code] }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </mat-tab>
+</mat-tab-group>

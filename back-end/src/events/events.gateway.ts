@@ -20,18 +20,22 @@ export class EventsGateway implements OnModuleInit {
   planing_data: any = planing_data;
   constructor() {}
 
-  @SubscribeMessage('setData')
+  @SubscribeMessage('setDataValue')
   changePer(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
-    this.planing_data = data;
-   // this.server.emit('data', this.planing_data);
-    console.log('new message',JSON.stringify(this.planing_data))
+    this.server.emit('setDataValue-' + data.id, data);
+  }
+
+  @SubscribeMessage('setDataValues')
+  setDataValue(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+    this.server.emit('setDataValues-' + data.id, data);
   }
 
   onModuleInit() {
     this.server.on('connect', (socket) => {
-      socket.on('disconnect', (data) => {});
-      console.log('connect and send data')
-     // this.server.emit('data', this.planing_data);
+      socket.on('disconnect', (data) => {
+        console.log('disconnect');
+      });
+      console.log('connect and send data');
     });
   }
 }

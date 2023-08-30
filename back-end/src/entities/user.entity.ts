@@ -15,6 +15,12 @@ export class User {
   email: string;
 
   @Column()
+  first_name: string;
+
+  @Column()
+  last_name: string;
+
+  @Column()
   password: string;
 
   @Column({ type: 'enum', enum: userRole })
@@ -22,4 +28,11 @@ export class User {
 
   @OneToMany(() => Submission, (submission) => submission.user)
   submissions: Submission[];
+
+  @Column({
+      type: "varchar",
+      generatedType: 'STORED',
+      asExpression: `Concat(first_name,' ' ,last_name)`
+    })
+    full_name: string;
 }

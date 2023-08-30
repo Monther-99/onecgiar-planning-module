@@ -10,15 +10,9 @@ export class SubmissionService {
 
   async getToc(id: any) {
     return firstValueFrom(
-      this.http
-        .get(
-          '/api/submission/toc/'+id
-        )
-        .pipe(map((d: any) => d))
+      this.http.get('/api/submission/toc/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-
- 
 
   async getMeliaByInitiative(id: any) {
     return firstValueFrom(
@@ -27,7 +21,9 @@ export class SubmissionService {
   }
   async getCrossByInitiative(id: any) {
     return firstValueFrom(
-      this.http.get('/api/cross-cutting/initiative/' + id).pipe(map((d: any) => d))
+      this.http
+        .get('/api/cross-cutting/initiative/' + id)
+        .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
   async newMelia(data: any) {
@@ -72,27 +68,48 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async getInitiative (id: number) {
+  async getInitiative(id: number) {
     return firstValueFrom(
       this.http.get('/api/initiatives/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
-  async getOrganizations () {
+  async getOrganizations() {
     return firstValueFrom(
       this.http.get('/api/organizations').pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
-  async getPeriods(){
+  async getPeriods() {
     return firstValueFrom(
       this.http.get('/api/periods').pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
-  async submit(data:any){
+  async submit(id: number, data: any) {
     return firstValueFrom(
-      this.http.post('/api/submission',data).pipe(map((d: any) => d))
+      this.http
+        .post('/api/submission/save/' + id, data)
+        .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async getSavedData(id: number) {
+    return firstValueFrom(
+      this.http.get('/api/submission/save/' + id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async saveResultValues(id: number,data:any) {
+    return firstValueFrom(
+      this.http.post('/api/submission/save_result_values/' + id,data).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+  async saveResultValue(id: number,data:any) {
+    return firstValueFrom(
+      this.http.post('/api/submission/save_result_value/' + id,data).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+  
+  
 }

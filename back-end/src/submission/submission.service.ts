@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as jsonFile from 'new.json';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResultPeriodValues } from 'src/entities/resultPeriodValues.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Result } from 'src/entities/result.entity';
 import { WorkPackage } from 'src/entities/workPackage.entity';
 import { Organization } from 'src/entities/organization.entity';
@@ -121,5 +121,160 @@ export class SubmissionService {
         });
       }
     });
+  }
+  async getSaved(id) {
+    let data = { perValues: {}, values: {} };
+    const saved_data = await this.resultRepository.find({
+      where: { initiative_id: id },
+      relations: ['values', 'workPackage', 'values.period'],
+    });
+    saved_data.forEach((result: Result) => {
+      if (!data.perValues[result.organization_id])
+        data.perValues[result.organization_id] = {};
+      if (
+        !data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ]
+      )
+        data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ] = {};
+
+      if (
+        !data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid]
+      )
+        data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid] = {};
+      result.values.forEach((d) => {
+        if (
+          data.perValues[result.organization_id][
+            result.workPackage.wp_official_code
+          ][result.result_uuid][d.period.id]
+        )
+          data.perValues[result.organization_id][
+            result.workPackage.wp_official_code
+          ][result.result_uuid][d.period.id] = {};
+        data.perValues[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid][d.period.id] = d.value;
+      });
+
+      if (!data.values[result.organization_id])
+        data.values[result.organization_id] = {};
+      if (
+        !data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ]
+      )
+        data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ] = {};
+
+      if (
+        !data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid]
+      )
+        data.values[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid] = result.value;
+    });
+    return data;
+  }
+  async saveResultData(id, data: any) {
+    const initiativeId = id;
+    const phaseId = 1;
+    const userId = 1;
+
+    const { partner_code, wp_id, item_id, per_id, value } = data;
+
+    const userObject = await this.userRepository.findOneBy({ id: userId });
+    const phaseObject = await this.phaseRepository.findOneBy({ id: phaseId });
+    const initiativeObject = await this.initiativeRepository.findOneBy({
+      id: initiativeId,
+    });
+    let workPackageObject = await this.workPackageRepository.findOneBy({
+      wp_official_code: wp_id,
+    });
+    let organizationObject = await this.organizationRepository.findOneBy({
+      id: +partner_code,
+    });
+
+    let oldResult = await this.resultRepository.findOneBy({
+      initiative_id: id,
+      result_uuid: item_id,
+      organization: organizationObject,
+      workPackage: workPackageObject,
+      submission: IsNull(),
+    });
+    console.log(oldResult);
+    let resultData = {
+      result_uuid: item_id,
+      value: 0,
+    };
+
+    if (organizationObject != null) {
+      let resultObject;
+      if (!oldResult) {
+        let newResult = this.resultRepository.create(resultData);
+        newResult.organization = organizationObject;
+        newResult.workPackage = workPackageObject;
+        newResult.initiative = initiativeObject;
+        resultObject = await this.resultRepository.save(newResult);
+      } else resultObject = oldResult;
+
+      let periodObject = await this.periodRepository.findOneBy({
+        id: +per_id,
+      });
+
+      let newResultPeriodValue: any;
+
+      newResultPeriodValue = await this.resultValuesRepository.findOneBy({
+        result: resultObject,
+        period: periodObject,
+      });
+      if (!newResultPeriodValue)
+        newResultPeriodValue = this.resultValuesRepository.create();
+
+      newResultPeriodValue.value = value;
+      newResultPeriodValue.period = periodObject;
+      newResultPeriodValue.result = resultObject;
+      await this.resultValuesRepository.save(newResultPeriodValue);
+    }
+
+    return { message: 'Data saved' };
+  }
+  async saveResultDataValue(id, data: any) {
+    const initiativeId = id;
+
+    const { partner_code, wp_id, item_id, per_id, value } = data;
+
+    let organizationObject = await this.organizationRepository.findOneBy({
+      id: +partner_code,
+    });
+    let workPackageObject = await this.workPackageRepository.findOneBy({
+      wp_official_code: wp_id,
+    });
+
+    const initiativeObject = await this.initiativeRepository.findOneBy({
+      id: initiativeId,
+    });
+    let oldResult = await this.resultRepository.findOneBy({
+      initiative_id: id,
+      result_uuid: item_id,
+      organization: organizationObject,
+      workPackage: workPackageObject,
+      submission: IsNull(),
+    });
+
+    if (oldResult) {
+      oldResult.value = value;
+      await this.resultRepository.save(oldResult);
+    } else throw new NotFoundException();
+
+    return { message: 'Data saved' };
   }
 }

@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 import { Organization } from './organization.entity';
 import { Submission } from './submission.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { InitiativeRoles } from './initiative-roles.entity';
 
 @Entity()
 export class Initiative {
@@ -50,4 +52,12 @@ export class Initiative {
 
   @OneToMany(() => Submission, (melias) => melias.initiative)
   melias: Submission[];
+
+  @ApiProperty({ type: () => [InitiativeRoles] })
+  @OneToMany(
+    () => InitiativeRoles,
+    (initiative_roles) => initiative_roles.initiative,{onUpdate:'RESTRICT',onDelete:'RESTRICT'}
+  )
+  @JoinTable()
+  roles: Array<InitiativeRoles>;
 }

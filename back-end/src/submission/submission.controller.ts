@@ -25,14 +25,27 @@ export class SubmissionController {
     return 'Data imported successfully';
   }
 
-  @Post('')
-  submit(@Body() data) {
-    
-    console.log(data);
-    // should return submission id
-    return {messge:'submited successfully'};
+
+  @Post('save_result_values/:id')
+  async save_result_values(@Param('id') id, @Body() data) {
+    return this.submissionService.saveResultData(id, data);
+  }
+  @Post('save_result_value/:id')
+  async save_result_value(@Param('id') id, @Body() data) {
+    return this.submissionService.saveResultDataValue(id, data);
+  }
+  @Get('save/:id')
+  async getSaved(@Param('id') id) {
+    return this.submissionService.getSaved(id);
+ 
   }
 
+  @Post('')
+  submit(@Body() data) {
+    console.log(data);
+    // should return submission id
+    return { messge: 'submited successfully' };
+  }
 
   // @UseInterceptors(CacheInterceptor)
   // @CacheTTL(99999)

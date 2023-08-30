@@ -26,7 +26,7 @@ export class WorkPackage {
   @Column()
   initiative_id: number;
 
-  @Column()
+  @Column({type:'text'})
   pathway_content: string;
 
   @Column()
