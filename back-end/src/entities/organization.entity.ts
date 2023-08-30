@@ -12,6 +12,7 @@ export class Organization {
 
   @Column()
   acronym: string;
+
   @Column()
   code: string;
 

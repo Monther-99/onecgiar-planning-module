@@ -18,7 +18,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/role/roles.guard';
 
 @ApiTags('Phases')
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('phases')
 export class PhasesController {
   constructor(private readonly phasesService: PhasesService) {}
@@ -28,7 +28,7 @@ export class PhasesController {
     return this.phasesService.create(createPhaseDto);
   }
 
-  @UseGuards(RolesGuard)
+  // @UseGuards(RolesGuard)
   @Roles(Role.Admin)
   @Get()
   findAll() {

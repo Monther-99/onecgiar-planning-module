@@ -17,11 +17,14 @@ export class PhasesService {
   }
 
   findAll() {
-    return this.phaseRepository.find();
+    return this.phaseRepository.find({ relations: ['previousPhase'] });
   }
 
   findOne(id: number) {
-    return this.phaseRepository.findOneBy({ id });
+    return this.phaseRepository.findOne({
+      where: { id },
+      relations: ['previousPhase'],
+    });
   }
 
   update(id: number, updatePhaseDto: UpdatePhaseDto) {

@@ -36,10 +36,14 @@ export class Phase {
   @Column({ type: 'enum', enum: phaseStatus })
   status: phaseStatus;
 
-  @ManyToOne(() => Phase, (phase) => phase.childPhases)
+  @ManyToOne(() => Phase, (phase) => phase.childPhases, {
+    onDelete: 'SET NULL',
+  })
   previousPhase: Phase;
 
-  @OneToMany(() => Phase, (phase) => phase.previousPhase)
+  @OneToMany(() => Phase, (phase) => phase.previousPhase, {
+    onDelete: 'SET NULL',
+  })
   childPhases: Phase[];
 
   @OneToMany(() => Period, (period) => period.phase)
