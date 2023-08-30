@@ -7,7 +7,8 @@ import { TeamMembersComponent } from './team-members/team-members.component';
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
   { path: 'submission/:id/:code', component: SubmissionComponent },
-  { path: 'submission/:id/:code/team-members', component: TeamMembersComponent }
+  { path: 'submission/:id/:code/team-members', component: TeamMembersComponent },
+  { path: 'submission/:id/:code/center', component: SubmissionComponent }
 ];
 
 @NgModule({

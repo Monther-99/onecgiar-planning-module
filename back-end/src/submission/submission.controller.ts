@@ -25,12 +25,12 @@ export class SubmissionController {
     return 'Data imported successfully';
   }
 
-  @Post('save/:id')
-  async save(@Param('id') id, @Body() data) {
-    await this.submissionService.saveData(id, data);
-    return { message: 'Initiatives saved successfully' };
-  }
 
+  @Post('save_result_values/:id')
+  async save_result_value(@Param('id') id, @Body() data) {
+    return this.submissionService.saveResultData(id, data);
+  }
+  
   @Get('save/:id')
   async getSaved(@Param('id') id) {
     return this.submissionService.getSaved(id);

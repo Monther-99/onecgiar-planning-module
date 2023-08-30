@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as jsonFile from 'new.json';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResultPeriodValues } from 'src/entities/resultPeriodValues.entity';
@@ -126,7 +126,7 @@ export class SubmissionService {
     let data = { perValues: {}, values: {} };
     const saved_data = await this.resultRepository.find({
       where: { initiative_id: id },
-      relations: ['values', 'workPackage','values.period'],
+      relations: ['values', 'workPackage', 'values.period'],
     });
     saved_data.forEach((result: Result) => {
       if (!data.perValues[result.organization_id])
@@ -184,85 +184,115 @@ export class SubmissionService {
     });
     return data;
   }
-  async saveData(id, data: any) {
+  async saveResultData(id, data: any) {
     const initiativeId = id;
     const phaseId = 1;
     const userId = 1;
-   await this.resultRepository.delete({initiative_id:id,submission:IsNull()})
-    const periodValues = data.perValues;
-    const values = data.values;
-    const organizationsIds = Object.keys(data.perValues);
+
+    const { partner_code, wp_id, item_id, per_id, value } = data;
+
 
     const userObject = await this.userRepository.findOneBy({ id: userId });
     const phaseObject = await this.phaseRepository.findOneBy({ id: phaseId });
     const initiativeObject = await this.initiativeRepository.findOneBy({
       id: initiativeId,
     });
-    if (userObject == null) {
-      return 'User not found';
-    }
-    if (phaseObject == null) {
-      return 'Phase not found';
-    }
-    if (initiativeObject == null) {
-      return 'Initiative not found';
-    }
+    let workPackageObject = await this.workPackageRepository.findOneBy({
+      wp_official_code: wp_id,
+    });
+    let organizationObject = await this.organizationRepository.findOneBy({
+      id: +partner_code,
+    });
 
-    organizationsIds.forEach(async (organizationId) => {
-      let organizationObject = await this.organizationRepository.findOneBy({
-        id: +organizationId,
+    let oldResult = await this.resultRepository.findOneBy({
+      initiative_id: id,
+      result_uuid: item_id,
+      organization:organizationObject,
+      workPackage:workPackageObject,
+      submission: IsNull(),
+    });
+    console.log(oldResult);
+    let resultData = {
+      result_uuid: item_id,
+      value: 0,
+    };
+
+
+    if (organizationObject != null) {
+
+      let resultObject;
+      if (!oldResult) {
+        let newResult = this.resultRepository.create(resultData);
+        newResult.organization = organizationObject;
+        newResult.workPackage = workPackageObject;
+        newResult.initiative = initiativeObject;
+        resultObject = await this.resultRepository.save(newResult);
+      } else resultObject = oldResult;
+
+      let periodObject = await this.periodRepository.findOneBy({
+        id: +per_id,
       });
 
-      if (organizationObject != null) {
-        let workPackages = values[organizationId];
-        let workPackagesIds = Object.keys(workPackages);
+      let newResultPeriodValue: any;
 
-        workPackagesIds.forEach(async (workPackageId) => {
-          let workPackageObject = await this.workPackageRepository.findOneBy({
-            wp_official_code: workPackageId,
-          });
-          console.log(workPackageId);
-          if (workPackageObject != null) {
-            let results = workPackages[workPackageId];
-            let resultsUuids = Object.keys(results);
+      newResultPeriodValue = await this.resultValuesRepository.findOneBy({
+        result: resultObject,
+        period: periodObject,
+      });
+      if (!newResultPeriodValue)
+        newResultPeriodValue = this.resultValuesRepository.create();
 
-            resultsUuids.forEach(async (resultUuid) => {
-              let resultValue = results[resultUuid];
-              let resultData = {
-                result_uuid: resultUuid,
-                value: resultValue,
-              };
-              let newResult = this.resultRepository.create(resultData);
-              newResult.organization = organizationObject;
-              newResult.workPackage = workPackageObject;
-              newResult.initiative = initiativeObject;
-              let resultObject = await this.resultRepository.save(newResult);
+      newResultPeriodValue.value = value;
+      newResultPeriodValue.period = periodObject;
+      newResultPeriodValue.result = resultObject;
+      await this.resultValuesRepository.save(newResultPeriodValue);
+    }
 
-              let periodsValues =
-                periodValues[organizationId][workPackageId][resultUuid];
-              let periodsIds = Object.keys(periodsValues);
+    return 'Data saved';
+  }
+  async saveResultDataValue(id, data: any) {
+    const initiativeId = id;
+    const phaseId = 1;
+    const userId = 1;
 
-              periodsIds.forEach(async (periodId) => {
-                let periodObject = await this.periodRepository.findOneBy({
-                  id: +periodId,
-                });
-                if (periodObject != null) {
-                  let resultPeriodValueData = {
-                    value: periodsValues[periodId],
-                  };
+    const { partner_code, wp_id, item_id, per_id, value } = data;
 
-                  let newResultPeriodValue = this.resultValuesRepository.create(
-                    resultPeriodValueData,
-                  );
-                  newResultPeriodValue.period = periodObject;
-                  newResultPeriodValue.result = resultObject;
-                  this.resultValuesRepository.save(newResultPeriodValue);
-                }
-              });
-            });
-          }
-        });
-      }
+
+    const userObject = await this.userRepository.findOneBy({ id: userId });
+    const phaseObject = await this.phaseRepository.findOneBy({ id: phaseId });
+
+    let organizationObject = await this.organizationRepository.findOneBy({
+      id: +partner_code,
     });
+    let workPackageObject = await this.workPackageRepository.findOneBy({
+      wp_official_code: wp_id,
+    });
+
+    const initiativeObject = await this.initiativeRepository.findOneBy({
+      id: initiativeId,
+    });
+    let oldResult = await this.resultRepository.findOneBy({
+      initiative_id: id,
+      result_uuid: item_id,
+      organization:organizationObject,
+      workPackage:workPackageObject,
+      submission: IsNull(),
+    });
+    console.log(oldResult);
+    let resultData = {
+      result_uuid: item_id,
+      value: 0,
+    };
+
+
+    if (organizationObject != null) {
+
+      if (oldResult) {
+        oldResult.value = value;
+          await this.resultRepository.save(oldResult);
+      } else throw new NotFoundException();
+    }
+
+    return 'Data saved';
   }
 }

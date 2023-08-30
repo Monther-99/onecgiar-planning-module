@@ -77,7 +77,7 @@ export class SubmissionComponent implements OnInit {
   perValuesSammary: any = {};
   perAllValues: any = {};
   sammaryTotal: any = {};
-  changeEnable(
+  async changeEnable(
     partner_code: any,
     wp_id: any,
     item_id: any,
@@ -93,10 +93,19 @@ export class SubmissionComponent implements OnInit {
     this.perValues[partner_code][wp_id][item_id][per_id] = event.checked;
 
     this.allvalueChange();
-
+    await this.submissionService.saveResultValue(this.params.id, {
+      partner_code,
+      wp_id,
+      item_id,
+      per_id,
+      value: event.checked,
+    });
     this.socket.emit('setData', {
-      perValues: this.perValues,
-      values: this.values,
+      partner_code,
+      wp_id,
+      item_id,
+      per_id,
+      value: event.checked,
     });
   }
   wpsTotalSum = 0;
@@ -224,7 +233,6 @@ export class SubmissionComponent implements OnInit {
     this.totals = {};
     this.errors = {};
 
-    this.params = this.activatedRoute?.snapshot.params;
     this.results = await this.submissionService.getToc(this.params.id);
     const melia_data = await this.submissionService.getMeliaByInitiative(
       this.params.id
@@ -370,19 +378,26 @@ export class SubmissionComponent implements OnInit {
         wp.ost_wp.wp_official_code
       );
     }
-    
-    this.savedValues = await this.submissionService.getSavedData(this.params.id)
-      this.setvalues(this.savedValues.values, this.savedValues.perValues);
+
+    this.savedValues = await this.submissionService.getSavedData(
+      this.params.id
+    );
+    this.setvalues(this.savedValues.values, this.savedValues.perValues);
   }
   savedValues: any = null;
-
+  isCenter: boolean = false;
   async ngOnInit() {
+    this.params = this.activatedRoute?.snapshot.params;
+    this.activatedRoute?.url.subscribe((d) => {
+      if (d[3].path == 'center') this.isCenter = true;
+    });
+
     this.InitData();
     this.period = await this.submissionService.getPeriods();
     this.socket.connect();
     this.socket.on('data', (data: any) => {
-     // this.savedValues = data;
-     // this.setvalues(data.values, data.perValues);
+      // this.savedValues = data;
+      // this.setvalues(data.values, data.perValues);
     });
   }
 
@@ -559,12 +574,11 @@ export class SubmissionComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.submissionService.submit(this.params.id,{
+          let result = await this.submissionService.submit(this.params.id, {
             perValues: this.perValues,
             values: this.values,
           });
-          if (result)
-          alert('Submited successfully');
+          if (result) alert('Submited successfully');
         }
       });
   }
