@@ -34,6 +34,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ToastrModule } from 'ngx-toastr';
 import { PhasesComponent } from "./admin/phases/phases.component";
 import { PhaseDialogComponent } from "./admin/phases/phase-dialog/phase-dialog.component";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent,
