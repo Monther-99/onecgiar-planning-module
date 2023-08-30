@@ -191,7 +191,6 @@ export class SubmissionService {
 
     const { partner_code, wp_id, item_id, per_id, value } = data;
 
-
     const userObject = await this.userRepository.findOneBy({ id: userId });
     const phaseObject = await this.phaseRepository.findOneBy({ id: phaseId });
     const initiativeObject = await this.initiativeRepository.findOneBy({
@@ -207,8 +206,8 @@ export class SubmissionService {
     let oldResult = await this.resultRepository.findOneBy({
       initiative_id: id,
       result_uuid: item_id,
-      organization:organizationObject,
-      workPackage:workPackageObject,
+      organization: organizationObject,
+      workPackage: workPackageObject,
       submission: IsNull(),
     });
     console.log(oldResult);
@@ -217,9 +216,7 @@ export class SubmissionService {
       value: 0,
     };
 
-
     if (organizationObject != null) {
-
       let resultObject;
       if (!oldResult) {
         let newResult = this.resultRepository.create(resultData);
@@ -248,18 +245,12 @@ export class SubmissionService {
       await this.resultValuesRepository.save(newResultPeriodValue);
     }
 
-    return 'Data saved';
+    return { message: 'Data saved' };
   }
   async saveResultDataValue(id, data: any) {
     const initiativeId = id;
-    const phaseId = 1;
-    const userId = 1;
 
     const { partner_code, wp_id, item_id, per_id, value } = data;
-
-
-    const userObject = await this.userRepository.findOneBy({ id: userId });
-    const phaseObject = await this.phaseRepository.findOneBy({ id: phaseId });
 
     let organizationObject = await this.organizationRepository.findOneBy({
       id: +partner_code,
@@ -274,25 +265,16 @@ export class SubmissionService {
     let oldResult = await this.resultRepository.findOneBy({
       initiative_id: id,
       result_uuid: item_id,
-      organization:organizationObject,
-      workPackage:workPackageObject,
+      organization: organizationObject,
+      workPackage: workPackageObject,
       submission: IsNull(),
     });
-    console.log(oldResult);
-    let resultData = {
-      result_uuid: item_id,
-      value: 0,
-    };
 
+    if (oldResult) {
+      oldResult.value = value;
+      await this.resultRepository.save(oldResult);
+    } else throw new NotFoundException();
 
-    if (organizationObject != null) {
-
-      if (oldResult) {
-        oldResult.value = value;
-          await this.resultRepository.save(oldResult);
-      } else throw new NotFoundException();
-    }
-
-    return 'Data saved';
+    return { message: 'Data saved' };
   }
 }

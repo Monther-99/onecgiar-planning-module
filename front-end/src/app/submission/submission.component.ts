@@ -64,12 +64,30 @@ export class SubmissionComponent implements OnInit {
     if (this.totals[code] && this.totals[code][id])
       return this.totals[code][id];
   }
-  changeCalc(code: any, wp_id: any) {
-    this.socket.emit('setData', {
-      perValues: this.perValues,
-      values: this.values,
-    });
-    this.sammaryCalc();
+  timeCalc: any;
+  async changeCalc(partner_code: any, wp_id: any, item_id: any, value: any) {
+    if (this.timeCalc) clearTimeout(this.timeCalc);
+    this.timeCalc = setTimeout(async () => {
+      const result = await this.submissionService.saveResultValue(
+        this.params.id,
+        {
+          partner_code,
+          wp_id,
+          item_id,
+          value,
+        }
+      );
+      if (result)
+        this.socket.emit('setDataValue', {
+          id: this.params.id,
+          partner_code,
+          wp_id,
+          item_id,
+          value,
+        });
+      this.sammaryCalc();
+    }, 500);
+
     // localStorage.setItem('initiatives', JSON.stringify(this.values));
   }
 
@@ -77,12 +95,13 @@ export class SubmissionComponent implements OnInit {
   perValuesSammary: any = {};
   perAllValues: any = {};
   sammaryTotal: any = {};
-  async changeEnable(
+
+  async changes(
     partner_code: any,
     wp_id: any,
     item_id: any,
     per_id: number,
-    event: any
+    value: any
   ) {
     if (!this.perValues[partner_code]) this.perValues[partner_code] = {};
     if (!this.perValues[partner_code][wp_id])
@@ -90,23 +109,37 @@ export class SubmissionComponent implements OnInit {
     if (!this.perValues[partner_code][wp_id][item_id])
       this.perValues[partner_code][wp_id][item_id] = {};
 
-    this.perValues[partner_code][wp_id][item_id][per_id] = event.checked;
+    this.perValues[partner_code][wp_id][item_id][per_id] = value;
 
     this.allvalueChange();
-    await this.submissionService.saveResultValue(this.params.id, {
-      partner_code,
-      wp_id,
-      item_id,
-      per_id,
-      value: event.checked,
-    });
-    this.socket.emit('setData', {
-      partner_code,
-      wp_id,
-      item_id,
-      per_id,
-      value: event.checked,
-    });
+  }
+  async changeEnable(
+    partner_code: any,
+    wp_id: any,
+    item_id: any,
+    per_id: number,
+    event: any
+  ) {
+    this.changes(partner_code, wp_id, item_id, per_id, event.checked);
+    const result = await this.submissionService.saveResultValues(
+      this.params.id,
+      {
+        partner_code,
+        wp_id,
+        item_id,
+        per_id,
+        value: event.checked,
+      }
+    );
+    if (result)
+      this.socket.emit('setDataValues', {
+        id: this.params.id,
+        partner_code,
+        wp_id,
+        item_id,
+        per_id,
+        value: event.checked,
+      });
   }
   wpsTotalSum = 0;
   sammaryCalc() {
@@ -303,16 +336,13 @@ export class SubmissionComponent implements OnInit {
     //     partners_result.map((item: any) => [item['code'], item])
     //   ).values(),
     // ];
-    console.log('partners', this.partners);
     for (let partner of this.partners) {
       for (let wp of this.wps) {
-        console.log('partner', partner);
         const result = await this.getDataForWp(
           wp.id,
           partner.code,
           wp.ost_wp.wp_official_code
         );
-        console.log('result', result);
         if (result.length) {
           if (!this.partnersData[partner.code])
             this.partnersData[partner.code] = {};
@@ -395,9 +425,14 @@ export class SubmissionComponent implements OnInit {
     this.InitData();
     this.period = await this.submissionService.getPeriods();
     this.socket.connect();
-    this.socket.on('data', (data: any) => {
-      // this.savedValues = data;
-      // this.setvalues(data.values, data.perValues);
+    this.socket.on('setDataValues-' + this.params.id, (data: any) => {
+      const { partner_code, wp_id, item_id, per_id, value } = data;
+      this.changes(partner_code, wp_id, item_id, per_id, value);
+    });
+    this.socket.on('setDataValue-' + this.params.id, (data: any) => {
+      const { partner_code, wp_id, item_id, value } = data;
+      this.values[partner_code][wp_id][item_id] = value;
+      if (!this.isCenter) this.sammaryCalc();
     });
   }
 

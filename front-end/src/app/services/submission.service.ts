@@ -100,11 +100,16 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async saveResultValue(id: number,data:any) {
+  async saveResultValues(id: number,data:any) {
     return firstValueFrom(
       this.http.post('/api/submission/save_result_values/' + id,data).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-
+  async saveResultValue(id: number,data:any) {
+    return firstValueFrom(
+      this.http.post('/api/submission/save_result_value/' + id,data).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+  
   
 }

@@ -238,7 +238,12 @@
                         ] | inQue
                       "
                       (keyup)="
-                        changeCalc(partner.code, wp.ost_wp.wp_official_code)
+                        changeCalc(partner.code,
+                        wp.ost_wp.wp_official_code,
+                        item.id,
+                        values[partner.code][wp.ost_wp.wp_official_code][
+                        item.id
+                      ])
                       "
                       [(ngModel)]="
                         values[partner.code][wp.ost_wp.wp_official_code][
