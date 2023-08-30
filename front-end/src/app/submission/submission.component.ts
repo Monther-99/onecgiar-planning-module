@@ -412,6 +412,7 @@ export class SubmissionComponent implements OnInit {
     this.savedValues = await this.submissionService.getSavedData(
       this.params.id
     );
+  
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
   }
   savedValues: any = null;
@@ -419,7 +420,7 @@ export class SubmissionComponent implements OnInit {
   async ngOnInit() {
     this.params = this.activatedRoute?.snapshot.params;
     this.activatedRoute?.url.subscribe((d) => {
-      if (d[3].path == 'center') this.isCenter = true;
+      if (d[3] && d[3]?.path == 'center') this.isCenter = true;
     });
 
     this.InitData();
