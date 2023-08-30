@@ -1,15 +1,6 @@
 import { Module } from '@nestjs/common';
 import { EventsModule } from './events/events.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Initiative } from './entities/initiative.entity';
-import { Organization } from './entities/organization.entity';
-import { Phase } from './entities/phase.entity';
-import { Period } from './entities/period.entity';
-import { WorkPackage } from './entities/workPackage.entity';
-import { Result } from './entities/result.entity';
-import { ResultPeriodValues } from './entities/resultPeriodValues.entity';
-import { User } from './entities/user.entity';
-import { Submission } from './entities/submission.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { InitiativesModule } from './initiatives/initiatives.module';
 import { OrganizationsModule } from './organizations/organizations.module';
@@ -19,34 +10,26 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SubmissionModule } from './submission/submission.module';
 import { MeliaModule } from './melia/melia.module';
-import { Melia } from './entities/melia.entity';
 import { CrossCuttingModule } from './cross-cutting/cross-cutting.module';
-import { CrossCutting } from './entities/cross-cutting.entity';
-import { InitiativeRoles } from './entities/initiative-roles.entity';
+import { ConfigModule } from '@nestjs/config';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'planning',
-      entities: [
-        Initiative,
-        Organization,
-        Phase,
-        Period,
-        WorkPackage,
-        Result,
-        ResultPeriodValues,
-        User,
-        Submission,
-        Melia,
-        CrossCutting,
-        InitiativeRoles,
-      ],
-      synchronize: true,
+        host: process.env.DATABASE_HOST,
+        port: Number(process.env.DATABASE_PORT),
+        username: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
+        type: 'mysql',
+        synchronize: true,
+        entities: [`dist/**/*.entity{.ts,.js}`],
+        autoLoadEntities: true,
+        namingStrategy: new SnakeNamingStrategy(),
     }),
     ScheduleModule.forRoot(),
     InitiativesModule,
