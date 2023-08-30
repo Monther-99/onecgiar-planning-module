@@ -39,7 +39,7 @@ export class AuthService {
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('access_expires_in', expires_in);
       if (redirect_url) this.router.navigateByUrl(redirect_url);
-      else this.router.navigateByUrl('/dashboard');
+      else this.router.navigateByUrl('/');
     }
   }
 
@@ -48,7 +48,7 @@ export class AuthService {
       environment.aws_cognito_link +
       `/login?client_id=${
         environment.aws_cognito_client_id
-      }&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${
+      }&response_type=code&scope=email+openid+phone+profile&redirect_uri=${
         environment.aws_cognito_client_redirect_uri
       }${redirect_url ? '?redirect_url=' + redirect_url : ''}`;
   }

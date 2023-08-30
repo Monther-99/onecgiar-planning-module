@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
 })
-export class AwsComponent implements OnInit {
+export class AuthComponent implements OnInit {
   loading = {
     status: true,
     message: 'Authenticating ...',

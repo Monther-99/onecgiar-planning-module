@@ -11,12 +11,6 @@ class AuthCode {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
-  }
-
   @UseGuards(AuthGuard('AWS'))
   @Post('aws')
   awsAuth(@Request() req, @Body() authCode: AuthCode) {
