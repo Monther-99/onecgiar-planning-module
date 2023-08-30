@@ -17,10 +17,21 @@ export class PeriodsService {
   }
 
   findAll() {
-    return this.periodRepository.find();
+    return this.periodRepository.find({ relations: ['phase'] });
   }
 
   findOne(id: number) {
-    return this.periodRepository.findOneBy({ id });
+    return this.periodRepository.findOne({
+      where: { id },
+      relations: ['phase'],
+    });
+  }
+
+  update(id: number, updatePeriodDto: UpdatePeriodDto) {
+    return this.periodRepository.update({ id }, { ...updatePeriodDto });
+  }
+
+  remove(id: number) {
+    return this.periodRepository.delete({ id });
   }
 }

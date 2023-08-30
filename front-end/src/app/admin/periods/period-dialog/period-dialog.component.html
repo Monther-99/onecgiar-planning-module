@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>{{ periodId ? "Edit" : "Add" }} Period</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="periodForm">
+    <mat-form-field>
+      <mat-label>Phase</mat-label>
+      <mat-select formControlName="phase">
+        <mat-option *ngFor="let phase of phases" [value]="phase.id">
+          {{ phase.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Year</mat-label>
+      <input matInput formControlName="year" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Quarter</mat-label>
+      <input matInput formControlName="quarter" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" (click)="submit()">
+    {{ periodId ? "Save" : "Add" }}
+  </button>
+</mat-dialog-actions>

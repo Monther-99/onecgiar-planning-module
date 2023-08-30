@@ -1,25 +1,8 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { PhasesService } from "src/app/services/phases.service";
-import { MAT_DATE_FORMATS } from "@angular/material/core";
-
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MM/YYYY',
-  },
-  display: {
-    dateInput: 'MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
-
-
-
 
 export interface DialogData {
   id: number;
@@ -29,9 +12,6 @@ export interface DialogData {
   selector: "app-phase-dialog",
   templateUrl: "./phase-dialog.component.html",
   styleUrls: ["./phase-dialog.component.scss"],
-  providers: [
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-  ],
 })
 export class PhaseDialogComponent implements OnInit {
   phaseId: number = 0;

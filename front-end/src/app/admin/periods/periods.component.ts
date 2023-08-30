@@ -3,37 +3,27 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { PhasesService } from "src/app/services/phases.service";
-import { PhaseDialogComponent } from "./phase-dialog/phase-dialog.component";
+import { PeriodsService } from "src/app/services/periods.service";
+import { PeriodDialogComponent } from "./period-dialog/period-dialog.component";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
 } from "src/app/confirm/confirm.component";
 
 @Component({
-  selector: "app-phases",
-  templateUrl: "./phases.component.html",
-  styleUrls: ["./phases.component.scss"],
+  selector: "app-periods",
+  templateUrl: "./periods.component.html",
+  styleUrls: ["./periods.component.scss"],
 })
-export class PhasesComponent implements AfterViewInit {
-  columnsToDisplay: string[] = [
-    "id",
-    "name",
-    "reporting_year",
-    "toc_phase",
-    "start_date",
-    "end_date",
-    "previous_phase",
-    "status",
-    "actions",
-  ];
+export class PeriodsComponent implements AfterViewInit {
+  columnsToDisplay: string[] = ["id", "phase", "year", "quarter", "actions"];
   dataSource: MatTableDataSource<any>;
-  phases: any = [];
+  periods: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private phasesService: PhasesService,
+    private periodsService: PeriodsService,
     private dialog: MatDialog
   ) {}
 
@@ -42,20 +32,19 @@ export class PhasesComponent implements AfterViewInit {
   }
 
   async initTable() {
-    this.phases = await this.phasesService.getPhases();
-    this.dataSource = new MatTableDataSource(this.phases);
+    this.periods = await this.periodsService.getPeriods();
+    this.dataSource = new MatTableDataSource(this.periods);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   openDialog(id: number = 0): void {
-    const dialogRef = this.dialog.open(PhaseDialogComponent, {
+    const dialogRef = this.dialog.open(PeriodDialogComponent, {
       data: { id: id },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.submitted)
-        this.initTable();
+      if (result && result.submitted) this.initTable();
     });
   }
 
@@ -65,13 +54,13 @@ export class PhasesComponent implements AfterViewInit {
         maxWidth: "400px",
         data: new ConfirmDialogModel(
           "Delete",
-          `Are you sure you want to delete this Phase item?`
+          `Are you sure you want to delete this Period item?`
         ),
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.phasesService.deletePhase(id);
+          let result = await this.periodsService.deletePeriod(id);
           if (result) this.initTable();
         }
       });
