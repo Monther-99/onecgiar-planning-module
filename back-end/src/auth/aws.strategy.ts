@@ -65,7 +65,7 @@ export class AwsStrategy extends PassportStrategy(Strategy, 'AWS') {
     if (!profile) throw new UnauthorizedException();
     let userInfo = null;
     let newinfo: any = null;
-    const user = await this.userService.findOne(
+    const user = await this.userService.findOneByEmail(
       (<string>profile.email || '').toLowerCase(),
     );
     newinfo = {

@@ -59,32 +59,32 @@ export class UserService {
     ).catch((e) => false);
   }
 
-  async addUser(data: any) {
-    return firstValueFrom(
-      this.http
-        .post(`api/users`, data, {
-        })
-        .pipe(map((d) => d))
-    ).catch((e) => false);
-  }
+  // async addUser(data: any) {
+  //   return firstValueFrom(
+  //     this.http
+  //       .post(`api/users`, data, {
+  //       })
+  //       .pipe(map((d) => d))
+  //   ).catch((e) => false);
+  // }
 
-  async updateUser(data: any) {
-    return firstValueFrom(
-      this.http
-        .put(`api/users`, data, {
-        })
-        .pipe(map((d) => d))
-    ).catch((e) => false);
-  }
-  async deleteUser(id: any) {
-    return firstValueFrom(
-      this.http
-        .delete(`api/users/${id}`, {
+  // async updateUser(data: any) {
+  //   return firstValueFrom(
+  //     this.http
+  //       .put(`api/users`, data, {
+  //       })
+  //       .pipe(map((d) => d))
+  //   ).catch((e) => false);
+  // }
+  // async deleteUser(id: any) {
+  //   return firstValueFrom(
+  //     this.http
+  //       .delete(`api/users/${id}`, {
          
-        })
-        .pipe(map((d) => d))
-    ).catch((e) => false);
-  }
+  //       })
+  //       .pipe(map((d) => d))
+  //   ).catch((e) => false);
+  // }
 
   getLogedInUser(): any {
     if(localStorage.getItem('access_token') as string)
@@ -102,5 +102,35 @@ export class UserService {
         })
         .pipe(map((d: Blob) => d))
     );
+  }
+
+  async getAllUsers() {
+    return firstValueFrom(
+      this.http.get("api/users/all").pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async getUser(id: number) {
+    return firstValueFrom(
+      this.http.get("api/users/" + id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  submitUser(id: number = 0, data: {}) {
+    if (id) {
+      return firstValueFrom(
+        this.http.patch("api/users/" + id, data).pipe(map((d: any) => d))
+      ).catch((e) => false);
+    } else {
+      return firstValueFrom(
+        this.http.post("api/users", data).pipe(map((d: any) => d))
+      ).catch((e) => false);
+    }
+  }
+
+  deleteUser(id: number) {
+    return firstValueFrom(
+      this.http.delete("api/users/" + id).pipe(map((d: any) => d))
+    ).catch((e) => false);
   }
 }

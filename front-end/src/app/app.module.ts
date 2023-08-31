@@ -38,6 +38,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { PeriodsComponent } from './admin/periods/periods.component';
 import { PeriodDialogComponent } from './admin/periods/period-dialog/period-dialog.component';
+import { UsersComponent } from './admin/users/users.component';
+import { UserDialogComponent } from './admin/users/user-dialog/user-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +55,9 @@ import { PeriodDialogComponent } from './admin/periods/period-dialog/period-dial
     TeamMembersComponent,
     NewTeamMemberComponent,
     PeriodsComponent,
-    PeriodDialogComponent
+    PeriodDialogComponent,
+    UsersComponent,
+    UserDialogComponent
   ],
   imports: [
     BrowserModule,
