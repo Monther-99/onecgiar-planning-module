@@ -12,6 +12,7 @@ import {
 import { CrossCuttingComponent } from './cross-cutting/cross-cutting.component';
 import { ViewDataComponent } from './view-data/view-data.component';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-submission',
@@ -24,8 +25,10 @@ export class SubmissionComponent implements OnInit {
     private submissionService: SubmissionService,
     private socket: AppSocket,
     public dialog: MatDialog,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    private AuthService: AuthService
   ) {}
+  user: any;
   data: any = [];
   wps: any = [];
   partners: any = [];
@@ -276,7 +279,15 @@ export class SubmissionComponent implements OnInit {
     this.initiative_data = await this.submissionService.getInitiative(
       this.params.id
     );
-    this.partners = await this.submissionService.getOrganizations();
+    const partners = await this.submissionService.getOrganizations();
+    if (this.isCenter) {
+      const roles = this.initiative_data.roles.filter(
+        (d: any) => d.user_id == this.user.id
+      );
+      if (roles.length) this.partners = roles[0].organizations;
+    } else {
+      this.partners = partners;
+    }
 
     // const indicators_data = this.results
     //   .filter(
@@ -412,12 +423,13 @@ export class SubmissionComponent implements OnInit {
     this.savedValues = await this.submissionService.getSavedData(
       this.params.id
     );
-  
+
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
   }
   savedValues: any = null;
   isCenter: boolean = false;
   async ngOnInit() {
+    this.user = this.AuthService.getLogedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     this.activatedRoute?.url.subscribe((d) => {
       if (d[3] && d[3]?.path == 'center') this.isCenter = true;
