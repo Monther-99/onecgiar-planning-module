@@ -18,11 +18,9 @@ export class AwsStrategy extends PassportStrategy(Strategy, 'AWS') {
 
   async validate(@Request() req) {
     const client_id = process.env.Gognito_client_id;
-
     const client_secret = process.env.Gognito_client_secret;
     const redirect_uri = process.env.Gognito_client_redirect_uri;
     const code = req.body.code;
-
     const access_token = await firstValueFrom(
       this.http
         .post(
@@ -69,34 +67,32 @@ export class AwsStrategy extends PassportStrategy(Strategy, 'AWS') {
       (<string>profile.email || '').toLowerCase(),
     );
     newinfo = {
-      email: profile.email,
+      email: profile.email.toLowerCase(),
       first_name: profile?.given_name,
       last_name: profile?.family_name,
     };
     if (user) {
-      if (
-        user.email == (<string>profile.email || '').toLowerCase() &&
-        (user?.first_name != profile?.given_name ||
-          user?.last_name != profile?.family_name)
-      ){
-      user.first_name=profile.given_name
-      user.last_name=profile.family_name
-      userInfo = await this.userService.userRepository.save(user,{reload:true})
-      }
-      userInfo = user
-    } else userInfo = await this.userService.userRepository.save(newinfo,{reload:true})
+      // if (
+      //   user.email.toLowerCase() == (<string>profile.email || '').toLowerCase() &&
+      //   (user?.first_name != profile?.given_name ||
+      //     user?.last_name != profile?.family_name)
+      // ) {
+      //   user.first_name = profile.given_name;
+      //   user.last_name = profile.family_name;
+      //   userInfo = await this.userService.userRepository.save(user, {
+      //     reload: true,
+      //   });
+      // }
+      userInfo = user;
+    } else
+      userInfo = await this.userService.userRepository.save(newinfo, {
+        reload: true,
+      });
 
     if (userInfo) {
-      let access_token = this.jwtService.sign(
-        {
-          id: userInfo.id,
-          role: userInfo.role,
-          positions: userInfo.positions,
-          client_id: userInfo.client_id,
-          code_id: userInfo.id,
-        },
-        { expiresIn: 10 * 365 * 24 * 60 * 60 },
-      );
+      let access_token = this.jwtService.sign({...user}, {
+        expiresIn: 10 * 365 * 24 * 60 * 60,
+      });
       return {
         expires_in: (this.jwtService.decode(access_token) as any).exp,
         access_token,

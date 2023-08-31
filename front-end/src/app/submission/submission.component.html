@@ -22,7 +22,7 @@
   <mat-card-title>Loading</mat-card-title>
   <mat-card-subtitle>Preparing Items</mat-card-subtitle>
 </mat-card>
-<mat-tab-group *ngIf="!loading">
+<mat-tab-group *ngIf="!loading  && this.partners?.length">
   <mat-tab *ngIf="isCenter == false" label="Summary">
     <mat-card>
       <mat-card-title>Consolidated</mat-card-title>

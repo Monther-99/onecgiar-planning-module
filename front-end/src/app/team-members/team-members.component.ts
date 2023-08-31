@@ -27,7 +27,7 @@ export class TeamMembersComponent {
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private initiativeService: InitiativesService,
-    private toastr: ToastrService,
+    private toastrService: ToastrService,
     private userService: UserService
   ) {}
   user_info: any;
@@ -75,7 +75,7 @@ export class TeamMembersComponent {
             roleId
           );
           this.loadInitiativeRoles();
-          this.toastr.success('Success', `User role has been deleted`);
+          this.toastrService.success('Success', `User role has been deleted`);
         }
       });
   }
@@ -103,11 +103,11 @@ export class TeamMembersComponent {
           }
         ).subscribe(data => {
           if (data) {
-            this.toastr.success('Success', `User role has been added`);
+            this.toastrService.success('Success', `User role has been added`);
             this.loadInitiativeRoles();
           }
         }, error => {
-          this.toastr.error(error.error.message);
+          this.toastrService.error(error.error.message);
         })
       }
     });
@@ -135,7 +135,7 @@ export class TeamMembersComponent {
             organizations: result.formValue.organizations,
           }
         );
-        this.toastr.success('Success', `User role has been updated`);
+        this.toastrService.success('Success', `User role has been updated`);
         this.loadInitiativeRoles();
       }
     });

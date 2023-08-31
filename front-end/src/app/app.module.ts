@@ -40,6 +40,9 @@ import { PeriodsComponent } from './admin/periods/periods.component';
 import { PeriodDialogComponent } from './admin/periods/period-dialog/period-dialog.component';
 import { UsersComponent } from './admin/users/users.component';
 import { UserDialogComponent } from './admin/users/user-dialog/user-dialog.component';
+import { AuthComponent } from "./auth/auth.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { SubmitedVersionsComponent } from './submited-versions/submited-versions.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +60,9 @@ import { UserDialogComponent } from './admin/users/user-dialog/user-dialog.compo
     PeriodsComponent,
     PeriodDialogComponent,
     UsersComponent,
-    UserDialogComponent
+    UserDialogComponent,
+    AuthComponent,
+    SubmitedVersionsComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +94,7 @@ import { UserDialogComponent } from './admin/users/user-dialog/user-dialog.compo
     NgSelectModule,
     MatSelectModule,
     ToastrModule.forRoot(),
+    MatTooltipModule
   ],
   providers: [AppSocket],
   bootstrap: [AppComponent],
