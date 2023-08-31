@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,17 +32,20 @@ import { NewTeamMemberComponent } from './components/new-team-member/new-team-me
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatSelectModule } from '@angular/material/select';
 import { ToastrModule } from 'ngx-toastr';
-import { PhasesComponent } from "./admin/phases/phases.component";
-import { PhaseDialogComponent } from "./admin/phases/phase-dialog/phase-dialog.component";
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
+import { PhasesComponent } from './admin/phases/phases.component';
+import { PhaseDialogComponent } from './admin/phases/phase-dialog/phase-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { PeriodsComponent } from './admin/periods/periods.component';
 import { PeriodDialogComponent } from './admin/periods/period-dialog/period-dialog.component';
 import { UsersComponent } from './admin/users/users.component';
 import { UserDialogComponent } from './admin/users/user-dialog/user-dialog.component';
-import { AuthComponent } from "./auth/auth.component";
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { AuthComponent } from './auth/auth.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SubmitedVersionsComponent } from './submited-versions/submited-versions.component';
+import { AdminComponent } from './admin/admin.component';
+import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +65,9 @@ import { SubmitedVersionsComponent } from './submited-versions/submited-versions
     UsersComponent,
     UserDialogComponent,
     AuthComponent,
-    SubmitedVersionsComponent
+    SubmitedVersionsComponent,
+    AdminComponent,
+    AdminNavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,7 +99,8 @@ import { SubmitedVersionsComponent } from './submited-versions/submited-versions
     NgSelectModule,
     MatSelectModule,
     ToastrModule.forRoot(),
-    MatTooltipModule
+    MatTooltipModule,
+    MatToolbarModule,
   ],
   providers: [AppSocket],
   bootstrap: [AppComponent],

@@ -8,21 +8,38 @@ import { PeriodsComponent } from './admin/periods/periods.component';
 import { UsersComponent } from './admin/users/users.component';
 import { AuthComponent } from './auth/auth.component';
 import { SubmitedVersionsComponent } from './submited-versions/submited-versions.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
   { path: 'auth', component: AuthComponent },
-  { path: 'admin/phases', component: PhasesComponent },
-  { path: 'admin/periods', component: PeriodsComponent },
-  { path: 'admin/users', component: UsersComponent },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    children: [
+      { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: 'users', component: UsersComponent },
+      { path: 'phases', component: PhasesComponent },
+      { path: 'periods', component: PeriodsComponent },
+    ],
+  },
   { path: 'initiative/:id/:code/submission', component: SubmissionComponent },
-  { path: 'initiative/:id/:code/submission/center', component: SubmissionComponent },
-  { path: 'initiative/:id/:code/submited-versions', component: SubmitedVersionsComponent },
-  { path: 'initiative/:id/:code/team-members', component: TeamMembersComponent }
+  {
+    path: 'initiative/:id/:code/submission/center',
+    component: SubmissionComponent,
+  },
+  {
+    path: 'initiative/:id/:code/submited-versions',
+    component: SubmitedVersionsComponent,
+  },
+  {
+    path: 'initiative/:id/:code/team-members',
+    component: TeamMembersComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
