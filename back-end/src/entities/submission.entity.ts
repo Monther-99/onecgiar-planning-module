@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -16,7 +17,7 @@ export class Submission {
   id: number;
 
   @Column({ type: 'json', nullable: true })
-  json_file: string;
+  toc_data: string;
 
   @ManyToOne(() => User, (user) => user.submissions)
   user: User;
@@ -29,4 +30,10 @@ export class Submission {
 
   @OneToMany(() => Result, (result) => result.submission)
   results: Result[];
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  created_at: Date;
 }

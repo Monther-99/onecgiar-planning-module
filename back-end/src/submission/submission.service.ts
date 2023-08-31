@@ -30,7 +30,73 @@ export class SubmissionService {
     @InjectRepository(ResultPeriodValues)
     private resultValuesRepository: Repository<ResultPeriodValues>,
   ) {}
+  async findSubmissionsByInitiativeId(id) {
+    return this.submissionRepository.find({
+      where: { initiative: { id } },
+      relations: ['user', 'phase'],
+    });
+  }
+  async findSubmissionsById(id) {
+    const sub_data = await this.submissionRepository.findOne({
+      where: { id },
+      relations: [
+        'user',
+        'phase',
+        'initiative',
+        'results',
+        'results.values',
+        'results.workPackage',
+        'results.values.period',
+      ],
+    });
+    return { ...sub_data, consolidated: this.dataToPers(sub_data.results) };
+  }
+  async createNew(user_id, initiative_id, phase_id, json) {
+    const submissionData = {
+      toc_data: json,
+    };
+    const userObject = await this.userRepository.findOneBy({ id: user_id });
+    const phaseObject = await this.phaseRepository.findOneBy({ id: phase_id });
+    const initiativeObject = await this.initiativeRepository.findOneBy({
+      id: initiative_id,
+    });
+    const newSubmission = this.submissionRepository.create(submissionData);
+    newSubmission.user = userObject;
+    newSubmission.phase = phaseObject;
+    newSubmission.initiative = initiativeObject;
+    const submissionObject = await this.submissionRepository.save(
+      newSubmission,
+      { reload: true },
+    );
+    let oldResults = await this.resultRepository.find({
+      where: {
+        initiative_id: initiative_id,
+        submission: IsNull(),
+      },
+      relations: ['values', 'workPackage', 'values.period'],
+    });
+    oldResults;
+    for (let result of oldResults) {
+      delete result.id;
+      result.submission = submissionObject;
+      const values = result.values.map((d) => {
+        delete d.id;
+        return d;
+      });
+      const new_result = await this.resultRepository.save(result, {
+        reload: true,
+      });
+      for (let value of values) {
+        value.result = new_result;
+        await this.resultValuesRepository.save(value);
+      }
+    }
 
+    return this.submissionRepository.findOne({
+      where: { id: submissionObject.id },
+      relations: ['user', 'phase'],
+    });
+  }
   async importData() {
     const initiativeId = 1;
     const phaseId = 1;
@@ -56,7 +122,7 @@ export class SubmissionService {
     }
 
     const submissionData = {
-      json_file: null,
+      toc_data: null,
     };
     const newSubmission = this.submissionRepository.create(submissionData);
     newSubmission.user = userObject;
@@ -122,12 +188,9 @@ export class SubmissionService {
       }
     });
   }
-  async getSaved(id) {
+
+  dataToPers(saved_data) {
     let data = { perValues: {}, values: {} };
-    const saved_data = await this.resultRepository.find({
-      where: { initiative_id: id },
-      relations: ['values', 'workPackage', 'values.period'],
-    });
     saved_data.forEach((result: Result) => {
       if (!data.perValues[result.organization_id])
         data.perValues[result.organization_id] = {};
@@ -183,6 +246,13 @@ export class SubmissionService {
         ][result.result_uuid] = result.value;
     });
     return data;
+  }
+  async getSaved(id) {
+    const saved_data = await this.resultRepository.find({
+      where: { initiative_id: id },
+      relations: ['values', 'workPackage', 'values.period'],
+    });
+    return this.dataToPers(saved_data);
   }
   async saveResultData(id, data: any) {
     const initiativeId = id;

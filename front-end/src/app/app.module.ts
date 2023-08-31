@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,6 +43,8 @@ import { UserDialogComponent } from './admin/users/user-dialog/user-dialog.compo
 import { AuthComponent } from './auth/auth.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SubmitedVersionsComponent } from './submited-versions/submited-versions.component';
+import { SubmitedVersionComponent } from './submited-versions/submited-version/submited-version.component';
+import { HttpHeaderService } from './services/http-header.service';
 import { AdminComponent } from './admin/admin.component';
 import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -66,6 +68,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     UserDialogComponent,
     AuthComponent,
     SubmitedVersionsComponent,
+    SubmitedVersionComponent,
     AdminComponent,
     AdminNavbarComponent,
   ],
@@ -102,7 +105,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatTooltipModule,
     MatToolbarModule,
   ],
-  providers: [AppSocket],
+  providers: [
+    AppSocket,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpHeaderService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
