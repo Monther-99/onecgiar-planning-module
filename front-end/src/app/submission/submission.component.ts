@@ -11,8 +11,10 @@ import {
 } from '../confirm/confirm.component';
 import { CrossCuttingComponent } from './cross-cutting/cross-cutting.component';
 import { ViewDataComponent } from './view-data/view-data.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { ROLES } from '../components/new-team-member/new-team-member.component';
 
 @Component({
   selector: 'app-submission',
@@ -26,7 +28,9 @@ export class SubmissionComponent implements OnInit {
     private socket: AppSocket,
     public dialog: MatDialog,
     public activatedRoute: ActivatedRoute,
-    private AuthService: AuthService
+    public router: Router,
+    private AuthService: AuthService,
+    private toastrService: ToastrService
   ) {}
   user: any;
   data: any = [];
@@ -261,7 +265,6 @@ export class SubmissionComponent implements OnInit {
     this.sammaryTotal = {};
     this.data = [];
     this.wps = [];
-    this.partners = [];
     this.partnersData = {};
     this.sammary = {};
     this.allData = {};
@@ -276,18 +279,6 @@ export class SubmissionComponent implements OnInit {
     const cross_data = await this.submissionService.getCrossByInitiative(
       this.params.id
     );
-    this.initiative_data = await this.submissionService.getInitiative(
-      this.params.id
-    );
-    const partners = await this.submissionService.getOrganizations();
-    if (this.isCenter) {
-      const roles = this.initiative_data.roles.filter(
-        (d: any) => d.user_id == this.user.id
-      );
-      if (roles.length) this.partners = roles[0].organizations;
-    } else {
-      this.partners = partners;
-    }
 
     // const indicators_data = this.results
     //   .filter(
@@ -411,7 +402,6 @@ export class SubmissionComponent implements OnInit {
       this.loading = false;
     }
 
-    this.partners = this.partners.filter((d: any) => this.partnersData[d.code]);
     for (let wp of this.wps) {
       this.allData[wp.ost_wp.wp_official_code] = await this.getDataForWp(
         wp.id,
@@ -431,6 +421,30 @@ export class SubmissionComponent implements OnInit {
   async ngOnInit() {
     this.user = this.AuthService.getLogedInUser();
     this.params = this.activatedRoute?.snapshot.params;
+    const partners = await this.submissionService.getOrganizations();
+    this.initiative_data = await this.submissionService.getInitiative(
+      this.params.id
+    );
+    const roles = this.initiative_data.roles.filter(
+      (d: any) => d.user_id == this.user.id
+    );
+    if (roles.length) {
+      this.isCenter = true;
+      if (roles[0].role == ROLES.LEAD) {
+        this.partners = partners;
+        this.isCenter = false;
+      } else this.partners = roles[0].organizations;
+    } else {
+      if (this.user.role == 'admin') this.partners = partners;
+      else {
+        this.toastrService.error(
+          'You Dont have access to this page',
+          'Access denied'
+        );
+        this.router.navigate(['/']);
+        return;
+      }
+    }
     this.activatedRoute?.url.subscribe((d) => {
       if (d[3] && d[3]?.path == 'center') this.isCenter = true;
     });

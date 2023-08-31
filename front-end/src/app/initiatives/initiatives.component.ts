@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { InitiativesService } from '../services/initiatives.service';
 import { AuthService } from '../services/auth.service';
+import { ROLES } from '../components/new-team-member/new-team-member.component';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -53,6 +54,24 @@ export class InitiativesComponent implements AfterViewInit {
   myRoles(roles: any) {
     const roles_ = roles.filter((d: any) => d.user_id == this.user.id);
     if (roles_.length) return roles_.map((d: any) => d.role).join(', ');
-    else return 'Guest';
+    else return this.IsAdmin()? 'Admin' : 'Guest';
+  }
+
+  isLeader(roles: any) {
+    const roles_ = roles.filter((d: any) => d.user_id == this.user.id);
+    if (roles_.length)
+      return roles_.map((d: any) => d.role)[0] == ROLES.LEAD || this.IsAdmin();
+    else return this.IsAdmin();
+  }
+
+  IsAdmin(){
+   return this.user.role == 'admin' || false;
+  }
+  
+  isCoordinaror(roles: any) {
+    const roles_ = roles.filter((d: any) => d.user_id == this.user.id);
+    if (roles_.length)
+      return roles_.map((d: any) => d.role)[0] == ROLES.COORDINATOR || false;
+    else return false;
   }
 }
