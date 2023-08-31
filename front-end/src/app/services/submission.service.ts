@@ -13,6 +13,11 @@ export class SubmissionService {
       this.http.get('/api/submission/toc/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+  async getSubmissionsByInitiativeId(id:number) {
+    return firstValueFrom(
+      this.http.get('/api/submission/initiative_id/'+id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
 
   async getMeliaByInitiative(id: any) {
     return firstValueFrom(
@@ -100,16 +105,18 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async saveResultValues(id: number,data:any) {
+  async saveResultValues(id: number, data: any) {
     return firstValueFrom(
-      this.http.post('/api/submission/save_result_values/' + id,data).pipe(map((d: any) => d))
+      this.http
+        .post('/api/submission/save_result_values/' + id, data)
+        .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  async saveResultValue(id: number,data:any) {
+  async saveResultValue(id: number, data: any) {
     return firstValueFrom(
-      this.http.post('/api/submission/save_result_value/' + id,data).pipe(map((d: any) => d))
+      this.http
+        .post('/api/submission/save_result_value/' + id, data)
+        .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  
-  
 }

@@ -8,6 +8,7 @@ import { PeriodsComponent } from './admin/periods/periods.component';
 import { UsersComponent } from './admin/users/users.component';
 import { AuthComponent } from './auth/auth.component';
 import { SubmitedVersionsComponent } from './submited-versions/submited-versions.component';
+import { SubmitedVersionComponent } from './submited-versions/submited-version/submited-version.component';
 
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'initiative/:id/:code/submission', component: SubmissionComponent },
   { path: 'initiative/:id/:code/submission/center', component: SubmissionComponent },
   { path: 'initiative/:id/:code/submited-versions', component: SubmitedVersionsComponent },
+  { path: 'initiative/:id/:code/submited-versions/:id', component: SubmitedVersionComponent },
   { path: 'initiative/:id/:code/team-members', component: TeamMembersComponent }
 ];
 

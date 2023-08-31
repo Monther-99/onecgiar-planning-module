@@ -19,13 +19,19 @@ export class SubmissionController {
     private readonly httpService: HttpService,
   ) {}
 
+
+
+  @Post('save/:id')
+  async save(@Param('id') id) {
+    const json = await this.getTocs(id);
+    return this.submissionService.createNew(1, id, 2, JSON.stringify(json));
+  }
+
   @Get('import')
   import() {
     this.submissionService.importData();
     return 'Data imported successfully';
   }
-
-
   @Post('save_result_values/:id')
   async save_result_values(@Param('id') id, @Body() data) {
     return this.submissionService.saveResultData(id, data);
@@ -34,17 +40,14 @@ export class SubmissionController {
   async save_result_value(@Param('id') id, @Body() data) {
     return this.submissionService.saveResultDataValue(id, data);
   }
+
   @Get('save/:id')
   async getSaved(@Param('id') id) {
     return this.submissionService.getSaved(id);
- 
   }
-
-  @Post('')
-  submit(@Body() data) {
-    console.log(data);
-    // should return submission id
-    return { messge: 'submited successfully' };
+  @Get('initiative_id/:initiative_id')
+  get(@Param('initiative_id') initiative_id) {
+    return this.submissionService.findSubmissionsByInitiativeId(initiative_id);
   }
 
   // @UseInterceptors(CacheInterceptor)
@@ -108,5 +111,11 @@ export class SubmissionController {
           }),
         ),
     );
+  }
+
+
+  @Get(':id')
+  getbyid(@Param('id') id) {
+    return this.submissionService.findSubmissionsById(id);
   }
 }

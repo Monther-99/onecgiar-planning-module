@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,17 +32,19 @@ import { NewTeamMemberComponent } from './components/new-team-member/new-team-me
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatSelectModule } from '@angular/material/select';
 import { ToastrModule } from 'ngx-toastr';
-import { PhasesComponent } from "./admin/phases/phases.component";
-import { PhaseDialogComponent } from "./admin/phases/phase-dialog/phase-dialog.component";
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
+import { PhasesComponent } from './admin/phases/phases.component';
+import { PhaseDialogComponent } from './admin/phases/phase-dialog/phase-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { PeriodsComponent } from './admin/periods/periods.component';
 import { PeriodDialogComponent } from './admin/periods/period-dialog/period-dialog.component';
 import { UsersComponent } from './admin/users/users.component';
 import { UserDialogComponent } from './admin/users/user-dialog/user-dialog.component';
-import { AuthComponent } from "./auth/auth.component";
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { AuthComponent } from './auth/auth.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SubmitedVersionsComponent } from './submited-versions/submited-versions.component';
+import { SubmitedVersionComponent } from './submited-versions/submited-version/submited-version.component';
+import { HttpHeaderService } from './services/http-header.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +64,8 @@ import { SubmitedVersionsComponent } from './submited-versions/submited-versions
     UsersComponent,
     UserDialogComponent,
     AuthComponent,
-    SubmitedVersionsComponent
+    SubmitedVersionsComponent,
+    SubmitedVersionComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,9 +97,16 @@ import { SubmitedVersionsComponent } from './submited-versions/submited-versions
     NgSelectModule,
     MatSelectModule,
     ToastrModule.forRoot(),
-    MatTooltipModule
+    MatTooltipModule,
   ],
-  providers: [AppSocket],
+  providers: [
+    AppSocket,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpHeaderService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
