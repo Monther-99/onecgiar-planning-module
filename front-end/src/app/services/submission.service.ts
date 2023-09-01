@@ -19,6 +19,12 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
+  async getSubmissionsById(id:number) {
+    return firstValueFrom(
+      this.http.get('/api/submission/'+id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
   async getMeliaByInitiative(id: any) {
     return firstValueFrom(
       this.http.get('/api/melia/initiative/' + id).pipe(map((d: any) => d))

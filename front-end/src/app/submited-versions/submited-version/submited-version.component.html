@@ -1,1 +1,186 @@
-<p>submited-version works!</p>
+<mat-card>
+  <mat-card-title
+    >One CGIAR Initiatives Plan of Results and Budget Template</mat-card-title
+  >
+  <mat-card-subtitle
+    >{{ initiative_data.official_code }} ‐
+    {{ initiative_data.name }}</mat-card-subtitle
+  >
+</mat-card>
+<mat-card *ngIf="loading">
+  <mat-card-title>Loading</mat-card-title>
+  <mat-card-subtitle>Preparing Items</mat-card-subtitle>
+</mat-card>
+<mat-tab-group *ngIf="!loading && this.partners?.length">
+  <mat-tab label="Summary">
+    <mat-card>
+      <mat-card-title>Consolidated</mat-card-title>
+      <mat-card-content>
+        <table>
+          <tr>
+            <th>WP</th>
+            <ng-container *ngFor="let item of period">
+              <th>{{ item.year }} - {{ item.quarter }}</th>
+            </ng-container>
+
+            <th>Percentage %</th>
+          </tr>
+          <ng-container *ngFor="let wp of wps">
+            <tr>
+              <td class="wp-title">{{ wp.title }}</td>
+              <ng-container *ngFor="let item of period">
+                <td>
+                  <mat-icon
+                    color="primary"
+                    *ngIf="
+                      perValuesSammary[wp.ost_wp.wp_official_code][item.id] ==
+                      true
+                    "
+                    >close</mat-icon
+                  >
+                </td>
+              </ng-container>
+              <td>
+                {{
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                }}%
+              </td>
+            </tr>
+          </ng-container>
+          <tr class="total">
+            <td colspan="9">Total</td>
+            <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+    <ng-container *ngFor="let wp of wps">
+      <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
+        <mat-card-title>{{ wp.title }}</mat-card-title>
+        <mat-card-content>
+          <table>
+            <tr>
+              <th>WP/Results</th>
+              <th>Type</th>
+              <ng-container *ngFor="let item of period">
+                <th>{{ item.year }} - {{ item.quarter }}</th>
+              </ng-container>
+              <th>Percentage %</th>
+            </tr>
+            <ng-container
+              *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
+            >
+              <tr>
+                <td class="wp-title">{{ item.title }}</td>
+                <td>{{ item.category }}</td>
+                <ng-container *ngFor="let per of period">
+                  <td>
+                    <!-- to be checked -->
+                    <mat-icon
+                      color="primary"
+                      *ngIf="
+                        perAllValues[wp.ost_wp.wp_official_code][item.id][
+                          per.id
+                        ] == true
+                      "
+                      >close</mat-icon
+                    >
+                  </td>
+                </ng-container>
+                <td>
+                  {{
+                    sammary[wp.ost_wp.wp_official_code][item.id]
+                      | number : "1.2-2"
+                  }}%
+                </td>
+              </tr>
+            </ng-container>
+            <tr class="total">
+              <td colspan="10">Total</td>
+              <td>
+                {{
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                }}%
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </mat-tab>
+  <mat-tab
+    *ngFor="let partner of partners"
+    [label]="partner?.acronym ? partner?.acronym : partner?.name"
+  >
+    <ng-container *ngFor="let wp of wps">
+      <mat-card
+        *ngIf="
+          partnersData[partner.code] &&
+          partnersData[partner.code][wp.ost_wp.wp_official_code]
+        "
+      >
+        <mat-card-title>{{ wp.title }}</mat-card-title>
+        <mat-card-content>
+          <table
+            [ngClass]="{
+              error: errors[partner.code][wp.ost_wp.wp_official_code]
+            }"
+          >
+            <tr>
+              <th>WP/Results</th>
+              <th>Type</th>
+              <ng-container *ngFor="let item of period">
+                <th>{{ item.year }} - {{ item.quarter }}</th>
+              </ng-container>
+              <th>Percentage %</th>
+            </tr>
+
+            <ng-container
+              *ngFor="
+                let item of partnersData[partner.code][
+                  wp.ost_wp.wp_official_code
+                ]
+              "
+            >
+              <tr>
+                <td class="wp-title">{{ item.title }}</td>
+                <td>{{ item.category }}</td>
+                <ng-container *ngFor="let per of period">
+                  <td>
+                    <mat-icon
+                      color="primary"
+                      *ngIf="
+                        perValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ][per.id] == true
+                      "
+                      >close</mat-icon
+                    >
+                  </td>
+                </ng-container>
+                <td>
+                  {{
+                    values[partner.code][wp.ost_wp.wp_official_code][item.id]
+                      | number : "1.2-2"
+                  }}%
+                </td>
+              </tr>
+            </ng-container>
+            <tr class="total">
+              <td colspan="10">Total</td>
+              <td>
+                {{
+                  totals[partner.code][wp.ost_wp.wp_official_code]
+                    | number : "1.2-2"
+                }}%
+              </td>
+            </tr>
+          </table>
+          <p class="error">
+            {{ errors[partner.code][wp.ost_wp.wp_official_code] }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </mat-tab>
+</mat-tab-group>

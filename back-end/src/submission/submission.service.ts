@@ -42,6 +42,7 @@ export class SubmissionService {
       relations: [
         'user',
         'phase',
+        'phase.periods',
         'initiative',
         'results',
         'results.values',
