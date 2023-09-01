@@ -13,15 +13,17 @@ export class SubmissionService {
       this.http.get('/api/submission/toc/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  async getSubmissionsByInitiativeId(id:number) {
+  async getSubmissionsByInitiativeId(id: number) {
     return firstValueFrom(
-      this.http.get('/api/submission/initiative_id/'+id).pipe(map((d: any) => d))
+      this.http
+        .get('/api/submission/initiative_id/' + id)
+        .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
-  async getSubmissionsById(id:number) {
+  async getSubmissionsById(id: number) {
     return firstValueFrom(
-      this.http.get('/api/submission/'+id).pipe(map((d: any) => d))
+      this.http.get('/api/submission/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
@@ -122,6 +124,14 @@ export class SubmissionService {
     return firstValueFrom(
       this.http
         .post('/api/submission/save_result_value/' + id, data)
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async updateSubmissionStatus(id: number, data: any) {
+    return firstValueFrom(
+      this.http
+        .patch('/api/submission/status/' + id, data)
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }

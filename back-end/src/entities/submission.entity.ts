@@ -10,7 +10,11 @@ import { User } from './user.entity';
 import { Phase } from './phase.entity';
 import { Initiative } from './initiative.entity';
 import { Result } from './result.entity';
-
+export enum SubmissionStatus {
+  APPROVED = 'Approved',
+  REJECTED = 'Rejected',
+  PENDING = 'Pending',
+}
 @Entity()
 export class Submission {
   @PrimaryGeneratedColumn()
@@ -36,4 +40,14 @@ export class Submission {
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   created_at: Date;
+
+  @Column({
+    type: 'enum',
+    enum: SubmissionStatus,
+    default: SubmissionStatus.PENDING,
+  })
+  status: SubmissionStatus;
+
+  @Column({nullable:true})
+  status_reason: '';
 }

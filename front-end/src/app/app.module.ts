@@ -48,6 +48,7 @@ import { HttpHeaderService } from './services/http-header.service';
 import { AdminComponent } from './admin/admin.component';
 import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { StatusComponent } from './submited-versions/status/status.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,6 +72,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     SubmitedVersionComponent,
     AdminComponent,
     AdminNavbarComponent,
+    StatusComponent,
   ],
   imports: [
     BrowserModule,

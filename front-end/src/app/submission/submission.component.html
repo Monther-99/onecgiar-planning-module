@@ -1,6 +1,6 @@
 <mat-card>
   <button
-  *ngIf="!this.isCenter"
+    *ngIf="!this.isCenter"
     class="submit"
     type="button"
     mat-raised-button
@@ -22,7 +22,7 @@
   <mat-card-title>Loading</mat-card-title>
   <mat-card-subtitle>Preparing Items</mat-card-subtitle>
 </mat-card>
-<mat-tab-group *ngIf="!loading  && this.partners?.length">
+<mat-tab-group *ngIf="!loading && this.partners?.length">
   <mat-tab *ngIf="isCenter == false" label="Summary">
     <mat-card>
       <mat-card-title>Consolidated</mat-card-title>
@@ -67,20 +67,38 @@
     </mat-card>
     <ng-container *ngFor="let wp of wps">
       <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
+        <div class="wp-actions">
+          <button
+            mat-raised-button
+            color="accent"
+            *ngIf="wp.id != 'CROSS'"
+            type="button"
+            (click)="addMelia(wp.ost_wp.wp_official_code)"
+          >
+            Add MELIA
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            *ngIf="wp.id == 'CROSS'"
+            type="button"
+            (click)="addMelia(wp.ost_wp.wp_official_code)"
+          >
+            Add MELIA
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="wp.id == 'CROSS'"
+            type="button"
+            (click)="addCross()"
+          >
+            Add Cross-Cutting item
+          </button>
+        </div>
         <mat-card-title>{{ wp.title }}</mat-card-title>
         <mat-card-content>
-          <div class="wp-actions">
-            <button
-              *ngIf="wp.id != 'CROSS'"
-              type="button"
-              (click)="addMelia(wp.ost_wp.wp_official_code)"
-            >
-              Add MELIA
-            </button>
-            <button *ngIf="wp.id == 'CROSS'" type="button" (click)="addCross()">
-              Add Cross-Cutting item
-            </button>
-          </div>
+         
           <table>
             <tr>
               <th></th>
@@ -239,12 +257,14 @@
                         ] | inQue
                       "
                       (keyup)="
-                        changeCalc(partner.code,
-                        wp.ost_wp.wp_official_code,
-                        item.id,
-                        values[partner.code][wp.ost_wp.wp_official_code][
-                        item.id
-                      ])
+                        changeCalc(
+                          partner.code,
+                          wp.ost_wp.wp_official_code,
+                          item.id,
+                          values[partner.code][wp.ost_wp.wp_official_code][
+                            item.id
+                          ]
+                        )
                       "
                       [(ngModel)]="
                         values[partner.code][wp.ost_wp.wp_official_code][

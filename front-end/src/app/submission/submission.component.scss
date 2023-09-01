@@ -1,61 +1,67 @@
-
 td {
-    text-align: center;
+  text-align: center;
+}
+
+.wp-title {
+  text-align: left;
+  width: 660px;
+}
+mat-card,
+mat-tab-group {
+  margin-bottom: 50px;
+  width: 100% !important;
+  table {
+    width: 100%;
+  }
+}
+mat-card-title,
+mat-card-subtitle {
+  text-align: center;
+  padding: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.total {
+  font-weight: bold;
+  td {
+    padding-top: 20px;
+    border-top: solid 1px rgb(90, 90, 90);
+  }
+}
+.per {
+  width: 90px;
+}
+:host ::ng-deep {
+  .mat-mdc-form-field-icon-prefix > .mat-icon,
+  .mat-mdc-form-field-icon-suffix > .mat-icon {
+    padding: 12px;
+    box-sizing: content-box;
+    padding-left: 0;
+    padding-top: 4px;
+    font-size: 23px;
+    font-weight: 100;
+  }
+  mat-tab-body {
+    margin-top: 10px;
+  }
+}
+.error {
+  text-align: center;
+  color: red;
+}
+
+.wp-actions {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  button{
+    margin-left: 20px;
   }
 
-  .wp-title {
-    text-align: left;
-    width: 660px;
-  }
-  mat-card ,mat-tab-group{
-    margin-bottom: 50px;
-    width: 100% !important;
-    table {
-      width: 100%;
-    }
-  }
-  mat-card-title,mat-card-subtitle {
-    text-align: center;
-    padding: 5px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  .total{
-      font-weight: bold;
-      td{
-          padding-top: 20px;
-          border-top: solid 1px rgb(90, 90, 90);
-      }
-     
-  }
-  .per {
-    width: 90px;
-  }
-  :host ::ng-deep {
-    .mat-mdc-form-field-icon-prefix > .mat-icon,
-    .mat-mdc-form-field-icon-suffix > .mat-icon {
-      padding: 12px;
-      box-sizing: content-box;
-      padding-left: 0;
-      padding-top: 4px;
-      font-size: 23px;
-      font-weight: 100;
-    }
-    mat-tab-body {
-      margin-top: 10px;
-    }
-  }
-  .error{
-      text-align: center;
-      color: red;
-  }
-  
-  .wp-actions{
-    float: right;
-  }
-  .submit{
-    position: absolute;
-    width: 200px;
-    right: 5px;
-    top: 5px;
-  }
+}
+.submit {
+  position: absolute;
+  width: 200px;
+  right: 5px;
+  top: 5px;
+}

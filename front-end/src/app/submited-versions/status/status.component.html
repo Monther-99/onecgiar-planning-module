@@ -1,0 +1,41 @@
+<div class="dialogHeader">
+  <h1 mat-dialog-title>Update submission status</h1>
+  <button mat-dialog-close class="closeButton">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="25"
+      fill="currentColor"
+      class="bi bi-x-lg"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+      />
+    </svg>
+  </button>
+</div>
+<div class="dialogBody">
+  <form [formGroup]="statusForm">
+    <mat-form-field class="w-90" appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select placeholder="Role" formControlName="status">
+        <mat-option *ngFor="let status of statuses" [value]="status">
+          {{ status }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Leave a Reason</mat-label>
+      <textarea
+        matInput
+        formControlName="status_reason"
+        placeholder="Ex. It should have..."
+      ></textarea>
+    </mat-form-field>
+  </form>
+  <div class="end">
+    <button mat-raised-button color="warn" (click)="close()">Close</button>
+    <button mat-raised-button color="primary" (click)="submit()">SAVE</button>
+  </div>
+</div>

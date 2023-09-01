@@ -30,6 +30,10 @@ export class SubmissionService {
     @InjectRepository(ResultPeriodValues)
     private resultValuesRepository: Repository<ResultPeriodValues>,
   ) {}
+
+  async updateStatusBySubmittionID(id, data) {
+    return this.submissionRepository.update(id, data);
+  }
   async findSubmissionsByInitiativeId(id) {
     return this.submissionRepository.find({
       where: { initiative: { id } },

@@ -1,4 +1,3 @@
-
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +7,9 @@ import { AuthService } from '../services/auth.service';
 import { ROLES } from '../components/new-team-member/new-team-member.component';
 import { SubmissionService } from '../services/submission.service';
 import { ActivatedRoute } from '@angular/router';
+import { StatusComponent } from './status/status.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -15,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-submited-versions',
   templateUrl: './submited-versions.component.html',
-  styleUrls: ['./submited-versions.component.scss']
+  styleUrls: ['./submited-versions.component.scss'],
 })
 export class SubmitedVersionsComponent implements AfterViewInit {
   displayedColumns: string[] = [
@@ -23,6 +25,8 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     'phase',
     'created_by',
     'created_at',
+    'status',
+    'status_reason',
     'actions',
   ];
   dataSource: MatTableDataSource<any>;
@@ -34,16 +38,23 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     private submissionService: SubmissionService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    private toastrService: ToastrService
   ) {}
   user: any;
+  params: any;
   async ngAfterViewInit() {
-    const params: any = this.activatedRoute?.snapshot.params;
-    this.submissions = await this.submissionService.getSubmissionsByInitiativeId(params.id);
+    this.params = this.activatedRoute?.snapshot.params;
+    await this.initData();
+
+    this.user = this.authService.getLogedInUser();
+  }
+  async initData() {
+    this.submissions =
+      await this.submissionService.getSubmissionsByInitiativeId(this.params.id);
     this.dataSource = new MatTableDataSource(this.submissions);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
-    this.user = this.authService.getLogedInUser();
   }
 
   applyFilter(event: Event) {
@@ -55,5 +66,16 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     }
   }
 
- 
+  changeStatus(id: number) {
+    const dialogRef = this.dialog.open(StatusComponent, {
+      width: '400px',
+      data: { id },
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.initData();
+        this.toastrService.success('Status changed successfully', 'Success');
+      }
+    });
+  }
 }

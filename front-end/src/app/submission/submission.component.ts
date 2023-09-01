@@ -472,9 +472,11 @@ export class SubmissionComponent implements OnInit {
       Object.keys(this.values).forEach((code) => {
         Object.keys(this.values[code]).forEach((wp_id) => {
           Object.keys(this.values[code][wp_id]).forEach((item_id) => {
-            if (valuesToSet[code] && valuesToSet[code][wp_id])
+            if (valuesToSet[code] && valuesToSet[code][wp_id] && valuesToSet[code][wp_id][item_id])
               this.values[code][wp_id][item_id] =
                 +valuesToSet[code][wp_id][item_id];
+                else
+                this.values[code][wp_id][item_id] = 0
             // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
           });
         });
@@ -512,19 +514,21 @@ export class SubmissionComponent implements OnInit {
         return (
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
+            d.category == 'EOI' ||
             d.category == 'CROSS' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
-          (d.group == id || d.wp_id == official_code)
+          (d.group == id || d.wp_id == official_code  ||( official_code=='CROSS' &&  d.category == 'EOI' ))
         );
       else
         return (
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
+            d.category == 'EOI' ||
             d.category == 'CROSS' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
-          (d.group == id || d.wp_id == official_code)
+          (d.group == id || d.wp_id == official_code) || ( official_code=='CROSS' && d.category == 'EOI' )
         );
     });
 

@@ -4,6 +4,7 @@ import {
   Get,
   InternalServerErrorException,
   Param,
+  Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -19,7 +20,10 @@ export class SubmissionController {
     private readonly httpService: HttpService,
   ) {}
 
-
+  @Patch('status/:id')
+  updateStatus(@Param('id') id, @Body() data) {
+    return this.submissionService.updateStatusBySubmittionID(id, data);
+  }
 
   @Post('save/:id')
   async save(@Param('id') id) {
@@ -102,6 +106,7 @@ export class SubmissionController {
               (d) =>
                 (d.category == 'WP' && !d.group) ||
                 d.category == 'OUTPUT' ||
+                d.category == 'EOI' ||
                 (d.category == 'OUTCOME' && d.flow_id == id),
             ),
           ),
@@ -112,7 +117,6 @@ export class SubmissionController {
         ),
     );
   }
-
 
   @Get(':id')
   getbyid(@Param('id') id) {
