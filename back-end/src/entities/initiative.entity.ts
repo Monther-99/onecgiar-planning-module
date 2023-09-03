@@ -56,8 +56,14 @@ export class Initiative {
   @ApiProperty({ type: () => [InitiativeRoles] })
   @OneToMany(
     () => InitiativeRoles,
-    (initiative_roles) => initiative_roles.initiative,{onUpdate:'RESTRICT',onDelete:'RESTRICT'}
+    (initiative_roles) => initiative_roles.initiative,
+    { onUpdate: 'RESTRICT', onDelete: 'RESTRICT' },
   )
   @JoinTable()
   roles: Array<InitiativeRoles>;
+
+  @Column({ nullable: true })
+  last_update_at: Date;
+  @Column({ nullable: true })
+  last_submitted_at: Date;
 }

@@ -38,6 +38,7 @@ export class SubmissionService {
     return this.submissionRepository.find({
       where: { initiative: { id } },
       relations: ['user', 'phase'],
+      order:{id:'DESC'}
     });
   }
   async findSubmissionsById(id) {
@@ -96,7 +97,13 @@ export class SubmissionService {
         await this.resultValuesRepository.save(value);
       }
     }
-
+    const date = new Date();
+    await this.initiativeRepository.update(initiative_id, {
+      last_update_at: date,
+    });
+    await this.initiativeRepository.update(initiative_id, {
+      last_submitted_at: date,
+    });
     return this.submissionRepository.findOne({
       where: { id: submissionObject.id },
       relations: ['user', 'phase'],
@@ -285,7 +292,7 @@ export class SubmissionService {
       workPackage: workPackageObject,
       submission: IsNull(),
     });
-    console.log(oldResult);
+
     let resultData = {
       result_uuid: item_id,
       value: 0,
@@ -319,7 +326,9 @@ export class SubmissionService {
       newResultPeriodValue.result = resultObject;
       await this.resultValuesRepository.save(newResultPeriodValue);
     }
-
+    await this.initiativeRepository.update(initiativeId, {
+      last_update_at: new Date(),
+    });
     return { message: 'Data saved' };
   }
   async saveResultDataValue(id, data: any) {
@@ -334,9 +343,6 @@ export class SubmissionService {
       wp_official_code: wp_id,
     });
 
-    const initiativeObject = await this.initiativeRepository.findOneBy({
-      id: initiativeId,
-    });
     let oldResult = await this.resultRepository.findOneBy({
       initiative_id: id,
       result_uuid: item_id,
@@ -350,6 +356,9 @@ export class SubmissionService {
       await this.resultRepository.save(oldResult);
     } else throw new NotFoundException();
 
+    await this.initiativeRepository.update(initiativeId, {
+      last_update_at: new Date(),
+    });
     return { message: 'Data saved' };
   }
 }

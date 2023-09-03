@@ -21,6 +21,8 @@ export class InitiativesComponent implements AfterViewInit {
     'name',
     'short_name',
     'my_role',
+    'last_update_at',
+    'status',
     'actions',
   ];
   dataSource: MatTableDataSource<any>;

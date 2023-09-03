@@ -253,7 +253,7 @@ export class SubmissionComponent implements OnInit {
     await this.InitData();
   }
   results: any;
-  loading = false;
+  loading = true;
   params: any;
   initiative_data: any = {};
   async InitData() {
@@ -472,11 +472,14 @@ export class SubmissionComponent implements OnInit {
       Object.keys(this.values).forEach((code) => {
         Object.keys(this.values[code]).forEach((wp_id) => {
           Object.keys(this.values[code][wp_id]).forEach((item_id) => {
-            if (valuesToSet[code] && valuesToSet[code][wp_id] && valuesToSet[code][wp_id][item_id])
+            if (
+              valuesToSet[code] &&
+              valuesToSet[code][wp_id] &&
+              valuesToSet[code][wp_id][item_id]
+            )
               this.values[code][wp_id][item_id] =
                 +valuesToSet[code][wp_id][item_id];
-                else
-                this.values[code][wp_id][item_id] = 0
+            else this.values[code][wp_id][item_id] = 0;
             // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
           });
         });
@@ -518,17 +521,20 @@ export class SubmissionComponent implements OnInit {
             d.category == 'CROSS' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
-          (d.group == id || d.wp_id == official_code  ||( official_code=='CROSS' &&  d.category == 'EOI' ))
+          (d.group == id ||
+            d.wp_id == official_code ||
+            (official_code == 'CROSS' && d.category == 'EOI'))
         );
       else
         return (
-          (d.category == 'OUTPUT' ||
+          ((d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
             d.category == 'CROSS' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
-          (d.group == id || d.wp_id == official_code) || ( official_code=='CROSS' && d.category == 'EOI' )
+            (d.group == id || d.wp_id == official_code)) ||
+          (official_code == 'CROSS' && d.category == 'EOI')
         );
     });
 
@@ -640,11 +646,21 @@ export class SubmissionComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
+          this.loading = true;
           let result = await this.submissionService.submit(this.params.id, {
             perValues: this.perValues,
             values: this.values,
           });
-          if (result) alert('Submited successfully');
+          if (result) {
+            this.toastrService.success('Data Submited successfully', 'Success');
+            this.router.navigate([
+              'initiative',
+              this.initiative_data.id,
+              this.initiative_data.official_code,
+              'submited-versions',
+            ]);
+          }
+          this.loading = false;
         }
       });
   }

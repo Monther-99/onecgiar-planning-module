@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="!loading">
   <button
     *ngIf="!this.isCenter"
     class="submit"
@@ -75,7 +75,7 @@
             type="button"
             (click)="addMelia(wp.ost_wp.wp_official_code)"
           >
-            Add MELIA
+            <mat-icon>add</mat-icon> MELIA
           </button>
           <button
             mat-raised-button
@@ -84,7 +84,7 @@
             type="button"
             (click)="addMelia(wp.ost_wp.wp_official_code)"
           >
-            Add MELIA
+            <mat-icon>add</mat-icon> MELIA
           </button>
           <button
             mat-raised-button
@@ -93,12 +93,11 @@
             type="button"
             (click)="addCross()"
           >
-            Add Cross-Cutting item
+            <mat-icon>add</mat-icon> Cross-Cutting
           </button>
         </div>
         <mat-card-title>{{ wp.title }}</mat-card-title>
         <mat-card-content>
-         
           <table>
             <tr>
               <th></th>

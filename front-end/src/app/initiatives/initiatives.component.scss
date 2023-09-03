@@ -6,13 +6,13 @@ table {
     font-size: 14px;
     width: 100%;
   }
+  td, th {
+    text-align: center;
+  }
   th{
     text-align: center;
   }
-  td, th {
-    text-align: center;
-    width: 25%;
-  }
+
   .actions{
     text-align: right;
   }
