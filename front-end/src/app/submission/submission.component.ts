@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ROLES } from '../components/new-team-member/new-team-member.component';
+import { IpsrComponent } from './ipsr/ipsr.component';
 
 @Component({
   selector: 'app-submission',
@@ -255,7 +256,9 @@ export class SubmissionComponent implements OnInit {
   results: any;
   loading = true;
   params: any;
+  ipsrs_data: any;
   initiative_data: any = {};
+  ipsr_value_data: any;
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -275,6 +278,10 @@ export class SubmissionComponent implements OnInit {
     this.results = await this.submissionService.getToc(this.params.id);
     const melia_data = await this.submissionService.getMeliaByInitiative(
       this.params.id
+    );
+    this.ipsrs_data = await this.submissionService.getIpsrs();
+    this.ipsr_value_data = await this.submissionService.getIpsrByInitiative(
+      this.initiative_data.id
     );
     const cross_data = await this.submissionService.getCrossByInitiative(
       this.params.id
@@ -304,11 +311,18 @@ export class SubmissionComponent implements OnInit {
     });
     melia_data.map((d: any) => {
       d['category'] = 'MELIA';
+      d['wp_id'] = 'MELIA';
+      return d;
+    });
+    this.ipsr_value_data.map((d: any) => {
+      d['category'] = 'IPSR';
+      d['wp_id'] = 'IPSR';
       return d;
     });
     this.results = [
       ...cross_data,
       ...melia_data,
+      ...this.ipsr_value_data,
       ...this.results,
       // ...indicators_data,
     ];
@@ -320,6 +334,13 @@ export class SubmissionComponent implements OnInit {
       title: 'Cross Cutting',
       category: 'CROSS',
       ost_wp: { wp_official_code: 'CROSS' },
+    });
+
+    this.wps.push({
+      id: 'IPSR',
+      title: 'Innovation packages & Scalling Readiness',
+      category: 'IPSR',
+      ost_wp: { wp_official_code: 'IPSR' },
     });
     // const partners_result = this.results
     //   .filter((d: any) => d.partners)
@@ -519,7 +540,7 @@ export class SubmissionComponent implements OnInit {
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
             d.category == 'CROSS' ||
-            // d.category == 'INDICATOR' ||
+            d.category == 'IPSR' ||
             d.category == 'MELIA') &&
           (d.group == id ||
             d.wp_id == official_code ||
@@ -531,7 +552,7 @@ export class SubmissionComponent implements OnInit {
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
             d.category == 'CROSS' ||
-            // d.category == 'INDICATOR' ||
+            d.category == 'IPSR' ||
             d.category == 'MELIA') &&
             (d.group == id || d.wp_id == official_code)) ||
           (official_code == 'CROSS' && d.category == 'EOI')
@@ -589,6 +610,26 @@ export class SubmissionComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
         await this.submissionService.newMelia(result);
+        await this.InitData();
+      }
+    });
+  }
+
+  async setIPSR(wp_official_code: any) {
+    const dialogRef = this.dialog.open(IpsrComponent, {
+      data: {
+        wp_id: wp_official_code,
+        initiative_id: this.params.id,
+        ipsrs: this.ipsrs_data,
+        values: await this.submissionService.getIpsrByInitiative(
+          this.initiative_data.id
+        ),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.submissionService.saveIPSR(result);
         await this.InitData();
       }
     });

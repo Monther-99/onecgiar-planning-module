@@ -13,6 +13,8 @@ import { MeliaModule } from './melia/melia.module';
 import { CrossCuttingModule } from './cross-cutting/cross-cutting.module';
 import { ConfigModule } from '@nestjs/config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { IpsrModule } from './ipsr/ipsr.module';
+import { IpsrValueModule } from './ipsr-value/ipsr-value.module';
 
 @Module({
   imports: [
@@ -42,6 +44,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     EventsModule,
     MeliaModule,
     CrossCuttingModule,
+    IpsrValueModule,
   ],
 })
 export class AppModule {}

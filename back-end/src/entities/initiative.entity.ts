@@ -10,6 +10,7 @@ import { Organization } from './organization.entity';
 import { Submission } from './submission.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { InitiativeRoles } from './initiative-roles.entity';
+import { IpsrValue } from './ipsr-value.entity';
 
 @Entity()
 export class Initiative {
@@ -66,4 +67,7 @@ export class Initiative {
   last_update_at: Date;
   @Column({ nullable: true })
   last_submitted_at: Date;
+
+  @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.initiative)
+  ipsrValues: IpsrValue[];
 }

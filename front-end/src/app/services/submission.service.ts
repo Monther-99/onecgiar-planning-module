@@ -32,6 +32,16 @@ export class SubmissionService {
       this.http.get('/api/melia/initiative/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+  async getIpsrs() {
+    return firstValueFrom(
+      this.http.get('/api/ipsr').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+  async getIpsrByInitiative(id: any) {
+    return firstValueFrom(
+      this.http.get('/api/ipsr-value/initiative/' + id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
   async getCrossByInitiative(id: any) {
     return firstValueFrom(
       this.http
@@ -44,6 +54,13 @@ export class SubmissionService {
       this.http.post('/api/melia', data).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async saveIPSR(data: any) {
+    return firstValueFrom(
+      this.http.post('/api/ipsr-value', data).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+  
   async getMeliaById(id: any) {
     return firstValueFrom(
       this.http.get('/api/melia/' + id).pipe(map((d: any) => d))

@@ -49,6 +49,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { StatusComponent } from './submited-versions/status/status.component';
+import { IpsrComponent } from './submission/ipsr/ipsr.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +74,7 @@ import { StatusComponent } from './submited-versions/status/status.component';
     AdminComponent,
     AdminNavbarComponent,
     StatusComponent,
+    IpsrComponent,
   ],
   imports: [
     BrowserModule,

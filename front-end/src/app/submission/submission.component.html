@@ -71,11 +71,20 @@
           <button
             mat-raised-button
             color="accent"
-            *ngIf="wp.id != 'CROSS'"
+            *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
             type="button"
             (click)="addMelia(wp.ost_wp.wp_official_code)"
           >
             <mat-icon>add</mat-icon> MELIA
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            *ngIf="wp.id == 'IPSR'"
+            type="button"
+            (click)="setIPSR(wp.ost_wp.wp_official_code)"
+          >
+            <mat-icon>settings</mat-icon> IPSR
           </button>
           <button
             mat-raised-button
@@ -101,7 +110,7 @@
           <table>
             <tr>
               <th></th>
-              <th>WP/Results</th>
+              <th>Results</th>
               <th>Type</th>
               <ng-container *ngFor="let item of period">
                 <th>{{ item.year }} - {{ item.quarter }}</th>
@@ -153,7 +162,7 @@
                     </button>
                   </ng-container>
                 </td>
-                <td class="wp-title">{{ item.title }}</td>
+                <td class="wp-title">{{ item?.ipsr?.id ?  item?.ipsr.title +' ('+item.value +')' : item.title }}</td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">
                   <td>
@@ -209,7 +218,7 @@
             }"
           >
             <tr>
-              <th>WP/Results</th>
+              <th>Results</th>
               <th>Type</th>
               <ng-container *ngFor="let item of period">
                 <th>{{ item.year }} - {{ item.quarter }}</th>
@@ -225,7 +234,7 @@
               "
             >
               <tr>
-                <td class="wp-title">{{ item.title }}</td>
+                <td class="wp-title">{{ item?.ipsr?.id ?  item?.ipsr.title +' ('+item.value +')' : item.title }}</td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">
                   <td>
