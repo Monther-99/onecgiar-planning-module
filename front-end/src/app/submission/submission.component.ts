@@ -311,7 +311,6 @@ export class SubmissionComponent implements OnInit {
     });
     melia_data.map((d: any) => {
       d['category'] = 'MELIA';
-      d['wp_id'] = 'MELIA';
       return d;
     });
     this.ipsr_value_data.map((d: any) => {
