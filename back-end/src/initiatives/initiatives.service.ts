@@ -101,13 +101,14 @@ export class InitiativesService {
   }
 
   findAll() {
-    return this.initiativeRepository.find({relations: ['roles'],});
+    return this.initiativeRepository.find({relations: ['roles'], order:{id:'asc'}});
   }
 
   findOne(id: number) {
     return this.initiativeRepository.findOne({
       where: { id },
       relations: ['organizations','roles','roles.organizations'],
+      order:{id:'desc'}
     });
   }
   async updateRoles(initiative_id, id, initiativeRoles: InitiativeRoles) {

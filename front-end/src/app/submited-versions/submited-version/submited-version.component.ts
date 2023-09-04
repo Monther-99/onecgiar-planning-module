@@ -251,6 +251,7 @@ export class SubmitedVersionComponent implements OnInit {
   loading = false;
   params: any;
   initiative_data: any = {};
+  ipsr_value_data:any;
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -274,7 +275,9 @@ export class SubmitedVersionComponent implements OnInit {
     const cross_data = await this.submissionService.getCrossByInitiative(
       this.initiative_data.id
     );
-
+    this.ipsr_value_data = await this.submissionService.getIpsrByInitiative(
+      this.initiative_data.id
+    );
     cross_data.map((d: any) => {
       d['category'] = 'CROSS';
       d['wp_id'] = 'CROSS';
@@ -284,9 +287,15 @@ export class SubmitedVersionComponent implements OnInit {
       d['category'] = 'MELIA';
       return d;
     });
+    this.ipsr_value_data.map((d: any) => {
+      d['category'] = 'IPSR';
+      d['wp_id'] = 'IPSR';
+      return d;
+    });
     this.results = [
       ...cross_data,
       ...melia_data,
+      ...this.ipsr_value_data,
       ...this.results,
       // ...indicators_data,
     ];
@@ -298,6 +307,12 @@ export class SubmitedVersionComponent implements OnInit {
       title: 'Cross Cutting',
       category: 'CROSS',
       ost_wp: { wp_official_code: 'CROSS' },
+    });
+    this.wps.push({
+      id: 'IPSR',
+      title: 'Innovation packages & Scalling Readiness',
+      category: 'IPSR',
+      ost_wp: { wp_official_code: 'IPSR' },
     });
     for (let partner of this.partners) {
       for (let wp of this.wps) {
@@ -445,6 +460,7 @@ export class SubmitedVersionComponent implements OnInit {
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
             d.category == 'CROSS' ||
+            d.category == 'IPSR' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
           (d.group == id || d.wp_id == official_code  ||( official_code=='CROSS' &&  d.category == 'EOI' ))
@@ -454,6 +470,7 @@ export class SubmitedVersionComponent implements OnInit {
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
+            d.category == 'IPSR' ||
             d.category == 'CROSS' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
