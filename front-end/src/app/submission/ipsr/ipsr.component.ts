@@ -31,9 +31,9 @@ export class IpsrComponent implements OnInit {
     this.ipsrs = this.data.ipsrs;
     this.values = this.data.values;
     let obj: any = {};
-
+console.log()
     this.ipsrs.forEach((item: any) => {
-      obj['value-' + item.id] = [this.values.filter((d:any)=> d.ipsr_id == item.id )[0].value, Validators.required];
+      obj['value-' + item.id] =   this.values.length ? [this.values.filter((d:any)=> d.ipsr_id == item.id )[0].value, Validators.required]: null ;
     });
     this.ipsrForm = this.fb.group({
       ...obj,
