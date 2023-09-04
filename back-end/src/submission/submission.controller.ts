@@ -6,6 +6,8 @@ import {
   Param,
   Patch,
   Post,
+  Request,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { SubmissionService } from './submission.service';
@@ -13,6 +15,8 @@ import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { AxiosError } from 'axios';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+@UseGuards(JwtAuthGuard)
 @Controller('submission')
 export class SubmissionController {
   constructor(
@@ -26,9 +30,9 @@ export class SubmissionController {
   }
 
   @Post('save/:id')
-  async save(@Param('id') id) {
+  async save(@Param('id') id,@Request() req) {
     const json = await this.getTocs(id);
-    return this.submissionService.createNew(1, id, 2, JSON.stringify(json));
+    return this.submissionService.createNew(req.user.id, id, 2, JSON.stringify(json));
   }
 
   @Get('import')
@@ -38,6 +42,8 @@ export class SubmissionController {
   }
   @Post('save_result_values/:id')
   async save_result_values(@Param('id') id, @Body() data) {
+    
+   
     return this.submissionService.saveResultData(id, data);
   }
   @Post('save_result_value/:id')
