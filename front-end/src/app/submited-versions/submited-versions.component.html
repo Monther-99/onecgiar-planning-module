@@ -55,7 +55,7 @@
           <mat-icon>visibility</mat-icon>
         </button>
         <button
-          *ngIf="row.status == 'Pending'"
+          *ngIf="row.status == 'Pending' && user.role == 'admin'"
           matTooltip="Change Status"
           matTooltipPosition="above"
           (click)="changeStatus(row.id)"
