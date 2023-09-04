@@ -9,19 +9,6 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  async login(email: string) {
-    let result = await firstValueFrom(
-      this.http
-        .post(`api/auth/login`, {
-          username: email,
-          password: '123',
-        })
-        .pipe(map((d) => d))
-    ).catch((e) => false);
-
-    return result;
-  }
-
   async getUsers(filters: any = null, page: number, limit: number) {
     let finalFilters: any = {};
     if (filters)

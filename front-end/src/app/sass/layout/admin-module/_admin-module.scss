@@ -1,0 +1,23 @@
+@import "../../abstracts/variables";
+.admin-module-box {
+  display: flex;
+  background-color: #fafafa;
+  min-height: calc(100vh - 142px);
+  &__sidebar {
+    width: 18%;
+    background-color: $color-side-bar;
+    @media only screen and (max-width: 160em) {
+      flex: 0 0 25.6rem;
+    }
+  }
+  &__content {
+    width: 81%;
+    height: 100%;
+    padding: 0 2.5rem;
+    margin-bottom: 9.6rem;
+
+    @media only screen and (max-width: 84em) {
+      width: 80%;
+    }
+  }
+}

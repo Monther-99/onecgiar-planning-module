@@ -50,6 +50,8 @@ import { AdminNavbarComponent } from './admin/admin-navbar/admin-navbar.componen
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { StatusComponent } from './submited-versions/status/status.component';
 import { IpsrComponent } from './submission/ipsr/ipsr.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,6 +77,8 @@ import { IpsrComponent } from './submission/ipsr/ipsr.component';
     AdminNavbarComponent,
     StatusComponent,
     IpsrComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

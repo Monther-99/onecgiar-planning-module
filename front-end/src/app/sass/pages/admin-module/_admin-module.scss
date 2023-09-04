@@ -1,0 +1,103 @@
+@import "../../abstracts/variables";
+.sidebar {
+  &__title-box {
+    height: 9.1rem;
+    position: relative;
+    // background-color: #00000075;
+
+    &--title {
+      position: absolute;
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 2.4rem;
+      letter-spacing: 0em;
+
+      color: #ffffff;
+      top: 35%;
+      left: 30%;
+    }
+  }
+}
+
+.side-nav-icon-box {
+
+  &__title--1 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0em;
+  }
+
+  &__title--2 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0em;
+  }
+
+  &__title--3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0em;
+  }
+
+  &__title--4 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0em;
+  }
+
+  &__title--5 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0em;
+
+  }
+
+  &__title--6 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0em;
+  }
+
+  &__title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0em;
+  }
+}
+
+.side-nav {
+  margin-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  list-style: none;
+
+  &__item {
+    padding-left: 20px;
+    position: relative;
+    display: flex;
+    justify-content: start;
+    gap: 3rem;
+    padding-top: 0.8rem;
+    width: 25.5rem;
+    height: 4.1rem;
+  }
+
+  &__link:link,
+  &__link:visited {
+    text-decoration: none;
+
+    transition: all 0.3s;
+  }
+
+  &__active {
+    background-color: $color-anchor-side-bar;
+  }
+}

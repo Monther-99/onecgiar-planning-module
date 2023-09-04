@@ -1,0 +1,220 @@
+<header class="header-risk">
+  <!-- section header -->
+
+  <div
+    [ngClass]="{
+      'header-risk__background-c-primary':
+        router.url === riskUrl.home ||
+        router.url === riskUrl.riskManagement ||
+        router.url === riskUrl.riskReport ||
+        router.url === riskUrl.teamMembers ||
+        router.url === riskUrl.submitted ||
+        router.url === riskUrl.accelerated ||
+        router.url === riskUrl.about ||
+        router.url === riskUrl.glossary ||
+        router.url === riskUrl.faq ||
+        router.url === riskUrl.dashboard ||
+        router.url === riskUrl.pageNotFound,
+
+      'header-risk__background-c-secondary':
+        router.url === adminUrl.admin ||
+        router.url === adminUrl.parameterSetttings ||
+        router.url === adminUrl.categories ||
+        router.url === adminUrl.mitigation ||
+        router.url === adminUrl.settings ||
+        router.url === adminUrl.announcements ||
+        router.url === adminUrl.posted ||
+        router.url === adminUrl.drafts ||
+        router.url === adminUrl.userManagement ||
+        router.url === adminUrl.glossary ||
+        router.url === adminUrl.faq ||
+        router.url === adminUrl.pageNotFounds
+    }"
+    class="header-risk__content"
+  >
+    <div class="header-content-box">
+      <div   routerLink="/" class="header-content-box--1">
+        <img
+          src="../../assets/shared-image/Mask group.svg"
+          class="header-content-box--1__logo"
+          alt="~/Frontend/images/question-circular-button.svg"
+        />
+      </div>
+      <div  routerLink="/" class="header-content-box--2">
+        <p class="header-content-box--2__title">
+          <span class="header-content-box--2__title--1">CGIAR 360</span> Planning
+          
+        </p>
+      </div>
+    </div>
+
+    <nav class="header-user-nav-box">
+      <button
+        [ngClass]="{
+          'user-nav-button__background-c-primary':
+            router.url === riskUrl.home ||
+            router.url === riskUrl.riskManagement ||
+            router.url === riskUrl.riskReport ||
+            router.url === riskUrl.teamMembers ||
+            router.url === riskUrl.submitted ||
+            router.url === riskUrl.accelerated ||
+            router.url === riskUrl.about ||
+            router.url === riskUrl.glossary ||
+            router.url === riskUrl.faq ||
+            router.url === riskUrl.dashboard ||
+            router.url === riskUrl.pageNotFound,
+          'user-nav-button__background-c-secondary':
+            router.url === adminUrl.admin ||
+            router.url === adminUrl.parameterSetttings ||
+            router.url === adminUrl.categories ||
+            router.url === adminUrl.mitigation ||
+            router.url === adminUrl.settings ||
+            router.url === adminUrl.announcements ||
+            router.url === adminUrl.posted ||
+            router.url === adminUrl.drafts ||
+            router.url === adminUrl.userManagement ||
+            router.url === adminUrl.glossary ||
+            router.url === adminUrl.faq ||
+            router.url === adminUrl.pageNotFounds
+        }"
+        class="user-nav-button"
+        mat-icon-button
+        *ngIf="user_info"
+      >
+        <mat-icon class="user-nav-button__icon">
+          <img
+            class="user-nav-button__icon--1"
+            src="../../assets/shared-image/🦆 icon _User avatar filled_.svg"
+            alt="~/Frontend/images/icon _User avatar"
+        /></mat-icon>
+        <span class="user-nav-button__title--1">{{
+          user_info?.full_name
+        }}</span>
+      </button>
+
+      <button
+        [ngClass]="{
+          'user-nav-button__background-c-primary':
+            router.url === riskUrl.home ||
+            router.url === riskUrl.riskManagement ||
+            router.url === riskUrl.riskReport ||
+            router.url === riskUrl.teamMembers ||
+            router.url === riskUrl.submitted ||
+            router.url === riskUrl.accelerated ||
+            router.url === riskUrl.about ||
+            router.url === riskUrl.glossary ||
+            router.url === riskUrl.faq ||
+            router.url === riskUrl.dashboard ||
+            router.url === riskUrl.pageNotFound,
+          'user-nav-button__background-c-secondary':
+            router.url === adminUrl.admin ||
+            router.url === adminUrl.parameterSetttings ||
+            router.url === adminUrl.categories ||
+            router.url === adminUrl.mitigation ||
+            router.url === adminUrl.settings ||
+            router.url === adminUrl.announcements ||
+            router.url === adminUrl.posted ||
+            router.url === adminUrl.drafts ||
+            router.url === adminUrl.userManagement ||
+            router.url === adminUrl.glossary ||
+            router.url === adminUrl.faq ||
+            router.url === adminUrl.pageNotFounds
+        }"
+        class="user-nav-button"
+        mat-icon-button
+        (click)="logout()"
+        *ngIf="user_info"
+      >
+        <span class="user-nav-button__title--2">Logout</span>
+        <mat-icon class="user-nav-button__icon">
+          <img
+            src="../../assets/shared-image/🦆 icon _logout_.svg"
+            class="user-nav-button__icon--2"
+            alt="~/Frontend/images/icon _logout"
+        /></mat-icon>
+      </button>
+
+      <button
+        [ngClass]="{
+          'user-nav-button__background-c-primary':
+            router.url === riskUrl.home ||
+            router.url === riskUrl.riskManagement ||
+            router.url === riskUrl.riskReport ||
+            router.url === riskUrl.teamMembers ||
+            router.url === riskUrl.submitted ||
+            router.url === riskUrl.accelerated ||
+            router.url === riskUrl.about ||
+            router.url === riskUrl.glossary ||
+            router.url === riskUrl.faq ||
+            router.url === riskUrl.dashboard ||
+            router.url === riskUrl.pageNotFound,
+          'user-nav-button__background-c-secondary':
+            router.url === adminUrl.admin ||
+            router.url === adminUrl.parameterSetttings ||
+            router.url === adminUrl.categories ||
+            router.url === adminUrl.mitigation ||
+            router.url === adminUrl.settings ||
+            router.url === adminUrl.announcements ||
+            router.url === adminUrl.posted ||
+            router.url === adminUrl.drafts ||
+            router.url === adminUrl.userManagement ||
+            router.url === adminUrl.glossary ||
+            router.url === adminUrl.faq ||
+            router.url === adminUrl.pageNotFounds
+        }"
+        class="user-nav-button"
+        mat-icon-button
+        (click)="login()"
+        *ngIf="!user_info"
+      >
+        <span class="user-nav-button__title--2">login</span>
+        <mat-icon class="user-nav-button__icon">
+          <img
+            src="../../assets/shared-image/🦆 icon _logout_.svg"
+            class="user-nav-button__icon--2"
+            alt="~/Frontend/images/icon _logout"
+        /></mat-icon>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- section nav
+<nav class="sidebar">
+  <ul class="side-nav">
+    <li class="side-nav__item side-nav__item--active">
+      <a href="#" class="side-nav__link">
+        <svg class="side-nav__icon">
+          <use xlink:href="img/sprite.svg#icon-home"></use>
+        </svg>
+        <span>Hotel</span>
+      </a>
+    </li>
+    <li class="side-nav__item">
+      <a href="#" class="side-nav__link">
+        <svg class="side-nav__icon">
+          <use xlink:href="img/sprite.svg#icon-aircraft-take-off"></use>
+        </svg>
+        <span>Flight</span>
+      </a>
+    </li>
+    <li class="side-nav__item">
+      <a href="#" class="side-nav__link">
+        <svg class="side-nav__icon">
+          <use xlink:href="img/sprite.svg#icon-key"></use>
+        </svg>
+        <span>Car rental</span>
+      </a>
+    </li>
+    <li class="side-nav__item">
+      <a href="#" class="side-nav__link">
+        <svg class="side-nav__icon">
+          <use xlink:href="img/sprite.svg#icon-map"></use>
+        </svg>
+        <span>Tours</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="legal">&copy; 2017 by trillo. All rights reserved.</div>
+</nav> -->

@@ -37,7 +37,6 @@ export class UserDialogComponent implements OnInit {
       first_name: [null, Validators.required],
       last_name: [null, Validators.required],
       role: [null, Validators.required],
-      password: [null, Validators.required],
     });
     if (this.userId) {
       let { id, ...userValues } = await this.usersService.getUser(this.userId);

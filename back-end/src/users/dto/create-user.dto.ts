@@ -12,7 +12,6 @@ export class CreateUserDto {
 
   last_name: string;
 
-  password: string;
 
   role: userRole;
 }

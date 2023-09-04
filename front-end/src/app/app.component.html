@@ -1,22 +1,34 @@
-<div class="toolbar" role="banner">
+<!-- <div class="toolbar" role="banner">
   <div class="navi">
-  <span>Plan of Results and Budget</span>
-  <nav>
-    <ul>
-      <li>
-        <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page"
-          >Inititaives</a
-        >
-      </li>
-    </ul>
-  </nav>
+    <span>Plan of Results and Budget</span>
+    <nav>
+      <ul>
+        <li>
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Inititaives</a
+          >
+        </li>
+      </ul>
+    </nav>
   </div>
   <div class="user">
-    <button *ngIf="!user" (click)="login()" type="button" mat-raised-button >login</button>
-    <button *ngIf="user" (click)="logout()" type="button" mat-raised-button >{{ user.full_name }}</button>
+    <button *ngIf="!user" (click)="login()" type="button" mat-raised-button>
+      login
+    </button>
+    <button *ngIf="user" (click)="logout()" type="button" mat-raised-button>
+      {{ user.full_name }}
+    </button>
   </div>
-</div>
+</div> -->
+<div class="main-body">
+<app-header></app-header>
 
 <div class="content" role="main">
   <router-outlet></router-outlet>
+</div>
+<app-footer></app-footer>
+
 </div>
