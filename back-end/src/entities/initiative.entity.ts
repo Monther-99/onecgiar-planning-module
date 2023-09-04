@@ -1,8 +1,10 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
@@ -70,4 +72,11 @@ export class Initiative {
 
   @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.initiative)
   ipsrValues: IpsrValue[];
+
+  @Column({ nullable: true, default: null })
+  latest_submission_id: number;
+
+  @ManyToOne(() => Submission)
+  @JoinColumn({ name: 'latest_submission_id' })
+  latest_submission: Submission;
 }

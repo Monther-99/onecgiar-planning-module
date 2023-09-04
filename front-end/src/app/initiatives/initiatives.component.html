@@ -46,7 +46,7 @@
     <ng-container matColumnDef="status">
       <th style="width: 130px" mat-header-cell *matHeaderCellDef>Status</th>
       <td style="width: 130px" mat-cell *matCellDef="let row">
-        {{  row.last_submitted_at !=null && row.last_update_at == row.last_submitted_at ? "Submited" : "Draft" }}
+        {{  row.last_submitted_at !=null && row.last_update_at == row.last_submitted_at ? row?.latest_submission ? row?.latest_submission?.status : "Draft"  : "Draft" }}
       </td>
     </ng-container>
 

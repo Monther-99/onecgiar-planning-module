@@ -329,7 +329,7 @@ export class SubmissionComponent implements OnInit {
     this.wps = this.results
       .filter((d: any) => d.category == 'WP' && !d.group)
       .sort((a: any, b: any) => a.title.localeCompare(b.title));
-    this.wps.push({
+    this.wps.unshift({
       id: 'CROSS',
       title: 'Cross Cutting',
       category: 'CROSS',

@@ -101,7 +101,7 @@ export class InitiativesService {
   }
 
   findAll() {
-    return this.initiativeRepository.find({relations: ['roles'], order:{id:'asc'}});
+    return this.initiativeRepository.find({relations: ['roles','latest_submission'], order:{id:'asc'}});
   }
 
   findOne(id: number) {

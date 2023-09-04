@@ -100,9 +100,8 @@ export class SubmissionService {
     const date = new Date();
     await this.initiativeRepository.update(initiative_id, {
       last_update_at: date,
-    });
-    await this.initiativeRepository.update(initiative_id, {
       last_submitted_at: date,
+      latest_submission_id:submissionObject.id
     });
     return this.submissionRepository.findOne({
       where: { id: submissionObject.id },
