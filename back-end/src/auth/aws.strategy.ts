@@ -72,17 +72,17 @@ export class AwsStrategy extends PassportStrategy(Strategy, 'AWS') {
       last_name: profile?.family_name,
     };
     if (user) {
-      // if (
-      //   user.email.toLowerCase() == (<string>profile.email || '').toLowerCase() &&
-      //   (user?.first_name != profile?.given_name ||
-      //     user?.last_name != profile?.family_name)
-      // ) {
-      //   user.first_name = profile.given_name;
-      //   user.last_name = profile.family_name;
-      //   userInfo = await this.userService.userRepository.save(user, {
-      //     reload: true,
-      //   });
-      // }
+      if (
+        user.email.toLowerCase() == (<string>profile.email || '').toLowerCase() &&
+        (user?.first_name != profile?.given_name ||
+          user?.last_name != profile?.family_name)
+      ) {
+        user.first_name = profile.given_name;
+        user.last_name = profile.family_name;
+        userInfo = await this.userService.userRepository.save(user, {
+          reload: true,
+        });
+      }
       userInfo = user;
     } else
       userInfo = await this.userService.userRepository.save(newinfo, {
