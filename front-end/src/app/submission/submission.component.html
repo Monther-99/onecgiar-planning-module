@@ -10,7 +10,7 @@
     Submit
   </button>
   <mat-card-title
-    >One CGIAR Initiatives Plan of Results and Budget Template</mat-card-title
+    >One CGIAR Initiatives Plan of Results and Budget Template ({{ this.phase.name }})</mat-card-title
   >
   <mat-card-subtitle
     >{{ initiative_data.official_code }} ‐
@@ -162,7 +162,13 @@
                     </button>
                   </ng-container>
                 </td>
-                <td class="wp-title">{{ item?.ipsr?.id ?  item?.ipsr.title +' ('+item.value +')' : item.title }}</td>
+                <td class="wp-title">
+                  {{
+                    item?.ipsr?.id
+                      ? item?.ipsr.title + " (" + item.value + ")"
+                      : item.title
+                  }}
+                </td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">
                   <td>
@@ -199,10 +205,17 @@
       </mat-card>
     </ng-container>
   </mat-tab>
-  <mat-tab
-    *ngFor="let partner of partners"
-    [label]="partner?.acronym ? partner?.acronym : partner?.name"
-  >
+  <mat-tab *ngFor="let partner of partners">
+    <ng-template mat-tab-label>
+      <span style="margin-right: 10px;">{{ partner?.acronym ? partner?.acronym : partner?.name }}</span>
+      <mat-icon *ngIf="checkComplete(initiative_data.id, partner.code)">check_circle_outline</mat-icon>
+    </ng-template>
+    <app-center-status
+      (change)="partnerStatusChange($event)"
+      [status]="!checkComplete(initiative_data.id, partner.code)"
+      [initiative_id]="initiative_data.id"
+      [organization_id]="partner.code"
+    ></app-center-status>
     <ng-container *ngFor="let wp of wps">
       <mat-card
         *ngIf="
@@ -234,7 +247,13 @@
               "
             >
               <tr>
-                <td class="wp-title">{{ item?.ipsr?.id ?  item?.ipsr.title +' ('+item.value +')' : item.title }}</td>
+                <td class="wp-title">
+                  {{
+                    item?.ipsr?.id
+                      ? item?.ipsr.title + " (" + item.value + ")"
+                      : item.title
+                  }}
+                </td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">
                   <td>

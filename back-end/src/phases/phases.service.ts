@@ -26,6 +26,12 @@ export class PhasesService {
       relations: ['previousPhase'],
     });
   }
+  findActivePhase() {
+    return this.phaseRepository.findOne({
+      where: { active: true },
+      relations: ['previousPhase'],
+    });
+  }
 
   update(id: number, updatePhaseDto: UpdatePhaseDto) {
     return this.phaseRepository.update({ id }, { ...updatePhaseDto });

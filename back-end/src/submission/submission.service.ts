@@ -11,6 +11,7 @@ import { Submission } from 'src/entities/submission.entity';
 import { User } from 'src/entities/user.entity';
 import { Phase } from 'src/entities/phase.entity';
 import { Initiative } from 'src/entities/initiative.entity';
+import { CenterStatus } from 'src/entities/center-status.entity';
 
 @Injectable()
 export class SubmissionService {
@@ -29,8 +30,25 @@ export class SubmissionService {
     @InjectRepository(Period) private periodRepository: Repository<Period>,
     @InjectRepository(ResultPeriodValues)
     private resultValuesRepository: Repository<ResultPeriodValues>,
+    @InjectRepository(CenterStatus)
+    private centerStatusRepo: Repository<CenterStatus>,
   ) {}
+  async updateCenterStatus(data) {
+    const { initiative_id, organization_id, status } = data;
 
+    let center_status: CenterStatus;
+    center_status = await this.centerStatusRepo.findOneBy({
+      initiative_id,
+      organization_id,
+    });
+    if (!center_status) center_status = this.centerStatusRepo.create();
+    center_status.initiative_id = initiative_id;
+    center_status.organization_id = organization_id;
+    center_status.status = status;
+   await this.centerStatusRepo.save(center_status);
+
+    return { message: 'Data Saved' };
+  }
   async updateStatusBySubmittionID(id, data) {
     return this.submissionRepository.update(id, data);
   }
@@ -38,7 +56,7 @@ export class SubmissionService {
     return this.submissionRepository.find({
       where: { initiative: { id } },
       relations: ['user', 'phase'],
-      order:{id:'DESC'}
+      order: { id: 'DESC' },
     });
   }
   async findSubmissionsById(id) {
@@ -101,102 +119,11 @@ export class SubmissionService {
     await this.initiativeRepository.update(initiative_id, {
       last_update_at: date,
       last_submitted_at: date,
-      latest_submission_id:submissionObject.id
+      latest_submission_id: submissionObject.id,
     });
     return this.submissionRepository.findOne({
       where: { id: submissionObject.id },
       relations: ['user', 'phase'],
-    });
-  }
-  async importData() {
-    const initiativeId = 1;
-    const phaseId = 1;
-    const userId = 1;
-
-    const periodValues = jsonFile.perValues;
-    const values = jsonFile.values;
-    const organizationsIds = Object.keys(jsonFile.perValues);
-
-    const userObject = await this.userRepository.findOneBy({ id: userId });
-    const phaseObject = await this.phaseRepository.findOneBy({ id: phaseId });
-    const initiativeObject = await this.initiativeRepository.findOneBy({
-      id: initiativeId,
-    });
-    if (userObject == null) {
-      return 'User not found';
-    }
-    if (phaseObject == null) {
-      return 'Phase not found';
-    }
-    if (initiativeObject == null) {
-      return 'Initiative not found';
-    }
-
-    const submissionData = {
-      toc_data: null,
-    };
-    const newSubmission = this.submissionRepository.create(submissionData);
-    newSubmission.user = userObject;
-    newSubmission.phase = phaseObject;
-    newSubmission.initiative = initiativeObject;
-    const submissionObject = await this.submissionRepository.save(
-      newSubmission,
-    );
-
-    organizationsIds.forEach(async (organizationId) => {
-      let organizationObject = await this.organizationRepository.findOneBy({
-        id: +organizationId,
-      });
-
-      if (organizationObject != null) {
-        let workPackages = values[organizationId];
-        let workPackagesIds = Object.keys(workPackages);
-
-        workPackagesIds.forEach(async (workPackageId) => {
-          let workPackageObject = await this.workPackageRepository.findOneBy({
-            wp_id: +workPackageId,
-          });
-          if (workPackageObject != null) {
-            let results = workPackages[workPackageId];
-            let resultsUuids = Object.keys(results);
-
-            resultsUuids.forEach(async (resultUuid) => {
-              let resultValue = results[resultUuid];
-              let resultData = {
-                result_uuid: resultUuid,
-                value: resultValue,
-              };
-              let newResult = this.resultRepository.create(resultData);
-              newResult.organization = organizationObject;
-              newResult.workPackage = workPackageObject;
-              newResult.submission = submissionObject;
-              let resultObject = await this.resultRepository.save(newResult);
-
-              let periodsValues =
-                periodValues[organizationId][workPackageId][resultUuid];
-              let periodsIds = Object.keys(periodsValues);
-
-              periodsIds.forEach(async (periodId) => {
-                let periodObject = await this.periodRepository.findOneBy({
-                  id: +periodId,
-                });
-                if (periodObject != null) {
-                  let resultPeriodValueData = {
-                    value: periodsValues[periodId],
-                  };
-
-                  let newResultPeriodValue = this.resultValuesRepository.create(
-                    resultPeriodValueData,
-                  );
-                  newResultPeriodValue.period = periodObject;
-                  newResultPeriodValue.result = resultObject;
-                  this.resultValuesRepository.save(newResultPeriodValue);
-                }
-              });
-            });
-          }
-        });
-      }
     });
   }
 

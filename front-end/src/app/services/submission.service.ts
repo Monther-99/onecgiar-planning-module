@@ -7,7 +7,17 @@ import { firstValueFrom, map } from 'rxjs';
 })
 export class SubmissionService {
   constructor(private http: HttpClient) {}
-
+  async markStatus(organization_id: number, initiative_id: number,status:boolean) {
+    return firstValueFrom(
+      this.http
+        .patch('/api/submission/center/status', {
+          organization_id,
+          initiative_id,
+          status,
+        })
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
   async getToc(id: any) {
     return firstValueFrom(
       this.http.get('/api/submission/toc/' + id).pipe(map((d: any) => d))
@@ -60,7 +70,7 @@ export class SubmissionService {
       this.http.post('/api/ipsr-value', data).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  
+
   async getMeliaById(id: any) {
     return firstValueFrom(
       this.http.get('/api/melia/' + id).pipe(map((d: any) => d))
@@ -110,11 +120,18 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async getPeriods() {
+  async getPeriods(phase_id:number) {
     return firstValueFrom(
-      this.http.get('/api/periods').pipe(map((d: any) => d))
+      this.http.get('/api/periods/phase/'+phase_id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+  async getActivePhase() {
+    return firstValueFrom(
+      this.http.get('/api/phases/active').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  
 
   async submit(id: number, data: any) {
     return firstValueFrom(

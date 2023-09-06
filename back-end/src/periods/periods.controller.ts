@@ -26,7 +26,10 @@ export class PeriodsController {
   findAll() {
     return this.periodsService.findAll();
   }
-
+  @Get('phase/:phase_id')
+  findByPhaseId(@Param('phase_id') phase_id: number) {
+    return this.periodsService.findByPhaseId(phase_id);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.periodsService.findOne(+id);

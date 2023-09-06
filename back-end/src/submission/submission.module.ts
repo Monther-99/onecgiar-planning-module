@@ -14,6 +14,7 @@ import { Initiative } from 'src/entities/initiative.entity';
 import { HttpModule } from '@nestjs/axios';
 
 import { CacheModule } from '@nestjs/cache-manager';
+import { CenterStatus } from 'src/entities/center-status.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -26,6 +27,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       Result,
       Period,
       ResultPeriodValues,
+      CenterStatus
     ]),
     HttpModule,
     CacheModule.register()

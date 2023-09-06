@@ -103,7 +103,18 @@ export class SubmissionComponent implements OnInit {
   perValuesSammary: any = {};
   perAllValues: any = {};
   sammaryTotal: any = {};
-
+  checkComplete(initiative_id: number, organization_id: number) {
+    if (this.initiative_data.center_status) {
+      return (
+        this.initiative_data.center_status.filter(
+          (d: any) => d.organization_id == organization_id
+        )[0]?.status == 1
+      );
+    } else return false;
+  }
+  partnerStatusChange(event: any) {
+    this.InitData();
+  }
   async changes(
     partner_code: any,
     wp_id: any,
@@ -259,6 +270,7 @@ export class SubmissionComponent implements OnInit {
   ipsrs_data: any;
   initiative_data: any = {};
   ipsr_value_data: any;
+  phase: any;
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -284,6 +296,9 @@ export class SubmissionComponent implements OnInit {
       this.initiative_data.id
     );
     const cross_data = await this.submissionService.getCrossByInitiative(
+      this.params.id
+    );
+    this.initiative_data = await this.submissionService.getInitiative(
       this.params.id
     );
 
@@ -470,7 +485,8 @@ export class SubmissionComponent implements OnInit {
     });
 
     this.InitData();
-    this.period = await this.submissionService.getPeriods();
+    this.phase = await this.submissionService.getActivePhase();
+    this.period = await this.submissionService.getPeriods(this.phase.id);
     this.socket.connect();
     this.socket.on('setDataValues-' + this.params.id, (data: any) => {
       const { partner_code, wp_id, item_id, per_id, value } = data;
@@ -527,6 +543,10 @@ export class SubmissionComponent implements OnInit {
     this.sammaryCalc();
     this.allvalueChange();
   }
+
+  checkEOI(category: any) {
+    return this.phase?.show_eoi ? category == 'EOI' : false;
+  }
   async getDataForWp(
     id: string,
     partner_code: any | null = null,
@@ -537,24 +557,24 @@ export class SubmissionComponent implements OnInit {
         return (
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
-            d.category == 'EOI' ||
+            this.checkEOI(d.category) ||
             d.category == 'CROSS' ||
             d.category == 'IPSR' ||
             d.category == 'MELIA') &&
           (d.group == id ||
             d.wp_id == official_code ||
-            (official_code == 'CROSS' && d.category == 'EOI'))
+            (official_code == 'CROSS' && this.checkEOI(d.category)))
         );
       else
         return (
           ((d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
-            d.category == 'EOI' ||
+            this.checkEOI(d.category) ||
             d.category == 'CROSS' ||
             d.category == 'IPSR' ||
             d.category == 'MELIA') &&
             (d.group == id || d.wp_id == official_code)) ||
-          (official_code == 'CROSS' && d.category == 'EOI')
+          (official_code == 'CROSS' && this.checkEOI(d.category))
         );
     });
 
@@ -688,8 +708,7 @@ export class SubmissionComponent implements OnInit {
         if (dialogResult == true) {
           this.loading = true;
           let result = await this.submissionService.submit(this.params.id, {
-            perValues: this.perValues,
-            values: this.values,
+            phase_id: this.phase.id,
           });
           if (result) {
             this.toastrService.success('Data Submited successfully', 'Success');

@@ -52,6 +52,7 @@ import { StatusComponent } from './submited-versions/status/status.component';
 import { IpsrComponent } from './submission/ipsr/ipsr.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { CenterStatusComponent } from './submission/center-status/center-status.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +79,8 @@ import { FooterComponent } from './footer/footer.component';
     StatusComponent,
     IpsrComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    CenterStatusComponent
   ],
   imports: [
     BrowserModule,
