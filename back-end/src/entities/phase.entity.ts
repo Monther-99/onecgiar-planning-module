@@ -51,4 +51,10 @@ export class Phase {
 
   @OneToMany(() => Submission, (submission) => submission.phase)
   submissions: Submission[];
+
+  @Column({ default: false })
+  active: boolean;
+
+  @Column({ default: false })
+  show_eoi: boolean;
 }

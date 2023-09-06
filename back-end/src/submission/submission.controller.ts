@@ -28,22 +28,28 @@ export class SubmissionController {
   updateStatus(@Param('id') id, @Body() data) {
     return this.submissionService.updateStatusBySubmittionID(id, data);
   }
+  @Patch('center/status')
+  updateCenterStatus(@Body() data) {
+    return this.submissionService.updateCenterStatus(data);
+  }
 
   @Post('save/:id')
-  async save(@Param('id') id,@Request() req) {
+  async save(
+    @Param('id') id,
+    @Request() req,
+    @Body('phase_id') phase_id: number,
+  ) {
     const json = await this.getTocs(id);
-    return this.submissionService.createNew(req.user.id, id, 2, JSON.stringify(json));
+    return this.submissionService.createNew(
+      req.user.id,
+      id,
+      phase_id,
+      JSON.stringify(json),
+    );
   }
 
-  @Get('import')
-  import() {
-    this.submissionService.importData();
-    return 'Data imported successfully';
-  }
   @Post('save_result_values/:id')
   async save_result_values(@Param('id') id, @Body() data) {
-    
-   
     return this.submissionService.saveResultData(id, data);
   }
   @Post('save_result_value/:id')
@@ -111,9 +117,10 @@ export class SubmissionController {
             d.data.data.filter(
               (d) =>
                 (d.category == 'WP' && !d.group) ||
-                d.category == 'OUTPUT' ||
-                d.category == 'EOI' ||
-                (d.category == 'OUTCOME' && d.flow_id == id),
+                ((d.category == 'OUTPUT' ||
+                  d.category == 'EOI' ||
+                  d.category == 'OUTCOME') &&
+                  d.flow_id == tocs[0].related_flow_id),
             ),
           ),
           catchError((error: AxiosError) => {

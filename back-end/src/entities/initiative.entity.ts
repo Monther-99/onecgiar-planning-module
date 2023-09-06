@@ -13,6 +13,7 @@ import { Submission } from './submission.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { InitiativeRoles } from './initiative-roles.entity';
 import { IpsrValue } from './ipsr-value.entity';
+import { CenterStatus } from './center-status.entity';
 
 @Entity()
 export class Initiative {
@@ -64,6 +65,14 @@ export class Initiative {
   )
   @JoinTable()
   roles: Array<InitiativeRoles>;
+
+  @ApiProperty({ type: () => [CenterStatus] })
+  @OneToMany(() => CenterStatus, (center_status) => center_status.initiative, {
+    onUpdate: 'RESTRICT',
+    onDelete: 'RESTRICT',
+  })
+  @JoinTable()
+  center_status:Array<CenterStatus>;
 
   @Column({ nullable: true })
   last_update_at: Date;

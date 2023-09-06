@@ -26,6 +26,11 @@ export class PeriodsService {
       relations: ['phase'],
     });
   }
+  findByPhaseId(phase_id){
+    return this.periodRepository.find({
+      where: { phase:{id:phase_id} },
+    });
+  }
 
   update(id: number, updatePeriodDto: UpdatePeriodDto) {
     return this.periodRepository.update({ id }, { ...updatePeriodDto });
