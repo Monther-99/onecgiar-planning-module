@@ -47,7 +47,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.params = this.activatedRoute?.snapshot.params;
     await this.initData();
 
-    this.user = this.authService.getLogedInUser();
+    this.user = this.authService.getLoggedInUser();
   }
   async initData() {
     this.submissions =

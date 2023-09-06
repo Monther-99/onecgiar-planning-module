@@ -17,6 +17,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   notificationNumberCount: number;
+  isAdmin = false;
 
   increment() {
     this.notificationNumberCount++;
@@ -92,9 +93,10 @@ export class HeaderComponent implements OnInit {
   user_info: any;
   loading = true;
   ngOnInit() {
-    this.router.events.subscribe(e=>{
-      this.user_info = this.authService.getLogedInUser();
-    })
+    this.router.events.subscribe((e) => {
+      this.user_info = this.authService.getLoggedInUser();
+      this.isAdmin = this.authService.isAdmin();
+    });
     this.loadingService.loadingSub.pipe(delay(0)).subscribe((d) => {
       this.loading = d;
     });

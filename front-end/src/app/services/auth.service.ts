@@ -40,7 +40,7 @@ export class AuthService {
       else this.router.navigateByUrl('/');
     }
   }
-  getLogedInUser(): any {
+  getLoggedInUser(): any {
     if(localStorage.getItem('access_token') as string)
     return jwt_decode(localStorage.getItem('access_token') as string);
     else
@@ -54,5 +54,10 @@ export class AuthService {
       }&response_type=code&scope=email+openid+phone+profile&redirect_uri=${
         environment.aws_cognito_client_redirect_uri
       }${redirect_url ? '?redirect_url=' + redirect_url : ''}`;
+  }
+
+  isAdmin() {
+    const loggedUser = this.getLoggedInUser();
+    return loggedUser.role == 'admin';
   }
 }

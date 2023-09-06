@@ -10,6 +10,7 @@ import { AuthComponent } from './auth/auth.component';
 import { SubmitedVersionsComponent } from './submited-versions/submited-versions.component';
 import { SubmitedVersionComponent } from './submited-versions/submited-version/submited-version.component';
 import { AdminComponent } from './admin/admin.component';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [AdminGuard],
     children: [
       { path: '', redirectTo: 'users', pathMatch: 'full' },
       { path: 'users', component: UsersComponent },

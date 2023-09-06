@@ -439,7 +439,7 @@ export class SubmissionComponent implements OnInit {
   savedValues: any = null;
   isCenter: boolean = false;
   async ngOnInit() {
-    this.user = this.AuthService.getLogedInUser();
+    this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     const partners = await this.submissionService.getOrganizations();
     this.initiative_data = await this.submissionService.getInitiative(

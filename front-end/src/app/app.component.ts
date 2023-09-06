@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   user: any;
   ngOnInit(): void {
     this.router.events.subscribe(e=>{
-      this.user = this.authService.getLogedInUser();
+      this.user = this.authService.getLoggedInUser();
     })
   }
   login() {

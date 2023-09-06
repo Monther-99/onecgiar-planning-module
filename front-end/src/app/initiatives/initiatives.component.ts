@@ -41,7 +41,7 @@ export class InitiativesComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    this.user = this.authService.getLogedInUser();
+    this.user = this.authService.getLoggedInUser();
   }
 
   applyFilter(event: Event) {
