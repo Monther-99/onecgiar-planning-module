@@ -23,8 +23,8 @@ export class PhaseDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<PhaseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
     private phasesService: PhasesService,
-    private toastr: ToastrService,
-    private fb:FormBuilder
+    private toast: ToastrService,
+    private fb: FormBuilder
   ) {
     this.phaseId = data.id;
   }
@@ -34,19 +34,20 @@ export class PhaseDialogComponent implements OnInit {
   }
 
   private async formInit() {
-    this.phaseForm =  this.fb.group({
+    this.phaseForm = this.fb.group({
       name: [null, Validators.required],
-      reportingYear:  [null, Validators.required],
+      reportingYear: [null, Validators.required],
       tocPhase: [null],
       startDate: [null],
       endDate: [null],
       previousPhase: [null],
       status: [null],
-    })
+      show_eoi: [false],
+    });
     this.phases = await this.phasesService.getPhases();
     this.tocPhases = await this.phasesService.getTocPhases();
     if (this.phaseId) {
-      let { id, previousPhase, ...phaseValues } =
+      let { id, previousPhase, active, ...phaseValues } =
         await this.phasesService.getPhase(this.phaseId);
       this.phaseForm.setValue({
         ...phaseValues,
@@ -58,7 +59,7 @@ export class PhaseDialogComponent implements OnInit {
   async submit() {
     if (this.phaseForm.valid) {
       await this.phasesService.submitPhase(this.phaseId, this.phaseForm.value);
-      this.toastr.success("Phase saved successfully");
+      this.toast.success("Phase saved successfully");
       this.dialogRef.close({ submitted: true });
     }
   }

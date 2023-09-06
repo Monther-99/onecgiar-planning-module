@@ -1,4 +1,9 @@
-<button mat-raised-button class="add_new_btn" color="primary" (click)="openDialog()">
+<button
+  mat-raised-button
+  class="add_new_btn"
+  color="primary"
+  (click)="openDialog()"
+>
   Add new
 </button>
 
@@ -49,11 +54,41 @@
       <td mat-cell *matCellDef="let phase">{{ phase.status }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+      <td mat-cell *matCellDef="let phase">
+        {{ phase.active ? "Yes" : "No" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="show_eoi">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Show EOI</th>
+      <td mat-cell *matCellDef="let phase">
+        {{ phase.show_eoi ? "Yes" : "No" }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let phase">
         <button mat-icon-button (click)="openDialog(phase.id)">
           <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          *ngIf="!phase.active"
+          mat-icon-button
+          (click)="activate(phase.id)"
+          matTooltip="Activate Phase"
+        >
+          <mat-icon>check_circle_outline</mat-icon>
+        </button>
+        <button
+          *ngIf="phase.active"
+          mat-icon-button
+          (click)="deactivate(phase.id)"
+          matTooltip="Deactivate Phase"
+        >
+          <mat-icon>block</mat-icon>
         </button>
         <button mat-icon-button (click)="delete(phase.id)">
           <mat-icon>delete</mat-icon>

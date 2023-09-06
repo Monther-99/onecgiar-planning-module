@@ -17,4 +17,6 @@ export class CreatePhaseDto {
   endDate: string;
 
   status: phaseStatus;
+
+  show_eoi: boolean;
 }

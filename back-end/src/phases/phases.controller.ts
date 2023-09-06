@@ -34,13 +34,25 @@ export class PhasesController {
   findAll() {
     return this.phasesService.findAll();
   }
+
   @Get('active')
-  findActiveOne(@Param('id') id: string) {
+  findActiveOne() {
     return this.phasesService.findActivePhase();
   }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.phasesService.findOne(+id);
+  }
+
+  @Get('activate/:id')
+  activate(@Param('id') id: string) {
+    return this.phasesService.activate(+id);
+  }
+
+  @Get('deactivate/:id')
+  deactivate(@Param('id') id: string) {
+    return this.phasesService.deactivate(+id);
   }
 
   @Patch(':id')
