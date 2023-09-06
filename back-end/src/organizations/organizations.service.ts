@@ -35,6 +35,6 @@ export class OrganizationsService {
   }
 
   remove(id: number) {
-    this.organizationRepository.delete({ id });
+    return this.organizationRepository.delete({ id });
   }
 }

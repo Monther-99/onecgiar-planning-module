@@ -11,6 +11,7 @@ import { SubmitedVersionsComponent } from './submited-versions/submited-versions
 import { SubmitedVersionComponent } from './submited-versions/submited-version/submited-version.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminGuard } from './guards/admin.guard';
+import { OrganizationsComponent } from './admin/organizations/organizations.component';
 
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
     canActivate: [AdminGuard],
     children: [
       { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: 'organizations', component: OrganizationsComponent },
       { path: 'users', component: UsersComponent },
       { path: 'phases', component: PhasesComponent },
       { path: 'periods', component: PeriodsComponent },

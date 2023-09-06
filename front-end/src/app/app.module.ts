@@ -53,6 +53,8 @@ import { IpsrComponent } from './submission/ipsr/ipsr.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { CenterStatusComponent } from './submission/center-status/center-status.component';
+import { OrganizationsComponent } from './admin/organizations/organizations.component';
+import { OrganizationDialogComponent } from './admin/organizations/organization-dialog/organization-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -80,7 +82,9 @@ import { CenterStatusComponent } from './submission/center-status/center-status.
     IpsrComponent,
     HeaderComponent,
     FooterComponent,
-    CenterStatusComponent
+    CenterStatusComponent,
+    OrganizationsComponent,
+    OrganizationDialogComponent
   ],
   imports: [
     BrowserModule,
