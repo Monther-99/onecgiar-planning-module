@@ -55,6 +55,8 @@ import { FooterComponent } from './footer/footer.component';
 import { CenterStatusComponent } from './submission/center-status/center-status.component';
 import { OrganizationsComponent } from './admin/organizations/organizations.component';
 import { OrganizationDialogComponent } from './admin/organizations/organization-dialog/organization-dialog.component';
+import { AdminIpsrComponent } from './admin/ipsr/admin-ipsr.component';
+import { IpsrDialogComponent } from './admin/ipsr/ipsr-dialog/ipsr-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +86,9 @@ import { OrganizationDialogComponent } from './admin/organizations/organization-
     FooterComponent,
     CenterStatusComponent,
     OrganizationsComponent,
-    OrganizationDialogComponent
+    OrganizationDialogComponent,
+    AdminIpsrComponent,
+    IpsrDialogComponent
   ],
   imports: [
     BrowserModule,

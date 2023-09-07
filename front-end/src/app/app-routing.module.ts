@@ -12,6 +12,7 @@ import { SubmitedVersionComponent } from './submited-versions/submited-version/s
 import { AdminComponent } from './admin/admin.component';
 import { AdminGuard } from './guards/admin.guard';
 import { OrganizationsComponent } from './admin/organizations/organizations.component';
+import { AdminIpsrComponent } from './admin/ipsr/admin-ipsr.component';
 
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'phases', component: PhasesComponent },
       { path: 'periods', component: PeriodsComponent },
+      { path: 'ipsr', component: AdminIpsrComponent },
     ],
   },
   { path: 'initiative/:id/:code/submission', component: SubmissionComponent },
