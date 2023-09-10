@@ -28,6 +28,11 @@ export class PhasesController {
     return this.phasesService.create(createPhaseDto);
   }
 
+  @Post('assign-orgs')
+  assignOrganizations(@Body() data: any) {
+    return this.phasesService.assignOrganizations(data);
+  }
+
   // @UseGuards(RolesGuard)
   @Roles(Role.Admin)
   @Get()
@@ -53,6 +58,22 @@ export class PhasesController {
   @Get('deactivate/:id')
   deactivate(@Param('id') id: string) {
     return this.phasesService.deactivate(+id);
+  }
+
+  @Get(':id/initiatives')
+  getInitiatives(@Param('id') id: string) {
+    return this.phasesService.fetchPhaseInitiativesData(+id);
+  }
+
+  @Get('assigned-orgs/:phase_id/:initiative_id')
+  getAssignedOrganizations(
+    @Param('phase_id') phase_id: string,
+    @Param('initiative_id') initiative_id: string,
+  ) {
+    return this.phasesService.fetchAssignedOrganizations(
+      +phase_id,
+      +initiative_id,
+    );
   }
 
   @Patch(':id')

@@ -13,6 +13,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminGuard } from './guards/admin.guard';
 import { OrganizationsComponent } from './admin/organizations/organizations.component';
 import { AdminIpsrComponent } from './admin/ipsr/admin-ipsr.component';
+import { PhaseInitiativesComponent } from './admin/phases/phase-initiatives/phase-initiatives.component';
 
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'ipsr', component: AdminIpsrComponent },
     ],
   },
+  { path: 'admin/phases/:id/initiatives', component: PhaseInitiativesComponent },
   { path: 'initiative/:id/:code/submission', component: SubmissionComponent },
   { path: 'initiative/:id/:code/submission/center', component: SubmissionComponent },
   { path: 'initiative/:id/:code/submited-versions', component: SubmitedVersionsComponent },

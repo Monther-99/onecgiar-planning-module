@@ -57,4 +57,26 @@ export class PhasesService {
       this.http.get('api/phases/deactivate/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  getInitiatives(phase_id: number) {
+    return firstValueFrom(
+      this.http
+        .get('api/phases/' + phase_id + '/initiatives')
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  assignPhaseInitOrgs(data: any) {
+    return firstValueFrom(
+      this.http.post('api/phases/assign-orgs', data).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  getAssignedOrgs(phase_id: number, initiative_id: number) {
+    return firstValueFrom(
+      this.http
+        .get('api/phases/assigned-orgs/' + phase_id + '/' + initiative_id)
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
 }

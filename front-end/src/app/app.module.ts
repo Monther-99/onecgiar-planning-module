@@ -57,6 +57,8 @@ import { OrganizationsComponent } from './admin/organizations/organizations.comp
 import { OrganizationDialogComponent } from './admin/organizations/organization-dialog/organization-dialog.component';
 import { AdminIpsrComponent } from './admin/ipsr/admin-ipsr.component';
 import { IpsrDialogComponent } from './admin/ipsr/ipsr-dialog/ipsr-dialog.component';
+import { PhaseInitiativesComponent } from './admin/phases/phase-initiatives/phase-initiatives.component';
+import { AssignOrganizationsComponent } from './admin/phases/phase-initiatives/assign-organizations/assign-organizations.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +90,9 @@ import { IpsrDialogComponent } from './admin/ipsr/ipsr-dialog/ipsr-dialog.compon
     OrganizationsComponent,
     OrganizationDialogComponent,
     AdminIpsrComponent,
-    IpsrDialogComponent
+    IpsrDialogComponent,
+    PhaseInitiativesComponent,
+    AssignOrganizationsComponent
   ],
   imports: [
     BrowserModule,

@@ -71,7 +71,11 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let phase">
-        <button mat-icon-button (click)="openDialog(phase.id)">
+        <button
+          mat-icon-button
+          (click)="openDialog(phase.id)"
+          matTooltip="Edit Phase"
+        >
           <mat-icon>edit</mat-icon>
         </button>
         <button
@@ -90,7 +94,18 @@
         >
           <mat-icon>block</mat-icon>
         </button>
-        <button mat-icon-button (click)="delete(phase.id)">
+        <button
+          mat-icon-button
+          routerLink="{{ phase.id }}/initiatives"
+          matTooltip="Manage Initiatives"
+        >
+          <mat-icon>dns</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="delete(phase.id)"
+          matTooltip="Delete Phase"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </td>
