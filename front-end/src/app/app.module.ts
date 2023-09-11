@@ -59,6 +59,8 @@ import { AdminIpsrComponent } from './admin/ipsr/admin-ipsr.component';
 import { IpsrDialogComponent } from './admin/ipsr/ipsr-dialog/ipsr-dialog.component';
 import { PhaseInitiativesComponent } from './admin/phases/phase-initiatives/phase-initiatives.component';
 import { AssignOrganizationsComponent } from './admin/phases/phase-initiatives/assign-organizations/assign-organizations.component';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { LoadingInterceptor } from './loading.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,7 +94,8 @@ import { AssignOrganizationsComponent } from './admin/phases/phase-initiatives/a
     AdminIpsrComponent,
     IpsrDialogComponent,
     PhaseInitiativesComponent,
-    AssignOrganizationsComponent
+    AssignOrganizationsComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -132,6 +135,11 @@ import { AssignOrganizationsComponent } from './admin/phases/phase-initiatives/a
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpHeaderService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true,
     },
   ],
