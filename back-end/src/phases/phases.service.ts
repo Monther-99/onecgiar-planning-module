@@ -3,7 +3,7 @@ import { CreatePhaseDto } from './dto/create-phase.dto';
 import { UpdatePhaseDto } from './dto/update-phase.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phase } from 'src/entities/phase.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organization.entity';
 import { Initiative } from 'src/entities/initiative.entity';
 import { Organization } from 'src/entities/organization.entity';
@@ -16,6 +16,8 @@ export class PhasesService {
     private phaseInitOrgRepo: Repository<PhaseInitiativeOrganization>,
     @InjectRepository(Initiative)
     private initiativeRepository: Repository<Initiative>,
+    @InjectRepository(Organization)
+    private organizationRepository: Repository<Organization>,
   ) {}
 
   create(createPhaseDto: CreatePhaseDto) {
@@ -83,12 +85,12 @@ export class PhasesService {
       initiative_id,
     });
 
-    let organizations = [];
+    let organizationsIds = [];
     data.forEach((element) => {
-      organizations.push(element.organization_id);
+      organizationsIds.push(element.organization_id);
     });
 
-    return organizations;
+    return this.organizationRepository.findBy({ id: In(organizationsIds) });
   }
 
   async fetchPhaseInitiativesData(phase_id: number) {

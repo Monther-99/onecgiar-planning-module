@@ -16,6 +16,7 @@ import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ROLES } from '../components/new-team-member/new-team-member.component';
 import { IpsrComponent } from './ipsr/ipsr.component';
+import { PhasesService } from '../services/phases.service';
 
 @Component({
   selector: 'app-submission',
@@ -26,6 +27,7 @@ export class SubmissionComponent implements OnInit {
   title = 'planning';
   constructor(
     private submissionService: SubmissionService,
+    private phasesService: PhasesService,
     private socket: AppSocket,
     public dialog: MatDialog,
     public activatedRoute: ActivatedRoute,
@@ -456,7 +458,11 @@ export class SubmissionComponent implements OnInit {
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
-    const partners = await this.submissionService.getOrganizations();
+    this.phase = await this.submissionService.getActivePhase();
+    let partners = await this.phasesService.getAssignedOrgs(this.phase.id, this.params.id);
+    if (partners.length < 1) {
+      partners = await this.submissionService.getOrganizations();
+    }
     this.initiative_data = await this.submissionService.getInitiative(
       this.params.id
     );
@@ -485,7 +491,6 @@ export class SubmissionComponent implements OnInit {
     });
 
     this.InitData();
-    this.phase = await this.submissionService.getActivePhase();
     this.period = await this.submissionService.getPeriods(this.phase.id);
     this.socket.connect();
     this.socket.on('setDataValues-' + this.params.id, (data: any) => {

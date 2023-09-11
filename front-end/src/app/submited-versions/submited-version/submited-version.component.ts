@@ -14,6 +14,7 @@ import { ROLES } from '../../components/new-team-member/new-team-member.componen
 import { CrossCuttingComponent } from 'src/app/submission/cross-cutting/cross-cutting.component';
 import { MeliaComponent } from 'src/app/submission/melia/melia.component';
 import { ViewDataComponent } from 'src/app/submission/view-data/view-data.component';
+import { PhasesService } from 'src/app/services/phases.service';
 
 @Component({
   selector: 'app-submited-version',
@@ -24,6 +25,7 @@ export class SubmitedVersionComponent implements OnInit {
   title = 'planning';
   constructor(
     private submissionService: SubmissionService,
+    private phasesService: PhasesService,
     private socket: AppSocket,
     public dialog: MatDialog,
     public activatedRoute: ActivatedRoute,
@@ -396,9 +398,15 @@ export class SubmitedVersionComponent implements OnInit {
 
     this.params = this.activatedRoute?.snapshot.params;
     this.submission_data = await this.submissionService.getSubmissionsById(this.params.id)
-    console.log(this.submission_data);
-    const partners = await this.submissionService.getOrganizations();
     this.initiative_data = this.submission_data.initiative
+    
+    let partners = await this.phasesService.getAssignedOrgs(
+      this.submission_data.phase.id,
+      this.initiative_data.id
+    );
+    if (partners.length < 1) {
+      partners = await this.submissionService.getOrganizations();
+    }
 
     this.partners = partners;
 
