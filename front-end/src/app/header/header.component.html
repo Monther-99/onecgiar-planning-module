@@ -49,10 +49,10 @@
     </div>
 
     <nav class="header-user-nav-box">
-      <button *ngIf="user_info && isAdmin" class="user-nav-button" 
+      <a *ngIf="user_info && isAdmin" class="user-nav-button" 
         mat-icon-button routerLink="admin">
         <span class="user-nav-button__title--1">Admin Area</span>
-      </button>
+      </a>
 
       <button
         [ngClass]="{

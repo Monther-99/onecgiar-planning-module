@@ -276,7 +276,7 @@
                   </td>
                 </ng-container>
                 <td>
-                  <mat-form-field class="per">
+                  <mat-form-field class="per" *ngIf="item.category != 'EOI'">
                     <input
                       [disabled]="
                         perValues[partner.code][wp.ost_wp.wp_official_code][
