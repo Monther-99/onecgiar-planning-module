@@ -24,7 +24,7 @@ export class Result {
   @Column({type:'float'})
   value: number;
 
-  @Column()
+  @Column({default:'0'})
   budget: string;
 
   @ManyToOne(() => Organization, (organization) => organization.results)

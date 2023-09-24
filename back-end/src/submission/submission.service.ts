@@ -298,14 +298,14 @@ export class SubmissionService {
       initiative_id: initiativeId,
       organization_id: +partner_code,
       wp_id: workPackageObject.wp_id,
-      submission_id: null,
+      submission_id: IsNull(),
     });
 
     if (oldWpBudget) {
       oldWpBudget.budget = budget;
       await this.wpBudgetRepository.save(oldWpBudget);
     } else {
-      const data = {
+      const data:any = {
         initiative_id: initiativeId,
         organization_id: +partner_code,
         wp_id: workPackageObject.wp_id,
