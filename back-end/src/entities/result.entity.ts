@@ -21,8 +21,11 @@ export class Result {
   @Column({ type: 'uuid' })
   result_uuid: string;
 
-  @Column()
+  @Column({type:'float'})
   value: number;
+
+  @Column()
+  budget: string;
 
   @ManyToOne(() => Organization, (organization) => organization.results)
   @JoinColumn({ name: 'organization_id' })

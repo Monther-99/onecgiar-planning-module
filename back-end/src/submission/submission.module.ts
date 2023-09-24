@@ -15,6 +15,7 @@ import { HttpModule } from '@nestjs/axios';
 
 import { CacheModule } from '@nestjs/cache-manager';
 import { CenterStatus } from 'src/entities/center-status.entity';
+import { WpBudget } from 'src/entities/wp-budget.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -27,7 +28,8 @@ import { CenterStatus } from 'src/entities/center-status.entity';
       Result,
       Period,
       ResultPeriodValues,
-      CenterStatus
+      CenterStatus,
+      WpBudget
     ]),
     HttpModule,
     CacheModule.register()

@@ -61,6 +61,7 @@ import { PhaseInitiativesComponent } from './admin/phases/phase-initiatives/phas
 import { AssignOrganizationsComponent } from './admin/phases/phase-initiatives/assign-organizations/assign-organizations.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingInterceptor } from './loading.interceptor';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @NgModule({
   declarations: [
     AppComponent,
@@ -129,6 +130,7 @@ import { LoadingInterceptor } from './loading.interceptor';
     ToastrModule.forRoot(),
     MatTooltipModule,
     MatToolbarModule,
+    MatSlideToggleModule,
   ],
   providers: [
     AppSocket,

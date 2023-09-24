@@ -44,9 +44,16 @@ export class SubmissionComponent implements OnInit {
   sammary: any = {};
   allData: any = {};
   values: any = {};
+  displayValues: any = {};
+  summaryBudgets: any = {};
+  summaryBudgetsTotal: any = {};
+  wp_budgets: any = {};
+  budgetValues: any = {};
+  displayBudgetValues: any = {};
   totals: any = {};
   errors: any = {};
   period: Array<any> = [];
+  toggleValues: any = {};
   check(values: any, code: string, id: number, item_id: string) {
     if (values[code] && values[code][id] && values[code][id][item_id]) {
       return true;
@@ -75,16 +82,45 @@ export class SubmissionComponent implements OnInit {
       return this.totals[code][id];
   }
   timeCalc: any;
-  async changeCalc(partner_code: any, wp_id: any, item_id: any, value: any) {
+  async changeCalc(partner_code: any, wp_id: any, item_id: any, type: string) {
     if (this.timeCalc) clearTimeout(this.timeCalc);
     this.timeCalc = setTimeout(async () => {
+      let percentValue;
+      let budgetValue;
+      let isActualValues = this.toggleValues[partner_code][wp_id];
+
+      if (type == 'percent') {
+        percentValue = isActualValues
+          ? this.values[partner_code][wp_id][item_id]
+          : this.displayValues[partner_code][wp_id][item_id];
+        budgetValue = this.budgetValue(
+          percentValue,
+          this.wp_budgets[partner_code][wp_id]
+        );
+      } else {
+        budgetValue = isActualValues
+          ? this.budgetValues[partner_code][wp_id][item_id]
+          : this.displayBudgetValues[partner_code][wp_id][item_id];
+        percentValue = this.percentValue(
+          budgetValue,
+          this.wp_budgets[partner_code][wp_id]
+        );
+      }
+      this.values[partner_code][wp_id][item_id] = percentValue;
+      this.displayValues[partner_code][wp_id][item_id] =
+        Math.round(percentValue);
+      this.budgetValues[partner_code][wp_id][item_id] = budgetValue;
+      this.displayBudgetValues[partner_code][wp_id][item_id] =
+        Math.round(budgetValue);
+
       const result = await this.submissionService.saveResultValue(
         this.params.id,
         {
-          partner_code,
-          wp_id,
-          item_id,
-          value,
+          partner_code: partner_code,
+          wp_id: wp_id,
+          item_id: item_id,
+          percent_value: percentValue,
+          budget_value: budgetValue,
         }
       );
       if (result)
@@ -93,12 +129,64 @@ export class SubmissionComponent implements OnInit {
           partner_code,
           wp_id,
           item_id,
-          value,
+          value: percentValue,
         });
       this.sammaryCalc();
     }, 500);
 
     // localStorage.setItem('initiatives', JSON.stringify(this.values));
+  }
+
+  budgetTime: any;
+  async wpBudgetChange(partner_code: any, wp_id: any, budget: any) {
+    if (this.budgetTime) clearTimeout(this.budgetTime);
+    this.budgetTime = setTimeout(async () => {
+      const result = await this.submissionService.saveWpBudget(this.params.id, {
+        partner_code,
+        wp_id,
+        budget,
+      });
+
+      this.refreshValues(partner_code, wp_id);
+
+      if (result)
+        this.socket.emit('setDataBudget', {
+          id: this.params.id,
+          partner_code,
+          wp_id,
+          budget,
+        });
+      this.sammaryCalc();
+    }, 500);
+  }
+
+  percentValue(value: number, totalBudget: number) {
+    return (value / totalBudget) * 100;
+  }
+
+  budgetValue(value: number, totalBudget: number) {
+    return (value * totalBudget) / 100;
+  }
+
+  roundToThreeDecimals(value: number) {
+    return Math.round(value * 1000) / 1000;
+  }
+
+  toggleActualValues(partner_code: any, wp_official_code: any) {
+    this.toggleValues[partner_code][wp_official_code] =
+      !this.toggleValues[partner_code][wp_official_code];
+  }
+
+  refreshValues(partner_code: any, wp_id: any) {
+    Object.keys(this.values[partner_code][wp_id]).forEach((item_id) => {
+      let budgetValue = this.budgetValue(
+        this.values[partner_code][wp_id][item_id],
+        this.wp_budgets[partner_code][wp_id]
+      );
+      this.budgetValues[partner_code][wp_id][item_id] = budgetValue;
+      this.displayBudgetValues[partner_code][wp_id][item_id] =
+        Math.round(budgetValue);
+    });
   }
 
   perValues: any = {};
@@ -167,6 +255,35 @@ export class SubmissionComponent implements OnInit {
     let totalsum: any = {};
     let totalsumcenter: any = {};
     let totalWp: any = {};
+    this.summaryBudgets = {};
+    this.summaryBudgetsTotal = {};
+
+    Object.keys(this.budgetValues).forEach((partner_code) => {
+      Object.keys(this.budgetValues[partner_code]).forEach((wp_id) => {
+        if (!this.summaryBudgets[wp_id]) this.summaryBudgets[wp_id] = {};
+        if (!this.summaryBudgetsTotal[wp_id])
+          this.summaryBudgetsTotal[wp_id] = 0;
+        Object.keys(this.budgetValues[partner_code][wp_id]).forEach(
+          (item_id) => {
+            if (!this.summaryBudgets[wp_id][item_id])
+              this.summaryBudgets[wp_id][item_id] = 0;
+            this.summaryBudgets[wp_id][item_id] +=
+              +this.budgetValues[partner_code][wp_id][item_id];
+            this.summaryBudgetsTotal[wp_id] +=
+              +this.budgetValues[partner_code][wp_id][item_id];
+          }
+        );
+      });
+    });
+
+    Object.keys(this.summaryBudgets).forEach((wp_id) => {
+      Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
+        this.sammary[wp_id][item_id] = this.percentValue(
+          this.summaryBudgets[wp_id][item_id],
+          this.summaryBudgetsTotal[wp_id]
+        );
+      });
+    });
 
     Object.keys(this.values).forEach((code) => {
       Object.keys(this.values[code]).forEach((wp_id) => {
@@ -180,7 +297,7 @@ export class SubmissionComponent implements OnInit {
         } else {
           this.errors[code][wp_id] = null;
         }
-        this.totals[code][wp_id] = total;
+        this.totals[code][wp_id] = Math.round(total);
 
         Object.keys(this.values[code][wp_id]).forEach((item_id) => {
           if (!totalsum[wp_id]) totalsum[wp_id] = {};
@@ -206,11 +323,6 @@ export class SubmissionComponent implements OnInit {
           totalWp[wp_id][item_id] =
             +(+totalsum[wp_id][item_id] / +totalsumcenter[wp_id]) * 100;
         else totalWp[wp_id][item_id] = 0;
-      });
-    });
-    Object.keys(totalWp).forEach((wp_id) => {
-      Object.keys(totalWp[wp_id]).forEach((item_id) => {
-        this.sammary[wp_id][item_id] = totalWp[wp_id][item_id];
       });
     });
 
@@ -284,8 +396,16 @@ export class SubmissionComponent implements OnInit {
     this.wps = [];
     this.partnersData = {};
     this.sammary = {};
+    this.summaryBudgets = {};
+    this.summaryBudgetsTotal = {};
+    this.wp_budgets = {};
+    this.toggleValues = {};
+    this.budgetValues = {};
+    this.budgetValues = {};
+    this.displayBudgetValues = {};
     this.allData = {};
     this.values = {};
+    this.displayValues = {};
     this.totals = {};
     this.errors = {};
 
@@ -303,6 +423,8 @@ export class SubmissionComponent implements OnInit {
     this.initiative_data = await this.submissionService.getInitiative(
       this.params.id
     );
+
+    this.wp_budgets = await this.submissionService.getWpBudgets(this.params.id);
 
     // const indicators_data = this.results
     //   .filter(
@@ -376,7 +498,35 @@ export class SubmissionComponent implements OnInit {
     //   ).values(),
     // ];
     for (let partner of this.partners) {
+      if (!this.budgetValues[partner.code])
+        this.budgetValues[partner.code] = {};
+
+      if (!this.displayBudgetValues[partner.code])
+        this.displayBudgetValues[partner.code] = {};
+
       for (let wp of this.wps) {
+        if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
+        if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])
+          this.wp_budgets[partner.code][wp.ost_wp.wp_official_code] = null;
+
+        if (!this.toggleValues[partner.code])
+          this.toggleValues[partner.code] = {};
+        if (!this.toggleValues[partner.code][wp.ost_wp.wp_official_code])
+          this.toggleValues[partner.code][wp.ost_wp.wp_official_code] = false;
+
+        if (!this.budgetValues[partner.code][wp.ost_wp.wp_official_code])
+          this.budgetValues[partner.code][wp.ost_wp.wp_official_code] = {};
+
+        if (!this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code])
+          this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code] =
+            {};
+
+        if (!this.summaryBudgets[wp.ost_wp.wp_official_code])
+          this.summaryBudgets[wp.ost_wp.wp_official_code] = {};
+
+        if (!this.summaryBudgetsTotal[wp.ost_wp.wp_official_code])
+          this.summaryBudgetsTotal[wp.ost_wp.wp_official_code] = 0;
+
         const result = await this.getDataForWp(
           wp.id,
           partner.code,
@@ -401,6 +551,21 @@ export class SubmissionComponent implements OnInit {
             wp.ost_wp.wp_official_code,
             item.id
           );
+          this.check(
+            this.displayValues,
+            partner.code,
+            wp.ost_wp.wp_official_code,
+            item.id
+          );
+          this.budgetValues[partner.code][wp.ost_wp.wp_official_code][item.id] =
+            null;
+
+          this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code][
+            item.id
+          ] = null;
+
+          if (!this.summaryBudgets[wp.ost_wp.wp_official_code][item.id])
+            this.summaryBudgets[wp.ost_wp.wp_official_code][item.id] = 0;
 
           if (!this.perValues[partner.code]) this.perValues[partner.code] = {};
           if (!this.perValues[partner.code][wp.ost_wp.wp_official_code])
@@ -459,7 +624,10 @@ export class SubmissionComponent implements OnInit {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     this.phase = await this.submissionService.getActivePhase();
-    let partners = await this.phasesService.getAssignedOrgs(this.phase.id, this.params.id);
+    let partners = await this.phasesService.getAssignedOrgs(
+      this.phase.id,
+      this.params.id
+    );
     if (partners.length < 1) {
       partners = await this.submissionService.getOrganizations();
     }
@@ -500,7 +668,20 @@ export class SubmissionComponent implements OnInit {
     this.socket.on('setDataValue-' + this.params.id, (data: any) => {
       const { partner_code, wp_id, item_id, value } = data;
       this.values[partner_code][wp_id][item_id] = value;
+      this.displayValues[partner_code][wp_id][item_id] = Math.round(value);
+      let budgetValue = this.budgetValue(
+        value,
+        this.wp_budgets[partner_code][wp_id]
+      );
+      this.budgetValues[partner_code][wp_id][item_id] = budgetValue;
+      this.displayBudgetValues[partner_code][wp_id][item_id] =
+        Math.round(budgetValue);
       if (!this.isCenter) this.sammaryCalc();
+    });
+    this.socket.on('setDataBudget-' + this.params.id, (data: any) => {
+      const { partner_code, wp_id, budget } = data;
+      this.wp_budgets[partner_code][wp_id] = budget;
+      this.refreshValues(partner_code, wp_id);
     });
   }
 
@@ -517,10 +698,24 @@ export class SubmissionComponent implements OnInit {
               valuesToSet[code] &&
               valuesToSet[code][wp_id] &&
               valuesToSet[code][wp_id][item_id]
-            )
-              this.values[code][wp_id][item_id] =
-                +valuesToSet[code][wp_id][item_id];
-            else this.values[code][wp_id][item_id] = 0;
+            ) {
+              let percentValue = +valuesToSet[code][wp_id][item_id];
+              let budgetValue = this.budgetValue(
+                percentValue,
+                this.wp_budgets[code][wp_id]
+              );
+              this.values[code][wp_id][item_id] = percentValue;
+              this.displayValues[code][wp_id][item_id] =
+                Math.round(percentValue);
+              this.budgetValues[code][wp_id][item_id] = budgetValue;
+              this.displayBudgetValues[code][wp_id][item_id] =
+                Math.round(budgetValue);
+            } else {
+              this.values[code][wp_id][item_id] = 0;
+              this.displayValues[code][wp_id][item_id] = 0;
+              this.budgetValues[code][wp_id][item_id] = 0;
+              this.displayBudgetValues[code][wp_id][item_id] = 0;
+            }
             // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
           });
         });

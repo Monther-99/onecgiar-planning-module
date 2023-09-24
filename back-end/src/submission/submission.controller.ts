@@ -57,6 +57,16 @@ export class SubmissionController {
     return this.submissionService.saveResultDataValue(id, data);
   }
 
+  @Post('save_wp_budget/:id')
+  async saveWpBudget(@Param('id') id: string, @Body() data: any) {
+    return this.submissionService.saveWpBudget(+id, data);
+  }
+
+  @Get('wp_budgets/:id')
+  getWpBudgets(@Param('id') id: string) {
+    return this.submissionService.getWpsBudgets(+id);
+  }
+  
   @Get('save/:id')
   async getSaved(@Param('id') id) {
     return this.submissionService.getSaved(id);

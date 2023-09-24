@@ -12,6 +12,7 @@ import { User } from 'src/entities/user.entity';
 import { Phase } from 'src/entities/phase.entity';
 import { Initiative } from 'src/entities/initiative.entity';
 import { CenterStatus } from 'src/entities/center-status.entity';
+import { WpBudget } from 'src/entities/wp-budget.entity';
 
 @Injectable()
 export class SubmissionService {
@@ -32,6 +33,8 @@ export class SubmissionService {
     private resultValuesRepository: Repository<ResultPeriodValues>,
     @InjectRepository(CenterStatus)
     private centerStatusRepo: Repository<CenterStatus>,
+    @InjectRepository(WpBudget)
+    private wpBudgetRepository: Repository<WpBudget>,
   ) {}
   async updateCenterStatus(data) {
     const { initiative_id, organization_id, status } = data;
@@ -45,7 +48,7 @@ export class SubmissionService {
     center_status.initiative_id = initiative_id;
     center_status.organization_id = organization_id;
     center_status.status = status;
-   await this.centerStatusRepo.save(center_status);
+    await this.centerStatusRepo.save(center_status);
 
     return { message: 'Data Saved' };
   }
@@ -255,7 +258,7 @@ export class SubmissionService {
   async saveResultDataValue(id, data: any) {
     const initiativeId = id;
 
-    const { partner_code, wp_id, item_id, value } = data;
+    const { partner_code, wp_id, item_id, percent_value, budget_value } = data;
 
     let organizationObject = await this.organizationRepository.findOneBy({
       id: +partner_code,
@@ -273,7 +276,8 @@ export class SubmissionService {
     });
 
     if (oldResult) {
-      oldResult.value = value;
+      oldResult.value = percent_value;
+      oldResult.budget = budget_value;
       await this.resultRepository.save(oldResult);
     } else throw new NotFoundException();
 
@@ -281,5 +285,58 @@ export class SubmissionService {
       last_update_at: new Date(),
     });
     return { message: 'Data saved' };
+  }
+
+  async saveWpBudget(initiativeId: number, data: any) {
+    const { partner_code, wp_id, budget } = data;
+
+    let workPackageObject = await this.workPackageRepository.findOneBy({
+      wp_official_code: wp_id,
+    });
+
+    let oldWpBudget = await this.wpBudgetRepository.findOneBy({
+      initiative_id: initiativeId,
+      organization_id: +partner_code,
+      wp_id: workPackageObject.wp_id,
+      submission_id: null,
+    });
+
+    if (oldWpBudget) {
+      oldWpBudget.budget = budget;
+      await this.wpBudgetRepository.save(oldWpBudget);
+    } else {
+      const data = {
+        initiative_id: initiativeId,
+        organization_id: +partner_code,
+        wp_id: workPackageObject.wp_id,
+        budget: budget,
+        submission_id: null,
+      };
+
+      const newWpBudget = this.wpBudgetRepository.create(data);
+      this.wpBudgetRepository.save(newWpBudget);
+    }
+
+    await this.initiativeRepository.update(initiativeId, {
+      last_update_at: new Date(),
+    });
+    return { message: 'Data saved' };
+  }
+
+  async getWpsBudgets(initiative_id: number) {
+    const wpBudgets = await this.wpBudgetRepository.find({
+      where: { initiative_id },
+      relations: ['workPackage'],
+    });
+
+    let data = {};
+    wpBudgets.forEach((element) => {
+      if (!data[element.organization_id]) data[element.organization_id] = {};
+
+      data[element.organization_id][element.workPackage.wp_official_code] =
+        element.budget;
+    });
+
+    return data;
   }
 }

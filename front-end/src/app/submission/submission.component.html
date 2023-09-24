@@ -10,7 +10,9 @@
     Submit
   </button>
   <mat-card-title
-    >One CGIAR Initiatives Plan of Results and Budget Template ({{ this.phase.name }})</mat-card-title
+    >One CGIAR Initiatives Plan of Results and Budget Template ({{
+      this.phase.name
+    }})</mat-card-title
   >
   <mat-card-subtitle
     >{{ initiative_data.official_code }} ‐
@@ -53,14 +55,14 @@
               </ng-container>
               <td>
                 {{
-                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : '1.2-2'
                 }}%
               </td>
             </tr>
           </ng-container>
           <tr class="total">
-            <td colspan="9">Total</td>
-            <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+            <td [colSpan]="period.length + 1">Total</td>
+            <td>{{ wpsTotalSum | number : '1.2-2' }}%</td>
           </tr>
         </table>
       </mat-card-content>
@@ -116,6 +118,7 @@
                 <th>{{ item.year }} - {{ item.quarter }}</th>
               </ng-container>
               <th>Percentage %</th>
+              <th>Budget</th>
             </tr>
             <ng-container
               *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
@@ -165,7 +168,7 @@
                 <td class="wp-title">
                   {{
                     item?.ipsr?.id
-                      ? item?.ipsr.title + " (" + item.value + ")"
+                      ? item?.ipsr.title + ' (' + item.value + ')'
                       : item.title
                   }}
                 </td>
@@ -187,17 +190,27 @@
                 <td>
                   {{
                     sammary[wp.ost_wp.wp_official_code][item.id]
-                      | number : "1.2-2"
+                      | number : '1.2-2'
                   }}%
+                </td>
+                <td>
+                  {{
+                    roundToThreeDecimals(
+                      summaryBudgets[wp.ost_wp.wp_official_code][item.id]
+                    )
+                  }}
                 </td>
               </tr>
             </ng-container>
             <tr class="total">
-              <td colspan="10">Total</td>
+              <td [colSpan]="period.length + 3">Total</td>
               <td>
                 {{
-                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : '1.2-2'
                 }}%
+              </td>
+              <td>
+                {{ summaryBudgetsTotal[wp.ost_wp.wp_official_code] }}
               </td>
             </tr>
           </table>
@@ -207,8 +220,12 @@
   </mat-tab>
   <mat-tab *ngFor="let partner of partners">
     <ng-template mat-tab-label>
-      <span style="margin-right: 10px;">{{ partner?.acronym ? partner?.acronym : partner?.name }}</span>
-      <mat-icon *ngIf="checkComplete(initiative_data.id, partner.code)">check_circle_outline</mat-icon>
+      <span style="margin-right: 10px">{{
+        partner?.acronym ? partner?.acronym : partner?.name
+      }}</span>
+      <mat-icon *ngIf="checkComplete(initiative_data.id, partner.code)"
+        >check_circle_outline</mat-icon
+      >
     </ng-template>
     <app-center-status
       (change)="partnerStatusChange($event)"
@@ -224,6 +241,14 @@
         "
       >
         <mat-card-title>{{ wp.title }}</mat-card-title>
+        <mat-slide-toggle
+          [(ngModel)]="toggleValues[partner.code][wp.ost_wp.wp_official_code]"
+          (toggleChange)="
+            toggleActualValues(partner.code, wp.ost_wp.wp_official_code)
+          "
+          >Show actual values</mat-slide-toggle
+        >
+
         <mat-card-content>
           <table
             [ngClass]="{
@@ -237,6 +262,7 @@
                 <th>{{ item.year }} - {{ item.quarter }}</th>
               </ng-container>
               <th>Percentage %</th>
+              <th>Budget</th>
             </tr>
 
             <ng-container
@@ -250,7 +276,7 @@
                 <td class="wp-title">
                   {{
                     item?.ipsr?.id
-                      ? item?.ipsr.title + " (" + item.value + ")"
+                      ? item?.ipsr.title + ' (' + item.value + ')'
                       : item.title
                   }}
                 </td>
@@ -278,6 +304,9 @@
                 <td>
                   <mat-form-field class="per" *ngIf="item.category != 'EOI'">
                     <input
+                      *ngIf="
+                        toggleValues[partner.code][wp.ost_wp.wp_official_code]
+                      "
                       [disabled]="
                         perValues[partner.code][wp.ost_wp.wp_official_code][
                           item.id
@@ -288,9 +317,7 @@
                           partner.code,
                           wp.ost_wp.wp_official_code,
                           item.id,
-                          values[partner.code][wp.ost_wp.wp_official_code][
-                            item.id
-                          ]
+                          'percent'
                         )
                       "
                       [(ngModel)]="
@@ -300,18 +327,109 @@
                       "
                       matInput
                     />
+                    <input
+                      *ngIf="
+                        !toggleValues[partner.code][wp.ost_wp.wp_official_code]
+                      "
+                      [disabled]="
+                        perValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ] | inQue
+                      "
+                      (keyup)="
+                        changeCalc(
+                          partner.code,
+                          wp.ost_wp.wp_official_code,
+                          item.id,
+                          'percent'
+                        )
+                      "
+                      [(ngModel)]="
+                        displayValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ]
+                      "
+                      matInput
+                    />
                     <mat-icon matSuffix>%</mat-icon>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field class="budget" *ngIf="item.category != 'EOI'">
+                    <input
+                      *ngIf="
+                        toggleValues[partner.code][wp.ost_wp.wp_official_code]
+                      "
+                      [disabled]="
+                        (perValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ] | inQue) ||
+                        !wp_budgets[partner.code][wp.ost_wp.wp_official_code]
+                      "
+                      (keyup)="
+                        changeCalc(
+                          partner.code,
+                          wp.ost_wp.wp_official_code,
+                          item.id,
+                          'budget'
+                        )
+                      "
+                      [(ngModel)]="
+                        budgetValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ]
+                      "
+                      matInput
+                    />
+                    <input
+                      *ngIf="
+                        !toggleValues[partner.code][wp.ost_wp.wp_official_code]
+                      "
+                      [disabled]="
+                        (perValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ] | inQue) ||
+                        !wp_budgets[partner.code][wp.ost_wp.wp_official_code]
+                      "
+                      (keyup)="
+                        changeCalc(
+                          partner.code,
+                          wp.ost_wp.wp_official_code,
+                          item.id,
+                          'budget'
+                        )
+                      "
+                      [(ngModel)]="
+                        displayBudgetValues[partner.code][
+                          wp.ost_wp.wp_official_code
+                        ][item.id]
+                      "
+                      matInput
+                    />
                   </mat-form-field>
                 </td>
               </tr>
             </ng-container>
             <tr class="total">
-              <td colspan="10">Total</td>
+              <td [colSpan]="period.length + 2">Total</td>
+              <td>{{ totals[partner.code][wp.ost_wp.wp_official_code] }}%</td>
               <td>
-                {{
-                  totals[partner.code][wp.ost_wp.wp_official_code]
-                    | number : "1.2-2"
-                }}%
+                <mat-form-field class="budget">
+                  <mat-label>Total Budget</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="
+                      wp_budgets[partner.code][wp.ost_wp.wp_official_code]
+                    "
+                    (keyup)="
+                      wpBudgetChange(
+                        partner.code,
+                        wp.ost_wp.wp_official_code,
+                        wp_budgets[partner.code][wp.ost_wp.wp_official_code]
+                      )
+                    "
+                  />
+                </mat-form-field>
               </td>
             </tr>
           </table>

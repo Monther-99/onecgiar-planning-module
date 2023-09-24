@@ -169,4 +169,18 @@ export class SubmissionService {
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async saveWpBudget(id: number, data: any) {
+    return firstValueFrom(
+      this.http
+        .post('/api/submission/save_wp_budget/' + id, data)
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async getWpBudgets(id: number) {
+    return firstValueFrom(
+      this.http.get('/api/submission/wp_budgets/' + id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
 }
