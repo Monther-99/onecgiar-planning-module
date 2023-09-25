@@ -118,6 +118,21 @@ export class SubmissionService {
         await this.resultValuesRepository.save(value);
       }
     }
+
+    let oldWpBudgets = await this.wpBudgetRepository.find({
+      where: {
+        initiative_id: initiative_id,
+        submission: IsNull(),
+      },
+    });
+    for (let wpBudget of oldWpBudgets) {
+      delete wpBudget.id;
+      wpBudget.submission_id = submissionObject.id;
+      await this.wpBudgetRepository.save(wpBudget, {
+        reload: true,
+      });
+    }
+
     const date = new Date();
     await this.initiativeRepository.update(initiative_id, {
       last_update_at: date,
