@@ -7,7 +7,11 @@ import { firstValueFrom, map } from 'rxjs';
 })
 export class SubmissionService {
   constructor(private http: HttpClient) {}
-  async markStatus(organization_id: number, initiative_id: number,status:boolean) {
+  async markStatus(
+    organization_id: number,
+    initiative_id: number,
+    status: boolean
+  ) {
     return firstValueFrom(
       this.http
         .patch('/api/submission/center/status', {
@@ -120,9 +124,9 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async getPeriods(phase_id:number) {
+  async getPeriods(phase_id: number) {
     return firstValueFrom(
-      this.http.get('/api/periods/phase/'+phase_id).pipe(map((d: any) => d))
+      this.http.get('/api/periods/phase/' + phase_id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
   async getActivePhase() {
@@ -130,8 +134,6 @@ export class SubmissionService {
       this.http.get('/api/phases/active').pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-
-  
 
   async submit(id: number, data: any) {
     return firstValueFrom(
@@ -181,6 +183,14 @@ export class SubmissionService {
   async getWpBudgets(id: number) {
     return firstValueFrom(
       this.http.get('/api/submission/wp_budgets/' + id).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async getBudgets(id: number) {
+    return firstValueFrom(
+      this.http
+        .get('/api/submission/submission_budgets/' + id)
+        .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 }

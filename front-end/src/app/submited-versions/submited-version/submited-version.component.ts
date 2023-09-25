@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { SubmissionService } from '../../services/submission.service';
 import { AppSocket } from '../../socket.service';
@@ -19,7 +18,7 @@ import { PhasesService } from 'src/app/services/phases.service';
 @Component({
   selector: 'app-submited-version',
   templateUrl: './submited-version.component.html',
-  styleUrls: ['./submited-version.component.scss']
+  styleUrls: ['./submited-version.component.scss'],
 })
 export class SubmitedVersionComponent implements OnInit {
   title = 'planning';
@@ -43,6 +42,13 @@ export class SubmitedVersionComponent implements OnInit {
   allData: any = {};
   values: any = {};
   totals: any = {};
+  displayValues: any = {};
+  summaryBudgets: any = {};
+  summaryBudgetsTotal: any = {};
+  wp_budgets: any = {};
+  budgetValues: any = {};
+  displayBudgetValues: any = {};
+  toggleValues: any = {};
   errors: any = {};
   period: Array<any> = [];
   check(values: any, code: string, id: number, item_id: string) {
@@ -154,6 +160,35 @@ export class SubmitedVersionComponent implements OnInit {
     let totalsum: any = {};
     let totalsumcenter: any = {};
     let totalWp: any = {};
+    this.summaryBudgets = {};
+    this.summaryBudgetsTotal = {};
+
+    Object.keys(this.budgetValues).forEach((partner_code) => {
+      Object.keys(this.budgetValues[partner_code]).forEach((wp_id) => {
+        if (!this.summaryBudgets[wp_id]) this.summaryBudgets[wp_id] = {};
+        if (!this.summaryBudgetsTotal[wp_id])
+          this.summaryBudgetsTotal[wp_id] = 0;
+        Object.keys(this.budgetValues[partner_code][wp_id]).forEach(
+          (item_id) => {
+            if (!this.summaryBudgets[wp_id][item_id])
+              this.summaryBudgets[wp_id][item_id] = 0;
+            this.summaryBudgets[wp_id][item_id] +=
+              +this.budgetValues[partner_code][wp_id][item_id];
+            this.summaryBudgetsTotal[wp_id] +=
+              +this.budgetValues[partner_code][wp_id][item_id];
+          }
+        );
+      });
+    });
+
+    Object.keys(this.summaryBudgets).forEach((wp_id) => {
+      Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
+        this.sammary[wp_id][item_id] = this.percentValue(
+          this.summaryBudgets[wp_id][item_id],
+          this.summaryBudgetsTotal[wp_id]
+        );
+      });
+    });
 
     Object.keys(this.values).forEach((code) => {
       Object.keys(this.values[code]).forEach((wp_id) => {
@@ -167,7 +202,7 @@ export class SubmitedVersionComponent implements OnInit {
         } else {
           this.errors[code][wp_id] = null;
         }
-        this.totals[code][wp_id] = total;
+        this.totals[code][wp_id] = Math.round(total);
 
         Object.keys(this.values[code][wp_id]).forEach((item_id) => {
           if (!totalsum[wp_id]) totalsum[wp_id] = {};
@@ -193,11 +228,6 @@ export class SubmitedVersionComponent implements OnInit {
           totalWp[wp_id][item_id] =
             +(+totalsum[wp_id][item_id] / +totalsumcenter[wp_id]) * 100;
         else totalWp[wp_id][item_id] = 0;
-      });
-    });
-    Object.keys(totalWp).forEach((wp_id) => {
-      Object.keys(totalWp[wp_id]).forEach((item_id) => {
-        this.sammary[wp_id][item_id] = totalWp[wp_id][item_id];
       });
     });
 
@@ -253,7 +283,7 @@ export class SubmitedVersionComponent implements OnInit {
   loading = false;
   params: any;
   initiative_data: any = {};
-  ipsr_value_data:any;
+  ipsr_value_data: any;
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -265,12 +295,22 @@ export class SubmitedVersionComponent implements OnInit {
     this.wps = [];
     this.partnersData = {};
     this.sammary = {};
+    this.summaryBudgets = {};
+    this.summaryBudgetsTotal = {};
+    this.wp_budgets = {};
+    this.toggleValues = {};
+    this.budgetValues = {};
+    this.budgetValues = {};
+    this.displayBudgetValues = {};
     this.allData = {};
     this.values = {};
+    this.displayValues = {};
     this.totals = {};
     this.errors = {};
 
-    this.results =  this.submission_data.toc_data ;
+    this.wp_budgets = await this.submissionService.getBudgets(this.params.id);
+
+    this.results = this.submission_data.toc_data;
     const melia_data = await this.submissionService.getMeliaByInitiative(
       this.initiative_data.id
     );
@@ -317,7 +357,35 @@ export class SubmitedVersionComponent implements OnInit {
       ost_wp: { wp_official_code: 'IPSR' },
     });
     for (let partner of this.partners) {
+      if (!this.budgetValues[partner.code])
+        this.budgetValues[partner.code] = {};
+
+      if (!this.displayBudgetValues[partner.code])
+        this.displayBudgetValues[partner.code] = {};
+
       for (let wp of this.wps) {
+        if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
+        if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])
+          this.wp_budgets[partner.code][wp.ost_wp.wp_official_code] = null;
+
+        if (!this.toggleValues[partner.code])
+          this.toggleValues[partner.code] = {};
+        if (!this.toggleValues[partner.code][wp.ost_wp.wp_official_code])
+          this.toggleValues[partner.code][wp.ost_wp.wp_official_code] = false;
+
+        if (!this.budgetValues[partner.code][wp.ost_wp.wp_official_code])
+          this.budgetValues[partner.code][wp.ost_wp.wp_official_code] = {};
+
+        if (!this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code])
+          this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code] =
+            {};
+
+        if (!this.summaryBudgets[wp.ost_wp.wp_official_code])
+          this.summaryBudgets[wp.ost_wp.wp_official_code] = {};
+
+        if (!this.summaryBudgetsTotal[wp.ost_wp.wp_official_code])
+          this.summaryBudgetsTotal[wp.ost_wp.wp_official_code] = 0;
+
         const result = await this.getDataForWp(
           wp.id,
           partner.code,
@@ -342,6 +410,21 @@ export class SubmitedVersionComponent implements OnInit {
             wp.ost_wp.wp_official_code,
             item.id
           );
+          this.check(
+            this.displayValues,
+            partner.code,
+            wp.ost_wp.wp_official_code,
+            item.id
+          );
+          this.budgetValues[partner.code][wp.ost_wp.wp_official_code][item.id] =
+            null;
+
+          this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code][
+            item.id
+          ] = null;
+
+          if (!this.summaryBudgets[wp.ost_wp.wp_official_code][item.id])
+            this.summaryBudgets[wp.ost_wp.wp_official_code][item.id] = 0;
 
           if (!this.perValues[partner.code]) this.perValues[partner.code] = {};
           if (!this.perValues[partner.code][wp.ost_wp.wp_official_code])
@@ -388,18 +471,19 @@ export class SubmitedVersionComponent implements OnInit {
       );
     }
 
-    this.savedValues = this.submission_data.consolidated
+    this.savedValues = this.submission_data.consolidated;
 
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
   }
   savedValues: any = null;
-  submission_data:any;
+  submission_data: any;
   async ngOnInit() {
-
     this.params = this.activatedRoute?.snapshot.params;
-    this.submission_data = await this.submissionService.getSubmissionsById(this.params.id)
-    this.initiative_data = this.submission_data.initiative
-    
+    this.submission_data = await this.submissionService.getSubmissionsById(
+      this.params.id
+    );
+    this.initiative_data = this.submission_data.initiative;
+
     let partners = await this.phasesService.getAssignedOrgs(
       this.submission_data.phase.id,
       this.initiative_data.id
@@ -412,11 +496,27 @@ export class SubmitedVersionComponent implements OnInit {
 
     this.InitData();
     this.period = this.submission_data.phase.periods;
-
   }
 
   ngOnDestroy(): void {
     this.socket.disconnect();
+  }
+
+  percentValue(value: number, totalBudget: number) {
+    return (value / totalBudget) * 100;
+  }
+
+  budgetValue(value: number, totalBudget: number) {
+    return (value * totalBudget) / 100;
+  }
+
+  toggleActualValues(partner_code: any, wp_official_code: any) {
+    this.toggleValues[partner_code][wp_official_code] =
+      !this.toggleValues[partner_code][wp_official_code];
+  }
+
+  roundToThreeDecimals(value: number) {
+    return Math.round(value * 1000) / 1000;
   }
 
   setvalues(valuesToSet: any, perValuesToSet: any) {
@@ -424,11 +524,28 @@ export class SubmitedVersionComponent implements OnInit {
       Object.keys(this.values).forEach((code) => {
         Object.keys(this.values[code]).forEach((wp_id) => {
           Object.keys(this.values[code][wp_id]).forEach((item_id) => {
-            if (valuesToSet[code] && valuesToSet[code][wp_id] && valuesToSet[code][wp_id][item_id])
-              this.values[code][wp_id][item_id] =
-                +valuesToSet[code][wp_id][item_id];
-                else
-                this.values[code][wp_id][item_id] = 0
+            if (
+              valuesToSet[code] &&
+              valuesToSet[code][wp_id] &&
+              valuesToSet[code][wp_id][item_id]
+            ) {
+              let percentValue = +valuesToSet[code][wp_id][item_id];
+              let budgetValue = this.budgetValue(
+                percentValue,
+                this.wp_budgets[code][wp_id]
+              );
+              this.values[code][wp_id][item_id] = percentValue;
+              this.displayValues[code][wp_id][item_id] =
+                Math.round(percentValue);
+              this.budgetValues[code][wp_id][item_id] = budgetValue;
+              this.displayBudgetValues[code][wp_id][item_id] =
+                Math.round(budgetValue);
+            } else {
+              this.values[code][wp_id][item_id] = 0;
+              this.displayValues[code][wp_id][item_id] = 0;
+              this.budgetValues[code][wp_id][item_id] = 0;
+              this.displayBudgetValues[code][wp_id][item_id] = 0;
+            }
             // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
           });
         });
@@ -471,23 +588,24 @@ export class SubmitedVersionComponent implements OnInit {
             d.category == 'IPSR' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
-          (d.group == id || d.wp_id == official_code  ||( official_code=='CROSS' &&  d.category == 'EOI' ))
+          (d.group == id ||
+            d.wp_id == official_code ||
+            (official_code == 'CROSS' && d.category == 'EOI'))
         );
       else
         return (
-          (d.category == 'OUTPUT' ||
+          ((d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
             d.category == 'IPSR' ||
             d.category == 'CROSS' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
-          (d.group == id || d.wp_id == official_code) || ( official_code=='CROSS' && d.category == 'EOI' )
+            (d.group == id || d.wp_id == official_code)) ||
+          (official_code == 'CROSS' && d.category == 'EOI')
         );
     });
 
     return wp_data;
   }
-
-
 }

@@ -354,4 +354,21 @@ export class SubmissionService {
 
     return data;
   }
+
+  async getSubmissionBudgets(submission_id: number) {
+    const wpBudgets = await this.wpBudgetRepository.find({
+      where: { submission_id },
+      relations: ['workPackage'],
+    });
+
+    let data = {};
+    wpBudgets.forEach((element) => {
+      if (!data[element.organization_id]) data[element.organization_id] = {};
+
+      data[element.organization_id][element.workPackage.wp_official_code] =
+        element.budget;
+    });
+
+    return data;
+  }
 }

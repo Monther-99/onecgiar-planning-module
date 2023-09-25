@@ -42,14 +42,14 @@
               </ng-container>
               <td>
                 {{
-                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : '1.2-2'
                 }}%
               </td>
             </tr>
           </ng-container>
           <tr class="total">
-            <td colspan="9">Total</td>
-            <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+            <td [colSpan]="period.length + 1">Total</td>
+            <td>{{ wpsTotalSum | number : '1.2-2' }}%</td>
           </tr>
         </table>
       </mat-card-content>
@@ -71,7 +71,13 @@
               *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
             >
               <tr>
-                <td class="wp-title">{{ item?.ipsr?.id ?  item?.ipsr.title +' ('+item.value +')' : item.title }}</td>
+                <td class="wp-title">
+                  {{
+                    item?.ipsr?.id
+                      ? item?.ipsr.title + ' (' + item.value + ')'
+                      : item.title
+                  }}
+                </td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">
                   <td>
@@ -90,17 +96,31 @@
                 <td>
                   {{
                     sammary[wp.ost_wp.wp_official_code][item.id]
-                      | number : "1.2-2"
+                      | number : '1.2-2'
                   }}%
+                </td>
+                <td>
+                  {{
+                    roundToThreeDecimals(
+                      summaryBudgets[wp.ost_wp.wp_official_code][item.id]
+                    )
+                  }}
                 </td>
               </tr>
             </ng-container>
             <tr class="total">
-              <td colspan="10">Total</td>
+              <td [colSpan]="period.length + 2">Total</td>
               <td>
                 {{
-                  sammaryTotal[wp.ost_wp.wp_official_code] | number : "1.2-2"
+                  sammaryTotal[wp.ost_wp.wp_official_code] | number : '1.2-2'
                 }}%
+              </td>
+              <td>
+                {{
+                  roundToThreeDecimals(
+                    summaryBudgetsTotal[wp.ost_wp.wp_official_code]
+                  )
+                }}
               </td>
             </tr>
           </table>
@@ -120,6 +140,13 @@
         "
       >
         <mat-card-title>{{ wp.title }}</mat-card-title>
+        <mat-slide-toggle
+          [(ngModel)]="toggleValues[partner.code][wp.ost_wp.wp_official_code]"
+          (toggleChange)="
+            toggleActualValues(partner.code, wp.ost_wp.wp_official_code)
+          "
+          >Show actual values</mat-slide-toggle
+        >
         <mat-card-content>
           <table
             [ngClass]="{
@@ -133,6 +160,7 @@
                 <th>{{ item.year }} - {{ item.quarter }}</th>
               </ng-container>
               <th>Percentage %</th>
+              <th>Budget</th>
             </tr>
 
             <ng-container
@@ -143,7 +171,13 @@
               "
             >
               <tr>
-                <td class="wp-title">{{ item?.ipsr?.id ?  item?.ipsr.title +' ('+item.value +')' : item.title }}</td>
+                <td class="wp-title">
+                  {{
+                    item?.ipsr?.id
+                      ? item?.ipsr.title + ' (' + item.value + ')'
+                      : item.title
+                  }}
+                </td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">
                   <td>
@@ -160,19 +194,38 @@
                 </ng-container>
                 <td>
                   {{
-                    values[partner.code][wp.ost_wp.wp_official_code][item.id]
-                      | number : "1.2-2"
+                    toggleValues[partner.code][wp.ost_wp.wp_official_code]
+                      ? values[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ]
+                      : displayValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ]
                   }}%
+                </td>
+                <td>
+                  {{
+                    toggleValues[partner.code][wp.ost_wp.wp_official_code]
+                      ? budgetValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ]
+                      : displayBudgetValues[partner.code][
+                          wp.ost_wp.wp_official_code
+                        ][item.id]
+                  }}
                 </td>
               </tr>
             </ng-container>
             <tr class="total">
-              <td colspan="10">Total</td>
+              <td [colSpan]="period.length + 2">Total</td>
               <td>
                 {{
                   totals[partner.code][wp.ost_wp.wp_official_code]
-                    | number : "1.2-2"
+                    | number : '1.2-2'
                 }}%
+              </td>
+              <td>
+                {{ wp_budgets[partner.code][wp.ost_wp.wp_official_code] }}
               </td>
             </tr>
           </table>

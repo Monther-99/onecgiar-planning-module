@@ -66,6 +66,11 @@ export class SubmissionController {
   getWpBudgets(@Param('id') id: string) {
     return this.submissionService.getWpsBudgets(+id);
   }
+
+  @Get('submission_budgets/:id')
+  getSubmissionBudgets(@Param('id') id: string) {
+    return this.submissionService.getSubmissionBudgets(+id);
+  }
   
   @Get('save/:id')
   async getSaved(@Param('id') id) {
