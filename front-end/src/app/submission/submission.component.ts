@@ -54,6 +54,7 @@ export class SubmissionComponent implements OnInit {
   errors: any = {};
   period: Array<any> = [];
   toggleValues: any = {};
+  toggleSummaryValues: any = {};
   check(values: any, code: string, id: number, item_id: string) {
     if (values[code] && values[code][id] && values[code][id][item_id]) {
       return true;
@@ -168,13 +169,18 @@ export class SubmissionComponent implements OnInit {
     return (value * totalBudget) / 100;
   }
 
-  roundToThreeDecimals(value: number) {
-    return Math.round(value * 1000) / 1000;
+  roundNumber(value: number) {
+    return Math.round(value);
   }
 
   toggleActualValues(partner_code: any, wp_official_code: any) {
     this.toggleValues[partner_code][wp_official_code] =
       !this.toggleValues[partner_code][wp_official_code];
+  }
+
+  toggleSummaryActualValues(wp_official_code: any) {
+    this.toggleSummaryValues[wp_official_code] =
+      !this.toggleSummaryValues[wp_official_code];
   }
 
   refreshValues(partner_code: any, wp_id: any) {
@@ -294,10 +300,11 @@ export class SubmissionComponent implements OnInit {
         if (total > 100) {
           this.errors[code][wp_id] =
             'total percentage cannot be over 100 percent';
+          this.toggleValues[code][wp_id] = true;
         } else {
           this.errors[code][wp_id] = null;
         }
-        this.totals[code][wp_id] = Math.round(total);
+        this.totals[code][wp_id] = total;
 
         Object.keys(this.values[code][wp_id]).forEach((item_id) => {
           if (!totalsum[wp_id]) totalsum[wp_id] = {};

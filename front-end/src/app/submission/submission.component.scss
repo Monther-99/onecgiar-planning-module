@@ -21,6 +21,11 @@ mat-card-subtitle {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+mat-slide-toggle {
+  align-self: self-end;
+  margin-right: 50px;
+  margin-bottom: 20px;
+}
 .total {
   font-weight: bold;
   td {
@@ -57,10 +62,9 @@ mat-card-subtitle {
   position: absolute;
   right: 20px;
   top: 20px;
-  button{
+  button {
     margin-left: 20px;
   }
-
 }
 .submit {
   position: absolute;

@@ -57,6 +57,11 @@
     <ng-container *ngFor="let wp of wps">
       <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
         <mat-card-title>{{ wp.title }}</mat-card-title>
+        <mat-slide-toggle
+          [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
+          (toggleChange)="toggleSummaryActualValues(wp.ost_wp.wp_official_code)"
+          >Show decimals</mat-slide-toggle
+        >
         <mat-card-content>
           <table>
             <tr>
@@ -95,15 +100,20 @@
                 </ng-container>
                 <td>
                   {{
-                    sammary[wp.ost_wp.wp_official_code][item.id]
-                      | number : '1.2-2'
+                    toggleSummaryValues[wp.ost_wp.wp_official_code]
+                      ? sammary[wp.ost_wp.wp_official_code][item.id]
+                      : roundNumber(
+                          sammary[wp.ost_wp.wp_official_code][item.id]
+                        )
                   }}%
                 </td>
                 <td>
                   {{
-                    roundToThreeDecimals(
-                      summaryBudgets[wp.ost_wp.wp_official_code][item.id]
-                    )
+                    toggleSummaryValues[wp.ost_wp.wp_official_code]
+                      ? summaryBudgets[wp.ost_wp.wp_official_code][item.id]
+                      : roundNumber(
+                          summaryBudgets[wp.ost_wp.wp_official_code][item.id]
+                        )
                   }}
                 </td>
               </tr>
@@ -112,14 +122,18 @@
               <td [colSpan]="period.length + 2">Total</td>
               <td>
                 {{
-                  sammaryTotal[wp.ost_wp.wp_official_code] | number : '1.2-2'
+                  toggleSummaryValues[wp.ost_wp.wp_official_code]
+                    ? sammaryTotal[wp.ost_wp.wp_official_code]
+                    : roundNumber(sammaryTotal[wp.ost_wp.wp_official_code])
                 }}%
               </td>
               <td>
                 {{
-                  roundToThreeDecimals(
-                    summaryBudgetsTotal[wp.ost_wp.wp_official_code]
-                  )
+                  toggleSummaryValues[wp.ost_wp.wp_official_code]
+                    ? summaryBudgetsTotal[wp.ost_wp.wp_official_code]
+                    : roundNumber(
+                        summaryBudgetsTotal[wp.ost_wp.wp_official_code]
+                      )
                 }}
               </td>
             </tr>
@@ -145,7 +159,7 @@
           (toggleChange)="
             toggleActualValues(partner.code, wp.ost_wp.wp_official_code)
           "
-          >Show actual values</mat-slide-toggle
+          >Show decimals</mat-slide-toggle
         >
         <mat-card-content>
           <table
@@ -220,8 +234,11 @@
               <td [colSpan]="period.length + 2">Total</td>
               <td>
                 {{
-                  totals[partner.code][wp.ost_wp.wp_official_code]
-                    | number : '1.2-2'
+                  toggleValues[partner.code][wp.ost_wp.wp_official_code]
+                    ? totals[partner.code][wp.ost_wp.wp_official_code]
+                    : roundNumber(
+                        totals[partner.code][wp.ost_wp.wp_official_code]
+                      )
                 }}%
               </td>
               <td>

@@ -49,6 +49,7 @@ export class SubmitedVersionComponent implements OnInit {
   budgetValues: any = {};
   displayBudgetValues: any = {};
   toggleValues: any = {};
+  toggleSummaryValues: any = {};
   errors: any = {};
   period: Array<any> = [];
   check(values: any, code: string, id: number, item_id: string) {
@@ -202,7 +203,7 @@ export class SubmitedVersionComponent implements OnInit {
         } else {
           this.errors[code][wp_id] = null;
         }
-        this.totals[code][wp_id] = Math.round(total);
+        this.totals[code][wp_id] = total;
 
         Object.keys(this.values[code][wp_id]).forEach((item_id) => {
           if (!totalsum[wp_id]) totalsum[wp_id] = {};
@@ -515,8 +516,13 @@ export class SubmitedVersionComponent implements OnInit {
       !this.toggleValues[partner_code][wp_official_code];
   }
 
-  roundToThreeDecimals(value: number) {
-    return Math.round(value * 1000) / 1000;
+  toggleSummaryActualValues(wp_official_code: any) {
+    this.toggleSummaryValues[wp_official_code] =
+      !this.toggleSummaryValues[wp_official_code];
+  }
+
+  roundNumber(value: number) {
+    return Math.round(value);
   }
 
   setvalues(valuesToSet: any, perValuesToSet: any) {
