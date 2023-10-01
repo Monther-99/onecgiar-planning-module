@@ -58,7 +58,7 @@ import { OrganizationDialogComponent } from './admin/organizations/organization-
 import { AdminIpsrComponent } from './admin/ipsr/admin-ipsr.component';
 import { IpsrDialogComponent } from './admin/ipsr/ipsr-dialog/ipsr-dialog.component';
 import { PhaseInitiativesComponent } from './admin/phases/phase-initiatives/phase-initiatives.component';
-import { AssignOrganizationsComponent } from './admin/phases/phase-initiatives/assign-organizations/assign-organizations.component';
+import { AssignOrganizationsComponent } from './assign-organizations/assign-organizations.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingInterceptor } from './loading.interceptor';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';

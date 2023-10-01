@@ -630,7 +630,7 @@ export class SubmissionComponent implements OnInit {
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
-    this.phase = await this.submissionService.getActivePhase();
+    this.phase = await this.phasesService.getActivePhase();
     let partners = await this.phasesService.getAssignedOrgs(
       this.phase.id,
       this.params.id

@@ -3,9 +3,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { InitiativesService } from "src/app/services/initiatives.service";
-import { AssignOrganizationsComponent } from "./assign-organizations/assign-organizations.component";
 import { ActivatedRoute, Params } from "@angular/router";
+import { AssignOrganizationsComponent } from "src/app/assign-organizations/assign-organizations.component";
 import { PhasesService } from "src/app/services/phases.service";
 
 @Component({

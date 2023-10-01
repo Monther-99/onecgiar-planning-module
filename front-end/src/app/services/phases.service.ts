@@ -58,6 +58,12 @@ export class PhasesService {
     ).catch((e) => false);
   }
 
+  getActivePhase() {
+    return firstValueFrom(
+      this.http.get('/api/phases/active').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
   getInitiatives(phase_id: number) {
     return firstValueFrom(
       this.http

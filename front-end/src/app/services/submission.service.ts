@@ -129,11 +129,6 @@ export class SubmissionService {
       this.http.get('/api/periods/phase/' + phase_id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  async getActivePhase() {
-    return firstValueFrom(
-      this.http.get('/api/phases/active').pipe(map((d: any) => d))
-    ).catch((e) => false);
-  }
 
   async submit(id: number, data: any) {
     return firstValueFrom(

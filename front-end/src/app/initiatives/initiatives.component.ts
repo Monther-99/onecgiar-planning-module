@@ -5,6 +5,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { InitiativesService } from '../services/initiatives.service';
 import { AuthService } from '../services/auth.service';
 import { ROLES } from '../components/new-team-member/new-team-member.component';
+import { AssignOrganizationsComponent } from '../assign-organizations/assign-organizations.component';
+import { PhasesService } from '../services/phases.service';
+import { MatDialog } from '@angular/material/dialog';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -32,7 +35,9 @@ export class InitiativesComponent implements AfterViewInit {
 
   constructor(
     private initiativesService: InitiativesService,
-    private authService: AuthService
+    private authService: AuthService,
+    private phasesService: PhasesService,
+    private dialog: MatDialog
   ) {}
   user: any;
   async ngAfterViewInit() {
@@ -56,7 +61,7 @@ export class InitiativesComponent implements AfterViewInit {
   myRoles(roles: any) {
     const roles_ = roles.filter((d: any) => d.user_id == this.user.id);
     if (roles_.length) return roles_.map((d: any) => d.role).join(', ');
-    else return this.IsAdmin()? 'Admin' : 'Guest';
+    else return this.IsAdmin() ? 'Admin' : 'Guest';
   }
 
   isLeader(roles: any) {
@@ -66,14 +71,21 @@ export class InitiativesComponent implements AfterViewInit {
     else return this.IsAdmin();
   }
 
-  IsAdmin(){
-   return this.user.role == 'admin' || false;
+  IsAdmin() {
+    return this.user.role == 'admin' || false;
   }
-  
+
   isCoordinaror(roles: any) {
     const roles_ = roles.filter((d: any) => d.user_id == this.user.id);
     if (roles_.length)
       return roles_.map((d: any) => d.role)[0] == ROLES.COORDINATOR || false;
     else return false;
+  }
+
+  async openDialog(id: number = 0) {
+    const activePhase = await this.phasesService.getActivePhase();
+    this.dialog.open(AssignOrganizationsComponent, {
+      data: { phase_id: activePhase.id, initiative_id: id },
+    });
   }
 }
