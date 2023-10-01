@@ -57,4 +57,7 @@ export class Phase {
 
   @Column({ default: false })
   show_eoi: boolean;
+
+  @Column({ default: false })
+  show_melia: boolean;
 }

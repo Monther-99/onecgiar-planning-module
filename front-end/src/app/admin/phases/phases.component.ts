@@ -27,6 +27,7 @@ export class PhasesComponent implements AfterViewInit {
     'status',
     'active',
     'show_eoi',
+    'show_melia',
     'actions',
   ];
   dataSource: MatTableDataSource<any>;

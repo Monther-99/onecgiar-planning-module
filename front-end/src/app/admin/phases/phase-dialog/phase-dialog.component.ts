@@ -43,6 +43,7 @@ export class PhaseDialogComponent implements OnInit {
       previousPhase: [null],
       status: [null],
       show_eoi: [false],
+      show_melia: [false],
     });
     this.phases = await this.phasesService.getPhases();
     this.tocPhases = await this.phasesService.getTocPhases();

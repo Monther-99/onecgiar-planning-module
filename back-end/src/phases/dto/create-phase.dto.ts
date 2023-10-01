@@ -19,4 +19,6 @@ export class CreatePhaseDto {
   status: phaseStatus;
 
   show_eoi: boolean;
+
+  show_melia: boolean;
 }

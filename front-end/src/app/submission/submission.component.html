@@ -73,7 +73,7 @@
           <button
             mat-raised-button
             color="accent"
-            *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
+            *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR' && phase.show_melia"
             type="button"
             (click)="addMelia(wp.ost_wp.wp_official_code)"
           >
@@ -91,7 +91,7 @@
           <button
             mat-raised-button
             color="accent"
-            *ngIf="wp.id == 'CROSS'"
+            *ngIf="wp.id == 'CROSS' && phase.show_melia"
             type="button"
             (click)="addMelia(wp.ost_wp.wp_official_code)"
           >

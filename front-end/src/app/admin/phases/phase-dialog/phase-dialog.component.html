@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ phaseId ? "Edit" : "Add" }} Phase</h1>
+<h1 mat-dialog-title>{{ phaseId ? 'Edit' : 'Add' }} Phase</h1>
 
 <mat-dialog-content>
   <form [formGroup]="phaseForm">
@@ -70,6 +70,10 @@
       <mat-checkbox formControlName="show_eoi" color="primary"
         >Show EOI</mat-checkbox
       >
+
+      <mat-checkbox formControlName="show_melia" color="primary"
+        >Enable MELIA for Cross-cutting</mat-checkbox
+      >
     </section>
   </form>
 </mat-dialog-content>
@@ -77,6 +81,6 @@
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button color="primary" (click)="submit()">
-    {{ phaseId ? "Save" : "Add" }}
+    {{ phaseId ? 'Save' : 'Add' }}
   </button>
 </mat-dialog-actions>
