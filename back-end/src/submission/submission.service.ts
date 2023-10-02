@@ -146,7 +146,7 @@ export class SubmissionService {
   }
 
   dataToPers(saved_data) {
-    let data = { perValues: {}, values: {} };
+    let data = { perValues: {}, values: {}, no_budget: {} };
     saved_data.forEach((result: Result) => {
       if (!data.perValues[result.organization_id])
         data.perValues[result.organization_id] = {};
@@ -200,6 +200,25 @@ export class SubmissionService {
         data.values[result.organization_id][
           result.workPackage.wp_official_code
         ][result.result_uuid] = result.value;
+
+      if (!data.no_budget[result.organization_id])
+        data.no_budget[result.organization_id] = {};
+      if (
+        !data.no_budget[result.organization_id][
+          result.workPackage.wp_official_code
+        ]
+      )
+        data.no_budget[result.organization_id][
+          result.workPackage.wp_official_code
+        ] = {};
+      if (
+        !data.no_budget[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid]
+      )
+        data.no_budget[result.organization_id][
+          result.workPackage.wp_official_code
+        ][result.result_uuid] = result.no_budget;
     });
     return data;
   }
@@ -273,7 +292,7 @@ export class SubmissionService {
   async saveResultDataValue(id, data: any) {
     const initiativeId = id;
 
-    const { partner_code, wp_id, item_id, percent_value, budget_value } = data;
+    const { partner_code, wp_id, item_id, percent_value, budget_value, no_budget } = data;
 
     let organizationObject = await this.organizationRepository.findOneBy({
       id: +partner_code,
@@ -293,6 +312,7 @@ export class SubmissionService {
     if (oldResult) {
       oldResult.value = percent_value;
       oldResult.budget = budget_value;
+      oldResult.no_budget = no_budget;
       await this.resultRepository.save(oldResult);
     } else throw new NotFoundException();
 
@@ -320,7 +340,7 @@ export class SubmissionService {
       oldWpBudget.budget = budget;
       await this.wpBudgetRepository.save(oldWpBudget);
     } else {
-      const data:any = {
+      const data: any = {
         initiative_id: initiativeId,
         organization_id: +partner_code,
         wp_id: workPackageObject.wp_id,

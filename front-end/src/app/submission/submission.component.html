@@ -279,8 +279,9 @@
               <ng-container *ngFor="let item of period">
                 <th>{{ item.year }} - {{ item.quarter }}</th>
               </ng-container>
-              <th>Percentage %</th>
-              <th>Budget</th>
+              <th class="per">Percentage %</th>
+              <th class="no_budget"></th>
+              <th class="budget">Budget</th>
             </tr>
 
             <ng-container
@@ -326,9 +327,12 @@
                         toggleValues[partner.code][wp.ost_wp.wp_official_code]
                       "
                       [disabled]="
-                        perValues[partner.code][wp.ost_wp.wp_official_code][
+                        (perValues[partner.code][wp.ost_wp.wp_official_code][
                           item.id
-                        ] | inQue
+                        ] | inQue) ||
+                        noValuesAssigned[partner.code][
+                          wp.ost_wp.wp_official_code
+                        ][item.id]
                       "
                       (keyup)="
                         changeCalc(
@@ -350,9 +354,12 @@
                         !toggleValues[partner.code][wp.ost_wp.wp_official_code]
                       "
                       [disabled]="
-                        perValues[partner.code][wp.ost_wp.wp_official_code][
+                        (perValues[partner.code][wp.ost_wp.wp_official_code][
                           item.id
-                        ] | inQue
+                        ] | inQue) ||
+                        noValuesAssigned[partner.code][
+                          wp.ost_wp.wp_official_code
+                        ][item.id]
                       "
                       (keyup)="
                         changeCalc(
@@ -373,6 +380,29 @@
                   </mat-form-field>
                 </td>
                 <td>
+                  <mat-checkbox
+                    *ngIf="
+                      values[partner.code][wp.ost_wp.wp_official_code][
+                        item.id
+                      ] == 0
+                    "
+                    [(ngModel)]="
+                      noValuesAssigned[partner.code][
+                        wp.ost_wp.wp_official_code
+                      ][item.id]
+                    "
+                    (change)="
+                      toggleNoValues(
+                        partner.code,
+                        wp.ost_wp.wp_official_code,
+                        item.id
+                      )
+                    "
+                    color="primary"
+                    matTooltip="No budget assigned"
+                  ></mat-checkbox>
+                </td>
+                <td>
                   <mat-form-field class="budget" *ngIf="item.category != 'EOI'">
                     <input
                       *ngIf="
@@ -382,7 +412,10 @@
                         (perValues[partner.code][wp.ost_wp.wp_official_code][
                           item.id
                         ] | inQue) ||
-                        !wp_budgets[partner.code][wp.ost_wp.wp_official_code]
+                        !wp_budgets[partner.code][wp.ost_wp.wp_official_code] ||
+                        noValuesAssigned[partner.code][
+                          wp.ost_wp.wp_official_code
+                        ][item.id]
                       "
                       (keyup)="
                         changeCalc(
@@ -407,7 +440,10 @@
                         (perValues[partner.code][wp.ost_wp.wp_official_code][
                           item.id
                         ] | inQue) ||
-                        !wp_budgets[partner.code][wp.ost_wp.wp_official_code]
+                        !wp_budgets[partner.code][wp.ost_wp.wp_official_code] ||
+                        noValuesAssigned[partner.code][
+                          wp.ost_wp.wp_official_code
+                        ][item.id]
                       "
                       (keyup)="
                         changeCalc(
@@ -439,6 +475,7 @@
                       )
                 }}%
               </td>
+              <td></td>
               <td>
                 <mat-form-field class="budget">
                   <mat-label>Total Budget</mat-label>
@@ -457,6 +494,7 @@
                   />
                 </mat-form-field>
               </td>
+              <td></td>
             </tr>
           </table>
           <p class="error">

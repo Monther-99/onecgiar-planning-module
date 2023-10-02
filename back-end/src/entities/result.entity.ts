@@ -27,6 +27,9 @@ export class Result {
   @Column({default:'0'})
   budget: string;
 
+  @Column({ default: false })
+  no_budget: boolean;
+
   @ManyToOne(() => Organization, (organization) => organization.results)
   @JoinColumn({ name: 'organization_id' })
   organization: Organization;

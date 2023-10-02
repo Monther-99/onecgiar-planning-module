@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { example_data } from './example';
 import { SubmissionService } from '../services/submission.service';
 import { AppSocket } from '../socket.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -55,6 +54,7 @@ export class SubmissionComponent implements OnInit {
   period: Array<any> = [];
   toggleValues: any = {};
   toggleSummaryValues: any = {};
+  noValuesAssigned: any = {};
   check(values: any, code: string, id: number, item_id: string) {
     if (values[code] && values[code][id] && values[code][id][item_id]) {
       return true;
@@ -122,6 +122,7 @@ export class SubmissionComponent implements OnInit {
           item_id: item_id,
           percent_value: percentValue,
           budget_value: budgetValue,
+          no_budget: this.noValuesAssigned[partner_code][wp_id][item_id],
         }
       );
       if (result)
@@ -181,6 +182,12 @@ export class SubmissionComponent implements OnInit {
   toggleSummaryActualValues(wp_official_code: any) {
     this.toggleSummaryValues[wp_official_code] =
       !this.toggleSummaryValues[wp_official_code];
+  }
+
+  toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
+    this.values[partner_code][wp_official_code][item_id] = 0;
+    this.displayValues[partner_code][wp_official_code][item_id] = 0;
+    this.changeCalc(partner_code, wp_official_code, item_id, 'percent');
   }
 
   refreshValues(partner_code: any, wp_id: any) {
@@ -415,6 +422,7 @@ export class SubmissionComponent implements OnInit {
     this.displayValues = {};
     this.totals = {};
     this.errors = {};
+    this.noValuesAssigned = {};
 
     this.results = await this.submissionService.getToc(this.params.id);
     const melia_data = await this.submissionService.getMeliaByInitiative(
@@ -505,32 +513,30 @@ export class SubmissionComponent implements OnInit {
     //   ).values(),
     // ];
     for (let partner of this.partners) {
+      if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
       if (!this.budgetValues[partner.code])
         this.budgetValues[partner.code] = {};
-
       if (!this.displayBudgetValues[partner.code])
         this.displayBudgetValues[partner.code] = {};
+      if (!this.toggleValues[partner.code])
+        this.toggleValues[partner.code] = {};
+      if (!this.noValuesAssigned[partner.code])
+        this.noValuesAssigned[partner.code] = {};
 
       for (let wp of this.wps) {
-        if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
         if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])
           this.wp_budgets[partner.code][wp.ost_wp.wp_official_code] = null;
-
-        if (!this.toggleValues[partner.code])
-          this.toggleValues[partner.code] = {};
         if (!this.toggleValues[partner.code][wp.ost_wp.wp_official_code])
           this.toggleValues[partner.code][wp.ost_wp.wp_official_code] = false;
-
         if (!this.budgetValues[partner.code][wp.ost_wp.wp_official_code])
           this.budgetValues[partner.code][wp.ost_wp.wp_official_code] = {};
-
         if (!this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code])
           this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code] =
             {};
-
+        if (!this.noValuesAssigned[partner.code][wp.ost_wp.wp_official_code])
+          this.noValuesAssigned[partner.code][wp.ost_wp.wp_official_code] = {};
         if (!this.summaryBudgets[wp.ost_wp.wp_official_code])
           this.summaryBudgets[wp.ost_wp.wp_official_code] = {};
-
         if (!this.summaryBudgetsTotal[wp.ost_wp.wp_official_code])
           this.summaryBudgetsTotal[wp.ost_wp.wp_official_code] = 0;
 
@@ -566,11 +572,12 @@ export class SubmissionComponent implements OnInit {
           );
           this.budgetValues[partner.code][wp.ost_wp.wp_official_code][item.id] =
             null;
-
           this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code][
             item.id
           ] = null;
-
+          this.noValuesAssigned[partner.code][wp.ost_wp.wp_official_code][
+            item.id
+          ] = false;
           if (!this.summaryBudgets[wp.ost_wp.wp_official_code][item.id])
             this.summaryBudgets[wp.ost_wp.wp_official_code][item.id] = 0;
 
@@ -623,7 +630,11 @@ export class SubmissionComponent implements OnInit {
       this.params.id
     );
 
-    this.setvalues(this.savedValues.values, this.savedValues.perValues);
+    this.setvalues(
+      this.savedValues.values,
+      this.savedValues.perValues,
+      this.savedValues.no_budget
+    );
   }
   savedValues: any = null;
   isCenter: boolean = false;
@@ -696,7 +707,7 @@ export class SubmissionComponent implements OnInit {
     this.socket.disconnect();
   }
 
-  setvalues(valuesToSet: any, perValuesToSet: any) {
+  setvalues(valuesToSet: any, perValuesToSet: any, noBudget: any) {
     if (valuesToSet != null)
       Object.keys(this.values).forEach((code) => {
         Object.keys(this.values[code]).forEach((wp_id) => {
@@ -746,7 +757,23 @@ export class SubmissionComponent implements OnInit {
           });
         });
       });
-
+    if (noBudget != null)
+      Object.keys(this.noValuesAssigned).forEach((code) => {
+        Object.keys(this.noValuesAssigned[code]).forEach((wp_id) => {
+          Object.keys(this.noValuesAssigned[code][wp_id]).forEach((item_id) => {
+            if (
+              noBudget[code] &&
+              noBudget[code][wp_id] &&
+              noBudget[code][wp_id][item_id]
+            ) {
+              this.noValuesAssigned[code][wp_id][item_id] =
+                noBudget[code][wp_id][item_id];
+            } else {
+              this.noValuesAssigned[code][wp_id][item_id] = false;
+            }
+          });
+        });
+      });
     this.sammaryCalc();
     this.allvalueChange();
   }
