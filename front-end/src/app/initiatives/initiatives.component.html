@@ -103,6 +103,7 @@
           <mat-icon>view_carousel</mat-icon>
         </button>
         <button
+          *ngIf="isLeader(row.roles) || isCoordinator(row.roles)"
           mat-icon-button
           (click)="openDialog(row.id)"
           matTooltip="Assign Organizations"
