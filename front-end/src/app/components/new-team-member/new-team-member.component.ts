@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 export enum ROLES {
   LEAD = 'Leader',
   COORDINATOR = 'Coordinator',
+  CONTRIBUTOR = 'Contributor',
 }
 @Component({
   selector: 'app-new-team-member',
@@ -31,6 +32,7 @@ export class NewTeamMemberComponent {
   Roles: any[] = [
     { value: ROLES.LEAD, viewValue: ROLES.LEAD },
     { value: ROLES.COORDINATOR, viewValue: ROLES.COORDINATOR },
+    { value: ROLES.CONTRIBUTOR, viewValue: ROLES.CONTRIBUTOR },
   ];
   private atLeastOneValidator = () => {
     return (controlGroup: any) => {

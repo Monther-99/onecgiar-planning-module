@@ -55,7 +55,8 @@ export class TeamMembersComponent {
     return (
       this.user_info.role == 'admin' ||
       this.my_roles?.includes(ROLES.LEAD) ||
-      this.my_roles?.includes(ROLES.COORDINATOR)
+      this.my_roles?.includes(ROLES.COORDINATOR) ||
+      this.my_roles?.includes(ROLES.CONTRIBUTOR)
     );
   }
   async deleteMember(roleId: number) {
