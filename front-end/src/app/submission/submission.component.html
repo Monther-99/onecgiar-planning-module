@@ -73,7 +73,7 @@
           <button
             mat-raised-button
             color="accent"
-            *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR' && phase.show_melia"
+            *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
             type="button"
             (click)="addMelia(wp.ost_wp.wp_official_code)"
           >
@@ -321,7 +321,10 @@
                   </td>
                 </ng-container>
                 <td>
-                  <mat-form-field class="per" *ngIf="item.category != 'EOI'">
+                  <mat-form-field
+                    class="per"
+                    *ngIf="item.category != 'EOI' && item.category != 'OUTCOME'"
+                  >
                     <input
                       *ngIf="
                         toggleValues[partner.code][wp.ost_wp.wp_official_code]
@@ -382,6 +385,8 @@
                 <td>
                   <mat-checkbox
                     *ngIf="
+                      item.category != 'EOI' &&
+                      item.category != 'OUTCOME' &&
                       values[partner.code][wp.ost_wp.wp_official_code][
                         item.id
                       ] == 0
@@ -403,7 +408,10 @@
                   ></mat-checkbox>
                 </td>
                 <td>
-                  <mat-form-field class="budget" *ngIf="item.category != 'EOI'">
+                  <mat-form-field
+                    class="budget"
+                    *ngIf="item.category != 'EOI' && item.category != 'OUTCOME'"
+                  >
                     <input
                       *ngIf="
                         toggleValues[partner.code][wp.ost_wp.wp_official_code]

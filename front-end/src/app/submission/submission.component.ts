@@ -343,7 +343,8 @@ export class SubmissionComponent implements OnInit {
     Object.keys(this.sammary).forEach((wp_id) => {
       this.sammaryTotal[wp_id] = 0;
       Object.keys(this.sammary[wp_id]).forEach((item_id) => {
-        this.sammaryTotal[wp_id] += totalWp[wp_id][item_id];
+        if (totalWp[wp_id][item_id])
+          this.sammaryTotal[wp_id] += totalWp[wp_id][item_id];
       });
     });
     this.wpsTotalSum = 0;
@@ -558,18 +559,20 @@ export class SubmissionComponent implements OnInit {
               false;
         });
         result.forEach((item: any) => {
-          this.check(
-            this.values,
-            partner.code,
-            wp.ost_wp.wp_official_code,
-            item.id
-          );
-          this.check(
-            this.displayValues,
-            partner.code,
-            wp.ost_wp.wp_official_code,
-            item.id
-          );
+          if (item.category != 'OUTCOME') {
+            this.check(
+              this.values,
+              partner.code,
+              wp.ost_wp.wp_official_code,
+              item.id
+            );
+            this.check(
+              this.displayValues,
+              partner.code,
+              wp.ost_wp.wp_official_code,
+              item.id
+            );
+          }
           this.budgetValues[partner.code][wp.ost_wp.wp_official_code][item.id] =
             null;
           this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code][
