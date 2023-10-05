@@ -24,7 +24,7 @@ export class NewTeamMemberComponent {
   ) {}
 
   confirmation: any = '';
-  organizations: any =[];
+  organizations: any = [];
   users: any = [];
   showConfirm(content: any) {
     console.log(content);
@@ -48,6 +48,26 @@ export class NewTeamMemberComponent {
               text: 'At least one should be selected',
             },
           };
+        }
+      }
+      return null;
+    };
+  };
+
+  private organizationValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        if (
+          controls.userRole.value == ROLES.CONTRIBUTOR &&
+          (!controls.organizations.value ||
+            controls.organizations.value.length < 1)
+        ) {
+          return {
+            organizationsRequired: true,
+          };
+        } else if (controls.userRole.value != ROLES.CONTRIBUTOR) {
+          controls.organizations.value = null;
         }
       }
       return null;
@@ -82,7 +102,10 @@ export class NewTeamMemberComponent {
           : null,
       ],
     });
-    this.memberForm.setValidators(this.atLeastOneValidator());
+    this.memberForm.setValidators([
+      this.atLeastOneValidator(),
+      this.organizationValidator(),
+    ]);
   }
   showerror: boolean = false;
   submit() {

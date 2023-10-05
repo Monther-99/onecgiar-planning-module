@@ -1,6 +1,6 @@
 <div class="dialogHeader">
   <h1 mat-dialog-title>
-    {{ data.role == "add" ? "Add New" : "Update" }} Team Member
+    {{ data.role == 'add' ? 'Add New' : 'Update' }} Team Member
   </h1>
   <button mat-dialog-close class="closeButton">
     <svg
@@ -40,7 +40,6 @@
           <span>{{ item.full_name }}</span> <span>({{ item.email }})</span>
         </ng-template>
       </ng-select>
-     
 
       <!-- <h1
         *ngIf="
@@ -67,18 +66,8 @@
         >
       </mat-form-field> -->
     </div>
-    <ng-select
-    [multiple]="true"
-    [closeOnSelect]="false"
-    appearance="outline"
-    [items]="organizations"
-    bindLabel="name"
-    placeholder="Select organizations"
-    formControlName="organizations"
-  >
-  </ng-select>
     <mat-form-field class="w-90" appearance="outline">
-      <mat-select placeholder="Role" formControlName="userRole">
+      <mat-select placeholder="Role" formControlName="userRole" #userRole>
         <mat-option *ngFor="let role of Roles" [value]="role.value">
           {{ role.viewValue }}
         </mat-option>
@@ -89,6 +78,22 @@
         >User Role is required</mat-error
       >
     </mat-form-field>
+    <ng-select
+      *ngIf="userRole.value == 'Contributor'"
+      [multiple]="true"
+      [closeOnSelect]="false"
+      appearance="outline"
+      [items]="organizations"
+      bindLabel="name"
+      placeholder="Select organizations"
+      formControlName="organizations"
+    >
+    </ng-select>
+    <mat-error
+      class="error organizationsError"
+      *ngIf="memberForm?.errors?.['organizationsRequired'] && showerror"
+      >At least one Organization should be selected</mat-error
+    >
     <div class="end">
       <mat-error
         class="error"
