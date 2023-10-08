@@ -47,6 +47,8 @@ export class UserDialogComponent implements OnInit {
   }
 
   async submit() {
+    this.userForm.markAllAsTouched();
+    this.userForm.updateValueAndValidity();
     if (this.userForm.valid) {
       await this.usersService.submitUser(this.userId, this.userForm.value);
       this.toast.success("User saved successfully");

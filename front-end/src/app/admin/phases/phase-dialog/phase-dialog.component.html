@@ -9,7 +9,15 @@
 
     <mat-form-field>
       <mat-label>Reporting year</mat-label>
-      <input matInput formControlName="reportingYear" />
+      <input
+        matInput
+        formControlName="reportingYear"
+        pattern="^\d{4}$"
+        #reportingYear
+      />
+      <mat-error class="error" *ngIf="reportingYear.validity.patternMismatch"
+        >Please enter a valid year</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>

@@ -53,6 +53,8 @@ export class PeriodDialogComponent implements OnInit {
   }
 
   async submit() {
+    this.periodForm.markAllAsTouched();
+    this.periodForm.updateValueAndValidity();
     if (this.periodForm.valid) {
       await this.periodsService.submitPeriod(
         this.periodId,

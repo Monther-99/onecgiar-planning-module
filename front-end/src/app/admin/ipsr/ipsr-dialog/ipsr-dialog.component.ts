@@ -45,6 +45,8 @@ export class IpsrDialogComponent implements OnInit {
   }
 
   async submit() {
+    this.ipsrForm.markAllAsTouched();
+    this.ipsrForm.updateValueAndValidity();
     if (this.ipsrForm.valid) {
       await this.ipsrService.submitIpsr(this.ipsrId, this.ipsrForm.value);
       this.toast.success("IPSR item saved successfully");

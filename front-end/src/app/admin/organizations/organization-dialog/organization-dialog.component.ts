@@ -47,6 +47,8 @@ export class OrganizationDialogComponent implements OnInit {
   }
 
   async submit() {
+    this.organizationForm.markAllAsTouched();
+    this.organizationForm.updateValueAndValidity();
     if (this.organizationForm.valid) {
       await this.organizationsService.submitOrganization(
         this.organizationId,

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ periodId ? "Edit" : "Add" }} Period</h1>
+<h1 mat-dialog-title>{{ periodId ? 'Edit' : 'Add' }} Period</h1>
 
 <mat-dialog-content>
   <form [formGroup]="periodForm">
@@ -13,7 +13,10 @@
 
     <mat-form-field>
       <mat-label>Year</mat-label>
-      <input matInput formControlName="year" />
+      <input matInput formControlName="year" pattern="^\d{4}$" #year />
+      <mat-error class="error" *ngIf="year.validity.patternMismatch"
+        >Please enter a valid year</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
@@ -26,6 +29,6 @@
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button color="primary" (click)="submit()">
-    {{ periodId ? "Save" : "Add" }}
+    {{ periodId ? 'Save' : 'Add' }}
   </button>
 </mat-dialog-actions>

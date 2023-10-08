@@ -100,7 +100,7 @@
         *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
         >Email or User must be not empty</mat-error
       >
-      <button class="primaryButton" (click)="submit()">SAVE</button>
+      <button mat-button color="primary" (click)="submit()">SAVE</button>
     </div>
   </form>
 </div>
