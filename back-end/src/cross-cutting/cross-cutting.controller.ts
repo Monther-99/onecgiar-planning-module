@@ -21,11 +21,11 @@ export class CrossCuttingController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body) {
-    return this.CrossCuttingService.update(+id, body);
+    return this.CrossCuttingService.update(id, body);
   }
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.CrossCuttingService.remove(+id);
+    return this.CrossCuttingService.remove(id);
   }
 
   @Post()

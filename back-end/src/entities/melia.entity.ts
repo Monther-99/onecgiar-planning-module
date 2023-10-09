@@ -4,8 +4,8 @@ import { Initiative } from './initiative.entity';
 
 @Entity()
 export class Melia {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   title: string;

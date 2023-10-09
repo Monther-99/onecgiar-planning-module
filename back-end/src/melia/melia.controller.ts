@@ -20,11 +20,11 @@ export class MeliaController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body) {
-    return this.meliaService.update(+id, body);
+    return this.meliaService.update(id, body);
   }
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.meliaService.remove(+id);
+    return this.meliaService.remove(id);
   }
 
   @Post()

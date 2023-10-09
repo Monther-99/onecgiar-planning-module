@@ -291,10 +291,12 @@ export class SubmissionComponent implements OnInit {
 
     Object.keys(this.summaryBudgets).forEach((wp_id) => {
       Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
-        this.sammary[wp_id][item_id] = this.percentValue(
-          this.summaryBudgets[wp_id][item_id],
-          this.summaryBudgetsTotal[wp_id]
-        );
+        if (this.summaryBudgetsTotal[wp_id]) {
+          this.sammary[wp_id][item_id] = this.percentValue(
+            this.summaryBudgets[wp_id][item_id],
+            this.summaryBudgetsTotal[wp_id]
+          );
+        }
       });
     });
 

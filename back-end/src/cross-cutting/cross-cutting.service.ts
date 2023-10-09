@@ -22,14 +22,14 @@ export class CrossCuttingService {
   create(data: any) {
     return this.CrossCuttingRepository.save(this.CrossCuttingRepository.create({ ...data }));
   }
-  findOne(id: number) {
+  findOne(id: string) {
     return this.CrossCuttingRepository.findOneBy({ id });
   }
 
-  update(id: number, data: any) {
+  update(id: string, data: any) {
     return this.CrossCuttingRepository.update({ id }, { ...data });
   }
-  remove(id: number) {
+  remove(id: string) {
     return this.CrossCuttingRepository.delete({ id });
   }
 }
