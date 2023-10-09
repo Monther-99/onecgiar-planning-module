@@ -22,7 +22,7 @@ export class Phase {
   name: string;
 
   @Column()
-  reportingYear: string;
+  reportingYear: number;
 
   @Column({ type: 'uuid' })
   tocPhase: string;

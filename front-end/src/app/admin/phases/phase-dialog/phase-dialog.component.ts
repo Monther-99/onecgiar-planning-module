@@ -37,9 +37,9 @@ export class PhaseDialogComponent implements OnInit {
     this.phaseForm = this.fb.group({
       name: [null, Validators.required],
       reportingYear: [null, Validators.required],
-      tocPhase: [null],
-      startDate: [null],
-      endDate: [null],
+      tocPhase: [null, Validators.required],
+      startDate: [null, Validators.required],
+      endDate: [null, Validators.required],
       previousPhase: [null],
       status: [null, Validators.required],
       show_eoi: [false],

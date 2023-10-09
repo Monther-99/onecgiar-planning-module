@@ -14,7 +14,7 @@ export class Period {
   id: number;
 
   @Column()
-  year: string;
+  year: number;
 
   @Column()
   quarter: string;
