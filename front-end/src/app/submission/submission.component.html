@@ -385,6 +385,11 @@
                 <td>
                   <mat-checkbox
                     *ngIf="
+                      !(
+                        perValues[partner.code][wp.ost_wp.wp_official_code][
+                          item.id
+                        ] | inQue
+                      ) &&
                       item.category != 'EOI' &&
                       item.category != 'OUTCOME' &&
                       values[partner.code][wp.ost_wp.wp_official_code][
