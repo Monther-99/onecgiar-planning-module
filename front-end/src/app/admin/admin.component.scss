@@ -4,14 +4,6 @@
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 200, "opsz" 40;
 }
-
-::ng-deep{
-    .content{
-        width: 100% !important;
-        margin:0 !important;
-        max-width:100% !important;
-    }
-}
 .admin-module-box__content{
     margin-top: 20px;
 }

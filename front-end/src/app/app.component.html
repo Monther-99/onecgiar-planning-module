@@ -26,7 +26,11 @@
 <div class="main-body">
   <app-header></app-header>
   <app-spinner></app-spinner>
-  <div class="content" role="main">
+  <div
+    class="content"
+    [ngClass]="{ admin: router.url.includes('/admin') }"
+    role="main"
+  >
     <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>

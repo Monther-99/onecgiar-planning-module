@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private authService: AuthService, public dialog: MatDialog,private router:Router) {}
+  constructor(private authService: AuthService, public dialog: MatDialog, public router:Router) {}
   user: any;
   ngOnInit(): void {
     this.router.events.subscribe(e=>{
