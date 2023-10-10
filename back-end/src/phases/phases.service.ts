@@ -21,7 +21,15 @@ export class PhasesService {
   ) {}
 
   create(createPhaseDto: any) {
-    const newPhase = this.phaseRepository.create({ ...createPhaseDto });
+    const { startDate, endDate, ...phaseData } = createPhaseDto;
+    const newStartDate = this.fixDate(startDate);
+    const newEndDate = this.fixDate(endDate);
+
+    const newPhase = this.phaseRepository.create({
+      startDate: newStartDate,
+      endDate: newEndDate,
+      ...phaseData,
+    });
     return this.phaseRepository.save(newPhase);
   }
 
@@ -44,7 +52,14 @@ export class PhasesService {
   }
 
   update(id: number, updatePhaseDto: any) {
-    return this.phaseRepository.update({ id }, { ...updatePhaseDto });
+    const { startDate, endDate, ...phaseData } = updatePhaseDto;
+    const newStartDate = this.fixDate(startDate);
+    const newEndDate = this.fixDate(endDate);
+
+    return this.phaseRepository.update(
+      { id },
+      { startDate: newStartDate, endDate: newEndDate, ...phaseData },
+    );
   }
 
   remove(id: number) {
@@ -112,5 +127,16 @@ export class PhasesService {
       )
       .groupBy('initiative.id')
       .getRawMany();
+  }
+
+  fixDate(date: any) {
+    const newDate = new Date(date);
+    return new Date(
+      newDate.getFullYear(),
+      newDate.getMonth(),
+      newDate.getDate(),
+      newDate.getHours(),
+      newDate.getMinutes() - newDate.getTimezoneOffset(),
+    ).toISOString();
   }
 }
