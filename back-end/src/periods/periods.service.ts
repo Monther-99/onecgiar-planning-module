@@ -11,7 +11,7 @@ export class PeriodsService {
     @InjectRepository(Period) private periodRepository: Repository<Period>,
   ) {}
 
-  create(createPeriodDto: CreatePeriodDto) {
+  create(createPeriodDto: any) {
     const newPeriod = this.periodRepository.create({ ...createPeriodDto });
     return this.periodRepository.save(newPeriod);
   }
@@ -32,7 +32,7 @@ export class PeriodsService {
     });
   }
 
-  update(id: number, updatePeriodDto: UpdatePeriodDto) {
+  update(id: number, updatePeriodDto: any) {
     return this.periodRepository.update({ id }, { ...updatePeriodDto });
   }
 

@@ -20,7 +20,7 @@ export class PhasesService {
     private organizationRepository: Repository<Organization>,
   ) {}
 
-  create(createPhaseDto: CreatePhaseDto) {
+  create(createPhaseDto: any) {
     const newPhase = this.phaseRepository.create({ ...createPhaseDto });
     return this.phaseRepository.save(newPhase);
   }
@@ -43,7 +43,7 @@ export class PhasesService {
     });
   }
 
-  update(id: number, updatePhaseDto: UpdatePhaseDto) {
+  update(id: number, updatePhaseDto: any) {
     return this.phaseRepository.update({ id }, { ...updatePhaseDto });
   }
 
