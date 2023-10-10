@@ -20,20 +20,22 @@ export class IpsrComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
   ipsrs: any;
-  values:any;
+  values: any;
   submit() {
     this.ipsrForm.markAllAsTouched();
     this.ipsrForm.updateValueAndValidity();
-    console.log(this.ipsrForm.errors, this.ipsrForm.valid);
     if (this.ipsrForm.valid) this.dialogRef.close(this.ipsrForm.value);
   }
   ngOnInit() {
     this.ipsrs = this.data.ipsrs;
     this.values = this.data.values;
     let obj: any = {};
-console.log()
     this.ipsrs.forEach((item: any) => {
-      obj['value-' + item.id] =   this.values.length ? [this.values.filter((d:any)=> d.ipsr_id == item.id )[0].value, Validators.required]: null ;
+      let ipsrValueArr = this.values.length
+        ? this.values.filter((d: any) => d.ipsr_id == item.id)
+        : [];
+      let ipsrValue = ipsrValueArr.length ? ipsrValueArr[0].value : null;
+      obj['value-' + item.id] = [ipsrValue, Validators.required];
     });
     this.ipsrForm = this.fb.group({
       ...obj,
