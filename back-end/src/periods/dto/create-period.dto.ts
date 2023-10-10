@@ -1,5 +1,5 @@
 export class CreatePeriodDto {
-  year: string;
+  year: number;
 
   quarter: string;
 }

@@ -29,9 +29,9 @@ const routes: Routes = [
       { path: 'phases', component: PhasesComponent },
       { path: 'periods', component: PeriodsComponent },
       { path: 'ipsr', component: AdminIpsrComponent },
+      { path: 'phases/:id/initiatives', component: PhaseInitiativesComponent }
     ],
   },
-  { path: 'admin/phases/:id/initiatives', component: PhaseInitiativesComponent },
   { path: 'initiative/:id/:code/submission', component: SubmissionComponent },
   { path: 'initiative/:id/:code/submission/center', component: SubmissionComponent },
   { path: 'initiative/:id/:code/submited-versions', component: SubmitedVersionsComponent },

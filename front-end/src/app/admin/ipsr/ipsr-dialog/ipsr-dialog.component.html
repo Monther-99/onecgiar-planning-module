@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ ipsrId ? "Edit" : "Add" }} IPSR</h1>
+<h1 mat-dialog-title>{{ ipsrId ? 'Edit' : 'Add' }} IPSR</h1>
 
 <mat-dialog-content>
   <form [formGroup]="ipsrForm">
@@ -9,7 +9,7 @@
 
     <mat-form-field>
       <mat-label>Description</mat-label>
-      <input matInput formControlName="description" />
+      <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
   </form>
 </mat-dialog-content>
@@ -17,6 +17,6 @@
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button color="primary" (click)="submit()">
-    {{ ipsrId ? "Save" : "Add" }}
+    {{ ipsrId ? 'Save' : 'Add' }}
   </button>
 </mat-dialog-actions>

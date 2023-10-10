@@ -61,9 +61,14 @@
     <mat-form-field>
       <mat-label>Previous Phase</mat-label>
       <mat-select formControlName="previousPhase">
-        <mat-option *ngFor="let phase of phases" [value]="phase.id">
-          {{ phase.name }}
-        </mat-option>
+        <ng-container *ngFor="let phase of phases">
+          <mat-option
+            [value]="phase.id"
+            *ngIf="!(phaseId && phaseId == phase.id)"
+          >
+            {{ phase.name }}
+          </mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
 
