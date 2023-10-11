@@ -7,6 +7,7 @@ import { In, Repository } from 'typeorm';
 import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organization.entity';
 import { Initiative } from 'src/entities/initiative.entity';
 import { Organization } from 'src/entities/organization.entity';
+import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
 
 @Injectable()
 export class PhasesService {
@@ -18,6 +19,8 @@ export class PhasesService {
     private initiativeRepository: Repository<Initiative>,
     @InjectRepository(Organization)
     private organizationRepository: Repository<Organization>,
+    @InjectRepository(InitiativeRoles)
+    private initiativeRolesRepository: Repository<InitiativeRoles>,
   ) {}
 
   create(createPhaseDto: any) {
@@ -90,7 +93,19 @@ export class PhasesService {
       });
       await this.phaseInitOrgRepo.save(newPhaseInitOrg);
     });
+    const initiativeRoles = await this.initiativeRolesRepository.find({
+      where: { initiative_id },
+      relations: ['organizations'],
+    });
 
+    initiativeRoles.forEach(async (initiativeRole) => {
+      if (initiativeRole.organizations.length) {
+        initiativeRole.organizations = initiativeRole.organizations.filter(
+          (org: any) => data.organizations.includes(org.id),
+        );
+        await this.initiativeRolesRepository.save(initiativeRole);
+      }
+    });
     return true;
   }
 

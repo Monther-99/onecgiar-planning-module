@@ -662,7 +662,7 @@ export class SubmissionComponent implements OnInit {
     );
     if (roles.length) {
       this.isCenter = true;
-      if (roles[0].role == ROLES.LEAD) {
+      if (roles[0].role == ROLES.LEAD || roles[0].role == ROLES.COORDINATOR) {
         this.partners = partners;
         this.isCenter = false;
       } else this.partners = roles[0].organizations;
@@ -936,7 +936,7 @@ export class SubmissionComponent implements OnInit {
   submit() {
     this.dialog
       .open(ConfirmComponent, {
-        maxWidth: '400px',
+        width: '350px',
         data: new ConfirmDialogModel(
           'Submit',
           `Are you sure you want to Submit?`

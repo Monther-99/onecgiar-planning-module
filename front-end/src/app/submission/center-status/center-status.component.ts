@@ -26,7 +26,7 @@ export class CenterStatusComponent implements OnInit {
   complete() {
     this.dialog
       .open(ConfirmComponent, {
-        maxWidth: '400px',
+        width: '400px',
         data: new ConfirmDialogModel(
           'Mark as Complete',
           `Are you sure you want to Mark it as complete?`

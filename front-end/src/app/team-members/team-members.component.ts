@@ -84,7 +84,7 @@ export class TeamMembersComponent {
   async openNewTeamMemberDialog() {
     const dialogRef = this.dialog.open(NewTeamMemberComponent, {
       width: '600px',
-      data: { role: 'add', member: null },
+      data: { role: 'add', member: null, initiative_id: this.initiativeId },
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result?.role == 'add') {
@@ -117,7 +117,7 @@ export class TeamMembersComponent {
   openEditTeamMemberDialog(roleId: number, role: any) {
     const dialogRef = this.dialog.open(NewTeamMemberComponent, {
       width: '600px',
-      data: { role: 'edit', member: role },
+      data: { role: 'edit', member: role, initiative_id: this.initiativeId },
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result?.role == 'edit') {

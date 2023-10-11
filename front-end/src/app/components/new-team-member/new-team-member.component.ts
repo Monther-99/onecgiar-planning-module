@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { OrganizationsService } from 'src/app/services/organizations.service';
+import { PhasesService } from 'src/app/services/phases.service';
 import { UserService } from 'src/app/services/user.service';
 
 export enum ROLES {
@@ -20,7 +20,7 @@ export class NewTeamMemberComponent {
     private dialogRef: MatDialogRef<NewTeamMemberComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any = {},
     private usersService: UserService,
-    private organizationsService: OrganizationsService
+    private phasesService: PhasesService
   ) {}
 
   confirmation: any = '';
@@ -76,7 +76,11 @@ export class NewTeamMemberComponent {
 
   memberForm: any;
   async populateMemberForm() {
-    this.organizations = await this.organizationsService.getOrganizations();
+    const activePhase = await this.phasesService.getActivePhase();
+    this.organizations = await this.phasesService.getAssignedOrgs(
+      activePhase.id,
+      this.data.initiative_id
+    );
     if (this.data?.member?.user_id) {
       const users: any = await this.usersService.getUsers(
         { user_id: this.data?.member?.user_id },
