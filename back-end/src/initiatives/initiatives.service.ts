@@ -101,22 +101,45 @@ export class InitiativesService {
   }
 
   findAll() {
-    return this.initiativeRepository.find({relations: ['roles','latest_submission','center_status'], order:{id:'asc'}});
+    return this.initiativeRepository.find({
+      relations: ['roles', 'latest_submission', 'center_status'],
+      order: { id: 'asc' },
+    });
   }
 
   findOne(id: number) {
     return this.initiativeRepository.findOne({
       where: { id },
-      relations: ['organizations','roles','roles.organizations','center_status'],
-      order:{id:'desc'}
+      relations: [
+        'organizations',
+        'roles',
+        'roles.organizations',
+        'center_status',
+      ],
+      order: { id: 'desc' },
     });
   }
   async updateRoles(initiative_id, id, initiativeRoles: InitiativeRoles) {
     const found_roles = await this.iniRolesRepository.findOne({
       where: { initiative_id, id },
     });
-    if (found_roles) return await this.iniRolesRepository.save(initiativeRoles);
-    else throw new NotFoundException();
+    if (!found_roles) throw new NotFoundException();
+
+    if (found_roles.user_id != initiativeRoles.user_id) {
+      let userRole = await this.iniRolesRepository.findOne({
+        where: {
+          initiative_id: initiative_id,
+          user_id: initiativeRoles.user_id,
+        },
+      });
+      if (userRole) {
+        throw new BadRequestException(
+          'User already exist as a team member for this initiative.',
+        );
+      }
+    }
+
+    return await this.iniRolesRepository.save(initiativeRoles);
   }
   async deleteRole(initiative_id, id) {
     const roles = await this.iniRolesRepository.findOne({
@@ -126,22 +149,30 @@ export class InitiativesService {
     else throw new NotFoundException();
   }
   async setRole(initiative_id, role: InitiativeRoles) {
+    let init = await this.initiativeRepository.findOne({
+      where: { id: initiative_id },
+      relations: ['roles'],
+    });
 
-      let init = await this.initiativeRepository.findOne({
-        where: { id: initiative_id },
-        relations: ['roles'],
-      });
-      if (!init) throw new NotFoundException();
-      const newRole = {
-        initiative_id: initiative_id,
-        user_id: +role?.user_id ? role?.user_id : null,
-        email: role.email.toLowerCase(),
-        role: role.role,
-        organizations: role.organizations,
-      };
-      //To the user that was added by the Admin or Leader/Coordinator
+    let userRole = await this.iniRolesRepository.findOne({
+      where: { initiative_id: initiative_id, user_id: role.user_id },
+    });
+    if (userRole) {
+      throw new BadRequestException(
+        'User already exist as a team member for this initiative.',
+      );
+    }
 
-      return await this.iniRolesRepository.save(newRole, {  reload: true });
+    if (!init) throw new NotFoundException();
+    const newRole = {
+      initiative_id: initiative_id,
+      user_id: +role?.user_id ? role?.user_id : null,
+      email: role.email.toLowerCase(),
+      role: role.role,
+      organizations: role.organizations,
+    };
+    //To the user that was added by the Admin or Leader/Coordinator
 
+    return await this.iniRolesRepository.save(newRole, { reload: true });
   }
 }

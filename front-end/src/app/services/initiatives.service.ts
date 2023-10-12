@@ -44,13 +44,12 @@ export class InitiativesService {
       )
   }
 
-  updateInitiativeRole(initiativeId: number, roleId: number, role: any) {
+  updateInitiativeRole(initiativeId: number, roleId: number, role: any): Observable<any> {
     return this.http
       .put(
        'api/initiatives/' + initiativeId + '/roles/' + roleId,
        role
-      )
-      .toPromise();
+      );
   }
 
   deleteInitiativeRole(initiativeId: number, roleId: number) {

@@ -39,14 +39,15 @@ export class TeamMembersComponent {
     const params: any = this.activatedRoute?.snapshot.params;
     this.initiativeId = params.id;
     this.id = params.id;
-    console.log('this.id',this.id)
     this.loadInitiativeRoles();
     this.user_info = this.userService.getLogedInUser();
-    this.InitiativeUsers = await this.initiativeService.getInitiativeUsers(this.id);
-    this.my_roles = this.InitiativeUsers
-      .filter((d: any) => d?.user?.id == this?.user_info?.id)
-      .map((d: any) => d.role);
-   // if (this.canEdit())
+    this.InitiativeUsers = await this.initiativeService.getInitiativeUsers(
+      this.id
+    );
+    this.my_roles = this.InitiativeUsers.filter(
+      (d: any) => d?.user?.id == this?.user_info?.id
+    ).map((d: any) => d.role);
+    // if (this.canEdit())
     this.displayedColumns.push('Actions');
   }
 
@@ -93,23 +94,28 @@ export class TeamMembersComponent {
         const userRole = result.formValue.userRole;
         console.log({ email, userRole });
         // handel add memeber API service
-        this.initiativeService.createNewInitiativeRole(
-          this.initiativeId,
-          {
+        this.initiativeService
+          .createNewInitiativeRole(this.initiativeId, {
             initiative_id: this.initiativeId,
             email: result.formValue.email,
             role: result.formValue.userRole,
             user_id: result.formValue.user_id,
             organizations: result.formValue.organizations,
-          }
-        ).subscribe(data => {
-          if (data) {
-            this.toastrService.success('Success', `User role has been added`);
-            this.loadInitiativeRoles();
-          }
-        }, error => {
-          this.toastrService.error(error.error.message);
-        })
+          })
+          .subscribe(
+            (data) => {
+              if (data) {
+                this.toastrService.success(
+                  'Success',
+                  `User role has been added`
+                );
+                this.loadInitiativeRoles();
+              }
+            },
+            (error) => {
+              this.toastrService.error(error.error.message);
+            }
+          );
       }
     });
   }
@@ -121,23 +127,30 @@ export class TeamMembersComponent {
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result?.role == 'edit') {
-        console.log('edit');
-        console.log(result.formValue)
         // access edited data => result.formValue
-        await this.initiativeService.updateInitiativeRole(
-          this.initiativeId,
-          roleId,
-          {
+        this.initiativeService
+          .updateInitiativeRole(this.initiativeId, roleId, {
             initiative_id: this.initiativeId,
             id: roleId,
             user_id: result.formValue.user_id,
             email: result.formValue.email,
             role: result.formValue.userRole,
             organizations: result.formValue.organizations,
-          }
-        );
-        this.toastrService.success('Success', `User role has been updated`);
-        this.loadInitiativeRoles();
+          })
+          .subscribe(
+            (data) => {
+              if (data) {
+                this.toastrService.success(
+                  'Success',
+                  `User role has been updated`
+                );
+                this.loadInitiativeRoles();
+              }
+            },
+            (error) => {
+              this.toastrService.error(error.error.message);
+            }
+          );
       }
     });
   }
@@ -154,8 +167,8 @@ export class TeamMembersComponent {
 
   @ViewChild(MatPaginator) paginator: any;
 
-  join(data:any){
-   return data.map((d:any)=>d.name).join(', ')
+  join(data: any) {
+    return data.map((d: any) => d.name).join(', ');
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
