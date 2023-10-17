@@ -4,9 +4,15 @@
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 200, "opsz" 40;
 }
-.admin-module-box__content{
-    margin-top: 20px;
+.admin-module-box__content {
+  margin-top: 20px;
 }
 // .cc {
 //   filter: blur();
 // }
+
+:host {
+  ::ng-deep.mat-icon {
+    width: 40px !important;
+  }
+}

@@ -2,15 +2,18 @@
 @import "app/sass/base/base";
 @import "app/sass/abstracts/variables";
 @import "~@ng-select/ng-select/themes/material.theme.css";
-@import 'ngx-toastr/toastr';
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-body {
-  background-color: rgb(245, 245, 245) !important;
-}
+@import "ngx-toastr/toastr";
+// html,
+// body {
+//   height: 100%;
+// }
+// body {
+//   margin: 0;
+//   font-family: Roboto, "Helvetica Neue", sans-serif;
+// }
+// body {
+//   background-color: rgb(245, 245, 245) !important;
+// }
+
+// @import "app/sass/base/base";
+// @import "app/sass/abstracts/variables";
