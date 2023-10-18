@@ -60,12 +60,18 @@
     width: 40.6rem;
     height: 8rem;
     &__title {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 400;
       line-height: 3rem;
       letter-spacing: 0em;
       margin-top: 2.4rem;
-      color: rgba(255, 255, 255, 0.8745098039);
+      // color: rgba(255, 255, 255, 0.8745098039);
+      background-image: linear-gradient(to bottom, #ffffff, #ededed7f);
+      -webkit-background-clip: text;
+      color: transparent;
+      transition: all 0.2s;
+
+      font-weight: 600;
 
       &--1 {
         font-size: 2rem;
@@ -73,7 +79,13 @@
         line-height: 3rem;
         letter-spacing: 0em;
 
-        color: #ffffff;
+        // color: #ffffff;
+        background-image: linear-gradient(to right, #ffffff, #ededed);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 0.2s;
+        letter-spacing: 0.1rem;
+        font-weight: 600;
       }
     }
   }
@@ -139,7 +151,7 @@
   }
 
   &__title--1 {
-    color: #ffffff;
+    // color: #ffffff;
 
     padding: 0.5rem;
     font-size: 1.6rem;
@@ -151,6 +163,13 @@
     text-wrap: nowrap;
     overflow: hidden;
     max-width: 107px;
+    background-image: linear-gradient(to bottom, #ffffff, #ededed);
+    -webkit-background-clip: text;
+    color: transparent;
+    // letter-spacing: 0.rem;
+    transition: all 0.2s;
+    font-size: 1.6rem;
+    font-weight: 600;
   }
 
   &__title--3 {
@@ -166,16 +185,30 @@
     text-wrap: nowrap;
     overflow: hidden;
     max-width: 170px;
+    background-image: linear-gradient(to bottom, #ffffff, #ededed);
+    -webkit-background-clip: text;
+    color: transparent;
+    // letter-spacing: 0.rem;
+    transition: all 0.2s;
+    // font-size: 1.6rem;
+    font-weight: 600;
   }
 
   &__title--2 {
     padding: 0.5rem;
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 400;
     line-height: 3rem;
     letter-spacing: 0em;
     text-align: left;
-    color: #ffffff;
+    // color: #ffffff;
+    background-image: linear-gradient(to bottom, #ffffff, #ededed);
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: 0.1rem;
+    transition: all 0.2s;
+
+    font-weight: 600;
   }
 
   &__background-c-primary {
@@ -234,7 +267,7 @@
   font-weight: 700 !important;
   color: #2a2e45 !important;
   // background-color: #ffffff;
-  background-image: linear-gradient(to right, #ffffff, #dbdbdb);
+  background-image: linear-gradient(to bottom, #ffffff, #dbdbdb);
 }
 
 .header-logo-size {

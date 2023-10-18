@@ -782,13 +782,13 @@
     color: #ffffff;
     letter-spacing: 0em;
     text-align: center;
-    background-image: linear-gradient(to right bottom, #436280, #39536d);
+    background-image: linear-gradient(to bottom, #436280, #39536d);
     // border: 0.2rem solid #154c83;
     font-style: normal;
   }
 
   .text-color-linear {
-    background-image: linear-gradient(to right bottom, #ffffff, #ededed);
+    background-image: linear-gradient(to bottom, #ffffff, #ededed);
     -webkit-background-clip: text;
     color: transparent;
     letter-spacing: 0.1rem;
@@ -798,7 +798,7 @@
   }
 
   .text-s-c-linear {
-    background-image: linear-gradient(to right, #0f212f, #0c1a25);
+    background-image: linear-gradient(to bottom, #0f212f, #0c1a25);
     -webkit-background-clip: text;
     color: transparent;
     letter-spacing: 0.1rem;
