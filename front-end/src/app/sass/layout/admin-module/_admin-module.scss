@@ -1,7 +1,8 @@
 @import "../../abstracts/variables";
 .admin-module-box {
   display: flex;
-  background-color: #fafafa;
+  // background-color: #fafafa;
+  background-image: linear-gradient(to right bottom, #fafafa, #e8e8e8);
   min-height: calc(100vh - 142px);
   &__sidebar {
     width: 18%;
