@@ -29,10 +29,7 @@ export class InitiativesController {
     return 'wp imported successfully';
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.initiativesService.findOne(+id);
-  }
+
 
   @Get()
   async findAll() {
@@ -42,6 +39,11 @@ export class InitiativesController {
   @Get('full')
   async findAllFull() {
     return this.initiativesService.findAllFull();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.initiativesService.findOne(+id);
   }
 
   @Get(':id/roles')
