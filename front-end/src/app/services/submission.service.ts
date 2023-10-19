@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom, map } from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -187,5 +187,29 @@ export class SubmissionService {
         .get('/api/submission/submission_budgets/' + id)
         .pipe(map((d: any) => d))
     ).catch((e) => false);
+  }
+
+  async getMeliaTypes() {
+    return firstValueFrom(
+      this.http.get('/api/melia/types').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async getCountries() {
+    return firstValueFrom(
+      this.http.get('/api/organizations/countries').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async getPartners() {
+    return firstValueFrom(
+      this.http.get('/api/organizations/partners').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  searchPartners(term: string): Observable<any[]> {
+    return this.http
+      .get('/api/organizations/partners/' + term)
+      .pipe(map((d: any) => d));
   }
 }

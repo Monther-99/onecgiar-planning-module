@@ -15,6 +15,12 @@ export class InitiativesService {
   }
   async getInitiatives() {
     return firstValueFrom(
+      this.http.get('/api/initiatives/full').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
+  async getInitiativesOnly() {
+    return firstValueFrom(
       this.http.get('/api/initiatives').pipe(map((d: any) => d))
     ).catch((e) => false);
   }

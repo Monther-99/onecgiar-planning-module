@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import * as jsonFile from 'new.json';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResultPeriodValues } from 'src/entities/resultPeriodValues.entity';
 import { IsNull, Repository } from 'typeorm';
@@ -292,7 +291,14 @@ export class SubmissionService {
   async saveResultDataValue(id, data: any) {
     const initiativeId = id;
 
-    const { partner_code, wp_id, item_id, percent_value, budget_value, no_budget } = data;
+    const {
+      partner_code,
+      wp_id,
+      item_id,
+      percent_value,
+      budget_value,
+      no_budget,
+    } = data;
 
     let organizationObject = await this.organizationRepository.findOneBy({
       id: +partner_code,

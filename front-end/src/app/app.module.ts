@@ -62,6 +62,7 @@ import { AssignOrganizationsComponent } from './assign-organizations/assign-orga
 import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingInterceptor } from './loading.interceptor';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 @NgModule({
   declarations: [
     AppComponent,
@@ -131,6 +132,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatTooltipModule,
     MatToolbarModule,
     MatSlideToggleModule,
+    MatRadioModule,
   ],
   providers: [
     AppSocket,

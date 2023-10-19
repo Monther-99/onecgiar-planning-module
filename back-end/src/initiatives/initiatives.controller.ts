@@ -33,9 +33,15 @@ export class InitiativesController {
   findOne(@Param('id') id: string) {
     return this.initiativesService.findOne(+id);
   }
+
   @Get()
   async findAll() {
     return this.initiativesService.findAll();
+  }
+
+  @Get('full')
+  async findAllFull() {
+    return this.initiativesService.findAllFull();
   }
 
   @Get(':id/roles')

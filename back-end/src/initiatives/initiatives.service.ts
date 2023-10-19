@@ -102,6 +102,12 @@ export class InitiativesService {
 
   findAll() {
     return this.initiativeRepository.find({
+      order: { id: 'asc' },
+    });
+  }
+
+  findAllFull() {
+    return this.initiativeRepository.find({
       relations: ['roles', 'latest_submission', 'center_status'],
       order: { id: 'asc' },
     });
