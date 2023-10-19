@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { MeliaService } from './melia.service';
 
 @Controller('melia')
@@ -9,6 +17,18 @@ export class MeliaController {
   findAll() {
     return this.meliaService.findAll();
   }
+
+  @Get('types')
+  getMeliaTypes() {
+    return this.meliaService.getMeliaTypes();
+  }
+
+  @Get('import/types')
+  async getImportMeliaTypes() {
+    await this.meliaService.importMeliaTypes();
+    return 'Melia study types imported successfully';
+  }
+
   @Get('initiative/:initiative_id')
   findInitiative_id(@Param('initiative_id') initiative_id) {
     return this.meliaService.findByInitiativeID(initiative_id);

@@ -14,6 +14,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { InitiativeRoles } from './initiative-roles.entity';
 import { IpsrValue } from './ipsr-value.entity';
 import { CenterStatus } from './center-status.entity';
+import { Melia } from './melia.entity';
 
 @Entity()
 export class Initiative {
@@ -72,7 +73,7 @@ export class Initiative {
     onDelete: 'RESTRICT',
   })
   @JoinTable()
-  center_status:Array<CenterStatus>;
+  center_status: Array<CenterStatus>;
 
   @Column({ nullable: true })
   last_update_at: Date;
@@ -88,4 +89,7 @@ export class Initiative {
   @ManyToOne(() => Submission)
   @JoinColumn({ name: 'latest_submission_id' })
   latest_submission: Submission;
+
+  @ManyToMany(() => Melia, (melia) => melia.other_initiatives)
+  melia: Melia[];
 }

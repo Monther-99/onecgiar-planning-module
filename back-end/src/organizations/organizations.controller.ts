@@ -27,9 +27,36 @@ export class OrganizationsController {
     return this.organizationsService.findAll();
   }
 
+  @Get('countries')
+  async getCountries() {
+    return this.organizationsService.getCountries();
+  }
+
+  @Get('partners')
+  async getPartners() {
+    return this.organizationsService.getPartners();
+  }
+
+  @Get('partners/:term')
+  async searchPartners(@Param('term') term: string) {
+    return this.organizationsService.searchPartners(term);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.organizationsService.findOne(+id);
+  }
+
+  @Get('import/countries')
+  async importCountries() {
+    await this.organizationsService.importCountries();
+    return 'Countries imported successfully';
+  }
+
+  @Get('import/partners')
+  async importPartners() {
+    await this.organizationsService.importPartners();
+    return 'Partners imported successfully';
   }
 
   @Patch(':id')
