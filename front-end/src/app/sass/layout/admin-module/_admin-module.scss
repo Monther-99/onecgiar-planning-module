@@ -6,7 +6,9 @@
   min-height: calc(100vh - 142px);
   &__sidebar {
     width: 18%;
-    background-color: $color-side-bar;
+    // background-color: $color-side-bar;
+    background-image: linear-gradient(to bottom, #0f212f, #09151e);
+
     @media only screen and (max-width: 160em) {
       flex: 0 0 25.6rem;
     }

@@ -28,9 +28,12 @@ export class PeriodsComponent implements AfterViewInit {
     private dialog: MatDialog,
     private headerService: HeaderService
   ) {
-    this.headerService.background = "#04030f";
-    this.headerService.backgroundNavMain = "#0f212f";
-    this.headerService.backgroundUserNavButton = "#0f212f";
+    this.headerService.background =
+      "linear-gradient(to  bottom, #04030F, #020106)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
   ngAfterViewInit() {

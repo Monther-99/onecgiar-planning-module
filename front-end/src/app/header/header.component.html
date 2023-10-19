@@ -91,18 +91,23 @@
       </button>
 
       <button
+        [style.background]="headerService.backgroundUserNavButton"
         class="user-nav-button"
         mat-icon-button
         (click)="login()"
         *ngIf="!user_info"
       >
-        <span class="user-nav-button__title--2">login</span>
-        <mat-icon class="user-nav-button__icon">
-          <img
-            src="../../assets/shared-image/🦆 icon _logout_.svg"
-            class="user-nav-button__icon--2"
-            alt="~/Frontend/images/icon _logout"
-        /></mat-icon>
+        <span class="user-nav-button__visible">
+          <span class="user-nav-button__title--2">Login</span>
+        </span>
+        <span class="user-nav-button__invisible">
+          <mat-icon class="user-nav-button__icon">
+            <img
+              src="../../assets/shared-image/login-planning.png"
+              class="user-nav-button__icon--3"
+              alt="~/Frontend/images/icon _logout"
+          /></mat-icon>
+        </span>
       </button>
     </nav>
   </div>
