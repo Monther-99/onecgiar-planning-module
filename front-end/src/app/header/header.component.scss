@@ -1,5 +1,9 @@
 @import "../sass/layout/header/header";
-
+.header-risk.not-admin {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
 .risk-nav-list {
   background-color: #436280;
 }
@@ -16,9 +20,7 @@
 
   // padding: 2.5rem;
 }
-.header-content-box{
-  cursor: pointer;
-}
+
 ::ng-deep .mat-mdc-menu-item {
   display: flex;
   position: relative;
@@ -82,6 +84,14 @@
   font-weight: 400;
   line-height: 114.5%;
 }
+.loading-holder {
+  width: 100%;
+  min-height: 4px;
+}
+.loading-holder.admin {
+  background-color: #0f212f;
+  padding-left: 256px;
+}
 
 // :host{
 //   ::ng-deep .mdc-menu-surface--open {
@@ -101,4 +111,25 @@
     margin: 1rem 0 0 0 !important;
     padding: 0 1rem !important;
   }
+}
+
+.cool-link {
+  display: inline-block;
+  // background-image: linear-gradient(to right, #a3bad2, #6d91b7);
+  text-decoration: none;
+}
+
+.cool-link::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  // background-image: linear-gradient(to right, #a3bad267, #6d91b7);
+  background-image: linear-gradient(to right, #fafafa51, #e8e8e8);
+  transition: width 0.3s;
+}
+
+.cool-link:hover::after {
+  width: 100%;
+  //transition: width .3s;
 }

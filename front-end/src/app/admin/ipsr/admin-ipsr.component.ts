@@ -9,6 +9,7 @@ import {
   ConfirmComponent,
   ConfirmDialogModel,
 } from "src/app/confirm/confirm.component";
+import { HeaderService } from "src/app/header.service";
 
 @Component({
   selector: "app-admin-ipsr",
@@ -22,7 +23,18 @@ export class AdminIpsrComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private ipsrService: IpsrService, private dialog: MatDialog) {}
+  constructor(
+    private ipsrService: IpsrService,
+    private dialog: MatDialog,
+    private headerService: HeaderService
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #04030F, #020106)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+  }
 
   ngAfterViewInit() {
     this.initTable();

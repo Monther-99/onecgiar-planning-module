@@ -9,6 +9,7 @@ import {
   ConfirmComponent,
   ConfirmDialogModel,
 } from "src/app/confirm/confirm.component";
+import { HeaderService } from "src/app/header.service";
 
 @Component({
   selector: "app-organizations",
@@ -24,8 +25,16 @@ export class OrganizationsComponent implements AfterViewInit {
 
   constructor(
     private organizationsService: OrganizationsService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private headerService: HeaderService
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #04030F, #020106)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+  }
 
   ngAfterViewInit() {
     this.initTable();

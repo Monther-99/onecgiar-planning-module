@@ -9,6 +9,7 @@ import {
   ConfirmComponent,
   ConfirmDialogModel,
 } from "src/app/confirm/confirm.component";
+import { HeaderService } from "src/app/header.service";
 
 @Component({
   selector: "app-users",
@@ -19,10 +20,22 @@ export class UsersComponent implements AfterViewInit {
   columnsToDisplay: string[] = ["id", "name", "email", "role", "actions"];
   dataSource: MatTableDataSource<any>;
   users: any = [];
+  length!: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private usersService: UserService, private dialog: MatDialog) {}
+  constructor(
+    private usersService: UserService,
+    private dialog: MatDialog,
+    private headerService: HeaderService
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #04030F, #020106)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+  }
 
   ngAfterViewInit() {
     this.initTable();
@@ -33,6 +46,7 @@ export class UsersComponent implements AfterViewInit {
     this.dataSource = new MatTableDataSource(this.users);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.length = this.users.length;
   }
 
   openDialog(id: number = 0): void {
