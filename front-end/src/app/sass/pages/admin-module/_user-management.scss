@@ -213,7 +213,12 @@
   align-items: center;
   height: 4.5rem;
   // border-radius: 0.2rem 0.2rem 0rem 0;
-  background-color: #0f212f;
+
+  background-image: linear-gradient(
+    to right bottom,
+    #0f212f,
+    #09151e
+  ) !important;
   padding: 0 1rem;
 
   &__text-box {
@@ -325,8 +330,12 @@
 
     color: #fafafa !important;
     border-radius: 0.5rem;
-    background-color: $color-button-primary !important;
-
+    // background-color: $color-button-primary !important;
+    background-image: linear-gradient(
+      to right bottom,
+      #9e553e,
+      #7c4230
+    ) !important;
     box-shadow: 4px 4px 10px 0px #00000040;
   }
 }
