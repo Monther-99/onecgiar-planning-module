@@ -22,6 +22,8 @@
 <div class="form-dialog-conten-box-1">
   <mat-dialog-content>
     <form [formGroup]="userForm" class="form-dialog-content">
+      <!-- //Email filed----- -->
+
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
@@ -48,29 +50,75 @@
         </mat-form-field>
       </div>
 
-      <mat-form-field>
-        <mat-label>First name</mat-label>
-        <input matInput formControlName="first_name" />
-      </mat-form-field>
+      <!-- //First name filed----- -->
 
-      <mat-form-field>
-        <mat-label>Last name</mat-label>
-        <input matInput formControlName="last_name" />
-      </mat-form-field>
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >First name</mat-label
+          >
+        </div>
 
-      <mat-form-field>
-        <mat-label>Role</mat-label>
-        <mat-select formControlName="role">
-          <mat-option value="admin">Admin</mat-option>
-          <mat-option value="user">User</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <input matInput formControlName="first_name" />
+        </mat-form-field>
+      </div>
+
+      <!-- //Last name filed----- -->
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Last name</mat-label
+          >
+        </div>
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <input matInput formControlName="last_name" />
+        </mat-form-field>
+      </div>
+
+      <!-- //Role  filed----- -->
+      <div class="form-dialog-conten-box-2">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Role<span class="star">*</span></mat-label
+          >
+        </div>
+        <mat-form-field
+          class="form-dialog-content__field--2"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <mat-select formControlName="role">
+            <mat-option value="admin">Admin</mat-option>
+            <mat-option value="user">User</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </form>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button color="primary" (click)="submit()">
+  <mat-dialog-actions class="form-dialog-conten__button-box" align="end">
+    <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+    <button
+      class="form-dialog-conten__button-box__btn"
+      type="submit"
+      mat-raised-button
+      mat-button
+      color="primary"
+      (click)="submit()"
+    >
       {{ userId ? "Save" : "Add" }}
     </button>
   </mat-dialog-actions>

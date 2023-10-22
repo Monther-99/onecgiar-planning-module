@@ -71,3 +71,11 @@
     color: #0060ef !important;
   }
 }
+
+:host {
+  ::ng-deep.mat-mdc-dialog-actions.mat-mdc-dialog-actions-align-end,
+  .mat-mdc-dialog-actions[align="end"] {
+    justify-content: flex-end;
+    padding: 0 4rem 0 0 !important;
+  }
+}
