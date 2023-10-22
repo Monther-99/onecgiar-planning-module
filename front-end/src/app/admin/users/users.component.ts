@@ -10,6 +10,7 @@ import {
   ConfirmDialogModel,
 } from "src/app/confirm/confirm.component";
 import { HeaderService } from "src/app/header.service";
+import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 
 @Component({
   selector: "app-users",
@@ -61,12 +62,11 @@ export class UsersComponent implements AfterViewInit {
 
   delete(id: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: "400px",
-        data: new ConfirmDialogModel(
-          "Delete",
-          `Are you sure you want to delete this User?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Delete",
+          message: `Are you sure you want to delete this User?`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {

@@ -33,7 +33,7 @@ export class UserDialogComponent implements OnInit {
 
   private async formInit() {
     this.userForm = this.fb.group({
-      email: [null, Validators.required],
+      email: ["", [Validators.required, Validators.email]],
       first_name: [null, Validators.required],
       last_name: [null, Validators.required],
       role: [null, Validators.required],
@@ -54,5 +54,14 @@ export class UserDialogComponent implements OnInit {
       this.toast.success("User saved successfully");
       this.dialogRef.close({ submitted: true });
     }
+  }
+
+
+
+
+  
+  //Close-Dialog
+  onCloseDialog() {
+    this.dialogRef.close();
   }
 }

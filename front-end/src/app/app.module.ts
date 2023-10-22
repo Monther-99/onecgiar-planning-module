@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -64,6 +64,7 @@ import { LoadingInterceptor } from './loading.interceptor';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-confirm-dialog.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,6 +101,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     AssignOrganizationsComponent,
     SpinnerComponent,
     AccessDeniedComponent,
+    DeleteConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

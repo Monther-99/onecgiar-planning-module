@@ -1,22 +1,95 @@
-<h1 mat-dialog-title>{{ ipsrId ? 'Edit' : 'Add' }} IPSR</h1>
+<div class="form-dialog-header">
+  <div class="form-dialog-header__text-box">
+    <p class="form-dialog-header__text-box__text">
+      {{ ipsrId ? "Edit" : "Add" }} IPSR
+    </p>
+  </div>
 
-<mat-dialog-content>
-  <form [formGroup]="ipsrForm">
-    <mat-form-field>
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" />
-    </mat-form-field>
+  <div class="form-dialog-header__icon-box">
+    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
+      <mat-icon class="form-dialog-header__icon-box__icon-size">
+        <img
+          class="form-dialog-header__icon-box__icon-size__icon"
+          src="../../../assets/shared-image/Vector-close.svg"
+          alt="~/Frontend/images/icon _ Vector-close"
+        />
+      </mat-icon>
+    </button>
+  </div>
+</div>
 
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"></textarea>
-    </mat-form-field>
+<div class="form-dialog-conten-box-1">
+  <form [formGroup]="ipsrForm" class="form-dialog-content">
+    <!-- //Title filed----- -->
+
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Title</mat-label
+        >
+      </div>
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <mat-label></mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+    </div>
+
+    <!-- //Description filed----- -->
+
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Description<span class="star">*</span></mat-label
+        >
+      </div>
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <textarea
+          matInput
+          formControlName="description"
+          required
+          class="texta"
+          cdkAutosizeMinRows="2"
+          cdkAutosizeMaxRows="10"
+        ></textarea>
+        <mat-error
+          class="error"
+          *ngIf="ipsrForm.controls?.['description']?.errors?.['required']"
+          >Description is required</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div>
+      <div class="form-dialog-conten-button-box ">
+        <div class="form-dialog-conten__button-box m-t" align="end">
+          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+
+          <button
+            class="form-dialog-conten__button-box__btn"
+            type="submit"
+            mat-raised-button
+            mat-button
+            color="primary"
+            (click)="submit()"
+          >
+            {{ ipsrId ? "Save" : "Add" }}
+          </button>
+        </div>
+      </div>
+    </div>
   </form>
-</mat-dialog-content>
+</div>
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button color="primary" (click)="submit()">
-    {{ ipsrId ? 'Save' : 'Add' }}
-  </button>
-</mat-dialog-actions>
+<!-- <mat-dialog-actions align="end"> -->
+<!-- <button mat-button mat-dialog-close>Cancel</button> -->
+<!-- </mat-dialog-actions> -->

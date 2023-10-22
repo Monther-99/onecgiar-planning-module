@@ -71,4 +71,9 @@ export class AssignOrganizationsComponent implements OnInit {
       this.dialogRef.close({ submitted: true });
     }
   }
+
+  //Close-Dialog
+  onCloseDialog() {
+    this.dialogRef.close();
+  }
 }

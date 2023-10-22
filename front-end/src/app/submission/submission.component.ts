@@ -1,29 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import { SubmissionService } from '../services/submission.service';
-import { AppSocket } from '../socket.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MeliaComponent } from './melia/melia.component';
+import { SubmissionService } from "../services/submission.service";
+import { AppSocket } from "../socket.service";
+import { MatDialog } from "@angular/material/dialog";
+import { MeliaComponent } from "./melia/melia.component";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
-} from '../confirm/confirm.component';
-import { CrossCuttingComponent } from './cross-cutting/cross-cutting.component';
-import { ViewDataComponent } from './view-data/view-data.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { ToastrService } from 'ngx-toastr';
-import { ROLES } from '../components/new-team-member/new-team-member.component';
-import { IpsrComponent } from './ipsr/ipsr.component';
-import { PhasesService } from '../services/phases.service';
+} from "../confirm/confirm.component";
+import { CrossCuttingComponent } from "./cross-cutting/cross-cutting.component";
+import { ViewDataComponent } from "./view-data/view-data.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "../services/auth.service";
+import { ToastrService } from "ngx-toastr";
+import { ROLES } from "../components/new-team-member/new-team-member.component";
+import { IpsrComponent } from "./ipsr/ipsr.component";
+import { PhasesService } from "../services/phases.service";
 
 @Component({
-  selector: 'app-submission',
-  templateUrl: './submission.component.html',
-  styleUrls: ['./submission.component.scss'],
+  selector: "app-submission",
+  templateUrl: "./submission.component.html",
+  styleUrls: ["./submission.component.scss"],
 })
 export class SubmissionComponent implements OnInit {
-  title = 'planning';
+  title = "planning";
   constructor(
     private submissionService: SubmissionService,
     private phasesService: PhasesService,
@@ -90,7 +90,7 @@ export class SubmissionComponent implements OnInit {
       let budgetValue;
       let isActualValues = this.toggleValues[partner_code][wp_id];
 
-      if (type == 'percent') {
+      if (type == "percent") {
         percentValue = isActualValues
           ? this.values[partner_code][wp_id][item_id]
           : this.displayValues[partner_code][wp_id][item_id];
@@ -126,7 +126,7 @@ export class SubmissionComponent implements OnInit {
         }
       );
       if (result)
-        this.socket.emit('setDataValue', {
+        this.socket.emit("setDataValue", {
           id: this.params.id,
           partner_code,
           wp_id,
@@ -152,7 +152,7 @@ export class SubmissionComponent implements OnInit {
       this.refreshValues(partner_code, wp_id);
 
       if (result)
-        this.socket.emit('setDataBudget', {
+        this.socket.emit("setDataBudget", {
           id: this.params.id,
           partner_code,
           wp_id,
@@ -187,7 +187,7 @@ export class SubmissionComponent implements OnInit {
   toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
     this.values[partner_code][wp_official_code][item_id] = 0;
     this.displayValues[partner_code][wp_official_code][item_id] = 0;
-    this.changeCalc(partner_code, wp_official_code, item_id, 'percent');
+    this.changeCalc(partner_code, wp_official_code, item_id, "percent");
   }
 
   refreshValues(partner_code: any, wp_id: any) {
@@ -254,7 +254,7 @@ export class SubmissionComponent implements OnInit {
       }
     );
     if (result)
-      this.socket.emit('setDataValues', {
+      this.socket.emit("setDataValues", {
         id: this.params.id,
         partner_code,
         wp_id,
@@ -308,7 +308,7 @@ export class SubmissionComponent implements OnInit {
         });
         if (total > 100) {
           this.errors[code][wp_id] =
-            'total percentage cannot be over 100 percent';
+            "total percentage cannot be over 100 percent";
           this.toggleValues[code][wp_id] = true;
         } else {
           this.errors[code][wp_id] = null;
@@ -462,17 +462,17 @@ export class SubmissionComponent implements OnInit {
     //   })
     //   .flat(1);
     cross_data.map((d: any) => {
-      d['category'] = 'CROSS';
-      d['wp_id'] = 'CROSS';
+      d["category"] = "CROSS";
+      d["wp_id"] = "CROSS";
       return d;
     });
     melia_data.map((d: any) => {
-      d['category'] = 'MELIA';
+      d["category"] = "MELIA";
       return d;
     });
     this.ipsr_value_data.map((d: any) => {
-      d['category'] = 'IPSR';
-      d['wp_id'] = 'IPSR';
+      d["category"] = "IPSR";
+      d["wp_id"] = "IPSR";
       return d;
     });
     this.results = [
@@ -483,20 +483,20 @@ export class SubmissionComponent implements OnInit {
       // ...indicators_data,
     ];
     this.wps = this.results
-      .filter((d: any) => d.category == 'WP' && !d.group)
+      .filter((d: any) => d.category == "WP" && !d.group)
       .sort((a: any, b: any) => a.title.localeCompare(b.title));
     this.wps.unshift({
-      id: 'CROSS',
-      title: 'Cross Cutting',
-      category: 'CROSS',
-      ost_wp: { wp_official_code: 'CROSS' },
+      id: "CROSS",
+      title: "Cross Cutting",
+      category: "CROSS",
+      ost_wp: { wp_official_code: "CROSS" },
     });
 
     this.wps.push({
-      id: 'IPSR',
-      title: 'Innovation packages & Scalling Readiness',
-      category: 'IPSR',
-      ost_wp: { wp_official_code: 'IPSR' },
+      id: "IPSR",
+      title: "Innovation packages & Scalling Readiness",
+      category: "IPSR",
+      ost_wp: { wp_official_code: "IPSR" },
     });
     // const partners_result = this.results
     //   .filter((d: any) => d.partners)
@@ -561,7 +561,7 @@ export class SubmissionComponent implements OnInit {
               false;
         });
         result.forEach((item: any) => {
-          if (item.category != 'OUTCOME') {
+          if (item.category != "OUTCOME") {
             this.check(
               this.values,
               partner.code,
@@ -644,6 +644,7 @@ export class SubmissionComponent implements OnInit {
   savedValues: any = null;
   isCenter: boolean = false;
   async ngOnInit() {
+    console.log(this.phase.id);
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     this.phase = await this.phasesService.getActivePhase();
@@ -684,17 +685,17 @@ export class SubmissionComponent implements OnInit {
       }
     }
     this.activatedRoute?.url.subscribe((d) => {
-      if (d[3] && d[3]?.path == 'center') this.isCenter = true;
+      if (d[3] && d[3]?.path == "center") this.isCenter = true;
     });
 
     this.InitData();
     this.period = await this.submissionService.getPeriods(this.phase.id);
     this.socket.connect();
-    this.socket.on('setDataValues-' + this.params.id, (data: any) => {
+    this.socket.on("setDataValues-" + this.params.id, (data: any) => {
       const { partner_code, wp_id, item_id, per_id, value } = data;
       this.changes(partner_code, wp_id, item_id, per_id, value);
     });
-    this.socket.on('setDataValue-' + this.params.id, (data: any) => {
+    this.socket.on("setDataValue-" + this.params.id, (data: any) => {
       const { partner_code, wp_id, item_id, value } = data;
       this.values[partner_code][wp_id][item_id] = value;
       this.displayValues[partner_code][wp_id][item_id] = Math.round(value);
@@ -707,7 +708,7 @@ export class SubmissionComponent implements OnInit {
         Math.round(budgetValue);
       if (!this.isCenter) this.sammaryCalc();
     });
-    this.socket.on('setDataBudget-' + this.params.id, (data: any) => {
+    this.socket.on("setDataBudget-" + this.params.id, (data: any) => {
       const { partner_code, wp_id, budget } = data;
       this.wp_budgets[partner_code][wp_id] = budget;
       this.refreshValues(partner_code, wp_id);
@@ -790,7 +791,7 @@ export class SubmissionComponent implements OnInit {
   }
 
   checkEOI(category: any) {
-    return this.phase?.show_eoi ? category == 'EOI' : false;
+    return this.phase?.show_eoi ? category == "EOI" : false;
   }
   async getDataForWp(
     id: string,
@@ -800,26 +801,26 @@ export class SubmissionComponent implements OnInit {
     let wp_data = this.results.filter((d: any) => {
       if (partner_code)
         return (
-          (d.category == 'OUTPUT' ||
-            d.category == 'OUTCOME' ||
+          (d.category == "OUTPUT" ||
+            d.category == "OUTCOME" ||
             this.checkEOI(d.category) ||
-            d.category == 'CROSS' ||
-            d.category == 'IPSR' ||
-            d.category == 'MELIA') &&
+            d.category == "CROSS" ||
+            d.category == "IPSR" ||
+            d.category == "MELIA") &&
           (d.group == id ||
             d.wp_id == official_code ||
-            (official_code == 'CROSS' && this.checkEOI(d.category)))
+            (official_code == "CROSS" && this.checkEOI(d.category)))
         );
       else
         return (
-          ((d.category == 'OUTPUT' ||
-            d.category == 'OUTCOME' ||
+          ((d.category == "OUTPUT" ||
+            d.category == "OUTCOME" ||
             this.checkEOI(d.category) ||
-            d.category == 'CROSS' ||
-            d.category == 'IPSR' ||
-            d.category == 'MELIA') &&
+            d.category == "CROSS" ||
+            d.category == "IPSR" ||
+            d.category == "MELIA") &&
             (d.group == id || d.wp_id == official_code)) ||
-          (official_code == 'CROSS' && this.checkEOI(d.category))
+          (official_code == "CROSS" && this.checkEOI(d.category))
         );
     });
 
@@ -852,9 +853,9 @@ export class SubmissionComponent implements OnInit {
   deleteCross(id: number) {
     this.dialog
       .open(ConfirmComponent, {
-        maxWidth: '400px',
+        maxWidth: "400px",
         data: new ConfirmDialogModel(
-          'Delete',
+          "Delete",
           `Are you sure you want to delete this Cross-cutting item?`
         ),
       })
@@ -914,9 +915,9 @@ export class SubmissionComponent implements OnInit {
   async deleteMelia(id: number) {
     this.dialog
       .open(ConfirmComponent, {
-        maxWidth: '400px',
+        maxWidth: "400px",
         data: new ConfirmDialogModel(
-          'Delete',
+          "Delete",
           `Are you sure you want to delete this MELIA?`
         ),
       })
@@ -932,8 +933,8 @@ export class SubmissionComponent implements OnInit {
   viewData(data: any) {
     this.dialog
       .open(ViewDataComponent, {
-        maxWidth: '800px',
-        data: { data, title: 'View' },
+        maxWidth: "800px",
+        data: { data, title: "View" },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {});
@@ -942,9 +943,9 @@ export class SubmissionComponent implements OnInit {
   submit() {
     this.dialog
       .open(ConfirmComponent, {
-        width: '350px',
+        width: "350px",
         data: new ConfirmDialogModel(
-          'Submit',
+          "Submit",
           `Are you sure you want to Submit?`
         ),
       })
@@ -956,12 +957,12 @@ export class SubmissionComponent implements OnInit {
             phase_id: this.phase.id,
           });
           if (result) {
-            this.toastrService.success('Data Submited successfully', 'Success');
+            this.toastrService.success("Data Submited successfully", "Success");
             this.router.navigate([
-              'initiative',
+              "initiative",
               this.initiative_data.id,
               this.initiative_data.official_code,
-              'submited-versions',
+              "submited-versions",
             ]);
           }
           this.loading = false;

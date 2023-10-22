@@ -1,3 +1,161 @@
-mat-form-field {
-  width: 100%;
+@import "../../../sass/pages/admin-module/user-management";
+@import "../../../sass/layout/admin-module/user-management";
+// mat-option {
+//   cursor: url(../../../assets/shared-image/Vector-cursor.svg), pointer !important;
+// }
+// mat-form-field {
+//   width: 100%;
+// }
+
+// mat-option {
+//   cursor: url(../../../assets/shared-image/Vector-cursor.svg), pointer !important;
+// }
+
+.phase-box {
+  width: auto;
+  height: auto;
+  background-color: #ffffff;
+}
+
+// .form-dialog-header {
+//   display: flex;
+//   justify-content: space-around;
+//   align-items: center;
+//   height: 4.5rem;
+//   padding: 0 0.5rem;
+//   // border-radius: 0.2rem 0.2rem 0rem 0;
+//   background-color: #0f212f;
+
+//   &__text-box {
+//     width: 62.4rem;
+//     height: 2.4rem;
+//     font-family: "Poppins", sans-serif !important;
+
+//     font-size: 1.6rem;
+//     font-weight: 500;
+//     line-height: 2.4rem;
+//     letter-spacing: 0em;
+//     text-align: left;
+//     color: #ffffff;
+//   }
+
+//   &__icon-box {
+//     // width: 1.8rem;
+
+//     // style="background-color: #2a2e45; border: none; cursor: pointer"
+
+//     &__btn {
+//       border: none;
+//       background-color: #0f212f;
+//       cursor: pointer;
+//     }
+//   }
+// }
+.form-dialog-content {
+  max-width: 57.8rem;
+  margin: 2rem auto 2rem;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-dialog-conten-button-box-3 {
+  text-align: right;
+  margin-top: 2.5rem !important;
+}
+
+:host {
+  ::ng-deep.mat-mdc-icon-button.mat-mdc-button-base {
+    color: #0060ef !important;
+  }
+}
+
+// :host {
+//   ::ng-deep.mat-mdc-dialog-actions.mat-mdc-dialog-actions-align-end,
+//   .mat-mdc-dialog-actions[align="end"] {
+//     justify-content: flex-end;
+//     padding: 0 4rem 0 0 !important;
+//   }
+// }
+
+// :host {
+//   ::ng-deep.mdc-dialog .mdc-dialog__content {
+//     padding: 20px 24px 20px 24px !important;
+//   }
+// }
+
+:host {
+  ::ng-deep.mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control:enabled:checked
+    ~ .mdc-checkbox__background,
+  .mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control:enabled:indeterminate
+    ~ .mdc-checkbox__background,
+  .mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control[data-indeterminate="true"]:enabled
+    ~ .mdc-checkbox__background {
+    background-image: linear-gradient(to bottom, #0f212f, #09151e) !important;
+  }
+}
+
+:host {
+  ::ng-deep.mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control:enabled:checked
+    ~ .mdc-checkbox__background,
+  .mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control:enabled:indeterminate
+    ~ .mdc-checkbox__background,
+  .mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control[data-indeterminate="true"]:enabled
+    ~ .mdc-checkbox__background {
+    border-color: var(
+      --mdc-checkbox-selected-icon-color,
+      var(--mdc-theme-secondary, #09151e)
+    ) !important;
+    background-color: var(
+      --mdc-checkbox-selected-icon-color,
+      var(--mdc-theme-secondary, #09151e)
+    ) !important;
+  }
+}
+
+:host {
+  ::ng-deep.mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control:enabled:checked
+    ~ .mdc-checkbox__background,
+  .mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control:enabled:indeterminate
+    ~ .mdc-checkbox__background,
+  .mat-mdc-checkbox
+    .mdc-checkbox
+    .mdc-checkbox__native-control[data-indeterminate="true"]:enabled
+    ~ .mdc-checkbox__background {
+    border-color: #09151e !important;
+    background-color: var(
+      --mdc-checkbox-selected-icon-color,
+      var(--mdc-theme-secondary, #09151e)
+    ) !important;
+  }
+}
+
+:host {
+  ::ng-deep.mat-mdc-checkbox.mat-primary
+    .mdc-checkbox--selected
+    ~ .mdc-checkbox__ripple {
+    background-image: linear-gradient(to bottom, #0f212f, #09151e) !important;
+  }
+}
+
+:host {
+  ::ng-deep.mdc-dialog .mdc-dialog__content {
+    padding: 20px 24px 20px 24px !important;
+  }
 }
