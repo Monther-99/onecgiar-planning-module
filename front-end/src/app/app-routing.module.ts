@@ -14,6 +14,8 @@ import { AdminGuard } from './guards/admin.guard';
 import { OrganizationsComponent } from './admin/organizations/organizations.component';
 import { AdminIpsrComponent } from './admin/ipsr/admin-ipsr.component';
 import { PhaseInitiativesComponent } from './admin/phases/phase-initiatives/phase-initiatives.component';
+import { AuthGuard } from './guards/auth.guard';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 const routes: Routes = [
   { path: '', component: InitiativesComponent },
@@ -32,11 +34,12 @@ const routes: Routes = [
       { path: 'phases/:id/initiatives', component: PhaseInitiativesComponent }
     ],
   },
-  { path: 'initiative/:id/:code/submission', component: SubmissionComponent },
-  { path: 'initiative/:id/:code/submission/center', component: SubmissionComponent },
-  { path: 'initiative/:id/:code/submited-versions', component: SubmitedVersionsComponent },
-  { path: 'initiative/:id/:code/submited-versions/:id', component: SubmitedVersionComponent },
-  { path: 'initiative/:id/:code/team-members', component: TeamMembersComponent }
+  { path: 'initiative/:id/:code/submission', component: SubmissionComponent, canActivate: [AuthGuard] },
+  { path: 'initiative/:id/:code/submission/center', component: SubmissionComponent, canActivate: [AuthGuard] },
+  { path: 'initiative/:id/:code/submited-versions', component: SubmitedVersionsComponent, canActivate: [AuthGuard] },
+  { path: 'initiative/:id/:code/submited-versions/:id', component: SubmitedVersionComponent, canActivate: [AuthGuard] },
+  { path: 'initiative/:id/:code/team-members', component: TeamMembersComponent, canActivate: [AuthGuard] },
+  { path: 'denied', component: AccessDeniedComponent }
 ];
 
 @NgModule({
