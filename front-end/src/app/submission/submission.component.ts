@@ -644,7 +644,6 @@ export class SubmissionComponent implements OnInit {
   savedValues: any = null;
   isCenter: boolean = false;
   async ngOnInit() {
-    console.log(this.phase.id);
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     this.phase = await this.phasesService.getActivePhase();
