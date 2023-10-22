@@ -106,20 +106,24 @@
           </mat-select>
         </mat-form-field>
       </div>
+
+      <div>
+        <div class="form-dialog-conten-button-box">
+          <div class="form-dialog-conten__button-box" align="end">
+            <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+            <button
+              class="form-dialog-conten__button-box__btn"
+              type="submit"
+              mat-raised-button
+              mat-button
+              color="primary"
+              (click)="submit()"
+            >
+              {{ userId ? "Save" : "Add" }}
+            </button>
+          </div>
+        </div>
+      </div>
     </form>
   </mat-dialog-content>
-
-  <mat-dialog-actions class="form-dialog-conten__button-box" align="end">
-    <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-    <button
-      class="form-dialog-conten__button-box__btn"
-      type="submit"
-      mat-raised-button
-      mat-button
-      color="primary"
-      (click)="submit()"
-    >
-      {{ userId ? "Save" : "Add" }}
-    </button>
-  </mat-dialog-actions>
 </div>

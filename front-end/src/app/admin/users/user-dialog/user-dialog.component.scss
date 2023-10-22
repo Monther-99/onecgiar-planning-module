@@ -51,14 +51,12 @@
 //     }
 //   }
 // }
-
 .form-dialog-content {
   width: 57.8rem;
   margin: 0.5rem auto 2rem;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
 }
 
 .form-dialog-conten-button-box-3 {
@@ -72,10 +70,16 @@
   }
 }
 
-:host {
-  ::ng-deep.mat-mdc-dialog-actions.mat-mdc-dialog-actions-align-end,
-  .mat-mdc-dialog-actions[align="end"] {
-    justify-content: flex-end;
-    padding: 0 4rem 0 0 !important;
-  }
-}
+// :host {
+//   ::ng-deep.mat-mdc-dialog-actions.mat-mdc-dialog-actions-align-end,
+//   .mat-mdc-dialog-actions[align="end"] {
+//     justify-content: flex-end;
+//     padding: 0 4rem 0 0 !important;
+//   }
+// }
+
+// :host {
+//   ::ng-deep.mdc-dialog .mdc-dialog__content {
+//     padding: 20px 24px 20px 24px !important;
+//   }
+// }
