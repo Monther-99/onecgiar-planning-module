@@ -63,6 +63,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingInterceptor } from './loading.interceptor';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,6 +99,7 @@ import { MatRadioModule } from '@angular/material/radio';
     PhaseInitiativesComponent,
     AssignOrganizationsComponent,
     SpinnerComponent,
+    AccessDeniedComponent,
   ],
   imports: [
     BrowserModule,

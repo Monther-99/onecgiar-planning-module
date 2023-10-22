@@ -665,15 +665,21 @@ export class SubmissionComponent implements OnInit {
       if (roles[0].role == ROLES.LEAD || roles[0].role == ROLES.COORDINATOR) {
         this.partners = partners;
         this.isCenter = false;
-      } else this.partners = roles[0].organizations;
+      } else {
+        if (roles[0].organizations.length) {
+          this.partners = roles[0].organizations;
+        } else {
+          this.toastrService.error(
+            'You are not assigned to this initiative, so please contact the leader to  give you access',
+            'Access denied'
+          );
+          this.router.navigate(['denied']);
+        }
+      }
     } else {
       if (this.user.role == 'admin') this.partners = partners;
       else {
-        this.toastrService.error(
-          'You Dont have access to this page',
-          'Access denied'
-        );
-        this.router.navigate(['/']);
+        this.router.navigate(['denied']);
         return;
       }
     }
