@@ -63,10 +63,10 @@ export class UsersComponent implements AfterViewInit {
   delete(id: number) {
     this.dialog
       .open(DeleteConfirmDialogComponent, {
-        data: new ConfirmDialogModel(
-          "Delete",
-          `Are you sure you want to delete this User?`
-        ),
+        data: {
+          title: "Delete",
+          message: `Are you sure you want to delete this User?`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {

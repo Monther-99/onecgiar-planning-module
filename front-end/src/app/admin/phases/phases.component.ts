@@ -75,10 +75,10 @@ export class PhasesComponent implements AfterViewInit {
   delete(id: number) {
     this.dialog
       .open(DeleteConfirmDialogComponent, {
-        data: new ConfirmDialogModel(
-          "Delete",
-          `Are you sure you want to delete this Phase item?`
-        ),
+        data: {
+          title: "Delete",
+          message: `Are you sure you want to delete this Phase item?`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
@@ -91,13 +91,12 @@ export class PhasesComponent implements AfterViewInit {
 
   activate(id: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: "400px",
-        data: new ConfirmDialogModel(
-          "Activate",
-          `Activating phase item will deactivate other active phases.
-          Are you sure you want to activate this Phase item?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Deactivate",
+          message: `Are you sure you want to deactivate this Phase item?`,
+          svg: `../../../../assets/shared-image/disabled.png`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
@@ -110,12 +109,13 @@ export class PhasesComponent implements AfterViewInit {
 
   deactivate(id: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: "400px",
-        data: new ConfirmDialogModel(
-          "Deactivate",
-          `Are you sure you want to deactivate this Phase item?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Activate",
+          message: `Activating phase item will deactivate other active phases.
+          Are you sure you want to activate this Phase item?`,
+          svg: `../../../../assets/shared-image/checked-2.png`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {

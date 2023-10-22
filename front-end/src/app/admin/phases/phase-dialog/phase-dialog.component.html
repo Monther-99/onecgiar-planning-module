@@ -1,28 +1,36 @@
-<div class="form-dialog-header">
-  <div class="form-dialog-header__text-box">
-    <p class="form-dialog-header__text-box__text">
-      {{ phaseId ? "Edit" : "Add" }} Phase
-    </p>
+<div mat-dialog-container class="phase-box">
+  <div class="form-dialog-header">
+    <div class="form-dialog-header__text-box">
+      <p class="form-dialog-header__text-box__text">
+        {{ phaseId ? "Edit" : "Add" }} Phase
+      </p>
+    </div>
+
+    <div class="form-dialog-header__icon-box">
+      <button
+        class="form-dialog-header__icon-box__btn"
+        (click)="onCloseDialog()"
+      >
+        <mat-icon class="form-dialog-header__icon-box__icon-size">
+          <img
+            class="form-dialog-header__icon-box__icon-size__icon"
+            src="../../../assets/shared-image/Vector-close.svg"
+            alt="~/Frontend/images/icon _ Vector-close"
+          />
+        </mat-icon>
+      </button>
+    </div>
   </div>
 
-  <div class="form-dialog-header__icon-box">
-    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
-      <mat-icon class="form-dialog-header__icon-box__icon-size">
-        <img
-          class="form-dialog-header__icon-box__icon-size__icon"
-          src="../../../assets/shared-image/Vector-close.svg"
-          alt="~/Frontend/images/icon _ Vector-close"
-        />
-      </mat-icon>
-    </button>
-  </div>
-</div>
+  <!-- <h1 mat-dialog-title>{{ phaseId ? "Edit" : "Add" }} Phase</h1> -->
 
-<!-- <h1 mat-dialog-title>{{ phaseId ? "Edit" : "Add" }} Phase</h1> -->
+  <div class="form-dialog-conten-box-1">
+    
 
-<div class="form-dialog-conten-box-1">
-  <mat-dialog-content>
+
+    <mat-dialog-content>
     <form [formGroup]="phaseForm" class="form-dialog-content">
+      <!-- //Name  filed----- -->
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
@@ -38,6 +46,8 @@
           <input matInput formControlName="name" />
         </mat-form-field>
       </div>
+
+      <!-- //Reporting year  filed----- -->
 
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
@@ -67,6 +77,8 @@
         </mat-form-field>
       </div>
 
+      <!-- //ToC Phase  filed----- -->
+
       <div class="form-dialog-conten-box-2">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
@@ -89,6 +101,8 @@
           </mat-select>
         </mat-form-field>
       </div>
+
+      <!-- //Start date  filed----- -->
 
       <div class="form-dialog-conten-box-2">
         <div class="form-dialog-content__title-box">
@@ -115,6 +129,7 @@
         </mat-form-field>
       </div>
 
+      <!-- //End date  filed----- -->
       <div class="form-dialog-conten-box-2">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
@@ -140,6 +155,7 @@
         </mat-form-field>
       </div>
 
+      <!-- //Previous Phase  filed----- -->
       <div class="form-dialog-conten-box-2">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
@@ -165,6 +181,8 @@
         </mat-form-field>
       </div>
 
+      <!-- //Status  filed----- -->
+
       <div class="form-dialog-conten-box-2">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
@@ -183,6 +201,7 @@
           </mat-select>
         </mat-form-field>
       </div>
+
       <section>
         <mat-checkbox formControlName="show_eoi" color="primary"
           >Show EOI</mat-checkbox
@@ -192,13 +211,29 @@
           >Enable MELIA for Cross-cutting</mat-checkbox
         >
       </section>
+
+      <div>
+        <div class="form-dialog-conten-button-box">
+          <div class="form-dialog-conten__button-box" align="end">
+            <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+
+            <button
+              class="form-dialog-conten__button-box__btn"
+              type="submit"
+              mat-raised-button
+              mat-button
+              color="primary"
+              (click)="submit()"
+            >
+              {{ phaseId ? "Save" : "Add" }}
+            </button>
+          </div>
+        </div>
+      </div>
     </form>
   </mat-dialog-content>
-
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button color="primary" (click)="submit()">
-      {{ phaseId ? "Save" : "Add" }}
-    </button>
-  </mat-dialog-actions>
+    <!-- <mat-dialog-actions align="end"> -->
+    <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+    <!-- </mat-dialog-actions> -->
+  </div>
 </div>
