@@ -9,6 +9,7 @@ import { delay } from "rxjs";
 import { HeaderService } from "../header.service";
 import { ConfirmComponent } from "../confirm/confirm.component";
 import { AuthService } from "../services/auth.service";
+import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-confirm-dialog.component";
 
 @Component({
   selector: "app-header",
@@ -105,10 +106,11 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.dialog
-      .open(ConfirmComponent, {
+      .open(DeleteConfirmDialogComponent, {
         data: {
           title: "Logout",
           message: "Are you sure you want to logout?",
+          svg: `../../assets/shared-image/logout.png`,
         },
       })
       .afterClosed()

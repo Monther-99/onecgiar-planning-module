@@ -11,8 +11,18 @@
 //   filter: blur();
 // }
 
-:host {
-  ::ng-deep.mat-icon {
-    width: 40px !important;
-  }
+// :host {
+//   ::ng-deep.mat-icon {
+//     width: 40px !important;
+//   }
+// }
+
+.size-icon {
+  user-select: none;
+  background-repeat: no-repeat;
+  display: inline-block;
+  fill: currentColor;
+  height: 24px;
+  width: 40px;
+  overflow: hidden;
 }

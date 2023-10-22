@@ -10,6 +10,7 @@ import {
   ConfirmDialogModel,
 } from "src/app/confirm/confirm.component";
 import { HeaderService } from "src/app/header.service";
+import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 
 @Component({
   selector: "app-phases",
@@ -31,6 +32,7 @@ export class PhasesComponent implements AfterViewInit {
     "show_melia",
     "actions",
   ];
+
   dataSource: MatTableDataSource<any>;
   phases: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -72,8 +74,7 @@ export class PhasesComponent implements AfterViewInit {
 
   delete(id: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: "400px",
+      .open(DeleteConfirmDialogComponent, {
         data: new ConfirmDialogModel(
           "Delete",
           `Are you sure you want to delete this Phase item?`

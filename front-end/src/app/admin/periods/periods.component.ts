@@ -10,6 +10,7 @@ import {
   ConfirmDialogModel,
 } from "src/app/confirm/confirm.component";
 import { HeaderService } from "src/app/header.service";
+import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 
 @Component({
   selector: "app-periods",
@@ -59,8 +60,7 @@ export class PeriodsComponent implements AfterViewInit {
 
   delete(id: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: "400px",
+      .open(DeleteConfirmDialogComponent, {
         data: new ConfirmDialogModel(
           "Delete",
           `Are you sure you want to delete this Period item?`

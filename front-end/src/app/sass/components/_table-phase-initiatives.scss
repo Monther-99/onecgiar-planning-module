@@ -1,5 +1,5 @@
+@import "../abstracts/variables";
 //table-style
-
 // ::ng-deep .mat-sort-header-stem {
 //   background: none !important;
 //   width: 16px !important;
@@ -8,61 +8,64 @@
 //   background-size: cover;
 //   margin-right: -0.3rem !important;
 // }
-
 // ::ng-deep .mat-sort-header-indicator {
 //   opacity: -1% !important;
 // }
-
 // ::ng-deep .mat-sort-header-arrow,
 // [dir="rtl"] .mat-sort-header-position-before .mat-sort-header-arrow {
-//   margin: 0 0 0 0.5rem !important;
+//   margin: 0 0 0 1rem !important;
 // }
-
 // .mtable {
 //   width: 1.5rem;
 //   height: 1.5rem;
 //   margin-left: 0.3rem;
 //   border-radius: 2px;
 //   background-color: #d9d9d9;
-
 //   @media only screen and (max-width: 160em) {
 //     margin-left: 0.5rem;
 //   }
 // }
-
 // .h1 {
 //   width: 4.3rem;
 //   height: 1.6rem;
 // }
 
-// .th-3 {
-//   margin-left: 8.8rem;
+.th-1-m {
+  margin-left: 0.1rem;
+  text-align: center;
+  @media only screen and (max-width: 41.5em) {
+    margin-left: 1px;
+  }
+}
 
-//   text-align: center;
-//   @media only screen and (max-width: 41.5em) {
-//     margin-left: 1px;
-//   }
-// }
-
+.th-2-m {
+  margin-left: 8.8rem;
+  text-align: center;
+  @media only screen and (max-width: 41.5em) {
+    margin-left: 1px;
+  }
+}
 // .h3 {
 //   width: 6.3rem;
 //   height: 1.6rem;
 // }
-
 // .h3 {
 //   width: 4.3rem;
 //   height: 1.6rem;
 // }
-
 // .h4 {
 //   width: 4.3rem;
 //   height: 1.6rem;
 // }
-
 // .h5 {
 //   width: 4.3rem;
 //   height: 1.6rem;
 // }
+.user-management-table-icon {
+  border: none;
+  cursor: pointer;
+  background-color: #ffffff;
+}
 
 .m {
   display: flex;
@@ -129,81 +132,57 @@
   }
 
   td:nth-child(1) {
-    width: 7.5rem;
-    height: 3.5rem;
+    // width: 8.5rem;
+    // height: 3.5rem;
     padding: 1rem;
     text-align: center;
   }
 
   th:nth-child(2) {
-    width: 27rem;
-    height: 3.5rem;
+    width: 9rem;
+    // height: 3.5rem;
     padding: 1rem;
   }
 
   td:nth-child(2) {
-    width: 27rem;
-    height: 3.5rem;
+    width: 9rem;
+    // height: 3.5rem;
     padding: 1rem;
-    /* width: 58rem; */
-    /* height: 3.5rem; */
-    /* padding: 1rem; */
-    /* width: 100%; */
-    // height: 13rem;
-    // padding: 1rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 107px;
-    text-justify: distribute;
-    text-align: unset !important;
-    white-space: break-spaces;
-    text-align: left;
-
-    font-style: normal;
-    line-height: 18.75px;
-    font-family: "Poppins", sans-serif !important;
-    white-space: normal !important;
+    text-align: center;
   }
 
   th:nth-child(3) {
-    width: 58rem;
-    height: 3.5rem;
+    // width: 26rem;
+    // height: 3.5rem;
     padding: 1rem;
   }
 
   td:nth-child(3) {
-    width: 58rem;
-    height: 3.5rem;
+    // width: 26rem;
+    // height: 3.5rem;
     padding: 1rem;
-
-    /* width: 58rem; */
-    /* height: 3.5rem; */
-    /* padding: 1rem; */
-    /* width: 100%; */
-    // height: 13rem;
-    // padding: 1rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 107px;
-    text-justify: distribute;
-    text-align: unset !important;
-    white-space: break-spaces;
-    text-align: left;
-
-    font-style: normal;
-    line-height: 18.75px;
-    font-family: "Poppins", sans-serif !important;
-    white-space: normal !important;
   }
 
   th:nth-child(4) {
-    width: 11.5rem;
-    height: 3.5rem;
+    // width: 30rem;
+    // height: 3.5rem;
     padding: 1rem;
   }
 
   td:nth-child(4) {
-    width: 11.5rem;
+    // width: 40rem;
+    // height: 3.5rem;
+    padding: 1rem;
+  }
+
+  th:nth-child(5) {
+    width: 12rem;
+    height: 3.5rem;
+    padding: 1rem;
+  }
+
+  td:nth-child(5) {
+    width: 12rem;
     height: 3.5rem;
     padding: 1rem;
   }
@@ -213,21 +192,17 @@
     text-align: left;
     color: #04030f;
     font-family: "Poppins", sans-serif !important;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-style: normal;
     font-weight: 400;
     line-height: 114.5%; /* 1.374rem */
-    text-overflow: ellipsis;
-    text-wrap: nowrap;
-    overflow: hidden;
-    max-width: 107px;
   }
 
   th {
     color: #ffffff;
     text-align: center;
     font-family: "Poppins", sans-serif !important;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-style: normal;
     font-weight: 500;
     line-height: 130%; /* 1.56rem */

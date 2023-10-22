@@ -1,17 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { PhasesService } from 'src/app/services/phases.service';
+import { Component, Inject, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { ToastrService } from "ngx-toastr";
+import { PhasesService } from "src/app/services/phases.service";
 
 export interface DialogData {
   id: number;
 }
 
 @Component({
-  selector: 'app-phase-dialog',
-  templateUrl: './phase-dialog.component.html',
-  styleUrls: ['./phase-dialog.component.scss'],
+  selector: "app-phase-dialog",
+  templateUrl: "./phase-dialog.component.html",
+  styleUrls: ["./phase-dialog.component.scss"],
 })
 export class PhaseDialogComponent implements OnInit {
   phaseId: number = 0;
@@ -62,8 +62,13 @@ export class PhaseDialogComponent implements OnInit {
     this.phaseForm.updateValueAndValidity();
     if (this.phaseForm.valid) {
       await this.phasesService.submitPhase(this.phaseId, this.phaseForm.value);
-      this.toast.success('Phase saved successfully');
+      this.toast.success("Phase saved successfully");
       this.dialogRef.close({ submitted: true });
     }
+  }
+
+  //Close-Dialog
+  onCloseDialog() {
+    this.dialogRef.close();
   }
 }
