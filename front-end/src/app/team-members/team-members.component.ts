@@ -1,24 +1,26 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Component, ViewChild } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
-} from 'src/app/confirm/confirm.component';
+} from "src/app/confirm/confirm.component";
 import {
   NewTeamMemberComponent,
   ROLES,
-} from 'src/app/components/new-team-member/new-team-member.component';
-import { InitiativesService } from 'src/app/services/initiatives.service';
-import { UserService } from 'src/app/services/user.service';
+} from "src/app/components/new-team-member/new-team-member.component";
+import { InitiativesService } from "src/app/services/initiatives.service";
+import { UserService } from "src/app/services/user.service";
+import { HeaderService } from "../header.service";
+import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-confirm-dialog.component";
 
 @Component({
-  selector: 'app-team-members',
-  templateUrl: './team-members.component.html',
-  styleUrls: ['./team-members.component.scss'],
+  selector: "app-team-members",
+  templateUrl: "./team-members.component.html",
+  styleUrls: ["./team-members.component.scss"],
 })
 export class TeamMembersComponent {
   initiativeId: any;
@@ -28,8 +30,16 @@ export class TeamMembersComponent {
     private activatedRoute: ActivatedRoute,
     private initiativeService: InitiativesService,
     private toastrService: ToastrService,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private headerService: HeaderService
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  bottom, #436280, #30455B)";
+  }
   user_info: any;
   my_roles: any;
   InitiativeUsers: any;
@@ -48,13 +58,13 @@ export class TeamMembersComponent {
       (d: any) => d?.user?.id == this?.user_info?.id
     ).map((d: any) => d.role);
     // if (this.canEdit())
-    this.displayedColumns.push('Actions');
+    this.displayedColumns.push("Actions");
   }
 
   async init() {}
   canEdit() {
     return (
-      this.user_info.role == 'admin' ||
+      this.user_info.role == "admin" ||
       this.my_roles?.includes(ROLES.LEAD) ||
       this.my_roles?.includes(ROLES.COORDINATOR) ||
       this.my_roles?.includes(ROLES.CONTRIBUTOR)
@@ -62,12 +72,11 @@ export class TeamMembersComponent {
   }
   async deleteMember(roleId: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: '400px',
-        data: new ConfirmDialogModel(
-          'Delete',
-          `Are you sure you want to delete user role ?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Delete",
+          message: `Are you sure you want to delete user role ?`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
@@ -77,18 +86,17 @@ export class TeamMembersComponent {
             roleId
           );
           this.loadInitiativeRoles();
-          this.toastrService.success('Success', `User role has been deleted`);
+          this.toastrService.success("Success", `User role has been deleted`);
         }
       });
   }
 
   async openNewTeamMemberDialog() {
     const dialogRef = this.dialog.open(NewTeamMemberComponent, {
-      width: '600px',
-      data: { role: 'add', member: null, initiative_id: this.initiativeId },
+      data: { role: "add", member: null, initiative_id: this.initiativeId },
     });
     dialogRef.afterClosed().subscribe(async (result) => {
-      if (result?.role == 'add') {
+      if (result?.role == "add") {
         // access new data => result.formValue
         const email = result.formValue.email;
         const userRole = result.formValue.userRole;
@@ -106,7 +114,7 @@ export class TeamMembersComponent {
             (data) => {
               if (data) {
                 this.toastrService.success(
-                  'Success',
+                  "Success",
                   `User role has been added`
                 );
                 this.loadInitiativeRoles();
@@ -122,11 +130,10 @@ export class TeamMembersComponent {
 
   openEditTeamMemberDialog(roleId: number, role: any) {
     const dialogRef = this.dialog.open(NewTeamMemberComponent, {
-      width: '600px',
-      data: { role: 'edit', member: role, initiative_id: this.initiativeId },
+      data: { role: "edit", member: role, initiative_id: this.initiativeId },
     });
     dialogRef.afterClosed().subscribe(async (result) => {
-      if (result?.role == 'edit') {
+      if (result?.role == "edit") {
         // access edited data => result.formValue
         this.initiativeService
           .updateInitiativeRole(this.initiativeId, roleId, {
@@ -141,7 +148,7 @@ export class TeamMembersComponent {
             (data) => {
               if (data) {
                 this.toastrService.success(
-                  'Success',
+                  "Success",
                   `User role has been updated`
                 );
                 this.loadInitiativeRoles();
@@ -156,19 +163,19 @@ export class TeamMembersComponent {
   }
 
   displayedColumns: string[] = [
-    /*'User Name',*/ 'Email',
-    'User',
-    'Role',
-    'organizations',
-    'Creation Date',
-    'Status',
+    /*'User Name',*/ "Email",
+    "User",
+    "Role",
+    "organizations",
+    "Creation Date",
+    "Status",
   ];
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator: any;
 
   join(data: any) {
-    return data.map((d: any) => d.name).join(', ');
+    return data.map((d: any) => d.name).join(", ");
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

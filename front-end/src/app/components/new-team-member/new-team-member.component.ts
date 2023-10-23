@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import {
@@ -20,12 +20,15 @@ export enum ROLES {
   COORDINATOR = "Coordinator",
   CONTRIBUTOR = "Contributor",
 }
+
 @Component({
   selector: "app-new-team-member",
   templateUrl: "./new-team-member.component.html",
   styleUrls: ["./new-team-member.component.scss"],
 })
-export class NewTeamMemberComponent {
+export class NewTeamMemberComponent implements OnInit {
+  selectedCity: any;
+
   constructor(
     public fb: FormBuilder,
     private dialogRef: MatDialogRef<NewTeamMemberComponent>,
@@ -34,9 +37,65 @@ export class NewTeamMemberComponent {
     private phasesService: PhasesService
   ) {}
 
+  people$: Observable<any[]> = new Observable();
+  peoples$: Observable<any[]> = new Observable();
+  peopleLoading = false;
+
+  peopleInput$ = new Subject<string>();
+
+  peopleLoadings = false;
+
+  peopleInputs$ = new Subject<string>();
+
+  private loadPeople() {
+    this.people$ = concat(
+      of([]), // default items
+      this.peopleInput$.pipe(
+        distinctUntilChanged(),
+        debounceTime(500),
+        tap(() => (this.peopleLoading = true)),
+        switchMap((term: string) => {
+          const filter = {
+            full_name: term,
+            email: term,
+            search: "teamMember",
+          };
+          return this.usersService.getUsersForTeamMember(filter).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => (this.peopleLoading = false))
+          );
+        })
+      )
+    );
+  }
+
+  // private loadPeople2() {
+  //   this.peoples$ = concat(
+  //     of([]), // default items
+  //     this.peopleInputs$.pipe(
+  //       distinctUntilChanged(),
+  //       debounceTime(500),
+  //       tap(() => (this.peopleLoadings = true)),
+  //       switchMap((term: any) => {
+  //         const filter = {
+  //           phase_id: term,
+  //           initiative_id: term,
+  //         };
+  //         return this.phasesService
+  //           .getAssignedOrgs(filter.phase_id, filter.initiative_id)
+  //           .pipe(
+  //             catchError(() => of([])), // empty list on error
+  //             tap(() => (this.peopleLoadings = false))
+  //           );
+  //       })
+  //     )
+  //   );
+  // }
+
   confirmation: any = "";
   organizations: any = [];
   users: any = [];
+
   showConfirm(content: any) {
     console.log(content);
   }
@@ -64,31 +123,6 @@ export class NewTeamMemberComponent {
       return null;
     };
   };
-
-  // people$: Observable<any[]> = new Observable();
-  // peopleLoading = false;
-  // peopleInput$ = new Subject<string>();
-  // private loadPeople() {
-  //   this.people$ = concat(
-  //     of([]), // default items
-  //     this.peopleInput$.pipe(
-  //       distinctUntilChanged(),
-  //       debounceTime(500),
-  //       tap(() => (this.peopleLoading = true)),
-  //       switchMap((term: string) => {
-  //         const filter = {
-  //           full_name: term,
-  //           email: term,
-  //           search: "teamMember",
-  //         };
-  //         return this.usersService.getUsersForTeamMember(filter).pipe(
-  //           catchError(() => of([])), // empty list on error
-  //           tap(() => (this.peopleLoading = false))
-  //         );
-  //       })
-  //     )
-  //   );
-  // }
 
   private organizationValidator = () => {
     return (controlGroup: any) => {
@@ -147,6 +181,7 @@ export class NewTeamMemberComponent {
       this.organizationValidator(),
     ]);
   }
+
   showerror: boolean = false;
   submit() {
     this.memberForm.markAllAsTouched();
@@ -191,6 +226,8 @@ export class NewTeamMemberComponent {
   async ngOnInit() {
     // this.users = await this.usersService.getUsers();
     // console.log(this.users);
+    this.loadPeople();
+    // this.loadPeople2();
     this.populateMemberForm();
   }
 

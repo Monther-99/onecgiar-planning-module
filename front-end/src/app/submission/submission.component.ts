@@ -647,7 +647,7 @@ export class SubmissionComponent implements OnInit {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     this.phase = await this.phasesService.getActivePhase();
-    let partners = await this.phasesService.getAssignedOrgs(
+    let partners: any = await this.phasesService.getAssignedOrgs(
       this.phase.id,
       this.params.id
     );
@@ -670,16 +670,16 @@ export class SubmissionComponent implements OnInit {
           this.partners = roles[0].organizations;
         } else {
           this.toastrService.error(
-            'You are not assigned to this initiative, so please contact the leader to  give you access',
-            'Access denied'
+            "You are not assigned to this initiative, so please contact the leader to  give you access",
+            "Access denied"
           );
-          this.router.navigate(['denied']);
+          this.router.navigate(["denied"]);
         }
       }
     } else {
-      if (this.user.role == 'admin') this.partners = partners;
+      if (this.user.role == "admin") this.partners = partners;
       else {
-        this.router.navigate(['denied']);
+        this.router.navigate(["denied"]);
         return;
       }
     }
