@@ -612,6 +612,14 @@ export class SubmitedVersionComponent implements OnInit {
         );
     });
 
+    wp_data.sort(this.compare);
+
     return wp_data;
+  }
+
+  compare(a: any, b: any) {
+    if (a.category == 'OUTPUT' && b.category == 'OUTCOME') return -1;
+    if (b.category == 'OUTPUT' && a.category == 'OUTCOME') return 1;
+    return 0;
   }
 }
