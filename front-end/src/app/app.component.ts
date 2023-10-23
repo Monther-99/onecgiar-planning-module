@@ -1,24 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "./services/auth.service";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
-} from './confirm/confirm.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+} from "./confirm/confirm.component";
+import { MatDialog } from "@angular/material/dialog";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  constructor(private authService: AuthService, public dialog: MatDialog, public router:Router) {}
+  constructor(
+    private authService: AuthService,
+    public dialog: MatDialog,
+    public router: Router
+  ) {
+    const faviconTag: any = document.getElementById("faviconTag");
+
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      faviconTag.href = "/assets/shared-image/mask-group.svg";
+    } else faviconTag.href = "/assets/shared-image/cgiar-logo.png";
+  }
   user: any;
   ngOnInit(): void {
-    this.router.events.subscribe(e=>{
+    this.router.events.subscribe((e) => {
       this.user = this.authService.getLoggedInUser();
-    })
+    });
   }
   login() {
     this.authService.goToLogin();
@@ -27,16 +40,16 @@ export class AppComponent implements OnInit {
   logout() {
     this.dialog
       .open(ConfirmComponent, {
-        maxWidth: '400px',
+        maxWidth: "400px",
         data: new ConfirmDialogModel(
-          'Logout',
+          "Logout",
           `Are you sure you want to logout?`
         ),
       })
       .afterClosed()
       .subscribe((dialogResult) => {
         if (dialogResult) {
-          localStorage.removeItem('access_token');
+          localStorage.removeItem("access_token");
           this.user = null;
           window.location.href = window.location.href;
         }

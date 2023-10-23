@@ -5,18 +5,39 @@
     <title>Planning</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      id="faviconTag"
+      rel="icon"
+      type="image/x-icon"
+      href="/assets/shared-image/mask-group.svg"
+    />
+
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i|Nunito:300,300i"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
   <body class="mat-typography">
     <app-root></app-root>
+
+    <script>
+      changeFavicon();
+      isDark.addEventListener("change", changeFavicon);
+      console.log(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      console.log(window.matchMedia("(prefers-color-scheme: light)").matches);
+    </script>
   </body>
 </html>
