@@ -77,16 +77,11 @@
             >
               <tr>
                 <td class="wp-title">
-                  <ng-container *ngIf="item?.meliaType?.name">
-                    {{ item?.meliaType.name }}
-                  </ng-container>
-                  <ng-container *ngIf="!item?.meliaType?.name">
-                    {{
-                      item?.ipsr?.id
-                        ? item?.ipsr.title + ' (' + item.value + ')'
-                        : item.title
-                    }}
-                  </ng-container>
+                  {{
+                    item?.ipsr?.id
+                      ? item?.ipsr.title + ' (' + item.value + ')'
+                      : item.title
+                  }}
                 </td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">
@@ -191,16 +186,11 @@
             >
               <tr>
                 <td class="wp-title">
-                  <ng-container *ngIf="item?.meliaType?.name">
-                    {{ item?.meliaType.name }}
-                  </ng-container>
-                  <ng-container *ngIf="!item?.meliaType?.name">
-                    {{
-                      item?.ipsr?.id
-                        ? item?.ipsr.title + ' (' + item.value + ')'
-                        : item.title
-                    }}
-                  </ng-container>
+                  {{
+                    item?.ipsr?.id
+                      ? item?.ipsr.title + ' (' + item.value + ')'
+                      : item.title
+                  }}
                 </td>
                 <td>{{ item.category }}</td>
                 <ng-container *ngFor="let per of period">

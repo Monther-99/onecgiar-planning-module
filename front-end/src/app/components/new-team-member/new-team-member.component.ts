@@ -1,18 +1,29 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PhasesService } from 'src/app/services/phases.service';
-import { UserService } from 'src/app/services/user.service';
+import { Component, Inject } from "@angular/core";
+import { FormBuilder, Validators } from "@angular/forms";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import {
+  Observable,
+  Subject,
+  catchError,
+  concat,
+  debounceTime,
+  distinctUntilChanged,
+  of,
+  switchMap,
+  tap,
+} from "rxjs";
+import { PhasesService } from "src/app/services/phases.service";
+import { UserService } from "src/app/services/user.service";
 
 export enum ROLES {
-  LEAD = 'Leader',
-  COORDINATOR = 'Coordinator',
-  CONTRIBUTOR = 'Contributor',
+  LEAD = "Leader",
+  COORDINATOR = "Coordinator",
+  CONTRIBUTOR = "Contributor",
 }
 @Component({
-  selector: 'app-new-team-member',
-  templateUrl: './new-team-member.component.html',
-  styleUrls: ['./new-team-member.component.scss'],
+  selector: "app-new-team-member",
+  templateUrl: "./new-team-member.component.html",
+  styleUrls: ["./new-team-member.component.scss"],
 })
 export class NewTeamMemberComponent {
   constructor(
@@ -23,7 +34,7 @@ export class NewTeamMemberComponent {
     private phasesService: PhasesService
   ) {}
 
-  confirmation: any = '';
+  confirmation: any = "";
   organizations: any = [];
   users: any = [];
   showConfirm(content: any) {
@@ -40,12 +51,12 @@ export class NewTeamMemberComponent {
       if (controls) {
         // console.log(controls);
         if (
-          controls.email.value == '' &&
-          (controls.user_id.value == '' || controls.user_id.value == null)
+          controls.email.value == "" &&
+          (controls.user_id.value == "" || controls.user_id.value == null)
         ) {
           return {
             atLeastOneRequired: {
-              text: 'At least one should be selected',
+              text: "At least one should be selected",
             },
           };
         }
@@ -53,6 +64,31 @@ export class NewTeamMemberComponent {
       return null;
     };
   };
+
+  // people$: Observable<any[]> = new Observable();
+  // peopleLoading = false;
+  // peopleInput$ = new Subject<string>();
+  // private loadPeople() {
+  //   this.people$ = concat(
+  //     of([]), // default items
+  //     this.peopleInput$.pipe(
+  //       distinctUntilChanged(),
+  //       debounceTime(500),
+  //       tap(() => (this.peopleLoading = true)),
+  //       switchMap((term: string) => {
+  //         const filter = {
+  //           full_name: term,
+  //           email: term,
+  //           search: "teamMember",
+  //         };
+  //         return this.usersService.getUsersForTeamMember(filter).pipe(
+  //           catchError(() => of([])), // empty list on error
+  //           tap(() => (this.peopleLoading = false))
+  //         );
+  //       })
+  //     )
+  //   );
+  // }
 
   private organizationValidator = () => {
     return (controlGroup: any) => {
@@ -92,11 +128,11 @@ export class NewTeamMemberComponent {
     }
     this.memberForm = this.fb.group({
       email: [
-        this.data.role == 'add' ? '' : this.data.member.email,
+        this.data.role == "add" ? "" : this.data.member.email,
         [Validators.email],
       ],
       userRole: [
-        this.data.role == 'add' ? '' : this.data.member.role,
+        this.data.role == "add" ? "" : this.data.member.role,
         Validators.required,
       ],
       user_id: [this.data?.member?.user_id ? this.data?.member?.user_id : null],
@@ -127,18 +163,18 @@ export class NewTeamMemberComponent {
   }
 
   bindValue: any = {
-    full_name: 'full_name',
-    email: 'email',
+    full_name: "full_name",
+    email: "email",
   };
 
   haveSameChar!: boolean;
-  searchValue: string = '';
+  searchValue: string = "";
   async search(event: any) {
     this.searchValue = event.term;
     const filters = {
       full_name: this.searchValue,
       email: this.searchValue,
-      search: 'teamMember',
+      search: "teamMember",
     };
     this.users = await this.usersService.getUsersForTeamMember(filters);
     let i = this.searchValue.length;
@@ -156,5 +192,10 @@ export class NewTeamMemberComponent {
     // this.users = await this.usersService.getUsers();
     // console.log(this.users);
     this.populateMemberForm();
+  }
+
+  //Close-Dialog
+  onCloseDialog() {
+    this.dialogRef.close();
   }
 }
