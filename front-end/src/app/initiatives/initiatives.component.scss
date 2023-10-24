@@ -615,7 +615,7 @@
 }
 
 .table-header {
-  height: 35px;
+  height: 53px;
 }
 
 .example-container {
@@ -658,7 +658,7 @@
   overflow: auto;
   position: relative;
 
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 
   td:nth-child(1) {
     width: 10rem;
@@ -666,23 +666,23 @@
     padding: 1rem;
   }
 
-  th:nth-child(2) {
-    width: 19rem;
-    height: 5.2rem;
-    padding: 1rem;
-  }
+  // th:nth-child(2) {
+  //   width: 19rem;
+  //   height: 5.2rem;
+  //   padding: 1rem;
+  // }
 
-  th:nth-child(1) {
-    width: 10.1rem;
-    height: 5.2rem;
-    padding: 1rem;
-  }
+  // th:nth-child(1) {
+  //   width: 10.1rem;
+  //   height: 5.2rem;
+  //   padding: 1rem;
+  // }
 
-  th:nth-child(3) {
-    width: 24rem;
-    height: 5.2rem;
-    padding: 1rem;
-  }
+  // th:nth-child(3) {
+  //   width: 24rem;
+  //   height: 5.2rem;
+  //   padding: 1rem;
+  // }
 
   td:nth-child(2) {
     width: 19rem;
@@ -713,11 +713,11 @@
     color: #9e553e;
   }
 
-  th:nth-child(5) {
-    width: 15rem;
-    height: 5.2rem;
-    padding: 1rem;
-  }
+  // th:nth-child(5) {
+  //   width: 15rem;
+  //   height: 5.2rem;
+  //   padding: 1rem;
+  // }
 
   td:nth-child(5) {
     width: 15rem;
@@ -725,23 +725,23 @@
     padding: 1rem;
   }
 
-  th:nth-child(6) {
-    width: 11rem;
-    height: 5.2rem;
-    padding: 1rem;
-  }
+  // th:nth-child(6) {
+  //   width: 11rem;
+  //   height: 5.2rem;
+  //   padding: 1rem;
+  // }
 
   td:nth-child(6) {
-    width: 11rem;
+    width: 28rem;
     height: 6rem;
     padding: 1rem;
   }
 
-  th:nth-child(7) {
-    width: 10.5rem;
-    height: 5.2rem;
-    padding: 1rem;
-  }
+  // th:nth-child(7) {
+  //   width: 10.5rem;
+  //   height: 5.2rem;
+  //   padding: 1rem;
+  // }
 
   td:nth-child(7) {
     width: 10.5rem;
@@ -749,11 +749,11 @@
     padding: 1rem;
   }
 
-  th:nth-child(8) {
-    width: 10.5rem;
-    height: 5.2rem;
-    padding: 1rem;
-  }
+  // th:nth-child(8) {
+  //   width: 10.5rem;
+  //   height: 5.2rem;
+  //   padding: 1rem;
+  // }
 
   td:nth-child(8) {
     // width: 21.5rem;
@@ -782,7 +782,8 @@
     color: #ffffff;
     letter-spacing: 0em;
     text-align: center;
-    background-image: linear-gradient(to bottom, #436280, #39536d);
+    // background-image: linear-gradient(to bottom, #436280, #39536d);
+    background: linear-gradient(to bottom left, #436280, #30455b);
     // border: 0.2rem solid #154c83;
     font-style: normal;
   }
@@ -793,7 +794,7 @@
     color: transparent;
     letter-spacing: 0.1rem;
     transition: all 0.2s;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 600;
   }
 
