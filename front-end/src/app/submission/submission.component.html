@@ -306,16 +306,16 @@
         <span style="margin-right: 10px">{{
           partner?.acronym ? partner?.acronym : partner?.name
         }}</span>
-        <mat-icon *ngIf="checkComplete(initiative_data.id, partner.code)"
+        <mat-icon *ngIf="checkComplete(partner.id)"
           >check_circle_outline</mat-icon
         >
       </ng-template>
 
       <app-center-status
         (change)="partnerStatusChange($event)"
-        [status]="!checkComplete(initiative_data.id, partner.code)"
+        [status]="!checkComplete(partner.id)"
         [initiative_id]="initiative_data.id"
-        [organization_id]="partner.code"
+        [organization_id]="partner.id"
       ></app-center-status>
 
       <ng-container *ngFor="let wp of wps">
