@@ -183,12 +183,14 @@ export class SubmitedVersionComponent implements OnInit {
     });
 
     Object.keys(this.summaryBudgets).forEach((wp_id) => {
-      Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
-        this.sammary[wp_id][item_id] = this.percentValue(
-          this.summaryBudgets[wp_id][item_id],
-          this.summaryBudgetsTotal[wp_id]
-        );
-      });
+      if (this.summaryBudgetsTotal[wp_id]) {
+        Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
+          this.sammary[wp_id][item_id] = this.percentValue(
+            this.summaryBudgets[wp_id][item_id],
+            this.summaryBudgetsTotal[wp_id]
+          );
+        });
+      }
     });
 
     Object.keys(this.values).forEach((code) => {
@@ -486,15 +488,13 @@ export class SubmitedVersionComponent implements OnInit {
     );
     this.initiative_data = this.submission_data.initiative;
 
-    this.partners = this.phasesService.getAssignedOrgs(
+    this.partners = await this.phasesService.getAssignedOrgs(
       this.submission_data.phase.id,
       this.initiative_data.id
     );
     if (this.partners.length < 1) {
       this.partners = await this.submissionService.getOrganizations();
     }
-
-    this.partners = this.partners;
 
     this.InitData();
     this.period = this.submission_data.phase.periods;
