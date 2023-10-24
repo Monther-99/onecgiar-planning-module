@@ -486,15 +486,13 @@ export class SubmitedVersionComponent implements OnInit {
     );
     this.initiative_data = this.submission_data.initiative;
 
-    this.partners = this.phasesService.getAssignedOrgs(
+    this.partners = await this.phasesService.getAssignedOrgs(
       this.submission_data.phase.id,
       this.initiative_data.id
     );
     if (this.partners.length < 1) {
       this.partners = await this.submissionService.getOrganizations();
     }
-
-    this.partners = this.partners;
 
     this.InitData();
     this.period = this.submission_data.phase.periods;
