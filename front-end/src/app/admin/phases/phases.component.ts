@@ -11,7 +11,7 @@ import {
 } from "src/app/confirm/confirm.component";
 import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
-
+import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-phases",
   templateUrl: "./phases.component.html",
@@ -41,7 +41,8 @@ export class PhasesComponent implements AfterViewInit {
   constructor(
     private phasesService: PhasesService,
     private dialog: MatDialog,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private Toastr:ToastrService
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -84,7 +85,10 @@ export class PhasesComponent implements AfterViewInit {
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
           let result = await this.phasesService.deletePhase(id);
-          if (result) this.initTable();
+          if (result != false) {
+            this.Toastr.success('Deleted successfully');
+            this.initTable();
+          } 
         }
       });
   }
@@ -103,6 +107,7 @@ export class PhasesComponent implements AfterViewInit {
         if (dialogResult == true) {
           let result = await this.phasesService.activatePhase(id);
           if (result) this.initTable();
+          this.Toastr.success('activated successfully');
         }
       });
   }
@@ -122,6 +127,7 @@ export class PhasesComponent implements AfterViewInit {
         if (dialogResult == true) {
           let result = await this.phasesService.deactivatePhase(id);
           if (result) this.initTable();
+          this.Toastr.success('deactivated successfully');
         }
       });
   }
