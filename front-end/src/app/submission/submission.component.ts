@@ -253,6 +253,15 @@ export class SubmissionComponent implements OnInit {
         value: event.checked,
       }
     );
+    if (
+      !Object.values(this.perValues[partner_code][wp_id][item_id]).includes(
+        true
+      )
+    ) {
+      this.values[partner_code][wp_id][item_id] = 0;
+      this.displayValues[partner_code][wp_id][item_id] = 0;
+      this.changeCalc(partner_code, wp_id, item_id, 'percent');
+    }
     if (result)
       this.socket.emit("setDataValues", {
         id: this.params.id,
