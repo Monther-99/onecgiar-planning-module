@@ -1,27 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { SubmissionService } from '../../services/submission.service';
-import { AppSocket } from '../../socket.service';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from "@angular/core";
+import { SubmissionService } from "../../services/submission.service";
+import { AppSocket } from "../../socket.service";
+import { MatDialog } from "@angular/material/dialog";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
-} from '../../confirm/confirm.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { ToastrService } from 'ngx-toastr';
-import { ROLES } from '../../components/new-team-member/new-team-member.component';
-import { CrossCuttingComponent } from 'src/app/submission/cross-cutting/cross-cutting.component';
-import { MeliaComponent } from 'src/app/submission/melia/melia.component';
-import { ViewDataComponent } from 'src/app/submission/view-data/view-data.component';
-import { PhasesService } from 'src/app/services/phases.service';
+} from "../../confirm/confirm.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
+import { ToastrService } from "ngx-toastr";
+import { ROLES } from "../../components/new-team-member/new-team-member.component";
+import { CrossCuttingComponent } from "src/app/submission/cross-cutting/cross-cutting.component";
+import { MeliaComponent } from "src/app/submission/melia/melia.component";
+import { ViewDataComponent } from "src/app/submission/view-data/view-data.component";
+import { PhasesService } from "src/app/services/phases.service";
 
 @Component({
-  selector: 'app-submited-version',
-  templateUrl: './submited-version.component.html',
-  styleUrls: ['./submited-version.component.scss'],
+  selector: "app-submited-version",
+  templateUrl: "./submited-version.component.html",
+  styleUrls: ["./submited-version.component.scss"],
 })
 export class SubmitedVersionComponent implements OnInit {
-  title = 'planning';
+  title = "planning";
   constructor(
     private submissionService: SubmissionService,
     private phasesService: PhasesService,
@@ -93,7 +93,7 @@ export class SubmitedVersionComponent implements OnInit {
         }
       );
       if (result)
-        this.socket.emit('setDataValue', {
+        this.socket.emit("setDataValue", {
           id: this.params.id,
           partner_code,
           wp_id,
@@ -147,7 +147,7 @@ export class SubmitedVersionComponent implements OnInit {
       }
     );
     if (result)
-      this.socket.emit('setDataValues', {
+      this.socket.emit("setDataValues", {
         id: this.params.id,
         partner_code,
         wp_id,
@@ -199,7 +199,7 @@ export class SubmitedVersionComponent implements OnInit {
         });
         if (total > 100) {
           this.errors[code][wp_id] =
-            'total percentage cannot be over 100 percent';
+            "total percentage cannot be over 100 percent";
         } else {
           this.errors[code][wp_id] = null;
         }
@@ -280,6 +280,7 @@ export class SubmitedVersionComponent implements OnInit {
       });
     });
   }
+
   results: any;
   loading = false;
   params: any;
@@ -322,17 +323,17 @@ export class SubmitedVersionComponent implements OnInit {
       this.initiative_data.id
     );
     cross_data.map((d: any) => {
-      d['category'] = 'CROSS';
-      d['wp_id'] = 'CROSS';
+      d["category"] = "CROSS";
+      d["wp_id"] = "CROSS";
       return d;
     });
     melia_data.map((d: any) => {
-      d['category'] = 'MELIA';
+      d["category"] = "MELIA";
       return d;
     });
     this.ipsr_value_data.map((d: any) => {
-      d['category'] = 'IPSR';
-      d['wp_id'] = 'IPSR';
+      d["category"] = "IPSR";
+      d["wp_id"] = "IPSR";
       return d;
     });
     this.results = [
@@ -343,19 +344,19 @@ export class SubmitedVersionComponent implements OnInit {
       // ...indicators_data,
     ];
     this.wps = this.results
-      .filter((d: any) => d.category == 'WP' && !d.group)
+      .filter((d: any) => d.category == "WP" && !d.group)
       .sort((a: any, b: any) => a.title.localeCompare(b.title));
     this.wps.unshift({
-      id: 'CROSS',
-      title: 'Cross Cutting',
-      category: 'CROSS',
-      ost_wp: { wp_official_code: 'CROSS' },
+      id: "CROSS",
+      title: "Cross Cutting",
+      category: "CROSS",
+      ost_wp: { wp_official_code: "CROSS" },
     });
     this.wps.push({
-      id: 'IPSR',
-      title: 'Innovation packages & Scalling Readiness',
-      category: 'IPSR',
-      ost_wp: { wp_official_code: 'IPSR' },
+      id: "IPSR",
+      title: "Innovation packages & Scalling Readiness",
+      category: "IPSR",
+      ost_wp: { wp_official_code: "IPSR" },
     });
     for (let partner of this.partners) {
       if (!this.budgetValues[partner.code])
@@ -485,15 +486,15 @@ export class SubmitedVersionComponent implements OnInit {
     );
     this.initiative_data = this.submission_data.initiative;
 
-    let partners = await this.phasesService.getAssignedOrgs(
+    this.partners = this.phasesService.getAssignedOrgs(
       this.submission_data.phase.id,
       this.initiative_data.id
     );
-    if (partners.length < 1) {
-      partners = await this.submissionService.getOrganizations();
+    if (this.partners.length < 1) {
+      this.partners = await this.submissionService.getOrganizations();
     }
 
-    this.partners = partners;
+    this.partners = this.partners;
 
     this.InitData();
     this.period = this.submission_data.phase.periods;
@@ -587,28 +588,28 @@ export class SubmitedVersionComponent implements OnInit {
     let wp_data = this.results.filter((d: any) => {
       if (partner_code)
         return (
-          (d.category == 'OUTPUT' ||
-            d.category == 'OUTCOME' ||
-            d.category == 'EOI' ||
-            d.category == 'CROSS' ||
-            d.category == 'IPSR' ||
+          (d.category == "OUTPUT" ||
+            d.category == "OUTCOME" ||
+            d.category == "EOI" ||
+            d.category == "CROSS" ||
+            d.category == "IPSR" ||
             // d.category == 'INDICATOR' ||
-            d.category == 'MELIA') &&
+            d.category == "MELIA") &&
           (d.group == id ||
             d.wp_id == official_code ||
-            (official_code == 'CROSS' && d.category == 'EOI'))
+            (official_code == "CROSS" && d.category == "EOI"))
         );
       else
         return (
-          ((d.category == 'OUTPUT' ||
-            d.category == 'OUTCOME' ||
-            d.category == 'EOI' ||
-            d.category == 'IPSR' ||
-            d.category == 'CROSS' ||
+          ((d.category == "OUTPUT" ||
+            d.category == "OUTCOME" ||
+            d.category == "EOI" ||
+            d.category == "IPSR" ||
+            d.category == "CROSS" ||
             // d.category == 'INDICATOR' ||
-            d.category == 'MELIA') &&
+            d.category == "MELIA") &&
             (d.group == id || d.wp_id == official_code)) ||
-          (official_code == 'CROSS' && d.category == 'EOI')
+          (official_code == "CROSS" && d.category == "EOI")
         );
     });
 

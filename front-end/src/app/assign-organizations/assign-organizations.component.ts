@@ -42,7 +42,7 @@ export class AssignOrganizationsComponent implements OnInit {
       organizations: [null, Validators.required],
     });
     this.organizations = await this.organizationsService.getOrganizations();
-    let AssignedOrganizations = await this.phasesService.getAssignedOrgs(
+    let AssignedOrganizations: any = await this.phasesService.getAssignedOrgs(
       this.phaseId,
       this.initiativeId
     );

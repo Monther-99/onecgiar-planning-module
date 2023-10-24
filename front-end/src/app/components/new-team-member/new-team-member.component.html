@@ -30,14 +30,17 @@
       </div>
 
       <ng-select
+        [items]="people$ | async"
+        [typeahead]="peopleInput$"
+        [loading]="peopleLoading"
         appearance="outline"
-        #agesSelect
-        [items]="users"
+        bindLabel="full_name"
         bindValue="id"
+        [hideSelected]="true"
+        [minTermLength]="2"
         labelForId="id"
-        placeholder="Select user"
-        [bindLabel]="bindValue.full_name"
         formControlName="user_id"
+        typeToSearchText="Please enter 2 or more characters to search"
         (search)="search($event)"
       >
         <ng-template
@@ -51,68 +54,88 @@
           </div>
         </ng-template>
       </ng-select>
-
-      <!-- <h1
-        *ngIf="
-          memberForm.controls['user_id']?.value == '' ||
-          memberForm.controls['user_id']?.value == null
-        "
-      >
-        Or invite by email
-      </h1>
-
-      <mat-form-field
-        *ngIf="
-          memberForm.controls['user_id']?.value == '' ||
-          memberForm.controls['user_id']?.value == null
-        "
-        class="w-90"
-        appearance="outline"
-      >
-        <input formControlName="email" matInput placeholder="Email" />
-        <mat-error
-          class="error"
-          *ngIf="memberForm.controls['email'].errors?.['email']"
-          >Wrong Email format</mat-error
-        >
-      </mat-form-field> -->
     </div>
 
-    <mat-form-field class="w-90" appearance="outline">
-      <mat-select placeholder="Role" formControlName="userRole" #userRole>
-        <mat-option *ngFor="let role of Roles" [value]="role.value">
-          {{ role.viewValue }}
-        </mat-option>
-      </mat-select>
-      <mat-error
-        class="error"
-        *ngIf="memberForm.controls['userRole'].errors?.['required']"
-        >User Role is required</mat-error
+    <!-- //Role  filed----- -->
+    <div class="form-dialog-conten-box-2">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Role<span class="star">*</span></mat-label
+        >
+      </div>
+      <mat-form-field
+        class="form-dialog-content__field--2"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
       >
-    </mat-form-field>
-    <ng-select
-      *ngIf="userRole.value == 'Contributor'"
-      [multiple]="true"
-      [closeOnSelect]="false"
-      appearance="outline"
-      [items]="organizations"
-      bindLabel="name"
-      placeholder="Select organizations"
-      formControlName="organizations"
-    >
-    </ng-select>
-    <mat-error
-      class="error organizationsError"
-      *ngIf="memberForm?.errors?.['organizationsRequired'] && showerror"
-      >At least one Organization should be selected</mat-error
-    >
+        <mat-select placeholder="Role" formControlName="userRole" #userRole>
+          <mat-option *ngFor="let role of Roles" [value]="role.value">
+            {{ role.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          class="error"
+          *ngIf="memberForm.controls['userRole'].errors?.['required']"
+          >User Role is required</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div class="form-dialog-content__field--grid-column">
+      <div
+        *ngIf="userRole.value == 'Contributor'"
+        class="form-dialog-content__title-box"
+      >
+        <mat-label class="form-dialog-content__title-box__title"
+          >Select organizations</mat-label
+        >
+      </div>
+
+      <ng-select
+        *ngIf="userRole.value == 'Contributor'"
+        [closeOnSelect]="false"
+        appearance="outline"
+        [items]="organizations"
+        bindLabel="name"
+        formControlName="organizations"
+        [hideSelected]="true"
+        [minTermLength]="2"
+      >
+      </ng-select>
+      <mat-error
+        class="error organizationsError"
+        *ngIf="memberForm?.errors?.['organizationsRequired'] && showerror"
+        >At least one Organization should be selected</mat-error
+      >
+    </div>
+
+    <div>
+      <div class="form-dialog-conten-button-box">
+        <div class="form-dialog-conten__button-box" align="end">
+          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+
+          <button
+            class="form-dialog-conten__button-box__btn"
+            type="submit"
+            mat-raised-button
+            mat-button
+            color="primary"
+            mat-button
+            color="primary"
+            (click)="submit()"
+          >
+            {{ data.role == "add" ? "Add" : "Update" }}
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="end">
       <mat-error
         class="error"
         *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
         >Email or User must be not empty</mat-error
       >
-      <button mat-button color="primary" (click)="submit()">SAVE</button>
     </div>
   </form>
 </div>
