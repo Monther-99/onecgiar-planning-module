@@ -11,6 +11,7 @@ import {
 } from "src/app/confirm/confirm.component";
 import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-users",
@@ -28,7 +29,8 @@ export class UsersComponent implements AfterViewInit {
   constructor(
     private usersService: UserService,
     private dialog: MatDialog,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private toastr: ToastrService
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -72,7 +74,12 @@ export class UsersComponent implements AfterViewInit {
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
           let result = await this.usersService.deleteUser(id);
-          if (result) this.initTable();
+          console.log(result)
+          if (result != false) {
+            this.initTable();
+            this.toastr.success('Deleted successfully');
+          }
+ 
         }
       });
   }
