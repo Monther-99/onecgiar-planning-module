@@ -37,37 +37,30 @@ export class NewTeamMemberComponent implements OnInit {
     private phasesService: PhasesService
   ) {}
 
-  people$: Observable<any[]> = new Observable();
-  peoples$: Observable<any[]> = new Observable();
-  peopleLoading = false;
-
-  peopleInput$ = new Subject<string>();
-
-  peopleLoadings = false;
-
-  peopleInputs$ = new Subject<string>();
-
-  private loadPeople() {
-    this.people$ = concat(
-      of([]), // default items
-      this.peopleInput$.pipe(
-        distinctUntilChanged(),
-        debounceTime(500),
-        tap(() => (this.peopleLoading = true)),
-        switchMap((term: string) => {
-          const filter = {
-            full_name: term,
-            email: term,
-            search: "teamMember",
-          };
-          return this.usersService.getUsersForTeamMember(filter).pipe(
-            catchError(() => of([])), // empty list on error
-            tap(() => (this.peopleLoading = false))
-          );
-        })
-      )
-    );
-  }
+  // people$: Observable<any[]> = new Observable();
+  // peopleLoading = false;
+  // peopleInput$ = new Subject<string>();
+  // private loadPeople() {
+  //   this.people$ = concat(
+  //     of([]), // default items
+  //     this.peopleInput$.pipe(
+  //       distinctUntilChanged(),
+  //       debounceTime(500),
+  //       tap(() => (this.peopleLoading = true)),
+  //       switchMap((term: string) => {
+  //         const filter = {
+  //           full_name: term,
+  //           email: term,
+  //           search: "teamMember",
+  //         };
+  //         return this.usersService.getUsersForTeamMember(filter).pipe(
+  //           catchError(() => of([])), // empty list on error
+  //           tap(() => (this.peopleLoading = false))
+  //         );
+  //       })
+  //     )
+  //   );
+  // }
 
   // private loadPeople2() {
   //   this.peoples$ = concat(
@@ -223,10 +216,18 @@ export class NewTeamMemberComponent implements OnInit {
     }
   }
 
+  compareWith(v1: any, v2: any) {
+    return v1?.user_id === v2?.user_id;
+  }
+  loading: boolean = false;
+
+  items$!: Observable<any>;
+  peopleInputSearch$ = new Subject<any>();
+
   async ngOnInit() {
     // this.users = await this.usersService.getUsers();
     // console.log(this.users);
-    this.loadPeople();
+    // this.loadPeople();
     // this.loadPeople2();
     this.populateMemberForm();
   }

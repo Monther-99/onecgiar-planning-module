@@ -9,6 +9,13 @@ import jwt_decode from "jwt-decode";
 export class UserService {
   constructor(private http: HttpClient) {}
 
+
+
+
+
+
+  
+
   async getUsers(filters: any = null, page: number, limit: number) {
     let finalFilters: any = {};
     if (filters)
@@ -27,27 +34,7 @@ export class UserService {
         .pipe(map((d) => d))
     ).catch((e) => false);
   }
-  // async getUsersForTeamMember(filters: any = null) {
-  //   let finalFilters: any = {};
-  //   if (filters)
-  //     Object.keys(filters).forEach((element) => {
-  //       if (typeof filters[element] === "string")
-  //         filters[element] = filters[element].trim();
-
-  //       if (filters[element] != null && filters[element] != "")
-  //         finalFilters[element] = filters[element];
-  //     });
-
-  //   return firstValueFrom(
-  //     this.http
-  //       .get(`api/users`, {
-  //         params: finalFilters,
-  //       })
-  //       .pipe(map((d) => d))
-  //   ).catch((e) => false);
-  // }
-
-  getUsersForTeamMember(filters: any = null): Observable<any> {
+  async getUsersForTeamMember(filters: any = null) {
     let finalFilters: any = {};
     if (filters)
       Object.keys(filters).forEach((element) => {
@@ -57,10 +44,30 @@ export class UserService {
         if (filters[element] != null && filters[element] != "")
           finalFilters[element] = filters[element];
       });
-    return this.http.get(`api/users`, {
-      params: finalFilters,
-    });
+
+    return firstValueFrom(
+      this.http
+        .get(`api/users`, {
+          params: finalFilters,
+        })
+        .pipe(map((d) => d))
+    ).catch((e) => false);
   }
+
+  // getUsersForTeamMember(filters: any = null): Observable<any> {
+  //   let finalFilters: any = {};
+  //   if (filters)
+  //     Object.keys(filters).forEach((element) => {
+  //       if (typeof filters[element] === "string")
+  //         filters[element] = filters[element].trim();
+
+  //       if (filters[element] != null && filters[element] != "")
+  //         finalFilters[element] = filters[element];
+  //     });
+  //   return this.http.get(`api/users`, {
+  //     params: finalFilters,
+  //   });
+  // }
 
   // getUsersForTeamMembera(filters: any = null): Observable<any> {
   //   let finalFilters: any = {};
