@@ -206,7 +206,7 @@ export class SubmissionComponent implements OnInit {
   perValuesSammary: any = {};
   perAllValues: any = {};
   sammaryTotal: any = {};
-  checkComplete(initiative_id: number, organization_id: number) {
+  checkComplete(organization_id: number) {
     if (this.initiative_data.center_status) {
       return (
         this.initiative_data.center_status.filter(
