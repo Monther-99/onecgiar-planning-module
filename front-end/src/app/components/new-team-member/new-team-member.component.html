@@ -30,11 +30,9 @@
       </div>
 
       <ng-select
-        [items]="people$ | async"
-        [typeahead]="peopleInput$"
-        [loading]="peopleLoading"
+        [items]="users"
         appearance="outline"
-        bindLabel="full_name"
+        [bindLabel]="bindValue.full_name"
         bindValue="id"
         [hideSelected]="true"
         [minTermLength]="2"
@@ -42,6 +40,7 @@
         formControlName="user_id"
         typeToSearchText="Please enter 2 or more characters to search"
         (search)="search($event)"
+        #agesSelect
       >
         <ng-template
           ng-option-tmp
@@ -101,6 +100,7 @@
         formControlName="organizations"
         [hideSelected]="true"
         [minTermLength]="2"
+        [multiple]="true"
       >
       </ng-select>
       <mat-error
