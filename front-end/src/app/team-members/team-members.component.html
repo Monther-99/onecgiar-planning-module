@@ -1,34 +1,32 @@
 <div class="section-risk-report-component">
   <div class="team-members-container">
-    <!-- <nav class="risk-nav-main">
-    <ul class="risk-nav-list">
-      <li>
-        <a class="risk-nav-link" routerLink="/home">Initiatives</a>
-      </li>
-      <li>
-        <a routerLink="''" class="risk-nav-link">></a>
-      </li>
-      <li>
-        <a
-          routerLink="/home/{{ initiativeId }}/{{ officalCode }}"
-          class="risk-nav-link"
-          >&nbsp;Risk report<span class="line">&nbsp;/</span>&nbsp;{{
-            officalCode
-          }}</a
-        >
-      </li>
-      <li>
-        <a routerLink="''" class="risk-nav-link">></a>
-      </li>
-      <li>
-        <a
-          routerLink="/home/{{ initiativeId }}/{{ officalCode }}/team-members"
-          class="risk-nav-link"
-          >Team members</a
-        >
-      </li>
-    </ul>
-  </nav> -->
+    <nav class="risk-nav-main">
+      <ul class="risk-nav-list">
+        <li>
+          <a class="risk-nav-link" routerLink="/">Initiatives</a>
+        </li>
+        <li>
+          <a routerLink="''" class="risk-nav-link">></a>
+        </li>
+        <li>
+          <a
+            routerLink="{{ initiativeId }}/{{ officalCode }}"
+            class="risk-nav-link"
+            ><span class="line">&nbsp;</span>{{ officalCode }}</a
+          >
+        </li>
+        <li>
+          <a routerLink="''" class="risk-nav-link">></a>
+        </li>
+        <li>
+          <a
+            routerLink="{{ initiativeId }}/{{ officalCode }}/team-members"
+            class="risk-nav-link"
+            >Team members</a
+          >
+        </li>
+      </ul>
+    </nav>
     <div class="team-member-content-box">
       <!-- step-1 -->
       <div class="team-members-text-box">
