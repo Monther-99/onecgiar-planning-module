@@ -24,6 +24,7 @@ import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-co
 })
 export class TeamMembersComponent {
   initiativeId: any;
+  officalCode: any;
   constructor(
     public router: Router,
     public dialog: MatDialog,
@@ -48,6 +49,8 @@ export class TeamMembersComponent {
   async ngOnInit() {
     const params: any = this.activatedRoute?.snapshot.params;
     this.initiativeId = params.id;
+    this.officalCode = params.code;
+    console.log(this.officalCode);
     this.id = params.id;
     this.loadInitiativeRoles();
     this.user_info = this.userService.getLogedInUser();
@@ -185,6 +188,8 @@ export class TeamMembersComponent {
     var data: any = await this.initiativeService.getInitiativeRoles(
       this.initiativeId
     );
+
     this.dataSource = new MatTableDataSource<any>(data);
+    this.dataSource.paginator = this.paginator;
   }
 }

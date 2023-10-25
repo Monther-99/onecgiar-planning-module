@@ -51,15 +51,11 @@ export class UserDialogComponent implements OnInit {
     this.userForm.updateValueAndValidity();
     if (this.userForm.valid) {
       await this.usersService.submitUser(this.userId, this.userForm.value);
-      this.toast.success("User saved successfully");
+      this.toast.success("User Updated Successfully");
       this.dialogRef.close({ submitted: true });
     }
   }
 
-
-
-
-  
   //Close-Dialog
   onCloseDialog() {
     this.dialogRef.close();
