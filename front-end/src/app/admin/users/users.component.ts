@@ -12,6 +12,7 @@ import {
 import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { ToastrService } from "ngx-toastr";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-users",
@@ -30,7 +31,9 @@ export class UsersComponent implements AfterViewInit {
     private usersService: UserService,
     private dialog: MatDialog,
     private headerService: HeaderService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private title: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -50,6 +53,8 @@ export class UsersComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.length = this.users.length;
+    this.title.setTitle("User management");
+    this.meta.updateTag({ name: "description", content: "User management" });
   }
 
   openDialog(id: number = 0): void {
@@ -74,12 +79,11 @@ export class UsersComponent implements AfterViewInit {
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
           let result = await this.usersService.deleteUser(id);
-          console.log(result)
+          console.log(result);
           if (result != false) {
             this.initTable();
-            this.toastr.success('Deleted successfully');
+            this.toastr.success("Deleted successfully");
           }
- 
         }
       });
   }

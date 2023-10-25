@@ -34,8 +34,8 @@ export class UserDialogComponent implements OnInit {
   private async formInit() {
     this.userForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
-      first_name: [null, Validators.required],
-      last_name: [null, Validators.required],
+      firstName: [null, Validators.required],
+      lastName: [null, Validators.required],
       role: [null, Validators.required],
     });
     if (this.userId) {

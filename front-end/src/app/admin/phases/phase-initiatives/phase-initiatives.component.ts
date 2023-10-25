@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
+import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Params } from "@angular/router";
 import { AssignOrganizationsComponent } from "src/app/assign-organizations/assign-organizations.component";
 import { PhasesService } from "src/app/services/phases.service";
@@ -29,7 +30,10 @@ export class PhaseInitiativesComponent {
   constructor(
     private phasesService: PhasesService,
     private dialog: MatDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+
+    private title: Title,
+    private meta: Meta
   ) {}
 
   ngAfterViewInit() {
@@ -44,6 +48,8 @@ export class PhaseInitiativesComponent {
     this.dataSource = new MatTableDataSource(this.initiatives);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.title.setTitle("Phases Initiatives");
+    this.meta.updateTag({ name: "description", content: "Phases Initiatives" });
   }
 
   openDialog(id: number = 0): void {

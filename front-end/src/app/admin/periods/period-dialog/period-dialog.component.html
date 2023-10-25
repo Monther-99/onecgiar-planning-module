@@ -21,14 +21,14 @@
 <div class="form-dialog-conten-box-1">
   <form [formGroup]="periodForm" class="form-dialog-content">
     <!-- //Phase  filed----- -->
-    <div class="form-dialog-conten-box-2">
+    <div class="form-dialog-content__field--grid-column">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
           >Phase<span class="star">*</span></mat-label
         >
       </div>
       <mat-form-field
-        class="form-dialog-content__field--2"
+        class="form-dialog-content__field"
         floatLabel="always"
         hideRequiredMarker
         appearance="outline"
@@ -38,6 +38,12 @@
             {{ phase.name }}
           </mat-option>
         </mat-select>
+
+        <mat-error
+          class="error"
+          *ngIf="periodForm.controls?.['phase']?.errors?.['required']"
+          >Phase is required</mat-error
+        >
       </mat-form-field>
     </div>
 
@@ -63,8 +69,10 @@
           pattern="^\d{4}$"
           #year
         />
-        <mat-error class="error" *ngIf="year.validity.patternMismatch"
-          >Please enter a valid year</mat-error
+        <mat-error
+          class="error"
+          *ngIf="periodForm.controls?.['year']?.errors?.['required']"
+          >Year is required</mat-error
         >
       </mat-form-field>
     </div>
@@ -84,6 +92,11 @@
         appearance="outline"
       >
         <input matInput formControlName="quarter" />
+        <mat-error
+          class="error"
+          *ngIf="periodForm.controls?.['quarter']?.errors?.['required']"
+          >Quarter is required</mat-error
+        >
       </mat-form-field>
     </div>
 
