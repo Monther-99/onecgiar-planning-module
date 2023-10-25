@@ -84,7 +84,6 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
   changeStatus(id: number) {
     const dialogRef = this.dialog.open(StatusComponent, {
-      width: "400px",
       data: { id },
     });
     dialogRef.afterClosed().subscribe(async (result) => {
