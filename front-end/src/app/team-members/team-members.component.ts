@@ -188,6 +188,8 @@ export class TeamMembersComponent {
     var data: any = await this.initiativeService.getInitiativeRoles(
       this.initiativeId
     );
+
     this.dataSource = new MatTableDataSource<any>(data);
+    this.dataSource.paginator = this.paginator;
   }
 }
