@@ -11,7 +11,7 @@ import { Initiative } from 'src/entities/initiative.entity';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Brackets, In, Repository } from 'typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { WorkPackage } from 'src/entities/workPackage.entity';
 import { CreateWorkPackageDto } from './dto/create-workpackage.dto';
@@ -20,6 +20,31 @@ import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
 
 @Injectable()
 export class InitiativesService {
+  offical(query) {
+    if (query.initiative_id != null) {
+      if (query.initiative_id.charAt(0) == '0') {
+        const id = query.initiative_id.substring(1);
+        if (id <= 9) {
+          return 'INIT-0' + id;
+        }
+      } else {
+        if (query.initiative_id <= 9) {
+          return 'INIT-0' + query.initiative_id;
+        } else {
+          return 'INIT-' + query.initiative_id;
+        }
+      }
+    }
+    return query.initiative_id;
+  }
+  sort(query): any {
+    if (query?.sort) {
+      let obj = {};
+      const sorts = query.sort.split(',');
+      obj['init.' + sorts[0]] = sorts[1];
+      return obj;
+    } else return  { 'init.id': 'ASC' };
+  }
   constructor(
     private readonly httpService: HttpService,
     @InjectRepository(Initiative)
@@ -106,11 +131,53 @@ export class InitiativesService {
     });
   }
 
-  findAllFull() {
-    return this.initiativeRepository.find({
-      relations: ['roles', 'latest_submission', 'center_status'],
-      order: { id: 'asc' },
-    });
+
+  async findAllFull(query: any, req: any) {
+    const take = query.limit || 10;
+    const skip = (Number(query.page || 1) - 1) * take;
+    const [finalResult,total] = await this.initiativeRepository.createQueryBuilder('init')
+      .where(
+        new Brackets((qb) => {
+          qb.where('init.name like :name', { name: `%${query.name || ''}%` })
+          if(query.initiative_id != undefined){
+            qb.andWhere('init.official_code = :initiative_id', { initiative_id: this.offical(query) })
+          }
+          if(query?.my_role) {
+            if (Array.isArray(query?.my_role)) {
+              qb.andWhere('roles.role IN (:...my_role)', {my_role: query.my_role})
+              qb.andWhere(`roles.user_id = ${req.user.id}`)
+            } else {
+              qb.andWhere('roles.role = :my_role', { my_role: query.my_role })
+              qb.andWhere(`roles.user_id = ${req.user.id}`)
+            }
+          } else if (query?.my_ini == 'true') {
+            qb.andWhere(`roles.user_id = ${req.user.id}`)
+          }
+        }),
+      )
+      .andWhere(new Brackets((qb) => {
+        if(query.status) {
+          if(query.status != 'Draft'){
+            qb.andWhere('latest_submission.status = :status', { status:  query.status })
+            qb.andWhere('init.last_update_at = init.last_submitted_at')
+          } else if(query.status == 'Draft') {
+            qb.andWhere("init.last_submitted_at is null")
+            qb.orWhere('init.last_update_at != init.last_submitted_at')
+          }
+        } 
+      }))
+      .orderBy(this.sort(query))
+      .leftJoinAndSelect('init.roles', 'roles')
+      .leftJoinAndSelect('init.latest_submission', 'latest_submission')
+      .leftJoinAndSelect('init.center_status', 'center_status')
+      .take(take)
+      .skip(skip)
+      .getManyAndCount();
+
+      return {
+        result: finalResult,
+        count: total,
+      }; 
   }
 
   findOne(id: number) {
