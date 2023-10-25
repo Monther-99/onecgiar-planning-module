@@ -202,6 +202,23 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
+  finalPeriodVal(period_id: any) {
+    return this.wps
+      .map(
+        (wp: any) =>
+          this.perValuesSammary[wp.ost_wp.wp_official_code][period_id]
+      )
+      .reduce((a: any, b: any) => a || b);
+  }
+
+  finalItemPeriodVal(wp_id: any, period_id: any) {
+    let periods = this.allData[wp_id].map(
+      (item: any) => this.perAllValues[wp_id][item.id][period_id]
+    );
+    if (periods.length) return periods.reduce((a: any, b: any) => a || b);
+    else return false;
+  }
+
   perValues: any = {};
   perValuesSammary: any = {};
   perAllValues: any = {};
