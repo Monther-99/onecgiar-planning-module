@@ -36,6 +36,11 @@
       >
         <mat-label></mat-label>
         <input matInput formControlName="title" />
+        <mat-error
+          class="error"
+          *ngIf="ipsrForm.controls?.['title']?.errors?.['required']"
+          >Title is required</mat-error
+        >
       </mat-form-field>
     </div>
 
@@ -70,7 +75,7 @@
     </div>
 
     <div>
-      <div class="form-dialog-conten-button-box ">
+      <div class="form-dialog-conten-button-box">
         <div class="form-dialog-conten__button-box m-t" align="end">
           <!-- <button mat-button mat-dialog-close>Cancel</button> -->
 

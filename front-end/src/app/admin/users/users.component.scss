@@ -411,10 +411,10 @@
   padding: 0 0.5rem !important;
 }
 
-::ng-deep .mat-mdc-option.mdc-list-item {
-  align-items: center;
-  width: 260px !important;
-}
+// ::ng-deep .mat-mdc-option.mdc-list-item {
+//   align-items: center;
+//   width: 260px !important;
+// }
 
 ::ng-deep.cdk-overlay-pane {
   position: absolute;
@@ -430,4 +430,66 @@
 
 .add_new_btn {
   margin-bottom: 10px;
+}
+
+::ng-deep.mat-mdc-option:hover:not(.mdc-list-item--disabled),
+.mat-mdc-option:focus:not(.mdc-list-item--disabled),
+.mat-mdc-option.mat-mdc-option-active,
+.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
+    .mdc-list-item--disabled
+  ) {
+  background-image: linear-gradient(
+    to right bottom,
+    #9e543eaa,
+    #7c4230db
+  ) !important;
+
+  color: #ffffff !important;
+}
+
+::ng-deep.mat-mdc-option.mat-mdc-option-active,
+.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
+    .mdc-list-item--disabled
+  ) {
+  background-image: linear-gradient(
+    to right bottom,
+    #9e543eaa,
+    #7c4230db
+  ) !important;
+}
+
+::ng-deep.mat-mdc-option.mat-mdc-option-hover,
+.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
+    .mdc-list-item--disabled
+  ) {
+  color: #ffffff !important;
+}
+
+::ng-deep.mat-primary
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled)
+  .mdc-list-item__primary-text {
+  color: var(--mdc-theme-primary, #ffffff) !important;
+}
+
+::ng-deep.mat-pseudo-checkbox {
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  position: relative;
+  flex-shrink: 0;
+  transition: border-color 90ms cubic-bezier(0, 0, 0.2, 0.1),
+    background-color 90ms cubic-bezier(0, 0, 0.2, 0.1);
+  filter: invert(96%) sepia(100%) saturate(16%) hue-rotate(269deg)
+    brightness(104%) contrast(104%) !important;
+}
+
+::ng-deep.mat-mdc-select-arrow {
+  width: 16px !important;
+  height: 10px !important;
+  background-color: #ffffff !important;
+  background-image: url("../../../assets/shared-image/VectorNew.svg");
+  background-position: center;
+  background-size: cover;
 }

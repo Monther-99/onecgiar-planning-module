@@ -12,6 +12,7 @@ import {
 import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { ToastrService } from "ngx-toastr";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-organizations",
@@ -29,7 +30,9 @@ export class OrganizationsComponent implements AfterViewInit {
     private organizationsService: OrganizationsService,
     private dialog: MatDialog,
     private headerService: HeaderService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private title: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -48,6 +51,8 @@ export class OrganizationsComponent implements AfterViewInit {
     this.dataSource = new MatTableDataSource(this.organizations);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.title.setTitle("Organizations");
+    this.meta.updateTag({ name: "description", content: "Organizations" });
   }
 
   openDialog(id: number = 0): void {
@@ -74,7 +79,7 @@ export class OrganizationsComponent implements AfterViewInit {
           let result = await this.organizationsService.deleteOrganization(id);
           if (result != false) {
             this.initTable();
-            this.toastr.success('Deleted successfully');
+            this.toastr.success("Deleted successfully");
           }
         }
       });

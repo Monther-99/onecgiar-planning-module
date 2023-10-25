@@ -12,6 +12,7 @@ import {
 import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { ToastrService } from "ngx-toastr";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-admin-ipsr",
@@ -29,7 +30,9 @@ export class AdminIpsrComponent implements AfterViewInit {
     private ipsrService: IpsrService,
     private dialog: MatDialog,
     private headerService: HeaderService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private title: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -48,6 +51,8 @@ export class AdminIpsrComponent implements AfterViewInit {
     this.dataSource = new MatTableDataSource(this.ipsrs);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.title.setTitle("IPSR");
+    this.meta.updateTag({ name: "description", content: "IPSR" });
   }
 
   openDialog(id: number = 0): void {
@@ -74,7 +79,7 @@ export class AdminIpsrComponent implements AfterViewInit {
           let result = await this.ipsrService.deleteIpsr(id);
           if (result != false) {
             this.initTable();
-            this.toastr.success('Deleted successfully');
+            this.toastr.success("Deleted successfully");
           }
         }
       });

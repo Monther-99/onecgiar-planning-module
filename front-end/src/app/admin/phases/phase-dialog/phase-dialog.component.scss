@@ -66,7 +66,7 @@
 
 :host {
   ::ng-deep.mat-mdc-icon-button.mat-mdc-button-base {
-    color: #0060ef !important;
+    color: #9e553e !important;
   }
 }
 
@@ -97,7 +97,7 @@
     .mdc-checkbox
     .mdc-checkbox__native-control[data-indeterminate="true"]:enabled
     ~ .mdc-checkbox__background {
-    background-image: linear-gradient(to bottom, #0f212f, #09151e) !important;
+    background-image: linear-gradient(to bottom, #9e553e, #9e553e) !important;
   }
 }
 
@@ -116,11 +116,11 @@
     ~ .mdc-checkbox__background {
     border-color: var(
       --mdc-checkbox-selected-icon-color,
-      var(--mdc-theme-secondary, #09151e)
+      var(--mdc-theme-secondary, #9e553e)
     ) !important;
     background-color: var(
       --mdc-checkbox-selected-icon-color,
-      var(--mdc-theme-secondary, #09151e)
+      var(--mdc-theme-secondary, #9e553e)
     ) !important;
   }
 }
@@ -138,10 +138,10 @@
     .mdc-checkbox
     .mdc-checkbox__native-control[data-indeterminate="true"]:enabled
     ~ .mdc-checkbox__background {
-    border-color: #09151e !important;
+    border-color: #9e553e !important;
     background-color: var(
       --mdc-checkbox-selected-icon-color,
-      var(--mdc-theme-secondary, #09151e)
+      var(--mdc-theme-secondary, #9e553e)
     ) !important;
   }
 }
@@ -150,7 +150,7 @@
   ::ng-deep.mat-mdc-checkbox.mat-primary
     .mdc-checkbox--selected
     ~ .mdc-checkbox__ripple {
-    background-image: linear-gradient(to bottom, #0f212f, #09151e) !important;
+    background-image: linear-gradient(to bottom, #9e553e, #9e553e) !important;
   }
 }
 
