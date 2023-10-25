@@ -62,7 +62,7 @@ export class PhaseDialogComponent implements OnInit {
     this.phaseForm.updateValueAndValidity();
     if (this.phaseForm.valid) {
       await this.phasesService.submitPhase(this.phaseId, this.phaseForm.value);
-      this.toast.success("Phase saved successfully");
+      this.toast.success("Phase Updated Successfully");
       this.dialogRef.close({ submitted: true });
     }
   }
