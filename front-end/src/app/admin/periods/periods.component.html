@@ -29,8 +29,8 @@
 <div class="user-management__content--1">
   <div class="user-management__container">
     <div class="form-container">
-      <form class="search">
-        <div class="sec-1">
+      <form class="search" [formGroup]="filterForm" >
+        <!-- <div class="sec-1"> -->
           <!-- <div class="risk-management-form-field field-3">
             <mat-label class="risk-management-form-field__label"
               >Search
@@ -55,27 +55,29 @@
               /></mat-icon>
             </button>
           </div> -->
-        </div>
+        <!-- </div> -->
 
         <!-- //My role----- -->
-        <!-- <div class="sec-5">
+        <div class="sec-5">
           <div class="risk-management-form-field field-3">
             <mat-label class="risk-management-form-field__label"
-              >Role</mat-label
+              >Phase</mat-label
             >
 
             <mat-select
-              formControlName="role"
+              formControlName="phase"
               class="risk-management-form-field-box__input-3"
               [placeholder]="'All'"
               id="select-where"
             >
               <mat-option>All</mat-option>
-              <mat-option value="user">User</mat-option>
-              <mat-option value="admin">Admin</mat-option>
+
+              <mat-option *ngFor="let phase of phases" [value]="phase.id">
+                {{phase.name}}
+              </mat-option>
             </mat-select>
           </div>
-        </div> -->
+        </div>
         <!-- //Sort----- -->
         <!-- <div class="sec-6">
           <div class="risk-management-form-field field-3">
@@ -165,24 +167,24 @@
         ></tr>
 
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+          <th mat-header-cell *matHeaderCellDef>Id</th>
           <td mat-cell *matCellDef="let period">{{ period.id }}</td>
         </ng-container>
 
         <ng-container matColumnDef="phase">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Phase</th>
+          <th mat-header-cell *matHeaderCellDef>Phase</th>
           <td mat-cell *matCellDef="let period">
             {{ period.phase ? period.phase.name : "" }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="year">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+          <th mat-header-cell *matHeaderCellDef>Year</th>
           <td mat-cell *matCellDef="let period">{{ period.year }}</td>
         </ng-container>
 
         <ng-container matColumnDef="quarter">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Quarter</th>
+          <th mat-header-cell *matHeaderCellDef>Quarter</th>
           <td mat-cell *matCellDef="let period">{{ period.quarter }}</td>
         </ng-container>
 
@@ -235,9 +237,11 @@
       <div class="glossary-content-container user-management-paginator-box">
         <mat-paginator
           [pageSizeOptions]="[10, 20, 30, 50, 100]"
-          aria-label="Select page"
-        >
-        </mat-paginator>
+          [length]="length"
+          [pageIndex]="pageIndex - 1"
+          (page)="pagination($event)"
+          aria-label="Select page of users"
+        ></mat-paginator>
       </div>
     </div>
   </div>

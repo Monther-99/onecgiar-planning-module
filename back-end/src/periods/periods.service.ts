@@ -16,8 +16,23 @@ export class PeriodsService {
     return this.periodRepository.save(newPeriod);
   }
 
-  findAll() {
-    return this.periodRepository.find({ relations: ['phase'] });
+  async findAll(query: any) {
+    const take = query.limit || 10;
+    const skip = (Number(query.page || 1) - 1) * take;
+    const [finalResult,total] = await this.periodRepository.findAndCount({
+      where: {
+        phase: {
+          id: query.phase
+        }
+      },
+      take: take,
+      skip: skip,
+      relations: ['phase']
+    });
+    return {
+      result: finalResult,
+      count: total,
+    };
   }
 
   findOne(id: number) {
