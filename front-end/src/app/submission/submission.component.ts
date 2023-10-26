@@ -46,6 +46,7 @@ export class SubmissionComponent implements OnInit {
   displayValues: any = {};
   summaryBudgets: any = {};
   summaryBudgetsTotal: any = {};
+  summaryBudgetsAllTotal: any = 0;
   wp_budgets: any = {};
   budgetValues: any = {};
   displayBudgetValues: any = {};
@@ -314,6 +315,10 @@ export class SubmissionComponent implements OnInit {
         );
       });
     });
+
+    this.summaryBudgetsAllTotal = Object.values(this.summaryBudgetsTotal).reduce(
+      (a: any, b: any) => a + b
+    );
 
     Object.keys(this.summaryBudgets).forEach((wp_id) => {
       Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
