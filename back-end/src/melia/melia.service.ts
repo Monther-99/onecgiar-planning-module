@@ -16,13 +16,17 @@ export class MeliaService {
     private meliaTypesRepository: Repository<MeliaTypes>,
     private readonly httpService: HttpService,
   ) {}
+  api = process.env.Ost_API;
 
   findAll() {
     return this.meliaRepository.find();
   }
 
   findByInitiativeID(id) {
-    return this.meliaRepository.find({ where: { initiative: { id: id } }, relations: ['meliaType'] });
+    return this.meliaRepository.find({
+      where: { initiative: { id: id } },
+      relations: ['meliaType'],
+    });
   }
 
   create(data: any) {
@@ -78,4 +82,32 @@ export class MeliaService {
   getMeliaTypes() {
     return this.meliaTypesRepository.find();
   }
+
+  async loginOst() {
+    return await firstValueFrom(
+      this.httpService
+        .post(this.api + 'auth/login', {
+          email: 'tocadmin@cgiar.org',
+          password: 'Toc.2021',
+        })
+        .pipe(map((d: any) => d.data.response.token)),
+    );
+  }
+  async getOstMelias(initiative_id) {
+    return await firstValueFrom(
+      this.httpService
+        .get(
+          this.api +
+            'stages-control/proposal/melia/studies-activities/4/' +
+            initiative_id,
+          {
+            headers: {
+              auth:await this.loginOst(),
+            },
+          },
+        )
+        .pipe(map((d: any) => d.data.response.meliaStudiesActivities)),
+    );
+  }
+ 
 }

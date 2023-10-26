@@ -13,6 +13,11 @@ import { MeliaService } from './melia.service';
 export class MeliaController {
   constructor(private readonly meliaService: MeliaService) {}
 
+  @Get('from-ost/:id')
+  findAllOst(@Param('id') id) {
+    return this.meliaService.getOstMelias(id);
+  }
+
   @Get()
   findAll() {
     return this.meliaService.findAll();
