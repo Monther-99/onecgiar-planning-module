@@ -52,6 +52,7 @@ export class InitiativesComponent implements OnInit {
   length!: number;
   pageSize: number = 10;
   pageIndex: number = 1;
+  allfilters:any;
   async ngOnInit()  {
    await this.getInitiatives()
     this.user = this.authService.getLoggedInUser();
@@ -68,13 +69,16 @@ export class InitiativesComponent implements OnInit {
   }
 
   filter(filters: any) {
+    this.allfilters = filters;
+    this.pageIndex = 1;
+    this.pageSize = 10;
     this.getInitiatives(filters);
   }
 
   async pagination(event: PageEvent) {
     this.pageIndex = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.getInitiatives();
+    this.getInitiatives(this.allfilters);
   }
 
   myRoles(roles: any) {

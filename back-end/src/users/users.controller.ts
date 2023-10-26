@@ -25,7 +25,7 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import { unlink } from 'fs/promises';
 import { query } from 'express';
-import { ILike } from 'typeorm';
+import { Brackets, ILike } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -57,22 +57,30 @@ export class UsersController {
       .getRawMany()
     }
     else {
-      const take = query.limit || 10
-      const skip=(Number(query.page)-1)*take;
-      const [result, total] = await this.usersService.userRepository.findAndCount({
-        where: {
-          full_name: query?.full_name ? ILike(`%${query?.full_name}%`) : null,
-          email: query?.email ? ILike(`%${query?.email}%`) : null,
-          id: query?.id ? query?.id : null,
-          role: query?.role ? query?.role : null,
-        },
-        order: { ...this.sort(query) },
-        take: take == null ? null : take,
-        skip: skip == null ? null : skip,
-      });
-      return {
-        result: result,
-        count: total
+    const take = query.limit || 10
+    const skip=(Number(query.page)-1)*take;
+    const result = await this.usersService.userRepository.createQueryBuilder('user');
+    result.where(
+      new Brackets((qb) => {
+        qb.where('email LIKE :email', {
+          email: `%${query?.email || ''}%`,
+        })
+        .orWhere('full_name LIKE :full_name', { full_name: `%${query?.email || ''}%` })
+      }),
+    )
+    .orderBy(this.sort(query))
+    if(query.role) 
+      result.andWhere('role = :role', { role: query.role })
+    else
+      result.andWhere('role IS NOT NULL')
+    .skip(skip || 0)
+    .take(take || 10);
+
+    const finalResult = await result.getManyAndCount();
+
+    return {
+      result: finalResult[0],
+      count: finalResult[1]
     }
     }
   }
