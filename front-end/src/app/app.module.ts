@@ -65,6 +65,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-confirm-dialog.component";
+import { SearchInitComponent } from './search-init/search-init.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,6 +103,7 @@ import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-con
     SpinnerComponent,
     AccessDeniedComponent,
     DeleteConfirmDialogComponent,
+    SearchInitComponent,
   ],
   imports: [
     BrowserModule,

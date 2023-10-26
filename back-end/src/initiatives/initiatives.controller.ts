@@ -6,11 +6,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { InitiativesService } from './initiatives.service';
 import { ApiTags } from '@nestjs/swagger';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Initiatives')
 @Controller('initiatives')
@@ -37,8 +40,9 @@ export class InitiativesController {
   }
 
   @Get('full')
-  async findAllFull() {
-    return this.initiativesService.findAllFull();
+  @UseGuards(AuthGuard('jwt'))
+  async findAllFull(@Query() query: any, @Req() req) {
+    return this.initiativesService.findAllFull(query, req);
   }
 
   @Get(':id')

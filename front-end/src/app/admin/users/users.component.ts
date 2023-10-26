@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { UserService } from "src/app/services/user.service";
@@ -13,19 +13,22 @@ import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { Meta, Title } from "@angular/platform-browser";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-users",
   templateUrl: "./users.component.html",
   styleUrls: ["./users.component.scss"],
 })
-export class UsersComponent implements AfterViewInit {
+export class UsersComponent implements OnInit {
   columnsToDisplay: string[] = ["id", "name", "email", "role", "actions"];
   dataSource: MatTableDataSource<any>;
   users: any = [];
   length!: number;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  pageSize: number = 10;
+  pageIndex: number = 1;
+  filterForm: FormGroup = new FormGroup({});
+  filters: any = null;
 
   constructor(
     private usersService: UserService,
@@ -33,7 +36,8 @@ export class UsersComponent implements AfterViewInit {
     private headerService: HeaderService,
     private toastr: ToastrService,
     private title: Title,
-    private meta: Meta
+    private meta: Meta,
+    private fb: FormBuilder,
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -43,16 +47,47 @@ export class UsersComponent implements AfterViewInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
-  ngAfterViewInit() {
-    this.initTable();
+  sort = [
+    { name: 'ID (lowest first)', value: 'id,ASC' },
+    { name: 'ID (highest first)', value: 'id,DESC' },
+    { name: 'Name (A to Z)', value: 'full_name,ASC' },
+    { name: 'Name (Z to A)', value: 'full_name,DESC' },
+  ];
+
+
+  async ngOnInit() {
+    this.filterForm = this.fb.group({
+      email: [null],
+      role: [null],
+      sort: [null],
+    });
+    await this.initTable();
+    this.setForm();
   }
 
-  async initTable() {
-    this.users = await this.usersService.getAllUsers();
-    this.dataSource = new MatTableDataSource(this.users);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.length = this.users.length;
+  setForm() {
+    this.filterForm.valueChanges.subscribe(() => {
+      this.filters = this.filterForm.value;
+      this.pageIndex = 1;
+      this.pageSize = 10;
+      this.initTable(this.filters);
+    });
+  }
+
+  async pagination(event: PageEvent) {
+    this.pageIndex = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.initTable(this.filters);
+  }
+
+  async initTable(filters = null) {
+    this.users = await this.usersService.getAllUsers(
+      filters,
+      this.pageIndex,
+      this.pageSize
+      );
+    this.dataSource = new MatTableDataSource(this.users?.result);
+    this.length = this.users?.count;
     this.title.setTitle("User management");
     this.meta.updateTag({ name: "description", content: "User management" });
   }
@@ -86,5 +121,10 @@ export class UsersComponent implements AfterViewInit {
           }
         }
       });
+  }
+
+  resetForm() {
+    this.filterForm.reset();
+    this.filterForm.markAsUntouched();
   }
 }

@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { InitiativesService } from "../services/initiatives.service";
@@ -18,7 +18,7 @@ import { HeaderService } from "../header.service";
   templateUrl: "./initiatives.component.html",
   styleUrls: ["./initiatives.component.scss"],
 })
-export class InitiativesComponent implements AfterViewInit {
+export class InitiativesComponent implements OnInit {
   displayedColumns: string[] = [
     "id",
     "official_code",
@@ -49,22 +49,36 @@ export class InitiativesComponent implements AfterViewInit {
       "linear-gradient(to  bottom, #436280, #30455B)";
   }
   user: any;
-  async ngAfterViewInit() {
-    this.initiatives = await this.initiativesService.getInitiatives();
-    this.dataSource = new MatTableDataSource(this.initiatives);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-
+  length!: number;
+  pageSize: number = 10;
+  pageIndex: number = 1;
+  allfilters:any;
+  async ngOnInit()  {
+   await this.getInitiatives()
     this.user = this.authService.getLoggedInUser();
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  async getInitiatives(filters = null) {
+    this.initiatives = await this.initiativesService.getInitiatives(
+      filters,
+      this.pageIndex,
+      this.pageSize
+      );
+    this.dataSource = new MatTableDataSource(this.initiatives?.result);
+    this.length = this.initiatives.count;
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  filter(filters: any) {
+    this.allfilters = filters;
+    this.pageIndex = 1;
+    this.pageSize = 10;
+    this.getInitiatives(filters);
+  }
+
+  async pagination(event: PageEvent) {
+    this.pageIndex = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getInitiatives(this.allfilters);
   }
 
   myRoles(roles: any) {

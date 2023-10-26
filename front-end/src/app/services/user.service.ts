@@ -143,9 +143,18 @@ export class UserService {
     );
   }
 
-  async getAllUsers() {
+  async getAllUsers(filters: any = null, page: number, limit: number) {
+    let finalFilters: any = {};
+    if (filters)
+      Object.keys(filters).forEach((element) => {
+        if (typeof filters[element] === 'string')
+          filters[element] = filters[element].trim();
+
+        if (filters[element] != null && filters[element] != '')
+          finalFilters[element] = filters[element];
+      });
     return firstValueFrom(
-      this.http.get("api/users/all").pipe(map((d: any) => d))
+      this.http.get(`api/users?page=${page}&limit=${limit}`, {params: finalFilters}).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 

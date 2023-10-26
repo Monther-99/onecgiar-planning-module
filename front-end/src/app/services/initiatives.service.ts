@@ -13,10 +13,25 @@ export class InitiativesService {
       this.http.get('/api/initiatives/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  async getInitiatives() {
-    return firstValueFrom(
-      this.http.get('/api/initiatives/full').pipe(map((d: any) => d))
-    ).catch((e) => false);
+  async getInitiatives(filters: any = null , page: any, limit: any) {
+    if(filters) {
+      let finalFilters: any = {};
+      Object.keys(filters).forEach((element) => {
+        if (typeof filters[element] === 'string')
+          filters[element] = filters[element].trim();
+  
+        if (filters[element] != null && filters[element] != '')
+          finalFilters[element] = filters[element];
+      });
+      return firstValueFrom(
+        this.http.get(`/api/initiatives/full?page=${page}&limit=${limit}`, { params: finalFilters }).pipe(map((d: any) => d))
+      ).catch((e) => false);
+    } else {
+      return firstValueFrom(
+        this.http.get(`/api/initiatives/full?page=${page}&limit=${limit}`).pipe(map((d: any) => d))
+      ).catch((e) => false);
+    }
+
   }
 
   async getInitiativesOnly() {

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { PeriodsService } from './periods.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -23,8 +24,8 @@ export class PeriodsController {
   }
 
   @Get()
-  findAll() {
-    return this.periodsService.findAll();
+  findAll(@Query() query: any) {
+    return this.periodsService.findAll(query);
   }
   @Get('phase/:phase_id')
   findByPhaseId(@Param('phase_id') phase_id: number) {
