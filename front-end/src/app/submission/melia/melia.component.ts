@@ -28,6 +28,7 @@ export class MeliaComponent implements OnInit {
   partnersLoading = false;
   initiatives: any = [];
   results: any = [];
+  savedData: any = {};
 
   constructor(
     private fb: FormBuilder,
@@ -35,36 +36,49 @@ export class MeliaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private submissionService: SubmissionService,
     private initiativesService: InitiativesService
-  ) {}
+  ) {
+    this.savedData = data.data;
+  }
 
   submit() {
-    console.log(this.meliaForm.value);
     if (this.meliaForm.valid) this.dialogRef.close(this.meliaForm.value);
   }
   async ngOnInit() {
     this.meliaForm = this.fb.group({
-      initiative_id: [this.data?.initiative_id, Validators.required],
-      wp_id: [this.data?.wp_id, Validators.required],
-      melia_type: [this.data?.melia_type],
-      methodology: [this.data?.methodology],
-      experimental: [this.data?.experimental],
-      questionnaires: [this.data?.questionnaires],
-      completion_year: [this.data?.completion_year],
-      management_decisions: [this.data?.management_decisions],
-      geo_scope: [this.data?.geo_scope],
-      initiative_countries: [this.data?.initiative_countries],
-      partners: [this.data?.partners],
-      other_initiatives: [this.data?.other_initiatives],
-      co_initiative_countries: [this.data?.co_initiative_countries],
-      contribution_results: [this.data?.contribution_results],
+      initiative_id: [this.data.initiative_id, Validators.required],
+      wp_id: [this.data.wp.ost_wp.wp_official_code, Validators.required],
+      melia_type: [this.savedData?.melia_type],
+      methodology: [this.savedData?.methodology],
+      experimental: [this.savedData?.experimental],
+      questionnaires: [this.savedData?.questionnaires],
+      completion_year: [this.savedData?.completion_year],
+      management_decisions: [this.savedData?.management_decisions],
+      geo_scope: [this.savedData?.geo_scope],
+      initiative_countries: [this.savedData?.initiative_countries],
+      partners: [this.savedData?.partners],
+      other_initiatives: [this.savedData?.other_initiatives],
+      co_initiative_countries: [this.savedData?.co_initiative_countries],
+      contribution_results: [this.savedData?.contribution_results],
     });
     this.loadPartners();
     this.meliaTypes = await this.submissionService.getMeliaTypes();
     this.countries = await this.submissionService.getCountries();
     this.initiatives = await this.initiativesService.getInitiativesOnly();
-    this.results = await this.submissionService.getToc(
-      this.data?.initiative_id
-    );
+    this.results = await this.submissionService.getToc(this.data.initiative_id);
+    this.results = this.results.filter((result: any) => {
+      if (this.data.wp.ost_wp.wp_official_code == 'CROSS') {
+        return (
+          result.category == 'OUTCOME' ||
+          (this.data.show_eoi && result.category == 'EOI')
+        );
+      } else {
+        return (
+          result.category == 'OUTCOME' &&
+          (result.group == this.data.wp.id ||
+            result.wp_id == this.data.wp.ost_wp.wp_official_code)
+        );
+      }
+    });
   }
   onNoClick(): void {
     this.dialogRef.close(false);

@@ -906,9 +906,13 @@ export class SubmissionComponent implements OnInit {
         }
       });
   }
-  addMelia(wp_official_code: any) {
+  addMelia(wp: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
-      data: { wp_id: wp_official_code, initiative_id: this.params.id },
+      data: {
+        wp: wp,
+        initiative_id: this.params.id,
+        show_eoi: this.phase?.show_eoi,
+      },
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
@@ -939,9 +943,14 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-  async editMelia(id: number) {
+  async editMelia(id: number, wp: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
-      data: await this.submissionService.getMeliaById(id),
+      data: {
+        initiative_id: this.params.id,
+        wp: wp,
+        show_eoi: this.phase?.show_eoi,
+        data: await this.submissionService.getMeliaById(id),
+      },
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {

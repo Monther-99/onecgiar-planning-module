@@ -115,7 +115,7 @@
                       color="accent"
                       *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
                       type="button"
-                      (click)="addMelia(wp.ost_wp.wp_official_code)"
+                      (click)="addMelia(wp)"
                     >
                       <mat-icon>add</mat-icon> MELIA
                     </button>
@@ -133,7 +133,7 @@
                       color="accent"
                       *ngIf="wp.id == 'CROSS' && phase.show_melia"
                       type="button"
-                      (click)="addMelia(wp.ost_wp.wp_official_code)"
+                      (click)="addMelia(wp)"
                     >
                       <mat-icon>add</mat-icon> MELIA
                     </button>
@@ -183,7 +183,7 @@
                               </button>
                               <mat-menu #menu="matMenu">
                                 <button
-                                  (click)="editMelia(item.id)"
+                                  (click)="editMelia(item.id, wp)"
                                   mat-menu-item
                                 >
                                   <mat-icon>edit</mat-icon> Edit
