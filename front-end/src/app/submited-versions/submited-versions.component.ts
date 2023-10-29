@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { InitiativesService } from "../services/initiatives.service";
@@ -56,32 +56,44 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   params: any;
   initiativeId: any;
   officalCode: any;
+  allfilters:any;
+  length!: number;
+  pageSize: number = 10;
+  pageIndex: number = 1;
   async ngAfterViewInit() {
     this.params = this.activatedRoute?.snapshot.params;
     await this.initData();
 
     this.user = this.authService.getLoggedInUser();
   }
-  async initData() {
-    console.log(this.params);
-
+  async initData(filters = null) {
     this.initiativeId = this.params.id;
     this.officalCode = this.params.code;
 
     this.submissions =
-      await this.submissionService.getSubmissionsByInitiativeId(this.params.id);
-    this.dataSource = new MatTableDataSource(this.submissions);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+      await this.submissionService.getSubmissionsByInitiativeId(
+        this.params.id,
+        filters,
+        this.pageIndex,
+        this.pageSize,
+        true
+        );
+        console.log('main Data', this.submissions)
+    this.dataSource = new MatTableDataSource(this.submissions?.result);
+    this.length = this.submissions?.count;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  filter(filters: any) {
+    this.allfilters = filters;
+    this.pageIndex = 1;
+    this.pageSize = 10;
+    this.initData(filters);
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  async pagination(event: PageEvent) {
+    this.pageIndex = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.initData(this.allfilters);
   }
 
   changeStatus(id: number) {

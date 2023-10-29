@@ -27,13 +27,32 @@ export class SubmissionService {
       this.http.get('/api/submission/toc/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
-  async getSubmissionsByInitiativeId(id: number) {
-    return firstValueFrom(
-      this.http
-        .get('/api/submission/initiative_id/' + id)
-        .pipe(map((d: any) => d))
-    ).catch((e) => false);
+
+  async getSubmissionsByInitiativeId(id: number, filters: any = null, page: any = null, limit: any = null, withFilters: boolean) {
+    if(withFilters == false) {
+      return firstValueFrom(
+        this.http
+          .get('/api/submission/initiative_id/' + id, { params: { withFilters : false} })
+          .pipe(map((d: any) => d))
+      ).catch((e) => false);
+    } else {
+      let finalFilters: any = {};
+      if (filters)
+        Object.keys(filters).forEach((element) => {
+          if (typeof filters[element] === 'string')
+            filters[element] = filters[element].trim();
+  
+          if (filters[element] != null && filters[element] != '')
+            finalFilters[element] = filters[element];
+        });
+        return firstValueFrom(
+          this.http
+            .get(`/api/submission/initiative_id/${id}/?page=${page}&limit=${limit}`, { params: finalFilters })
+            .pipe(map((d: any) => d))
+        ).catch((e) => false);
+    }
   }
+  
 
   async getSubmissionsById(id: number) {
     return firstValueFrom(

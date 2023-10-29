@@ -65,7 +65,8 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatRadioModule } from "@angular/material/radio";
 import { AccessDeniedComponent } from "./access-denied/access-denied.component";
 import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-confirm-dialog.component";
-import { SearchInitComponent } from "./search-init/search-init.component";
+import { SearchInitComponent } from './search-init/search-init.component';
+import { FilterVersionComponent } from './submited-versions/filter-version/filter-version.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -104,6 +105,7 @@ import { SearchInitComponent } from "./search-init/search-init.component";
     AccessDeniedComponent,
     DeleteConfirmDialogComponent,
     SearchInitComponent,
+    FilterVersionComponent,
   ],
   imports: [
     BrowserModule,
