@@ -1541,7 +1541,7 @@ pre {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin: 0;
+    margin: 0 0 -1rem 0;
     height: fit-content;
     // .sec-1 {
     //   width: 25%;
@@ -1584,18 +1584,19 @@ pre {
 
     .sec-7 {
       position: relative;
-      margin-top: 1rem;
+
       display: flex;
       /* align-items: initial; */
       /* gap: 1rem; */
       /* margin-left: 104rem; */
       width: 98%;
-      justify-content: flex-end;
+      justify-content: start;
     }
 
     .sec-1 {
       position: relative;
-      margin-top: 1rem;
+      margin: 0 0 -6rem -15rem;
+
       display: flex;
       /* align-items: initial; */
       /* gap: 1rem; */
@@ -1611,6 +1612,8 @@ pre {
       /* gap: 1rem; */
       /* margin-left: 104rem; */
       width: 98%;
+      margin: 0 0 -8rem -15rem;
+
       justify-content: flex-end;
     }
     .sec-3 {
@@ -1629,7 +1632,7 @@ pre {
       display: flex;
       width: 98%;
       justify-content: flex-end;
-      margin: 8rem 0 -5rem 0;
+      margin: 0 0 -6rem -15rem;
     }
 
     .sec-8 {
@@ -1640,7 +1643,7 @@ pre {
       /* gap: 1rem; */
       /* margin-left: 104rem; */
       width: 98%;
-      justify-content: center;
+      justify-content: end;
     }
   }
 }

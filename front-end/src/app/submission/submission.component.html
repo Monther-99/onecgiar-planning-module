@@ -3,24 +3,6 @@
 <div class="section-submited">
   <div class="container-mat-tab">
     <mat-card *ngIf="!loading">
-      <div class="form-container">
-        <form class="search">
-          <div class="sec-7">
-            <button
-              style="
-                background-image: linear-gradient(to right, #436280, #30455b);
-              "
-              *ngIf="!this.isCenter"
-              class="user-management__button-box__btn btn-primary-size btn--animated"
-              mat-raised-button
-              color="primary"
-              (click)="submit()"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
       <mat-card-title class="card-title"
         >One CGIAR Initiatives Plan of Results and Budget Template ({{
           this.phase.name
@@ -45,6 +27,21 @@
               (click)="refresh()"
             >
               Refresh
+            </button>
+          </div>
+
+          <div class="sec-7">
+            <button
+              style="
+                background-image: linear-gradient(to right, #436280, #30455b);
+              "
+              *ngIf="!this.isCenter"
+              class="user-management__button-box__btn btn-primary-size btn--animated"
+              mat-raised-button
+              color="primary"
+              (click)="submit()"
+            >
+              Submit
             </button>
           </div>
         </form>
@@ -131,6 +128,14 @@
 
         <ng-container *ngFor="let wp of wps">
           <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
+            <mat-card-title>{{ wp.title }}</mat-card-title>
+            <mat-slide-toggle
+              [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
+              (toggleChange)="
+                toggleSummaryActualValues(wp.ost_wp.wp_official_code)
+              "
+              >Show decimals</mat-slide-toggle
+            >
             <div class="wp-actions">
               <div class="form-container">
                 <form class="search">
@@ -227,14 +232,6 @@
                 </form>
               </div>
             </div>
-            <mat-card-title>{{ wp.title }}</mat-card-title>
-            <mat-slide-toggle
-              [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
-              (toggleChange)="
-                toggleSummaryActualValues(wp.ost_wp.wp_official_code)
-              "
-              >Show decimals</mat-slide-toggle
-            >
             <mat-card-content>
               <div class="table-box-1 mat-elevation-z8">
                 <table>
