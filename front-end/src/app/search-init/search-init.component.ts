@@ -32,9 +32,9 @@ export class SearchInitComponent {
 
   status = [
     { name: 'Draft', value: 'Draft' },
+    { name: 'Pending', value: 'Pending' },
     { name: 'Approved', value: 'Approved' },
     { name: 'Rejected', value: 'Rejected' },
-    { name: 'Pending', value: 'Pending' },
   ];
 
 

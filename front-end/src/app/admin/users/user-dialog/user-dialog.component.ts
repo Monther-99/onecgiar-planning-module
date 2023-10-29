@@ -34,8 +34,8 @@ export class UserDialogComponent implements OnInit {
   private async formInit() {
     this.userForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      first_name: [null, Validators.required],
+      last_name: [null, Validators.required],
       role: [null, Validators.required],
     });
     if (this.userId) {
@@ -50,9 +50,17 @@ export class UserDialogComponent implements OnInit {
     this.userForm.markAllAsTouched();
     this.userForm.updateValueAndValidity();
     if (this.userForm.valid) {
-      await this.usersService.submitUser(this.userId, this.userForm.value);
-      this.toast.success("User Updated Successfully");
-      this.dialogRef.close({ submitted: true });
+      await this.usersService.submitUser(this.userId, this.userForm.value).then((data) => {
+        if(this.userId == 0)
+          this.toast.success("User added successfully");
+        else
+          this.toast.success("User Updated Successfully");
+        
+        this.dialogRef.close({ submitted: true });
+      }, (error) => {
+        this.toast.error(error.error.message);
+      }
+      );
     }
   }
 
