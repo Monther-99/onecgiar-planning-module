@@ -103,4 +103,12 @@ export class MeliaComponent implements OnInit {
   compareFn(item: any, selected: any) {
     return item.id === selected.id;
   }
+
+
+
+
+    //Close-Dialog
+    onCloseDialog() {
+      this.dialogRef.close();
+    }
 }

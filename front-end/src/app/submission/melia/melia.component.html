@@ -1,130 +1,334 @@
-<h1 mat-dialog-title>{{ data.id ? 'Edit' : 'Add' }} MELIA</h1>
-<div mat-dialog-content>
-  <form [formGroup]="meliaForm">
-    <mat-form-field>
-      <mat-label>Type of MELIA study or activity</mat-label>
-      <mat-select formControlName="melia_type">
-        <mat-option *ngFor="let meliaType of meliaTypes" [value]="meliaType.id">
-          {{ meliaType.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Methodology applied</mat-label>
-      <textarea matInput formControlName="methodology"> </textarea>
-    </mat-form-field>
-    <mat-radio-group
-      formControlName="experimental"
-      aria-label="Select an option"
-      color="primary"
-    >
-      <mat-radio-button [value]="true">Experimental</mat-radio-button>
-      <mat-radio-button [value]="false">Non-experimental</mat-radio-button>
-    </mat-radio-group>
-    <mat-form-field>
-      <mat-label>Tools and template (questionnaires)</mat-label>
-      <textarea matInput formControlName="questionnaires"> </textarea>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Anticipated year of completion </mat-label>
-      <mat-select formControlName="completion_year">
-        <mat-option value="JAN-2015"> JAN-2015 </mat-option>
-        <mat-option value="JAN-2016"> JAN-2016 </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label
-        >How the MELIA study or activity will inform management decisions and
-        contribute to internal learning</mat-label
-      >
-      <textarea matInput formControlName="management_decisions"> </textarea>
-    </mat-form-field>
-    <div>
-      <ng-select
-        [items]="partners | async"
-        formControlName="partners"
-        placeholder="Partners"
-        bindLabel="name"
-        [minTermLength]="2"
-        typeToSearchText="Please enter 2 or more characters"
-        [loading]="partnersLoading"
-        [typeahead]="partnersInput"
-        [multiple]="true"
-        appearance="outline"
-      >
-        <ng-template
-          ng-option-tmp
-          let-item="item"
-          let-search="searchTerm"
-          let-index="index"
-        >
-          <span>{{ item.name }}</span>
-          <span *ngIf="item.acronym"> - {{ item.acronym }}</span>
-        </ng-template>
-      </ng-select>
-    </div>
-    <mat-form-field>
-      <mat-label> Other Initiatives </mat-label>
-      <mat-select
-        formControlName="other_initiatives"
-        multiple
-        [compareWith]="compareFn"
-      >
-        <ng-container *ngFor="let initiative of initiatives">
-          <mat-option
-            *ngIf="initiative.id != data?.initiative_id"
-            [value]="initiative"
-          >
-            {{ initiative.official_code }} - {{ initiative.name }}
-          </mat-option>
-        </ng-container>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>MELIA Study contributes to </mat-label>
-      <mat-select formControlName="contribution_results" multiple>
-        <ng-container *ngFor="let result of results">
-          <mat-option [value]="result.id">
-            {{ result.title }}
-          </mat-option>
-        </ng-container>
-      </mat-select>
-    </mat-form-field>
-    <hr />
-    <mat-radio-group
-      formControlName="geo_scope"
-      aria-label="Geographic scope"
-      color="primary"
-    >
-      <mat-label>Geographic scope </mat-label>
-      <mat-radio-button value="global">Global</mat-radio-button>
-      <mat-radio-button value="region">Region</mat-radio-button>
-    </mat-radio-group>
-    <div *ngIf="meliaForm.value.geo_scope == 'region'">
-      <ng-select
-        [items]="countries"
-        formControlName="initiative_countries"
-        placeholder="Countries of the main initiative"
-        bindLabel="name"
-        [multiple]="true"
-        appearance="outline"
-      >
-      </ng-select>
-      <ng-select
-        [items]="countries"
-        formControlName="co_initiative_countries"
-        placeholder="Countries of the co-initiative"
-        bindLabel="name"
-        [multiple]="true"
-        appearance="outline"
-      >
-      </ng-select>
-    </div>
-  </form>
+<div class="form-dialog-header">
+  <div class="form-dialog-header__text-box">
+    <p class="form-dialog-header__text-box__text">
+      {{ data.id ? "Edit" : "Add" }} MELIA
+    </p>
+  </div>
+
+  <div class="form-dialog-header__icon-box">
+    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
+      <mat-icon class="form-dialog-header__icon-box__icon-size">
+        <img
+          class="form-dialog-header__icon-box__icon-size__icon"
+          src="../../../assets/shared-image/Vector-close.svg"
+          alt="~/Frontend/images/icon _ Vector-close"
+        />
+      </mat-icon>
+    </button>
+  </div>
 </div>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button (click)="onNoClick()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="submit()" cdkFocusInitial>
-    {{ data.id ? 'Save' : 'Add' }}
-  </button>
+
+<div class="form-dialog-conten-box-1">
+  <mat-dialog-content>
+    <form [formGroup]="meliaForm" class="form-dialog-content">
+      <!-- //Type of MELIA study or activity  filed----- -->
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Type of MELIA study or activity<span class="star"
+              >*</span
+            ></mat-label
+          >
+        </div>
+
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <mat-select formControlName="melia_type">
+            <mat-option
+              *ngFor="let meliaType of meliaTypes"
+              [value]="meliaType.id"
+            >
+              {{ meliaType.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- //Methodology applied filed----- -->
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Methodology applied<span class="star">*</span></mat-label
+          >
+        </div>
+
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <textarea
+            required
+            class="texta"
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="10"
+            matInput
+            formControlName="methodology"
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="risk-report-radio-buttons-flex-box">
+          <mat-radio-group
+            formControlName="experimental"
+            aria-label="Select an option"
+            color="primary"
+          >
+            <mat-radio-button [value]="true">Experimental</mat-radio-button>
+            <mat-radio-button [value]="false"
+              >Non-experimental</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <!-- //Tools and template (questionnaires) filed----- -->
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Tools and template (questionnaires)</mat-label
+          >
+        </div>
+
+        <mat-form-field
+          class="form-dialog-content__field textarea-m-b"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <textarea
+            required
+            class="texta"
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="10"
+            matInput
+            formControlName="questionnaires"
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- //Anticipated year of completion filed----- -->
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Anticipated year of completion<span class="star"
+              >*</span
+            ></mat-label
+          >
+        </div>
+
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <mat-select formControlName="completion_year">
+            <mat-option value="JAN-2015"> JAN-2015 </mat-option>
+            <mat-option value="JAN-2016"> JAN-2016 </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- //Tools and template (questionnaires) filed----- -->
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >How the MELIA study or activity will inform management decisions
+            and contribute to internal learning</mat-label
+          >
+        </div>
+
+        <mat-form-field
+          class="form-dialog-content__field textarea-m-b"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <textarea
+            required
+            class="texta"
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="10"
+            matInput
+            formControlName="management_decisions"
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Partners</mat-label
+          >
+        </div>
+
+        <ng-select
+          [items]="partners | async"
+          formControlName="partners"
+          placeholder="Partners"
+          bindLabel="name"
+          [minTermLength]="2"
+          typeToSearchText="Please enter 2 or more characters"
+          [loading]="partnersLoading"
+          [typeahead]="partnersInput"
+          [multiple]="true"
+          appearance="outline"
+        >
+          <ng-template
+            ng-option-tmp
+            let-item="item"
+            let-search="searchTerm"
+            let-index="index"
+          >
+            <div class="ng-select-option">
+              <span>{{ item.name }}</span>
+              <span *ngIf="item.acronym"> - {{ item.acronym }}</span>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <!-- //Other Initiatives filed----- -->
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Other Initiatives<span class="star">*</span></mat-label
+          >
+        </div>
+
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <mat-select
+            formControlName="other_initiatives"
+            multiple
+            [compareWith]="compareFn"
+          >
+            <ng-container *ngFor="let initiative of initiatives">
+              <mat-option
+                *ngIf="initiative.id != data?.initiative_id"
+                [value]="initiative"
+              >
+                {{ initiative.official_code }} - {{ initiative.name }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- //MELIA Study contributes to filed----- -->
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >MELIA Study contributes to<span class="star">*</span></mat-label
+          >
+        </div>
+
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+        >
+          <mat-select formControlName="contribution_results" multiple>
+            <ng-container *ngFor="let result of results">
+              <mat-option [value]="result.id">
+                {{ result.title }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Geographic scope<span class="star">*</span></mat-label
+          >
+        </div>
+        <div class="risk-report-radio-buttons-flex-box-2">
+          <mat-radio-group
+            formControlName="geo_scope"
+            aria-label="Geographic scope"
+            color="primary"
+          >
+            <mat-radio-button value="global">Global</mat-radio-button>
+            <mat-radio-button value="region">Region</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div *ngIf="meliaForm.value.geo_scope == 'region'" class="ng-select-box">
+        <div class="form-dialog-content__field--grid-column">
+          <div class="form-dialog-content__title-box">
+            <mat-label class="form-dialog-content__title-box__title"
+              >Countries of the main initiative</mat-label
+            >
+          </div>
+          <ng-select
+            [items]="countries"
+            formControlName="initiative_countries"
+            placeholder="Countries of the main initiative"
+            bindLabel="name"
+            [multiple]="true"
+            appearance="outline"
+          >
+          </ng-select>
+        </div>
+
+        <div class="form-dialog-content__field--grid-column">
+          <div class="form-dialog-content__title-box">
+            <mat-label class="form-dialog-content__title-box__title"
+              >Countries of the co-initiative</mat-label
+            >
+          </div>
+          <ng-select
+            [items]="countries"
+            formControlName="co_initiative_countries"
+            placeholder="Countries of the co-initiative"
+            bindLabel="name"
+            [multiple]="true"
+            appearance="outline"
+          >
+          </ng-select>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-dialog-conten-button-box">
+          <div class="form-dialog-conten__button-box m-t" align="end">
+            <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+
+            <button
+              class="form-dialog-conten__button-box__btn"
+              type="submit"
+              mat-raised-button
+              mat-button
+              color="primary"
+              (click)="submit()"
+              cdkFocusInitial
+            >
+              {{ data.id ? "Save" : "Add" }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
 </div>
