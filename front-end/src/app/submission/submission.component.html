@@ -11,7 +11,7 @@
                 background-image: linear-gradient(to right, #436280, #30455b);
               "
               *ngIf="!this.isCenter"
-              class="user-management__button-box__btn btn-primary-size"
+              class="user-management__button-box__btn btn-primary-size btn--animated"
               mat-raised-button
               color="primary"
               (click)="submit()"
@@ -37,7 +37,7 @@
               style="
                 background-image: linear-gradient(to right, #436280, #30455b);
               "
-              class="user-management__button-box__btn btn-primary-size"
+              class="user-management__button-box__btn btn-primary-size btn--animated"
               mat-raised-button
               color="primary"
               type="button"
@@ -56,7 +56,10 @@
       <mat-card-subtitle>Preparing Items</mat-card-subtitle>
     </mat-card>
 
-    <mat-tab-group *ngIf="!loading && this.partners?.length">
+    <mat-tab-group
+      *ngIf="!loading && this.partners?.length"
+      class="btn--animated"
+    >
       <mat-tab *ngIf="isCenter == false" label="Summary">
         <!-- step-2 -->
 
@@ -211,7 +214,7 @@
                           #30455b
                         );
                       "
-                      class="user-management__button-box__btn btn-primary-size-2"
+                      class="user-management__button-box__btn btn-primary-size-2 btn--animated"
                       mat-raised-button
                       color="primary"
                       *ngIf="wp.id == 'CROSS'"

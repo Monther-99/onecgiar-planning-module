@@ -10,5 +10,6 @@ export class HeaderService {
 
   backgroundUserNavButton: string = "#436280";
   backgroundFooter: string = "#436280";
+  backgroundHeaderDialog: string = "#436280";
   constructor() {}
 }
