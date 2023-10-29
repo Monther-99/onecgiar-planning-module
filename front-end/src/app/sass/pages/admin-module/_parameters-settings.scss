@@ -66,9 +66,9 @@
   margin-bottom: 4rem;
 }
 
-::ng-deep .mat-mdc-tab-header {
-  margin-top: -68px !important ;
-}
+// ::ng-deep .mat-mdc-tab-header {
+//   margin-top: -68px !important ;
+// }
 
 ::ng-deep .mat-mdc-tab-body {
   margin-top: 84px !important;
@@ -91,9 +91,9 @@
   border-top-right-radius: 16px;
 }
 
-::ng-deep .mat-mdc-tab-header {
-  margin-left: -3rem;
-}
+// ::ng-deep .mat-mdc-tab-header {
+//   margin-left: -3rem;
+// }
 
 ::ng-deep .mat-mdc-tab .mdc-tab__content {
   font-family: "Poppins", sans-serif !important;
