@@ -78,11 +78,12 @@ export class OrganizationsComponent implements AfterViewInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.organizationsService.deleteOrganization(id);
-          if (result != false) {
+          await this.organizationsService.deleteOrganization(id).then((data) => {
             this.initTable();
             this.toastr.success("Deleted successfully");
-          }
+          }, (error) => {
+            this.toastr.error(error.error.message);
+          })
         }
       });
   }

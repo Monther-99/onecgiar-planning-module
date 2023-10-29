@@ -38,6 +38,6 @@ export class OrganizationsService {
   deleteOrganization(id: number) {
     return firstValueFrom(
       this.http.delete("api/organizations/" + id).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 }
