@@ -463,44 +463,44 @@
   // color: #ffffff;
 }
 
-::ng-deep.mat-mdc-option:hover:not(.mdc-list-item--disabled),
-.mat-mdc-option:focus:not(.mdc-list-item--disabled),
-.mat-mdc-option.mat-mdc-option-active,
-.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
-    .mdc-list-item--disabled
-  ) {
-  background-image: linear-gradient(
-    to right bottom,
-    #9e543eaa,
-    #7c4230db
-  ) !important;
+// ::ng-deep.mat-mdc-option:hover:not(.mdc-list-item--disabled),
+// .mat-mdc-option:focus:not(.mdc-list-item--disabled),
+// .mat-mdc-option.mat-mdc-option-active,
+// .mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
+//     .mdc-list-item--disabled
+//   ) {
+//   background-image: linear-gradient(
+//     to right bottom,
+//     #9e543eaa,
+//     #7c4230db
+//   ) !important;
 
-  color: #ffffff !important;
-}
+//   color: #ffffff !important;
+// }
 
-::ng-deep.mat-mdc-option.mat-mdc-option-active,
-.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
-    .mdc-list-item--disabled
-  ) {
-  background-image: linear-gradient(
-    to right bottom,
-    #9e543eaa,
-    #7c4230db
-  ) !important;
-}
+// ::ng-deep.mat-mdc-option.mat-mdc-option-active,
+// .mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
+//     .mdc-list-item--disabled
+//   ) {
+//   background-image: linear-gradient(
+//     to right bottom,
+//     #9e543eaa,
+//     #7c4230db
+//   ) !important;
+// }
 
-::ng-deep.mat-mdc-option.mat-mdc-option-hover,
-.mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
-    .mdc-list-item--disabled
-  ) {
-  color: #ffffff !important;
-}
+// ::ng-deep.mat-mdc-option.mat-mdc-option-hover,
+// .mat-mdc-option.mdc-list-item--selected:not(.mat-mdc-option-multiple):not(
+//     .mdc-list-item--disabled
+//   ) {
+//   color: #ffffff !important;
+// }
 
-::ng-deep.mat-primary
-  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled)
-  .mdc-list-item__primary-text {
-  color: var(--mdc-theme-primary, #ffffff) !important;
-}
+// ::ng-deep.mat-primary
+//   .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled)
+//   .mdc-list-item__primary-text {
+//   color: var(--mdc-theme-primary, #ffffff) !important;
+// }
 
 ::ng-deep.mat-pseudo-checkbox {
   border-radius: 2px;
