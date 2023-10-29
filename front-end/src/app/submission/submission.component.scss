@@ -1749,7 +1749,7 @@ pre {
   }
 
   th:nth-child(8) {
-    width: 35rem;
+    width: 100rem;
     height: 3.5rem;
     padding: 1rem;
   }
@@ -1826,9 +1826,6 @@ pre {
   width: 187px !important;
 }
 
-
-
-
 @keyframes moveInBottom {
   0% {
     opacity: 0;
@@ -1843,8 +1840,3 @@ pre {
   animation: moveInBottom 0.5s ease-out 0.85s;
   animation-fill-mode: backwards;
 }
-
-
-
-
-
