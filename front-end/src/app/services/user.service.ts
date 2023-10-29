@@ -168,11 +168,11 @@ export class UserService {
     if (id) {
       return firstValueFrom(
         this.http.patch("api/users/" + id, data).pipe(map((d: any) => d))
-      ).catch((e) => false);
+      );
     } else {
       return firstValueFrom(
         this.http.post("api/users", data).pipe(map((d: any) => d))
-      ).catch((e) => false);
+      );
     }
   }
 

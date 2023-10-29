@@ -69,10 +69,10 @@
         hideRequiredMarker
         appearance="outline"
       >
-        <input matInput formControlName="firstName" />
+        <input matInput formControlName="first_name" />
         <mat-error
           class="error"
-          *ngIf="userForm.controls?.['firstName']?.errors?.['required']"
+          *ngIf="userForm.controls?.['first_name']?.errors?.['required']"
           >First name is required</mat-error
         >
       </mat-form-field>
@@ -92,11 +92,11 @@
         hideRequiredMarker
         appearance="outline"
       >
-        <input matInput formControlName="lastName" />
+        <input matInput formControlName="last_name" />
 
         <mat-error
           class="error"
-          *ngIf="userForm.controls?.['lastName']?.errors?.['required']"
+          *ngIf="userForm.controls?.['last_name']?.errors?.['required']"
           >Last name is required</mat-error
         >
       </mat-form-field>
