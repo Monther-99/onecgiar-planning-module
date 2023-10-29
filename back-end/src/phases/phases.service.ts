@@ -146,12 +146,9 @@ export class PhasesService {
 
   fixDate(date: any) {
     const newDate = new Date(date);
-    return new Date(
-      newDate.getFullYear(),
-      newDate.getMonth(),
-      newDate.getDate(),
-      newDate.getHours(),
-      newDate.getMinutes() - newDate.getTimezoneOffset(),
-    ).toISOString();
+    let a = newDate.getFullYear();
+    let b = newDate.getMonth() + 1;
+    let c = newDate.getDate();
+    return a + '-' + b + '-' + c;
   }
 }
