@@ -47,6 +47,8 @@ export class InitiativesComponent implements OnInit {
       "linear-gradient(to  bottom, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to top right, #436280, #263749)";
   }
   user: any;
   length!: number;

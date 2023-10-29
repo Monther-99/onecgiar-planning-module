@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
 import { ROLES } from "../components/new-team-member/new-team-member.component";
 import { IpsrComponent } from "./ipsr/ipsr.component";
 import { PhasesService } from "../services/phases.service";
+import { HeaderService } from "../header.service";
 
 @Component({
   selector: "app-submission",
@@ -32,8 +33,18 @@ export class SubmissionComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     private AuthService: AuthService,
-    private toastrService: ToastrService
-  ) {}
+    private toastrService: ToastrService,
+    private headerService: HeaderService
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to top right, #436280, #263749)";
+  }
   user: any;
   data: any = [];
   wps: any = [];
@@ -278,7 +289,7 @@ export class SubmissionComponent implements OnInit {
     ) {
       this.values[partner_code][wp_id][item_id] = 0;
       this.displayValues[partner_code][wp_id][item_id] = 0;
-      this.changeCalc(partner_code, wp_id, item_id, 'percent');
+      this.changeCalc(partner_code, wp_id, item_id, "percent");
     }
     if (result)
       this.socket.emit("setDataValues", {
@@ -316,9 +327,9 @@ export class SubmissionComponent implements OnInit {
       });
     });
 
-    this.summaryBudgetsAllTotal = Object.values(this.summaryBudgetsTotal).reduce(
-      (a: any, b: any) => a + b
-    );
+    this.summaryBudgetsAllTotal = Object.values(
+      this.summaryBudgetsTotal
+    ).reduce((a: any, b: any) => a + b);
 
     Object.keys(this.summaryBudgets).forEach((wp_id) => {
       Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
@@ -860,8 +871,8 @@ export class SubmissionComponent implements OnInit {
   }
 
   compare(a: any, b: any) {
-    if (a.category == 'OUTPUT' && b.category == 'OUTCOME') return -1;
-    if (b.category == 'OUTPUT' && a.category == 'OUTCOME') return 1;
+    if (a.category == "OUTPUT" && b.category == "OUTCOME") return -1;
+    if (b.category == "OUTPUT" && a.category == "OUTCOME") return 1;
     return 0;
   }
 

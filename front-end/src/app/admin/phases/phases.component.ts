@@ -54,6 +54,8 @@ export class PhasesComponent implements AfterViewInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
   ngAfterViewInit() {
