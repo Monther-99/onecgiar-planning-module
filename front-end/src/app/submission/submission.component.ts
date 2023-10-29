@@ -17,6 +17,7 @@ import { ROLES } from "../components/new-team-member/new-team-member.component";
 import { IpsrComponent } from "./ipsr/ipsr.component";
 import { PhasesService } from "../services/phases.service";
 import { HeaderService } from "../header.service";
+import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-confirm-dialog.component";
 
 @Component({
   selector: "app-submission",
@@ -1000,13 +1001,14 @@ export class SubmissionComponent implements OnInit {
   }
 
   submit() {
+    ///////////////////
     this.dialog
-      .open(ConfirmComponent, {
-        width: "350px",
-        data: new ConfirmDialogModel(
-          "Submit",
-          `Are you sure you want to Submit?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Submit",
+          message: `Are you sure you want to Submit?`,
+          svg: `../../assets/shared-image/apply.png`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
