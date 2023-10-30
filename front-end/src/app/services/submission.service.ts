@@ -214,6 +214,12 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
+  async getRegions() {
+    return firstValueFrom(
+      this.http.get('/api/organizations/regions').pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
   async getCountries() {
     return firstValueFrom(
       this.http.get('/api/organizations/countries').pipe(map((d: any) => d))

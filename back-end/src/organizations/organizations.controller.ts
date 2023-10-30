@@ -27,6 +27,11 @@ export class OrganizationsController {
     return this.organizationsService.findAll();
   }
 
+  @Get('regions')
+  async getRegions() {
+    return this.organizationsService.getRegions();
+  }
+
   @Get('countries')
   async getCountries() {
     return this.organizationsService.getCountries();
@@ -45,6 +50,12 @@ export class OrganizationsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.organizationsService.findOne(+id);
+  }
+
+  @Get('import/regions')
+  async importRegions() {
+    await this.organizationsService.importRegions();
+    return 'Regions imported successfully';
   }
 
   @Get('import/countries')

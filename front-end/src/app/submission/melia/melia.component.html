@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.id ? "Edit" : "Add" }} MELIA
+      {{ data.id ? 'Edit' : 'Add' }} MELIA
     </p>
   </div>
 
@@ -330,6 +330,34 @@
         <div class="form-dialog-content__field--grid-column">
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
+              >Regions of the main initiative<span class="star"
+                >*</span
+              ></mat-label
+            >
+          </div>
+          <ng-select
+            [items]="regions"
+            formControlName="initiative_regions"
+            placeholder="Regions of the main initiative"
+            bindLabel="name"
+            [multiple]="true"
+            appearance="outline"
+            (change)="loadInitCountries($event)"
+          >
+          </ng-select>
+          <!-- <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['initiative_regions']?.errors?.['required']"
+            >Regions of the main initiative is required</mat-error
+          > -->
+        </div>
+
+        <div
+          class="form-dialog-content__field--grid-column"
+          *ngIf="meliaForm.value.initiative_regions.length"
+        >
+          <div class="form-dialog-content__title-box">
+            <mat-label class="form-dialog-content__title-box__title"
               >Countries of the main initiative<span class="star"
                 >*</span
               ></mat-label
@@ -353,6 +381,34 @@
         </div>
 
         <div class="form-dialog-content__field--grid-column">
+          <div class="form-dialog-content__title-box">
+            <mat-label class="form-dialog-content__title-box__title"
+              >Regions of the co-initiative<span class="star"
+                >*</span
+              ></mat-label
+            >
+          </div>
+          <ng-select
+            [items]="regions"
+            formControlName="co_initiative_regions"
+            placeholder="Regions of the co-initiative"
+            bindLabel="name"
+            [multiple]="true"
+            appearance="outline"
+            (change)="loadCoInitCountries($event)"
+          >
+          </ng-select>
+          <!-- <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['co_initiative_regions']?.errors?.['required']"
+            >Regions of the co-initiative is required</mat-error
+          > -->
+        </div>
+
+        <div
+          class="form-dialog-content__field--grid-column"
+          *ngIf="meliaForm.value.co_initiative_regions.length"
+        >
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
               >Countries of the co-initiative<span class="star"
@@ -392,7 +448,7 @@
               (click)="submit()"
               cdkFocusInitial
             >
-              {{ data.id ? "Edit" : "Add" }}
+              {{ data.id ? 'Edit' : 'Add' }}
             </button>
           </div>
         </div>

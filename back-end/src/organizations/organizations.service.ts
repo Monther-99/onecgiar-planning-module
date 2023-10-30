@@ -9,6 +9,7 @@ import { HttpService } from '@nestjs/axios';
 import { AxiosError } from 'axios';
 import { Country } from 'src/entities/country.entity';
 import { Partner } from 'src/entities/partner.entity';
+import { Region } from 'src/entities/region.entity';
 // import { Initiative } from 'src/entities/initiative.entity';
 import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organization.entity';
 @Injectable()
@@ -17,6 +18,8 @@ export class OrganizationsService {
     private readonly httpService: HttpService,
     @InjectRepository(Organization)
     private organizationRepository: Repository<Organization>,
+    @InjectRepository(Region)
+    private regionRepository: Repository<Region>,
     @InjectRepository(Country)
     private countryRepository: Repository<Country>,
     @InjectRepository(Partner)
@@ -60,6 +63,53 @@ export class OrganizationsService {
     }    
   }
 
+  async importRegions() {
+    const regionsData = await firstValueFrom(
+      this.httpService.get('https://api.clarisa.cgiar.org/api/un-regions').pipe(
+        map((d: any) => d.data),
+        catchError((error: AxiosError) => {
+          throw new InternalServerErrorException();
+        }),
+      ),
+    );
+
+    for (let region of regionsData) {
+      let { parentRegion } = region;
+      if (parentRegion) {
+        let parentEntity: any = await this.regionRepository.findOne({
+          where: { um49Code: parentRegion.um49Code },
+        });
+        if (parentEntity == null) {
+          parentEntity = await this.createRegion(parentRegion);
+        }
+        region.parentRegion = parentEntity;
+      }
+      const entity = await this.regionRepository.findOne({
+        where: { um49Code: region.um49Code },
+      });
+      if (entity != null) {
+        await this.regionRepository.update({ id: entity.id }, { ...region });
+      } else {
+        await this.createRegion(region);
+      }
+    }
+  }
+
+  createRegion(data: any) {
+    const newRegion = this.regionRepository.create({
+      ...data,
+    });
+    return this.regionRepository.save(newRegion);
+  }
+
+  getRegions() {
+    return this.regionRepository
+      .createQueryBuilder('region')
+      .where('region.parent_region_id IS NOT NULL')
+      .orderBy('region.name')
+      .getMany();
+  }
+
   async importCountries() {
     const countriesData = await firstValueFrom(
       this.httpService.get('https://api.clarisa.cgiar.org/api/countries').pipe(
@@ -70,8 +120,14 @@ export class OrganizationsService {
       ),
     );
 
-    countriesData.forEach(async (country) => {
+    for (let country of countriesData) {
       let { regionDTO, ...data } = country;
+      if (regionDTO) {
+        const region = await this.regionRepository.findOne({
+          where: { um49Code: regionDTO.um49Code },
+        });
+        data.region = region;
+      }
       const entity = await this.countryRepository.findOneBy({
         code: country.code,
       });
@@ -83,11 +139,14 @@ export class OrganizationsService {
         });
         this.countryRepository.save(newCountry);
       }
-    });
+    }
   }
 
   getCountries() {
-    return this.countryRepository.find({ order: { name: 'ASC' } });
+    return this.countryRepository.find({
+      order: { name: 'ASC' },
+      relations: ['region'],
+    });
   }
 
   async importPartners() {

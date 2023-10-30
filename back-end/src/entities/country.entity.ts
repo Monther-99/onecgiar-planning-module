@@ -2,9 +2,11 @@ import {
   Column,
   Entity,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Melia } from './melia.entity';
+import { Region } from './region.entity';
 
 @Entity()
 export class Country {
@@ -22,6 +24,9 @@ export class Country {
 
   @Column()
   isoAlpha3: string;
+
+  @ManyToOne(() => Region, (region) => region.countries)
+  region: Region;
 
   @ManyToMany(() => Melia, (melia) => melia.initiative_countries)
   melia: Melia[];
