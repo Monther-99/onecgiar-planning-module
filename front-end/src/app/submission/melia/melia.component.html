@@ -37,7 +37,7 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select formControlName="melia_type">
+          <mat-select required formControlName="melia_type">
             <mat-option
               *ngFor="let meliaType of meliaTypes"
               [value]="meliaType.id"
@@ -45,6 +45,12 @@
               {{ meliaType.name }}
             </mat-option>
           </mat-select>
+
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['melia_type']?.errors?.['required']"
+            >Type of MELIA study or activity is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -72,6 +78,11 @@
             formControlName="methodology"
           >
           </textarea>
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['methodology']?.errors?.['required']"
+            >Methodology applied is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -87,6 +98,11 @@
               >Non-experimental</mat-radio-button
             >
           </mat-radio-group>
+          <!-- <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['experimental']?.errors?.['required']"
+            >Experimental is required</mat-error
+          > -->
         </div>
       </div>
 
@@ -116,6 +132,11 @@
             formControlName="questionnaires"
           >
           </textarea>
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['questionnaires']?.errors?.['required']"
+            >Tools and template (questionnaires) is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -139,6 +160,11 @@
             <mat-option value="JAN-2015"> JAN-2015 </mat-option>
             <mat-option value="JAN-2016"> JAN-2016 </mat-option>
           </mat-select>
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['completion_year']?.errors?.['required']"
+            >Anticipated year of completion is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -169,6 +195,11 @@
             formControlName="management_decisions"
           >
           </textarea>
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['management_decisions']?.errors?.['required']"
+            >How the MELIA study or activity is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -203,6 +234,11 @@
             </div>
           </ng-template>
         </ng-select>
+        <mat-error
+          class="error"
+          *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
+          >Partners is required</mat-error
+        >
       </div>
 
       <!-- //Other Initiatives filed----- -->
@@ -220,12 +256,14 @@
           appearance="outline"
         >
           <mat-select
+            required
             formControlName="other_initiatives"
             multiple
             [compareWith]="compareFn"
           >
             <ng-container *ngFor="let initiative of initiatives">
               <mat-option
+                required
                 *ngIf="initiative.id != data?.initiative_id"
                 [value]="initiative"
               >
@@ -233,6 +271,11 @@
               </mat-option>
             </ng-container>
           </mat-select>
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['other_initiatives']?.errors?.['required']"
+            >Other Initiatives is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -250,13 +293,18 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select formControlName="contribution_results" multiple>
+          <mat-select required formControlName="contribution_results" multiple>
             <ng-container *ngFor="let result of results">
               <mat-option [value]="result.id">
                 {{ result.title }}
               </mat-option>
             </ng-container>
           </mat-select>
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['contribution_results']?.errors?.['required']"
+            >MELIA Study contributes is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -294,8 +342,14 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
+            required
           >
           </ng-select>
+          <!-- <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['initiative_countries']?.errors?.['required']"
+            >Countries of the main initiative is required</mat-error
+          > -->
         </div>
 
         <div class="form-dialog-content__field--grid-column">
@@ -313,8 +367,14 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
+            required
           >
           </ng-select>
+          <!-- <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['co_initiative_countries']?.errors?.['required']"
+            >Countries of the co-initiative is required</mat-error
+          > -->
         </div>
       </div>
 

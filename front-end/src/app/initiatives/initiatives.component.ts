@@ -54,9 +54,9 @@ export class InitiativesComponent implements OnInit {
   length!: number;
   pageSize: number = 10;
   pageIndex: number = 1;
-  allfilters:any;
-  async ngOnInit()  {
-   await this.getInitiatives()
+  allfilters: any;
+  async ngOnInit() {
+    await this.getInitiatives();
     this.user = this.authService.getLoggedInUser();
   }
 
@@ -65,7 +65,7 @@ export class InitiativesComponent implements OnInit {
       filters,
       this.pageIndex,
       this.pageSize
-      );
+    );
     this.dataSource = new MatTableDataSource(this.initiatives?.result);
     this.length = this.initiatives.count;
   }

@@ -25,7 +25,7 @@
     <div class="form-dialog-content__field--grid-column">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
-          >Title</mat-label
+          >Title<span class="star">*</span></mat-label
         >
       </div>
 
@@ -36,6 +36,11 @@
         appearance="outline"
       >
         <input matInput formControlName="title" />
+        <mat-error
+          class="error"
+          *ngIf="crossForm.controls?.['title']?.errors?.['required']"
+          >Title is required</mat-error
+        >
       </mat-form-field>
     </div>
 
@@ -62,6 +67,11 @@
           formControlName="description"
         >
         </textarea>
+        <mat-error
+          class="error"
+          *ngIf="crossForm.controls?.['description']?.errors?.['required']"
+          >Description is required</mat-error
+        >
       </mat-form-field>
     </div>
 
