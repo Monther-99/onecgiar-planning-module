@@ -53,6 +53,12 @@
           </div>
         </ng-template>
       </ng-select>
+
+      <mat-error
+        class="error"
+        *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
+        >Email or User must be not empty</mat-error
+      >
     </div>
 
     <!-- //Role  filed----- -->
@@ -130,12 +136,8 @@
         </div>
       </div>
     </div>
-    <div class="end">
-      <mat-error
-        class="error"
-        *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
-        >Email or User must be not empty</mat-error
-      >
-    </div>
+    <!-- <div class="end">
+   
+    </div> -->
   </form>
 </div>
