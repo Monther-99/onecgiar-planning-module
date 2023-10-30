@@ -1,16 +1,7 @@
 <section class="section-risk-management-component">
   <div class="risk-management-container">
     <div class="risk-management-content">
-      <div class="form-container">
-        <form class="search">
-          <!-- //search----- -->
-          <div class="sec-1">
-            <div class="risk-management-form-field">
-              <app-search-init (filters)="filter($event)"> </app-search-init>
-            </div>
-          </div>
-        </form>
-      </div>
+      <app-search-init (filters)="filter($event)"> </app-search-init>
 
       <div class="table-box">
         <div class="table-box mat-elevation-z8">
