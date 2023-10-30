@@ -6,10 +6,11 @@ import { Organization } from 'src/entities/organization.entity';
 import { Country } from 'src/entities/country.entity';
 import { HttpModule } from '@nestjs/axios';
 import { Partner } from 'src/entities/partner.entity';
+import { Region } from 'src/entities/region.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Organization, Country, Partner]),
+    TypeOrmModule.forFeature([Organization, Country, Partner, Region]),
     HttpModule,
   ],
   controllers: [OrganizationsController],

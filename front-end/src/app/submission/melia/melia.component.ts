@@ -22,7 +22,10 @@ import { SubmissionService } from 'src/app/services/submission.service';
 export class MeliaComponent implements OnInit {
   meliaForm: FormGroup<any> = new FormGroup([]);
   meliaTypes: any = [];
+  regions: any = [];
   countries: any = [];
+  initCountries: any = [];
+  coInitCountries: any = [];
   partners: Observable<any[]>;
   partnersInput = new Subject<string>();
   partnersLoading = false;
@@ -44,6 +47,18 @@ export class MeliaComponent implements OnInit {
     if (this.meliaForm.valid) this.dialogRef.close(this.meliaForm.value);
   }
   async ngOnInit() {
+    let initRegions = [];
+    if (this.savedData?.initiative_countries) {
+      initRegions = this.savedData?.initiative_countries.map(
+        (country: any) => country.region
+      );
+    }
+    let coInitRegions = [];
+    if (this.savedData?.co_initiative_countries) {
+      coInitRegions = this.savedData?.co_initiative_countries.map(
+        (country: any) => country.region
+      );
+    }
     this.meliaForm = this.fb.group({
       initiative_id: [this.data.initiative_id, Validators.required],
       wp_id: [this.data.wp.ost_wp.wp_official_code, Validators.required],
@@ -54,14 +69,17 @@ export class MeliaComponent implements OnInit {
       completion_year: [this.savedData?.completion_year],
       management_decisions: [this.savedData?.management_decisions],
       geo_scope: [this.savedData?.geo_scope],
+      initiative_regions: [initRegions],
       initiative_countries: [this.savedData?.initiative_countries],
       partners: [this.savedData?.partners],
       other_initiatives: [this.savedData?.other_initiatives],
+      co_initiative_regions: [coInitRegions],
       co_initiative_countries: [this.savedData?.co_initiative_countries],
       contribution_results: [this.savedData?.contribution_results],
     });
     this.loadPartners();
     this.meliaTypes = await this.submissionService.getMeliaTypes();
+    this.regions = await this.submissionService.getRegions();
     this.countries = await this.submissionService.getCountries();
     this.initiatives = await this.initiativesService.getInitiativesOnly();
     this.results = await this.submissionService.getToc(this.data.initiative_id);
@@ -98,6 +116,22 @@ export class MeliaComponent implements OnInit {
         )
       )
     );
+  }
+
+  loadInitCountries(event: any) {
+    const regionsIds = event.map((region: any) => region.id);
+    this.initCountries = this.countries.filter((country: any) => {
+      if (country.region) return regionsIds.includes(country.region.id);
+      else return false;
+    });
+  }
+
+  loadCoInitCountries(event: any) {
+    const regionsIds = event.map((region: any) => region.id);
+    this.coInitCountries = this.countries.filter((country: any) => {
+      if (country.region) return regionsIds.includes(country.region.id);
+      else return false;
+    });
   }
 
   compareFn(item: any, selected: any) {

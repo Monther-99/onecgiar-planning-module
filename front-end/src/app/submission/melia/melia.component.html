@@ -102,7 +102,18 @@
     </mat-radio-group>
     <div *ngIf="meliaForm.value.geo_scope == 'region'">
       <ng-select
-        [items]="countries"
+        [items]="regions"
+        formControlName="initiative_regions"
+        placeholder="Regions of the main initiative"
+        bindLabel="name"
+        [multiple]="true"
+        appearance="outline"
+        (change)="loadInitCountries($event)"
+      >
+      </ng-select>
+      <ng-select
+        *ngIf="meliaForm.value.initiative_regions.length"
+        [items]="initCountries"
         formControlName="initiative_countries"
         placeholder="Countries of the main initiative"
         bindLabel="name"
@@ -111,7 +122,18 @@
       >
       </ng-select>
       <ng-select
-        [items]="countries"
+        [items]="regions"
+        formControlName="co_initiative_regions"
+        placeholder="Regions of the co-initiative"
+        bindLabel="name"
+        [multiple]="true"
+        appearance="outline"
+        (change)="loadCoInitCountries($event)"
+      >
+      </ng-select>
+      <ng-select
+        *ngIf="meliaForm.value.co_initiative_regions.length"
+        [items]="coInitCountries"
         formControlName="co_initiative_countries"
         placeholder="Countries of the co-initiative"
         bindLabel="name"
