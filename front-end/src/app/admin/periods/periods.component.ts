@@ -47,6 +47,8 @@ export class PeriodsComponent implements OnInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
   async ngOnInit() {
@@ -111,11 +113,12 @@ export class PeriodsComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.periodsService.deletePeriod(id);
-          if (result != false) {
+          await this.periodsService.deletePeriod(id).then((data) => {
             this.initTable();
             this.toastr.success("Deleted successfully");
-          }
+          }, (error) => {
+            this.toastr.error(error.error.message);
+          })
         }
       });
   }

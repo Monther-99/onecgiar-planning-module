@@ -47,14 +47,16 @@ export class InitiativesComponent implements OnInit {
       "linear-gradient(to  bottom, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to top right, #436280, #263749)";
   }
   user: any;
   length!: number;
   pageSize: number = 10;
   pageIndex: number = 1;
-  allfilters:any;
-  async ngOnInit()  {
-   await this.getInitiatives()
+  allfilters: any;
+  async ngOnInit() {
+    await this.getInitiatives();
     this.user = this.authService.getLoggedInUser();
   }
 
@@ -63,7 +65,7 @@ export class InitiativesComponent implements OnInit {
       filters,
       this.pageIndex,
       this.pageSize
-      );
+    );
     this.dataSource = new MatTableDataSource(this.initiatives?.result);
     this.length = this.initiatives.count;
   }

@@ -7,10 +7,17 @@ import { Country } from 'src/entities/country.entity';
 import { HttpModule } from '@nestjs/axios';
 import { Partner } from 'src/entities/partner.entity';
 import { Region } from 'src/entities/region.entity';
+import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organization.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Organization, Country, Partner, Region]),
+    TypeOrmModule.forFeature([
+      Organization,
+      Country,
+      Partner,
+      Region,
+      PhaseInitiativeOrganization,
+    ]),
     HttpModule,
   ],
   controllers: [OrganizationsController],

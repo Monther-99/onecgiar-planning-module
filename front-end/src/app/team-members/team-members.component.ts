@@ -40,6 +40,8 @@ export class TeamMembersComponent {
       "linear-gradient(to  bottom, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to top right, #436280, #263749)";
   }
   user_info: any;
   my_roles: any;
@@ -89,7 +91,7 @@ export class TeamMembersComponent {
             roleId
           );
           this.loadInitiativeRoles();
-          this.toastrService.success("Success", `User role has been deleted`);
+          this.toastrService.success(`User role has been deleted`);
         }
       });
   }
@@ -116,10 +118,7 @@ export class TeamMembersComponent {
           .subscribe(
             (data) => {
               if (data) {
-                this.toastrService.success(
-                  "Success",
-                  `User role has been added`
-                );
+                this.toastrService.success(`User role has been added`);
                 this.loadInitiativeRoles();
               }
             },
@@ -150,10 +149,7 @@ export class TeamMembersComponent {
           .subscribe(
             (data) => {
               if (data) {
-                this.toastrService.success(
-                  "Success",
-                  `User role has been updated`
-                );
+                this.toastrService.success(`User role has been updated`);
                 this.loadInitiativeRoles();
               }
             },

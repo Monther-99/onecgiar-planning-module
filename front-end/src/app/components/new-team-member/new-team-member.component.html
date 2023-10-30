@@ -25,7 +25,7 @@
     <div class="form-dialog-content__field--grid-column">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
-          >Select user</mat-label
+          >Select user<span class="star">*</span></mat-label
         >
       </div>
 
@@ -53,6 +53,12 @@
           </div>
         </ng-template>
       </ng-select>
+
+      <mat-error
+        class="error"
+        *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
+        >Email or User must be not empty</mat-error
+      >
     </div>
 
     <!-- //Role  filed----- -->
@@ -87,7 +93,7 @@
         class="form-dialog-content__title-box"
       >
         <mat-label class="form-dialog-content__title-box__title"
-          >Select organizations</mat-label
+          >Select organizations<span class="star">*</span></mat-label
         >
       </div>
 
@@ -125,17 +131,13 @@
             color="primary"
             (click)="submit()"
           >
-            {{ data.role == "add" ? "Add" : "Update" }}
+            {{ data.role == "add" ? "Add" : "Edit" }}
           </button>
         </div>
       </div>
     </div>
-    <div class="end">
-      <mat-error
-        class="error"
-        *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
-        >Email or User must be not empty</mat-error
-      >
-    </div>
+    <!-- <div class="end">
+   
+    </div> -->
   </form>
 </div>

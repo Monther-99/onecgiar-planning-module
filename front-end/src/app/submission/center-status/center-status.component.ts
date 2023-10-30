@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
-} from 'src/app/confirm/confirm.component';
-import { SubmissionService } from 'src/app/services/submission.service';
+} from "src/app/confirm/confirm.component";
+import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
+import { SubmissionService } from "src/app/services/submission.service";
 
 @Component({
-  selector: 'app-center-status',
-  templateUrl: './center-status.component.html',
-  styleUrls: ['./center-status.component.scss'],
+  selector: "app-center-status",
+  templateUrl: "./center-status.component.html",
+  styleUrls: ["./center-status.component.scss"],
 })
 export class CenterStatusComponent implements OnInit {
-  @Input('organization_id') organization_id: number;
-  @Input('initiative_id') initiative_id: number;
-  @Input('status') status: boolean;
+  @Input("organization_id") organization_id: number;
+  @Input("initiative_id") initiative_id: number;
+  @Input("status") status: boolean;
   @Output() change = new EventEmitter<any>();
 
   constructor(
@@ -25,12 +26,12 @@ export class CenterStatusComponent implements OnInit {
 
   complete() {
     this.dialog
-      .open(ConfirmComponent, {
-        width: '400px',
-        data: new ConfirmDialogModel(
-          'Mark as Complete',
-          `Are you sure you want to Mark it as complete?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Mark as Complete",
+          message: `Are you sure you want to Mark it as complete?`,
+          svg: `../../../../assets/shared-image/checked-2.png`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {

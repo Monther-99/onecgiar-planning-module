@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
   UseInterceptors,
@@ -77,8 +78,8 @@ export class SubmissionController {
     return this.submissionService.getSaved(id);
   }
   @Get('initiative_id/:initiative_id')
-  get(@Param('initiative_id') initiative_id) {
-    return this.submissionService.findSubmissionsByInitiativeId(initiative_id);
+  get(@Param('initiative_id') initiative_id, @Query() query) {
+    return this.submissionService.findSubmissionsByInitiativeId(initiative_id, query);
   }
 
   // @UseInterceptors(CacheInterceptor)

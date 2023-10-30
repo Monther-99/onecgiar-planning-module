@@ -44,6 +44,6 @@ export class PeriodsService {
   deletePeriod(id: number) {
     return firstValueFrom(
       this.http.delete("api/periods/" + id).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 }

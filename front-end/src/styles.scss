@@ -3,6 +3,7 @@
 @import "app/sass/abstracts/variables";
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
 :ng-deep .cdk-overlay-pane .x {
   margin: 1rem -1rem !important;
   padding: 0 1rem !important;

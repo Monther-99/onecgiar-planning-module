@@ -1,0 +1,123 @@
+<!-- step-2 -->
+<div class="form-container">
+    <form [formGroup]="filterForm" class="search">
+
+      <!-- //Status----- -->
+      <div class="sec-4">
+        <div class="risk-management-form-field field-3">
+          <mat-label class="risk-management-form-field__label">Status</mat-label>
+  
+          <mat-select
+            formControlName="status"
+            class="risk-management-form-field-box__input-3"
+            [placeholder]="'All'"
+            id="select-where"
+            required
+          >
+            <mat-option>All</mat-option>
+            <mat-option
+              *ngFor="let statusOption of status"
+              [value]="statusOption.value"
+            >
+              {{ statusOption.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="sec-4">
+        <div class="risk-management-form-field field-3">
+          <mat-label class="risk-management-form-field__label">Phase</mat-label>
+  
+          <mat-select
+            formControlName="phase"
+            class="risk-management-form-field-box__input-3"
+            [placeholder]="'All'"
+            id="select-where"
+            required
+          >
+            <mat-option>All</mat-option>
+            <mat-option
+              *ngFor="let phase of phases"
+              [value]="phase.id"
+            >
+              {{ phase.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="sec-4">
+        <div class="risk-management-form-field field-3">
+          <mat-label class="risk-management-form-field__label">Created by</mat-label>
+  
+          <mat-select
+            formControlName="createdBy"
+            class="risk-management-form-field-box__input-3"
+            [placeholder]="'All'"
+            id="select-where"
+            required
+          >
+            <mat-option>All</mat-option>
+            <mat-option
+              *ngFor="let user of users"
+              [value]="user.id"
+            >
+              {{ user.full_name }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="sec-4">
+        <div class="risk-management-form-field field-3">
+          <mat-label class="risk-management-form-field__label">Sort</mat-label>
+  
+          <mat-select
+            formControlName="sort"
+            class="risk-management-form-field-box__input-3"
+            [placeholder]="'All'"
+            id="select-where"
+            required
+          >
+            <mat-option>None</mat-option>
+            <mat-option
+              *ngFor="let sortOption of sort"
+              [value]="sortOption.value"
+            >
+              {{ sortOption.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+
+      <div class="sec-6">
+        <div class="risk-management-form-field field-3">
+          <mat-label class="risk-management-form-field__label">Reporting year</mat-label>
+  
+          <mat-select
+            formControlName="reportingYear"
+            class="risk-management-form-field-box__input-3"
+            [placeholder]="'All'"
+            id="select-where"
+            required
+          >
+            <mat-option>All</mat-option>
+            <mat-option *ngFor="let reportingYear of reportingYear" [value]="reportingYear">
+              {{reportingYear}}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <!-- //Reset Button----- -->
+      <div class="sec-7">
+        <button
+          class="risk-management-reset-btn"
+          mat-raised-button
+          (click)="resetForm()"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+</div>

@@ -40,6 +40,8 @@ export class OrganizationsComponent implements AfterViewInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
   ngAfterViewInit() {
@@ -76,11 +78,12 @@ export class OrganizationsComponent implements AfterViewInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.organizationsService.deleteOrganization(id);
-          if (result != false) {
+          await this.organizationsService.deleteOrganization(id).then((data) => {
             this.initTable();
             this.toastr.success("Deleted successfully");
-          }
+          }, (error) => {
+            this.toastr.error(error.error.message);
+          })
         }
       });
   }

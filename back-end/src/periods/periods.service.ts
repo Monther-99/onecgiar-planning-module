@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePeriodDto } from './dto/create-period.dto';
 import { UpdatePeriodDto } from './dto/update-period.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Period } from 'src/entities/period.entity';
 import { Repository } from 'typeorm';
-
+import { Phase } from 'src/entities/phase.entity';
+import { ResultPeriodValues } from 'src/entities/resultPeriodValues.entity';
 @Injectable()
 export class PeriodsService {
   constructor(
     @InjectRepository(Period) private periodRepository: Repository<Period>,
+    @InjectRepository(ResultPeriodValues) private resultPeriodValuesRepo: Repository<ResultPeriodValues>,
+
   ) {}
 
   create(createPeriodDto: any) {
@@ -51,7 +54,18 @@ export class PeriodsService {
     return this.periodRepository.update({ id }, { ...updatePeriodDto });
   }
 
-  remove(id: number) {
-    return this.periodRepository.delete({ id });
+  async remove(id: number) {
+    const periods = await this.resultPeriodValuesRepo.find({
+      where: {
+        period: {
+          id: id
+        }
+      },
+    });
+    if(periods.length != 0) {
+      throw new BadRequestException('The period can not be deleted');
+    } else {
+      return this.periodRepository.delete({ id });
+    }
   }
 }

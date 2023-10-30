@@ -31,7 +31,7 @@
         <div class="form-dialog-content__field--grid-column">
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
-              >Name</mat-label
+              >Name<span class="star">*</span></mat-label
             >
           </div>
           <mat-form-field
@@ -54,7 +54,7 @@
         <div class="form-dialog-content__field--grid-column">
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
-              >Reporting year</mat-label
+              >Reporting year<span class="star">*</span></mat-label
             >
           </div>
 
@@ -115,7 +115,7 @@
         <div class="form-dialog-conten-box-2">
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
-              >Start date</mat-label
+              >Start date<span class="star">*</span></mat-label
             >
           </div>
           <mat-form-field
@@ -147,7 +147,7 @@
         <div class="form-dialog-conten-box-2">
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
-              >End date</mat-label
+              >End date<span class="star">*</span></mat-label
             >
           </div>
           <mat-form-field
@@ -257,7 +257,7 @@
                 color="primary"
                 (click)="submit()"
               >
-                {{ phaseId ? "Save" : "Add" }}
+                {{ phaseId ? "Edit" : "Add" }}
               </button>
             </div>
           </div>

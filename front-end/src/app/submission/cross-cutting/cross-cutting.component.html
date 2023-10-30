@@ -1,19 +1,98 @@
-<h1 mat-dialog-title>{{ data.id ? "Edit" : "Add" }} Cross-Cutting item</h1>
-<div mat-dialog-content>
-  <form [formGroup]="crossForm">
-    <mat-form-field>
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"> </textarea>
-    </mat-form-field>
-  </form>
+<div class="form-dialog-header">
+  <div class="form-dialog-header__text-box">
+    <p class="form-dialog-header__text-box__text">
+      {{ data.id ? "Edit" : "Add" }} Cross-Cutting item
+    </p>
+  </div>
+
+  <div class="form-dialog-header__icon-box">
+    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
+      <mat-icon class="form-dialog-header__icon-box__icon-size">
+        <img
+          class="form-dialog-header__icon-box__icon-size__icon"
+          src="../../../assets/shared-image/Vector-close.svg"
+          alt="~/Frontend/images/icon _ Vector-close"
+        />
+      </mat-icon>
+    </button>
+  </div>
 </div>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button (click)="onNoClick()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="submit()" cdkFocusInitial>
-    {{ data.id ? "Save" : "Add" }}
-  </button>
+
+<div class="form-dialog-conten-box-1">
+  <form [formGroup]="crossForm" class="form-dialog-content">
+    <!-- //Title filed----- -->
+
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Title<span class="star">*</span></mat-label
+        >
+      </div>
+
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <input matInput formControlName="title" />
+        <mat-error
+          class="error"
+          *ngIf="crossForm.controls?.['title']?.errors?.['required']"
+          >Title is required</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <!-- //Description filed----- -->
+
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Description<span class="star">*</span></mat-label
+        >
+      </div>
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <textarea
+          required
+          class="texta"
+          cdkAutosizeMinRows="2"
+          cdkAutosizeMaxRows="10"
+          matInput
+          formControlName="description"
+        >
+        </textarea>
+        <mat-error
+          class="error"
+          *ngIf="crossForm.controls?.['description']?.errors?.['required']"
+          >Description is required</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div>
+      <div class="form-dialog-conten-button-box">
+        <div class="form-dialog-conten__button-box m-t" align="end">
+          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+
+          <button
+            class="form-dialog-conten__button-box__btn"
+            type="submit"
+            mat-raised-button
+            mat-button
+            color="primary"
+            (click)="submit()"
+            cdkFocusInitial
+          >
+            {{ data.id ? "Edit" : "Add" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +10,8 @@ import { AxiosError } from 'axios';
 import { Country } from 'src/entities/country.entity';
 import { Partner } from 'src/entities/partner.entity';
 import { Region } from 'src/entities/region.entity';
-
+// import { Initiative } from 'src/entities/initiative.entity';
+import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organization.entity';
 @Injectable()
 export class OrganizationsService {
   constructor(
@@ -23,6 +24,8 @@ export class OrganizationsService {
     private countryRepository: Repository<Country>,
     @InjectRepository(Partner)
     private partnerRepository: Repository<Partner>,
+    @InjectRepository(PhaseInitiativeOrganization)
+    private PhInitOrgRepository: Repository<PhaseInitiativeOrganization>,
   ) {}
 
   create(createOrganizationDto: CreateOrganizationDto) {
@@ -47,8 +50,17 @@ export class OrganizationsService {
     );
   }
 
-  remove(id: number) {
-    return this.organizationRepository.delete({ id });
+  async remove(id: number) {
+    const orgUsed = await this.PhInitOrgRepository.find({
+      where: {
+        organization_id: id
+      }
+    });
+    if(orgUsed.length != 0) {
+      throw new BadRequestException('Organization can not be deleted, This organization is assigned for an initiative(s)')
+    } else {
+      return this.organizationRepository.delete({ id });
+    }    
   }
 
   async importRegions() {

@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Params } from "@angular/router";
 import { AssignOrganizationsComponent } from "src/app/assign-organizations/assign-organizations.component";
+import { HeaderService } from "src/app/header.service";
 import { PhasesService } from "src/app/services/phases.service";
 
 @Component({
@@ -31,10 +32,19 @@ export class PhaseInitiativesComponent {
     private phasesService: PhasesService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-
+    private headerService: HeaderService,
     private title: Title,
     private meta: Meta
-  ) {}
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #04030F, #020106)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+  }
 
   ngAfterViewInit() {
     this.route.params.subscribe((params: Params) => {

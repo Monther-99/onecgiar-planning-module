@@ -28,13 +28,15 @@ export class SearchInitComponent {
     { name: 'Initiative ID (highest first)', value: 'id,DESC' },
     { name: 'Initiative Name (A to Z)', value: 'name,ASC' },
     { name: 'Initiative Name (Z to A)', value: 'name,DESC' },
+    { name: 'Updated at (Oldest)', value: 'last_update_at,ASC' },
+    { name: 'Updated at (Newest)', value: 'last_update_at,DESC' },
   ];
 
   status = [
     { name: 'Draft', value: 'Draft' },
+    { name: 'Pending', value: 'Pending' },
     { name: 'Approved', value: 'Approved' },
     { name: 'Rejected', value: 'Rejected' },
-    { name: 'Pending', value: 'Pending' },
   ];
 
 

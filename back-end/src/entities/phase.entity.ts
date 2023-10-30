@@ -27,11 +27,11 @@ export class Phase {
   @Column({ type: 'uuid' })
   tocPhase: string;
 
-  @Column({ type: 'date' })
-  startDate: string;
+  @Column({ type: 'timestamp', default: null })
+  startDate: Date;
 
-  @Column({ type: 'date' })
-  endDate: string;
+  @Column({ type: 'timestamp', default: null })
+  endDate: Date;
 
   @Column({ type: 'enum', enum: phaseStatus })
   status: phaseStatus;

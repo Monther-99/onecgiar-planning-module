@@ -174,19 +174,23 @@
         ></tr>
 
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="th-1-m">Id</span>
+          </th>
           <td mat-cell *matCellDef="let ipsr">{{ ipsr.id }}</td>
         </ng-container>
 
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span class="th-2-m">Title</span>
+          </th>
           <td mat-cell *matCellDef="let ipsr">
             {{ ipsr.title }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <th mat-header-cell *matHeaderCellDef>Description</th>
           <td mat-cell *matCellDef="let ipsr">
             {{ ipsr.description }}
           </td>

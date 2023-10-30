@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import {
   Observable,
   Subject,
@@ -10,14 +10,14 @@ import {
   of,
   switchMap,
   tap,
-} from 'rxjs';
-import { InitiativesService } from 'src/app/services/initiatives.service';
-import { SubmissionService } from 'src/app/services/submission.service';
+} from "rxjs";
+import { InitiativesService } from "src/app/services/initiatives.service";
+import { SubmissionService } from "src/app/services/submission.service";
 
 @Component({
-  selector: 'app-melia',
-  templateUrl: './melia.component.html',
-  styleUrls: ['./melia.component.scss'],
+  selector: "app-melia",
+  templateUrl: "./melia.component.html",
+  styleUrls: ["./melia.component.scss"],
 })
 export class MeliaComponent implements OnInit {
   meliaForm: FormGroup<any> = new FormGroup([]);
@@ -71,7 +71,7 @@ export class MeliaComponent implements OnInit {
       geo_scope: [this.savedData?.geo_scope],
       initiative_regions: [initRegions],
       initiative_countries: [this.savedData?.initiative_countries],
-      partners: [this.savedData?.partners],
+      partners: [this.savedData?.partners, Validators.required],
       other_initiatives: [this.savedData?.other_initiatives],
       co_initiative_regions: [coInitRegions],
       co_initiative_countries: [this.savedData?.co_initiative_countries],
@@ -84,14 +84,14 @@ export class MeliaComponent implements OnInit {
     this.initiatives = await this.initiativesService.getInitiativesOnly();
     this.results = await this.submissionService.getToc(this.data.initiative_id);
     this.results = this.results.filter((result: any) => {
-      if (this.data.wp.ost_wp.wp_official_code == 'CROSS') {
+      if (this.data.wp.ost_wp.wp_official_code == "CROSS") {
         return (
-          result.category == 'OUTCOME' ||
-          (this.data.show_eoi && result.category == 'EOI')
+          result.category == "OUTCOME" ||
+          (this.data.show_eoi && result.category == "EOI")
         );
       } else {
         return (
-          result.category == 'OUTCOME' &&
+          result.category == "OUTCOME" &&
           (result.group == this.data.wp.id ||
             result.wp_id == this.data.wp.ost_wp.wp_official_code)
         );
@@ -136,5 +136,10 @@ export class MeliaComponent implements OnInit {
 
   compareFn(item: any, selected: any) {
     return item.id === selected.id;
+  }
+
+  //Close-Dialog
+  onCloseDialog() {
+    this.dialogRef.close();
   }
 }

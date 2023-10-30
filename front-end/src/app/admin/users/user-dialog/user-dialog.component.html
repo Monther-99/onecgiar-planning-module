@@ -26,7 +26,7 @@
     <div class="form-dialog-content__field--grid-column">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
-          >Email</mat-label
+          >Email<span class="star">*</span></mat-label
         >
       </div>
       <mat-form-field
@@ -59,7 +59,7 @@
     <div class="form-dialog-content__field--grid-column">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
-          >First name</mat-label
+          >First name<span class="star">*</span></mat-label
         >
       </div>
 
@@ -69,10 +69,10 @@
         hideRequiredMarker
         appearance="outline"
       >
-        <input matInput formControlName="firstName" />
+        <input matInput formControlName="first_name" />
         <mat-error
           class="error"
-          *ngIf="userForm.controls?.['firstName']?.errors?.['required']"
+          *ngIf="userForm.controls?.['first_name']?.errors?.['required']"
           >First name is required</mat-error
         >
       </mat-form-field>
@@ -83,7 +83,7 @@
     <div class="form-dialog-content__field--grid-column">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
-          >Last name</mat-label
+          >Last name<span class="star">*</span></mat-label
         >
       </div>
       <mat-form-field
@@ -92,11 +92,11 @@
         hideRequiredMarker
         appearance="outline"
       >
-        <input matInput formControlName="lastName" />
+        <input matInput formControlName="last_name" />
 
         <mat-error
           class="error"
-          *ngIf="userForm.controls?.['lastName']?.errors?.['required']"
+          *ngIf="userForm.controls?.['last_name']?.errors?.['required']"
           >Last name is required</mat-error
         >
       </mat-form-field>
@@ -140,7 +140,7 @@
             color="primary"
             (click)="submit()"
           >
-            {{ userId ? "Save" : "Add" }}
+            {{ userId ? "Edit" : "Add" }}
           </button>
         </div>
       </div>

@@ -35,6 +35,14 @@ export class SubmissionService {
     @InjectRepository(WpBudget)
     private wpBudgetRepository: Repository<WpBudget>,
   ) {}
+  sort(query) {
+    if (query?.sort) {
+      let obj = {};
+      const sorts = query.sort.split(',');
+      obj[sorts[0]] = sorts[1];
+      return obj;
+    } else return { id: 'DESC' };
+}
   async updateCenterStatus(data) {
     const { initiative_id, organization_id, status } = data;
 
@@ -54,12 +62,38 @@ export class SubmissionService {
   async updateStatusBySubmittionID(id, data) {
     return this.submissionRepository.update(id, data);
   }
-  async findSubmissionsByInitiativeId(id) {
-    return this.submissionRepository.find({
-      where: { initiative: { id } },
-      relations: ['user', 'phase'],
-      order: { id: 'DESC' },
-    });
+  async findSubmissionsByInitiativeId(id, query:any) {
+    if(query.withFilters == 'false') {
+      return this.submissionRepository.find({
+        where: { initiative: { id } },
+        relations: ['user', 'phase'],
+        order: { id: 'DESC' },
+      });
+    } else {
+        const take = query.limit || 10;
+        const skip = (Number(query.page || 1) - 1) * take;
+        const [result, total] = await this.submissionRepository.findAndCount({
+          where: { 
+            initiative: { id },
+            phase: {
+              id: query?.phase,
+              reportingYear: query?.reportingYear
+            },
+            status: query?.status,
+            user: {
+              id: query?.createdBy
+            }
+          },
+          relations: ['user', 'phase'],
+          take: take,
+          skip: skip,
+          order: { ...this.sort(query) },
+        });
+        return {
+          result: result,
+          count: total
+      }
+    }
   }
   async findSubmissionsById(id) {
     const sub_data = await this.submissionRepository.findOne({

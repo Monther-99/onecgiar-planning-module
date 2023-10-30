@@ -14,6 +14,7 @@ import { CrossCuttingComponent } from "src/app/submission/cross-cutting/cross-cu
 import { MeliaComponent } from "src/app/submission/melia/melia.component";
 import { ViewDataComponent } from "src/app/submission/view-data/view-data.component";
 import { PhasesService } from "src/app/services/phases.service";
+import { HeaderService } from "src/app/header.service";
 
 @Component({
   selector: "app-submited-version",
@@ -30,8 +31,18 @@ export class SubmitedVersionComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     private AuthService: AuthService,
-    private toastrService: ToastrService
-  ) {}
+    private toastrService: ToastrService,
+    private headerService: HeaderService
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  bottom, #436280, #30455B)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to top right, #436280, #263749)";
+  }
   user: any;
   data: any = [];
   wps: any = [];
@@ -481,8 +492,13 @@ export class SubmitedVersionComponent implements OnInit {
   }
   savedValues: any = null;
   submission_data: any;
+  initiativeId: any;
+  officalCode: any;
+  params5: any;
   async ngOnInit() {
     this.params = this.activatedRoute?.snapshot.params;
+    this.params5 = this.activatedRoute?.parent?.snapshot.parent?.params;
+
     this.submission_data = await this.submissionService.getSubmissionsById(
       this.params.id
     );
@@ -498,6 +514,11 @@ export class SubmitedVersionComponent implements OnInit {
 
     this.InitData();
     this.period = this.submission_data.phase.periods;
+
+    this.initiativeId = this.params.id;
+    this.officalCode = this.params.code;
+
+    console.log(this.params5);
   }
 
   ngOnDestroy(): void {
@@ -636,8 +657,8 @@ export class SubmitedVersionComponent implements OnInit {
   }
 
   compare(a: any, b: any) {
-    if (a.category == 'OUTPUT' && b.category == 'OUTCOME') return -1;
-    if (b.category == 'OUTPUT' && a.category == 'OUTCOME') return 1;
+    if (a.category == "OUTPUT" && b.category == "OUTCOME") return -1;
+    if (b.category == "OUTPUT" && a.category == "OUTCOME") return 1;
     return 0;
   }
 }
