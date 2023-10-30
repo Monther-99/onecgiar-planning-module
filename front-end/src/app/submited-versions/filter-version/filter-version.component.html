@@ -103,8 +103,8 @@
             required
           >
             <mat-option>All</mat-option>
-            <mat-option *ngFor="let phase of phases" [value]="phase.reportingYear">
-              {{phase.reportingYear}}
+            <mat-option *ngFor="let reportingYear of reportingYear" [value]="reportingYear">
+              {{reportingYear}}
             </mat-option>
           </mat-select>
         </div>

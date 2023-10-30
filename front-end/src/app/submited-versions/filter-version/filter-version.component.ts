@@ -34,7 +34,7 @@ export class FilterVersionComponent implements OnInit{
   phases:any[] = [];
   users:any[] = [];
   params: any;
-
+  reportingYear:any;
 
   async ngOnInit() {
     this.setForm();
@@ -50,6 +50,12 @@ export class FilterVersionComponent implements OnInit{
       t.id === value.id && t.name === value.name
       )
     ));
+    
+    this.reportingYear = this.phases.filter((value, index, self) =>
+      index === self.findIndex((t) => (
+      t.reportingYear === value.reportingYear 
+    ))).map((d:any) => {return d.reportingYear});
+    
     this.submissions.map(d => {
       this.users.push(d.user);
     });
