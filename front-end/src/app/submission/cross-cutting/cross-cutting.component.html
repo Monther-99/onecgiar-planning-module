@@ -67,11 +67,11 @@
 
     <div>
       <div class="form-dialog-conten-button-box">
-        <div class="form-dialog-conten__button-box m-t " align="end" >
+        <div class="form-dialog-conten__button-box m-t" align="end">
           <!-- <button mat-button mat-dialog-close>Cancel</button> -->
 
           <button
-            class="form-dialog-conten__button-box__btn "
+            class="form-dialog-conten__button-box__btn"
             type="submit"
             mat-raised-button
             mat-button
@@ -79,12 +79,10 @@
             (click)="submit()"
             cdkFocusInitial
           >
-            {{ data.id ? "Save" : "Add" }}
+            {{ data.id ? "Edit" : "Add" }}
           </button>
         </div>
       </div>
     </div>
-
-    
   </form>
 </div>
