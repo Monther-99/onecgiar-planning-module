@@ -8,9 +8,18 @@ import { firstValueFrom, map } from "rxjs";
 export class IpsrService {
   constructor(private http: HttpClient) {}
 
-  async getIpsrs() {
+  async getIpsrs(filters: any = null) {
+    let finalFilters: any = {};
+    if (filters)
+      Object.keys(filters).forEach((element) => {
+        if (typeof filters[element] === 'string')
+          filters[element] = filters[element].trim();
+
+        if (filters[element] != null && filters[element] != '')
+          finalFilters[element] = filters[element];
+      });
     return firstValueFrom(
-      this.http.get("/api/ipsr").pipe(map((d: any) => d))
+      this.http.get("/api/ipsr", { params: finalFilters }).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 

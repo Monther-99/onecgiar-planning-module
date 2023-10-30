@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -13,12 +13,13 @@ import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { Meta, Title } from "@angular/platform-browser";
+import { FormBuilder, FormGroup } from "@angular/forms";
 @Component({
   selector: "app-phases",
   templateUrl: "./phases.component.html",
   styleUrls: ["./phases.component.scss"],
 })
-export class PhasesComponent implements AfterViewInit {
+export class PhasesComponent implements OnInit {
   columnsToDisplay: string[] = [
     "id",
     "name",
@@ -44,7 +45,7 @@ export class PhasesComponent implements AfterViewInit {
     private dialog: MatDialog,
     private headerService: HeaderService,
     private Toastr: ToastrService,
-
+    private fb: FormBuilder,
     private title: Title,
     private meta: Meta
   ) {
@@ -58,12 +59,25 @@ export class PhasesComponent implements AfterViewInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
-  ngAfterViewInit() {
-    this.initTable();
+  filterForm: FormGroup = new FormGroup({});
+
+  setForm() {
+    this.filterForm.valueChanges.subscribe(() => {
+        this.initTable(this.filterForm.value)
+    });
   }
 
-  async initTable() {
-    this.phases = await this.phasesService.getPhases();
+
+  ngOnInit() {
+    this.filterForm = this.fb.group({
+      name: [null],
+    });
+    this.initTable();
+    this.setForm();
+  }
+
+  async initTable(filter = null) {
+    this.phases = await this.phasesService.getPhases(filter);
     this.dataSource = new MatTableDataSource(this.phases);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

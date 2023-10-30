@@ -9,9 +9,18 @@ export class OrganizationsService {
 
   constructor(private http: HttpClient) { }
 
-  async getOrganizations () {
+  async getOrganizations (filters: any = null) {
+    let finalFilters: any = {};
+    if (filters)
+      Object.keys(filters).forEach((element) => {
+        if (typeof filters[element] === 'string')
+          filters[element] = filters[element].trim();
+
+        if (filters[element] != null && filters[element] != '')
+          finalFilters[element] = filters[element];
+      });
     return firstValueFrom(
-      this.http.get('/api/organizations').pipe(map((d: any) => d))
+      this.http.get('/api/organizations', { params: finalFilters }).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
