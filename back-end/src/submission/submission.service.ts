@@ -41,7 +41,7 @@ export class SubmissionService {
       const sorts = query.sort.split(',');
       obj[sorts[0]] = sorts[1];
       return obj;
-    } else return { id: 'ASC' };
+    } else return { id: 'DESC' };
 }
   async updateCenterStatus(data) {
     const { initiative_id, organization_id, status } = data;
