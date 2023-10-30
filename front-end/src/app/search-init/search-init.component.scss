@@ -1,4 +1,4 @@
-// @import "../../../sass/components/button";
+@import "../sass/components/button";
 
 .search {
   flex: 0 0 40%;
@@ -75,7 +75,7 @@
     margin: 0;
     height: fit-content;
     .sec-1 {
-      width: 10%;
+      width: 13%;
       position: relative;
 
       .search__button {
@@ -113,7 +113,7 @@
       }
     }
     .sec-2 {
-      width: 30%;
+      width: 32%;
       position: relative;
 
       .search__button {
@@ -150,39 +150,39 @@
         }
       }
     }
-    .sec-3 {
-      position: relative;
-      width: 15%;
-      .risk-management-form-field {
-        position: relative;
-        .risk-management-form-field__label {
-          display: inline-block;
-          color: #808080;
-          font-family: "Poppins", sans-serif;
-          font-size: 1.4rem;
-          font-style: normal;
-          font-weight: 400;
-          line-height: normal;
-          margin: 0 2rem 1rem 0;
-        }
-        .risk-management-form-field-box__input-3 {
-          font-family: inherit;
-          font-size: inherit;
-          color: #0f212f;
-          border-radius: 1rem;
-          border: 0.5px solid #808080;
-          background-color: #ffffff;
-          padding: 0.4rem 1rem;
-          width: 100%;
-          transition: all 0.2s;
-          position: relative;
-        }
-      }
-    }
+    // .sec-3 {
+    //   position: relative;
+    //   width: 15%;
+    //   .risk-management-form-field {
+    //     position: relative;
+    //     .risk-management-form-field__label {
+    //       display: inline-block;
+    //       color: #808080;
+    //       font-family: "Poppins", sans-serif;
+    //       font-size: 1.4rem;
+    //       font-style: normal;
+    //       font-weight: 400;
+    //       line-height: normal;
+    //       margin: 0 2rem 1rem 0;
+    //     }
+    //     .risk-management-form-field-box__input-3 {
+    //       font-family: inherit;
+    //       font-size: inherit;
+    //       color: #0f212f;
+    //       border-radius: 1rem;
+    //       border: 0.5px solid #808080;
+    //       background-color: #ffffff;
+    //       padding: 0.4rem 1rem;
+    //       width: 100%;
+    //       transition: all 0.2s;
+    //       position: relative;
+    //     }
+    //   }
+    // }
 
     .sec-4 {
       position: relative;
-      width: 10%;
+      width: 14%;
       .risk-management-form-field {
         position: relative;
         .risk-management-form-field__label {
@@ -212,7 +212,7 @@
 
     .sec-5 {
       position: relative;
-      width: 10%;
+      width: 14%;
       .risk-management-form-field {
         position: relative;
         .risk-management-form-field__label {
@@ -242,7 +242,7 @@
 
     .sec-6 {
       position: relative;
-      width: 10%;
+      width: 14%;
       .risk-management-form-field {
         position: relative;
         .risk-management-form-field__label {
@@ -303,6 +303,7 @@
     width: 16px !important;
     height: 10px !important;
     background-color: #ffffff !important;
+    background-image: url("../../assets/shared-image/Vector-risk-m.svg") !important;
     background-position: center;
     background-size: cover;
   }
@@ -443,10 +444,10 @@
   }
 }
 
-// ::ng-deep .mat-mdc-option.mdc-list-item {
-//   align-items: center;
-//   width: 260px !important;
-// }
+::ng-deep .mat-mdc-option.mdc-list-item {
+  align-items: center;
+  width: 260px !important;
+}
 
 ::ng-deep.cdk-overlay-pane {
   position: absolute;
