@@ -385,6 +385,8 @@ export class SubmissionComponent implements OnInit {
       });
     });
 
+    this.sammaryTotal['CROSS'] = 0;
+    this.sammaryTotal['IPSR'] = 0;
     Object.keys(this.sammary).forEach((wp_id) => {
       this.sammaryTotal[wp_id] = 0;
       Object.keys(this.sammary[wp_id]).forEach((item_id) => {
