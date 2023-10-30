@@ -3,7 +3,7 @@ import { CreatePhaseDto } from './dto/create-phase.dto';
 import { UpdatePhaseDto } from './dto/update-phase.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phase } from 'src/entities/phase.entity';
-import { In, Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organization.entity';
 import { Initiative } from 'src/entities/initiative.entity';
 import { Organization } from 'src/entities/organization.entity';
@@ -36,8 +36,13 @@ export class PhasesService {
     return this.phaseRepository.save(newPhase);
   }
 
-  findAll() {
-    return this.phaseRepository.find({ relations: ['previousPhase'] });
+  findAll(query: any) {
+    return this.phaseRepository.find({ 
+      where: {
+        name: query?.name ? ILike(`%${query?.name}%`) : null,
+      },
+      relations: ['previousPhase'] 
+    });
   }
 
   findOne(id: number) {

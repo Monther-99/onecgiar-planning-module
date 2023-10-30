@@ -3,7 +3,7 @@ import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organization } from 'src/entities/organization.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { AxiosError } from 'axios';
@@ -35,8 +35,12 @@ export class OrganizationsService {
     return this.organizationRepository.save(newOrganization);
   }
 
-  findAll() {
-    return this.organizationRepository.find();
+  async findAll(query: any) {
+    return await this.organizationRepository.find({
+      where: {
+        name: query?.name ? ILike(`%${query?.name}%`) : null, 
+      }
+    });
   }
 
   findOne(id: number) {

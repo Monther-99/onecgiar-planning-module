@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ipsr } from 'src/entities/ipsr.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
 @Injectable()
 export class IpsrService {
@@ -12,8 +12,12 @@ export class IpsrService {
     private ipsrValueRepository: Repository<IpsrValue>,
   ) {}
 
-  findAll() {
-    return this.ipsrRepository.find();
+  async findAll(query: any = null) {
+    return await this.ipsrRepository.find({
+      where: {
+        title: query?.title ? ILike(`%${query?.title}%`) : null, 
+      }
+    });
   }
 
   create(data: any) {
