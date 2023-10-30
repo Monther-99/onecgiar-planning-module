@@ -56,7 +56,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   params: any;
   initiativeId: any;
   officalCode: any;
-  allfilters:any;
+  allfilters: any;
   length!: number;
   pageSize: number = 10;
   pageIndex: number = 1;
@@ -77,8 +77,8 @@ export class SubmitedVersionsComponent implements AfterViewInit {
         this.pageIndex,
         this.pageSize,
         true
-        );
-        console.log('main Data', this.submissions)
+      );
+    console.log("main Data", this.submissions);
     this.dataSource = new MatTableDataSource(this.submissions?.result);
     this.length = this.submissions?.count;
   }
@@ -103,7 +103,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
         await this.initData();
-        this.toastrService.success("Status changed successfully", "Success");
+        this.toastrService.success("Status changed successfully");
       }
     });
   }

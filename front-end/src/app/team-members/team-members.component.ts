@@ -91,7 +91,7 @@ export class TeamMembersComponent {
             roleId
           );
           this.loadInitiativeRoles();
-          this.toastrService.success("Success", `User role has been deleted`);
+          this.toastrService.success(`User role has been deleted`);
         }
       });
   }
@@ -118,10 +118,7 @@ export class TeamMembersComponent {
           .subscribe(
             (data) => {
               if (data) {
-                this.toastrService.success(
-                  "Success",
-                  `User role has been added`
-                );
+                this.toastrService.success(`User role has been added`);
                 this.loadInitiativeRoles();
               }
             },
@@ -152,10 +149,7 @@ export class TeamMembersComponent {
           .subscribe(
             (data) => {
               if (data) {
-                this.toastrService.success(
-                  "Success",
-                  `User role has been updated`
-                );
+                this.toastrService.success(`User role has been updated`);
                 this.loadInitiativeRoles();
               }
             },

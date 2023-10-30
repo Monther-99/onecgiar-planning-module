@@ -1019,7 +1019,7 @@ export class SubmissionComponent implements OnInit {
             phase_id: this.phase.id,
           });
           if (result) {
-            this.toastrService.success("Data Submited successfully", "Success");
+            this.toastrService.success("Data Submited successfully");
             this.router.navigate([
               "initiative",
               this.initiative_data.id,
