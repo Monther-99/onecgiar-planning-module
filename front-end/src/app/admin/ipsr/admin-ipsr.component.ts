@@ -78,11 +78,12 @@ export class AdminIpsrComponent implements AfterViewInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.ipsrService.deleteIpsr(id);
-          if (result != false) {
+          await this.ipsrService.deleteIpsr(id).then((data) => {
             this.initTable();
             this.toastr.success("Deleted successfully");
-          }
+          }, (error) => {
+            this.toastr.error(error.error.message);
+          })
         }
       });
   }

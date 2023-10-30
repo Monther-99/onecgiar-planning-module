@@ -113,11 +113,12 @@ export class PeriodsComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.periodsService.deletePeriod(id);
-          if (result != false) {
+          await this.periodsService.deletePeriod(id).then((data) => {
             this.initTable();
             this.toastr.success("Deleted successfully");
-          }
+          }, (error) => {
+            this.toastr.error(error.error.message);
+          })
         }
       });
   }

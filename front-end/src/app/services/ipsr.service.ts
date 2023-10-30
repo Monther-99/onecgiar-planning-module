@@ -35,6 +35,6 @@ export class IpsrService {
   deleteIpsr(id: number) {
     return firstValueFrom(
       this.http.delete("api/ipsr/" + id).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 }
