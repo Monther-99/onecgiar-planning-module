@@ -34,7 +34,7 @@ export class OrganizationsComponent implements OnInit {
     private toastr: ToastrService,
     private title: Title,
     private meta: Meta,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -47,10 +47,12 @@ export class OrganizationsComponent implements OnInit {
   }
 
   filterForm: FormGroup = new FormGroup({});
-
+  filters: any;
   setForm() {
     this.filterForm.valueChanges.subscribe(() => {
-        this.initTable(this.filterForm.value)
+      this.initTable(this.filterForm.value);
+      this.filters = this.filterForm.value;
+      console.log(this.filters);
     });
   }
 
@@ -63,7 +65,9 @@ export class OrganizationsComponent implements OnInit {
   }
 
   async initTable(filter = null) {
-    this.organizations = await this.organizationsService.getOrganizations(filter);
+    this.organizations = await this.organizationsService.getOrganizations(
+      filter
+    );
     this.dataSource = new MatTableDataSource(this.organizations);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -92,12 +96,15 @@ export class OrganizationsComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          await this.organizationsService.deleteOrganization(id).then((data) => {
-            this.initTable();
-            this.toastr.success("Deleted successfully");
-          }, (error) => {
-            this.toastr.error(error.error.message);
-          })
+          await this.organizationsService.deleteOrganization(id).then(
+            (data) => {
+              this.initTable();
+              this.toastr.success("Deleted successfully");
+            },
+            (error) => {
+              this.toastr.error(error.error.message);
+            }
+          );
         }
       });
   }

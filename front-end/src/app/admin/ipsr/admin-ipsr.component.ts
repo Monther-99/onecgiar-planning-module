@@ -34,7 +34,7 @@ export class AdminIpsrComponent implements OnInit {
     private toastr: ToastrService,
     private title: Title,
     private meta: Meta,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -47,10 +47,12 @@ export class AdminIpsrComponent implements OnInit {
   }
 
   filterForm: FormGroup = new FormGroup({});
-
+  filters: any;
   setForm() {
     this.filterForm.valueChanges.subscribe(() => {
-        this.initTable(this.filterForm.value)
+      this.initTable(this.filterForm.value);
+      this.filters = this.filterForm.value;
+      console.log(this.filters);
     });
   }
 
@@ -92,12 +94,15 @@ export class AdminIpsrComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          await this.ipsrService.deleteIpsr(id).then((data) => {
-            this.initTable();
-            this.toastr.success("Deleted successfully");
-          }, (error) => {
-            this.toastr.error(error.error.message);
-          })
+          await this.ipsrService.deleteIpsr(id).then(
+            (data) => {
+              this.initTable();
+              this.toastr.success("Deleted successfully");
+            },
+            (error) => {
+              this.toastr.error(error.error.message);
+            }
+          );
         }
       });
   }

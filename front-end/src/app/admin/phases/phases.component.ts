@@ -60,13 +60,14 @@ export class PhasesComponent implements OnInit {
   }
 
   filterForm: FormGroup = new FormGroup({});
-
+  filters: any;
   setForm() {
     this.filterForm.valueChanges.subscribe(() => {
-        this.initTable(this.filterForm.value)
+      this.initTable(this.filterForm.value);
+      this.filters = this.filterForm.value;
+      console.log(this.filters);
     });
   }
-
 
   ngOnInit() {
     this.filterForm = this.fb.group({
@@ -106,13 +107,15 @@ export class PhasesComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          await this.phasesService.deletePhase(id).then((data) => {
-            this.Toastr.success("Deleted successfully");
-            this.initTable();
-          }, (error) => {
-            this.Toastr.error(error.error.message);
-          })
-        
+          await this.phasesService.deletePhase(id).then(
+            (data) => {
+              this.Toastr.success("Deleted successfully");
+              this.initTable();
+            },
+            (error) => {
+              this.Toastr.error(error.error.message);
+            }
+          );
         }
       });
   }
