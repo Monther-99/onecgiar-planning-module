@@ -1,15 +1,68 @@
-<h1 mat-dialog-title>IPSR Values</h1>
-<div mat-dialog-content>
-  <form [formGroup]="ipsrForm">
-    <mat-form-field *ngFor="let item of ipsrs">
-      <mat-label>{{ item.title }} - Number</mat-label>
-      <input matInput type="number" [formControlName]="'value-' + item.id" />
-    </mat-form-field>
-  </form>
+<div class="form-dialog-header">
+  <div class="form-dialog-header__text-box">
+    <p class="form-dialog-header__text-box__text">IPSR Values</p>
+  </div>
+
+  <div class="form-dialog-header__icon-box">
+    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
+      <mat-icon class="form-dialog-header__icon-box__icon-size">
+        <img
+          class="form-dialog-header__icon-box__icon-size__icon"
+          src="../../../assets/shared-image/Vector-close.svg"
+          alt="~/Frontend/images/icon _ Vector-close"
+        />
+      </mat-icon>
+    </button>
+  </div>
 </div>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button (click)="onNoClick()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="submit()" cdkFocusInitial>
-    Save
-  </button>
+
+<div class="form-dialog-conten-box-1">
+  <form [formGroup]="ipsrForm" class="form-dialog-content">
+    <!-- //Title filed----- -->
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box" *ngFor="let item of ipsrs">
+        <mat-label class="form-dialog-content__title-box__title"
+          >{{ item.title }} - Number<span class="star">*</span></mat-label
+        >
+
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
+          required
+        >
+          <input
+            matInput
+            type="number"
+            [formControlName]="'value-' + item.id"
+          />
+          <!-- <mat-error
+            class="error"
+            *ngIf="ipsrForm.controls?.['value-']?.errors?.['required']"
+            >Number is required</mat-error
+          > -->
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <div class="form-dialog-conten-button-box">
+        <div class="form-dialog-conten__button-box m-t" align="end">
+          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+
+          <button
+            class="form-dialog-conten__button-box__btn"
+            type="submit"
+            mat-raised-button
+            mat-button
+            color="primary"
+            (click)="submit()"
+            cdkFocusInitial
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
