@@ -60,7 +60,7 @@ export class PeriodDialogComponent implements OnInit {
         this.periodId,
         this.periodForm.value
       );
-      this.toast.success("Period Updated Successfully");
+      this.toast.success("Period added Successfully");
       this.dialogRef.close({ submitted: true });
     }
   }

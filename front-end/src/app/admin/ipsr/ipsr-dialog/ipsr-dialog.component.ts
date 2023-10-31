@@ -49,7 +49,7 @@ export class IpsrDialogComponent implements OnInit {
     this.ipsrForm.updateValueAndValidity();
     if (this.ipsrForm.valid) {
       await this.ipsrService.submitIpsr(this.ipsrId, this.ipsrForm.value);
-      this.toast.success("IPSR Item Updated Successfully");
+      this.toast.success("IPSR Item added Successfully");
       this.dialogRef.close({ submitted: true });
     }
   }

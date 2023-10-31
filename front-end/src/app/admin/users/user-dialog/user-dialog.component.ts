@@ -50,16 +50,16 @@ export class UserDialogComponent implements OnInit {
     this.userForm.markAllAsTouched();
     this.userForm.updateValueAndValidity();
     if (this.userForm.valid) {
-      await this.usersService.submitUser(this.userId, this.userForm.value).then((data) => {
-        if(this.userId == 0)
-          this.toast.success("User added successfully");
-        else
-          this.toast.success("User Updated Successfully");
-        
-        this.dialogRef.close({ submitted: true });
-      }, (error) => {
-        this.toast.error(error.error.message);
-      }
+      await this.usersService.submitUser(this.userId, this.userForm.value).then(
+        (data) => {
+          if (this.userId == 0) this.toast.success("User added successfully");
+          else this.toast.success("User added Successfully");
+
+          this.dialogRef.close({ submitted: true });
+        },
+        (error) => {
+          this.toast.error(error.error.message);
+        }
       );
     }
   }

@@ -54,7 +54,7 @@ export class OrganizationDialogComponent implements OnInit {
         this.organizationId,
         this.organizationForm.value
       );
-      this.toast.success("Organization Updated Successfully");
+      this.toast.success("Organization added Successfully");
       this.dialogRef.close({ submitted: true });
     }
   }
