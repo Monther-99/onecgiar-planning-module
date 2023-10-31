@@ -25,7 +25,7 @@ export class PeriodsComponent implements OnInit {
   periods: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  phases:any[] = [];
+  phases: any[] = [];
   filterForm: FormGroup = new FormGroup({});
   length!: number;
   pageSize: number = 10;
@@ -79,15 +79,15 @@ export class PeriodsComponent implements OnInit {
       this.pageSize
     );
     this.dataSource = new MatTableDataSource(this.periods?.result);
-    this.length = this.periods?.count
-    this.periods?.result?.forEach((d:any) => {
+    this.length = this.periods?.count;
+    this.periods?.result?.forEach((d: any) => {
       this.phases.push(d.phase);
-    })
-    this.phases = this.phases.filter((value, index, self) =>
-      index === self.findIndex((t) => (
-      t.id === value.id && t.name === value.name
-      ))
-    )
+    });
+    this.phases = this.phases.filter(
+      (value, index, self) =>
+        index ===
+        self.findIndex((t) => t.id === value.id && t.name === value.name)
+    );
     this.title.setTitle("Periods");
     this.meta.updateTag({ name: "description", content: "Periods" });
   }
@@ -113,13 +113,21 @@ export class PeriodsComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          await this.periodsService.deletePeriod(id).then((data) => {
-            this.initTable();
-            this.toastr.success("Deleted successfully");
-          }, (error) => {
-            this.toastr.error(error.error.message);
-          })
+          await this.periodsService.deletePeriod(id).then(
+            (data) => {
+              this.initTable();
+              this.toastr.success("Deleted successfully");
+            },
+            (error) => {
+              this.toastr.error(error.error.message);
+            }
+          );
         }
       });
+  }
+
+  resetForm() {
+    this.filterForm.reset();
+    this.filterForm.markAsUntouched();
   }
 }
