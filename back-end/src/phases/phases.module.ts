@@ -7,6 +7,7 @@ import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organ
 import { Initiative } from 'src/entities/initiative.entity';
 import { Organization } from 'src/entities/organization.entity';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
+import { Period } from 'src/entities/period.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
       Initiative,
       Organization,
       PhaseInitiativeOrganization,
-      InitiativeRoles
+      InitiativeRoles,
+      Period
     ]),
   ],
   controllers: [PhasesController],

@@ -106,11 +106,13 @@ export class PhasesComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.phasesService.deletePhase(id);
-          if (result != false) {
+          await this.phasesService.deletePhase(id).then((data) => {
             this.Toastr.success("Deleted successfully");
             this.initTable();
-          }
+          }, (error) => {
+            this.Toastr.error(error.error.message);
+          })
+        
         }
       });
   }
