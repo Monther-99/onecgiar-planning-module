@@ -109,7 +109,7 @@
           <ng-container matColumnDef="organizations">
             <th mat-header-cell *matHeaderCellDef>Organizations</th>
             <td mat-cell *matCellDef="let element">
-              {{ join(element.organizations) || 'Full access' }}
+              {{ join(element.organizations) || "Full access" }}
             </td>
           </ng-container>
 
@@ -127,7 +127,7 @@
             <td mat-cell *matCellDef="let element">
               <div class="m">
                 <button
-                  matTooltip="Update"
+                  matTooltip="Edit"
                   class="team-members-icon-table"
                   matTooltipPosition="above"
                   (click)="openEditTeamMemberDialog(element.id, element)"
