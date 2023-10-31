@@ -44,7 +44,7 @@ export class PhasesService {
   deletePhase(id: number) {
     return firstValueFrom(
       this.http.delete("api/phases/" + id).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 
   getTocPhases() {
