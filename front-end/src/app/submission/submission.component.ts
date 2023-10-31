@@ -917,6 +917,7 @@ export class SubmissionComponent implements OnInit {
         if (dialogResult == true) {
           let result = await this.submissionService.deleteCross(id);
           if (result) await this.InitData();
+          this.toastrService.success("Deleted successfully");
         }
       });
   }
@@ -989,6 +990,7 @@ export class SubmissionComponent implements OnInit {
         if (dialogResult == true) {
           let result = await this.submissionService.deleteMelia(id);
           if (result) await this.InitData();
+          this.toastrService.success("Deleted successfully");
         }
       });
   }
