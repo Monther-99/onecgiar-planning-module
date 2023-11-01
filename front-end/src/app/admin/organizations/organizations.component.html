@@ -29,14 +29,14 @@
 <div class="user-management__content--1">
   <div class="user-management__container">
     <div class="form-container">
-      <form class="search">
+      <form class="search" [formGroup]="filterForm">
         <div class="sec-1">
-          <!-- <div class="risk-management-form-field field-3">
+          <div class="risk-management-form-field field-3">
             <mat-label class="risk-management-form-field__label"
               >Search
             </mat-label>
             <input
-              formControlName="email"
+              formControlName="name"
               class="search__input"
               matInput
               placeholder="Search"
@@ -54,7 +54,7 @@
                   alt="~/Frontend/images/icon _ search-icon"
               /></mat-icon>
             </button>
-          </div> -->
+          </div>
         </div>
 
         <!-- //My role----- -->
@@ -163,6 +163,13 @@
           mat-row
           *matRowDef="let myRowData; columns: columnsToDisplay"
         ></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="5">
+            No results matching({{ filters.name }})
+          </td>
+        </tr>
 
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>

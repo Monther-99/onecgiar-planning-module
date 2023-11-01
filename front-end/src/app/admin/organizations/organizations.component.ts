@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -13,13 +13,14 @@ import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { Meta, Title } from "@angular/platform-browser";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-organizations",
   templateUrl: "./organizations.component.html",
   styleUrls: ["./organizations.component.scss"],
 })
-export class OrganizationsComponent implements AfterViewInit {
+export class OrganizationsComponent implements OnInit {
   columnsToDisplay: string[] = ["id", "name", "acronym", "code", "actions"];
   dataSource: MatTableDataSource<any>;
   organizations: any = [];
@@ -32,7 +33,8 @@ export class OrganizationsComponent implements AfterViewInit {
     private headerService: HeaderService,
     private toastr: ToastrService,
     private title: Title,
-    private meta: Meta
+    private meta: Meta,
+    private fb: FormBuilder
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -44,12 +46,28 @@ export class OrganizationsComponent implements AfterViewInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
-  ngAfterViewInit() {
-    this.initTable();
+  filterForm: FormGroup = new FormGroup({});
+  filters: any;
+  setForm() {
+    this.filterForm.valueChanges.subscribe(() => {
+      this.initTable(this.filterForm.value);
+      this.filters = this.filterForm.value;
+      console.log(this.filters);
+    });
   }
 
-  async initTable() {
-    this.organizations = await this.organizationsService.getOrganizations();
+  ngOnInit() {
+    this.filterForm = this.fb.group({
+      name: [null],
+    });
+    this.initTable();
+    this.setForm();
+  }
+
+  async initTable(filter = null) {
+    this.organizations = await this.organizationsService.getOrganizations(
+      filter
+    );
     this.dataSource = new MatTableDataSource(this.organizations);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -78,12 +96,15 @@ export class OrganizationsComponent implements AfterViewInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          await this.organizationsService.deleteOrganization(id).then((data) => {
-            this.initTable();
-            this.toastr.success("Deleted successfully");
-          }, (error) => {
-            this.toastr.error(error.error.message);
-          })
+          await this.organizationsService.deleteOrganization(id).then(
+            (data) => {
+              this.initTable();
+              this.toastr.success("Deleted successfully");
+            },
+            (error) => {
+              this.toastr.error(error.error.message);
+            }
+          );
         }
       });
   }

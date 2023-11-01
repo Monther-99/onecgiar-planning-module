@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { SatPopoverModule } from "@ncstate/sat-popover";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -60,13 +61,16 @@ import { IpsrDialogComponent } from "./admin/ipsr/ipsr-dialog/ipsr-dialog.compon
 import { PhaseInitiativesComponent } from "./admin/phases/phase-initiatives/phase-initiatives.component";
 import { AssignOrganizationsComponent } from "./assign-organizations/assign-organizations.component";
 import { SpinnerComponent } from "./spinner/spinner.component";
+
 import { LoadingInterceptor } from "./loading.interceptor";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatRadioModule } from "@angular/material/radio";
 import { AccessDeniedComponent } from "./access-denied/access-denied.component";
 import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-confirm-dialog.component";
-import { SearchInitComponent } from './search-init/search-init.component';
-import { FilterVersionComponent } from './submited-versions/filter-version/filter-version.component';
+import { SearchInitComponent } from "./search-init/search-init.component";
+import { FilterVersionComponent } from "./submited-versions/filter-version/filter-version.component";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -141,6 +145,8 @@ import { FilterVersionComponent } from './submited-versions/filter-version/filte
     MatToolbarModule,
     MatSlideToggleModule,
     MatRadioModule,
+    NoopAnimationsModule,
+    SatPopoverModule,
   ],
   providers: [
     AppSocket,

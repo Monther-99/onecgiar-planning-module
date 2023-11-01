@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -13,13 +13,14 @@ import { HeaderService } from "src/app/header.service";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { Meta, Title } from "@angular/platform-browser";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-admin-ipsr",
   templateUrl: "./admin-ipsr.component.html",
   styleUrls: ["./admin-ipsr.component.scss"],
 })
-export class AdminIpsrComponent implements AfterViewInit {
+export class AdminIpsrComponent implements OnInit {
   columnsToDisplay: string[] = ["id", "title", "description", "actions"];
   dataSource: MatTableDataSource<any>;
   ipsrs: any = [];
@@ -32,7 +33,8 @@ export class AdminIpsrComponent implements AfterViewInit {
     private headerService: HeaderService,
     private toastr: ToastrService,
     private title: Title,
-    private meta: Meta
+    private meta: Meta,
+    private fb: FormBuilder
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -44,12 +46,26 @@ export class AdminIpsrComponent implements AfterViewInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
   }
 
-  ngAfterViewInit() {
-    this.initTable();
+  filterForm: FormGroup = new FormGroup({});
+  filters: any;
+  setForm() {
+    this.filterForm.valueChanges.subscribe(() => {
+      this.initTable(this.filterForm.value);
+      this.filters = this.filterForm.value;
+      console.log(this.filters);
+    });
   }
 
-  async initTable() {
-    this.ipsrs = await this.ipsrService.getIpsrs();
+  ngOnInit() {
+    this.filterForm = this.fb.group({
+      title: [null],
+    });
+    this.initTable();
+    this.setForm();
+  }
+
+  async initTable(filter = null) {
+    this.ipsrs = await this.ipsrService.getIpsrs(filter);
     this.dataSource = new MatTableDataSource(this.ipsrs);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -78,12 +94,15 @@ export class AdminIpsrComponent implements AfterViewInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          await this.ipsrService.deleteIpsr(id).then((data) => {
-            this.initTable();
-            this.toastr.success("Deleted successfully");
-          }, (error) => {
-            this.toastr.error(error.error.message);
-          })
+          await this.ipsrService.deleteIpsr(id).then(
+            (data) => {
+              this.initTable();
+              this.toastr.success("Deleted successfully");
+            },
+            (error) => {
+              this.toastr.error(error.error.message);
+            }
+          );
         }
       });
   }

@@ -16,6 +16,7 @@ import { InitiativesService } from "src/app/services/initiatives.service";
 import { UserService } from "src/app/services/user.service";
 import { HeaderService } from "../header.service";
 import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-confirm-dialog.component";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-team-members",
@@ -32,7 +33,9 @@ export class TeamMembersComponent {
     private initiativeService: InitiativesService,
     private toastrService: ToastrService,
     private userService: UserService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private title: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -64,6 +67,12 @@ export class TeamMembersComponent {
     ).map((d: any) => d.role);
     // if (this.canEdit())
     this.displayedColumns.push("Actions");
+
+    this.title.setTitle("Manage initiative team");
+    this.meta.updateTag({
+      name: "description",
+      content: "Manage initiative team",
+    });
   }
 
   async init() {}

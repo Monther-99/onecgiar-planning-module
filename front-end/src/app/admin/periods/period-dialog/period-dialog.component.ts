@@ -56,12 +56,20 @@ export class PeriodDialogComponent implements OnInit {
     this.periodForm.markAllAsTouched();
     this.periodForm.updateValueAndValidity();
     if (this.periodForm.valid) {
-      await this.periodsService.submitPeriod(
-        this.periodId,
-        this.periodForm.value
-      );
-      this.toast.success("Period Updated Successfully");
-      this.dialogRef.close({ submitted: true });
+      await this.periodsService
+        .submitPeriod(this.periodId, this.periodForm.value)
+        .then(
+          (data) => {
+            if (this.periodId == 0)
+              this.toast.success("Period added successfully");
+            else this.toast.success("Period updated successfully");
+
+            this.dialogRef.close({ submitted: true });
+          },
+          (error) => {
+            this.toast.error(error.error.message);
+          }
+        );
     }
   }
 

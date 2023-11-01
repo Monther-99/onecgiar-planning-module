@@ -8,9 +8,18 @@ import { firstValueFrom, map } from "rxjs";
 export class PhasesService {
   constructor(private http: HttpClient) {}
 
-  async getPhases() {
+  async getPhases(filters: any = null) {
+    let finalFilters: any = {};
+    if (filters)
+      Object.keys(filters).forEach((element) => {
+        if (typeof filters[element] === 'string')
+          filters[element] = filters[element].trim();
+
+        if (filters[element] != null && filters[element] != '')
+          finalFilters[element] = filters[element];
+      });
     return firstValueFrom(
-      this.http.get("api/phases").pipe(map((d: any) => d))
+      this.http.get("api/phases", { params: finalFilters }).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
@@ -35,7 +44,7 @@ export class PhasesService {
   deletePhase(id: number) {
     return firstValueFrom(
       this.http.delete("api/phases/" + id).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 
   getTocPhases() {

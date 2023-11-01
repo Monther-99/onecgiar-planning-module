@@ -19,6 +19,7 @@ import { PhasesService } from "../services/phases.service";
 import { HeaderService } from "../header.service";
 import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-confirm-dialog.component";
 import { CenterStatusService } from "./center-status.service";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-submission",
@@ -37,7 +38,9 @@ export class SubmissionComponent implements OnInit {
     private AuthService: AuthService,
     private toastrService: ToastrService,
     private headerService: HeaderService,
-    private centerStatusService: CenterStatusService
+    private centerStatusService: CenterStatusService,
+    private title2: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -387,8 +390,8 @@ export class SubmissionComponent implements OnInit {
       });
     });
 
-    this.sammaryTotal['CROSS'] = 0;
-    this.sammaryTotal['IPSR'] = 0;
+    this.sammaryTotal["CROSS"] = 0;
+    this.sammaryTotal["IPSR"] = 0;
     Object.keys(this.sammary).forEach((wp_id) => {
       this.sammaryTotal[wp_id] = 0;
       Object.keys(this.sammary[wp_id]).forEach((item_id) => {
@@ -687,6 +690,12 @@ export class SubmissionComponent implements OnInit {
       this.savedValues.perValues,
       this.savedValues.no_budget
     );
+
+    this.title2.setTitle("Manage initiative activities");
+    this.meta.updateTag({
+      name: "description",
+      content: "Manage initiative activities",
+    });
   }
   savedValues: any = null;
   isCenter: boolean = false;
@@ -709,7 +718,7 @@ export class SubmissionComponent implements OnInit {
     );
     if (roles.length) {
       this.isCenter = true;
-      if (roles[0].role == ROLES.LEAD || roles[0].role == ROLES.COORDINATOR) {
+      if (roles[0].role == ROLES.LEAD || roles[0].role == ROLES.COORDINATOR || this.user.role == "admin") {
         this.partners = partners;
         this.isCenter = false;
       } else {
@@ -890,6 +899,7 @@ export class SubmissionComponent implements OnInit {
       if (result) {
         await this.submissionService.newCross(result);
         await this.InitData();
+        this.toastrService.success("Added successfully");
       }
     });
   }
@@ -919,6 +929,7 @@ export class SubmissionComponent implements OnInit {
         if (dialogResult == true) {
           let result = await this.submissionService.deleteCross(id);
           if (result) await this.InitData();
+          this.toastrService.success("Deleted successfully");
         }
       });
   }
@@ -936,6 +947,7 @@ export class SubmissionComponent implements OnInit {
       if (result) {
         await this.submissionService.newMelia(result);
         await this.InitData();
+        this.toastrService.success("Added successfully");
       }
     });
   }
@@ -991,6 +1003,7 @@ export class SubmissionComponent implements OnInit {
         if (dialogResult == true) {
           let result = await this.submissionService.deleteMelia(id);
           if (result) await this.InitData();
+          this.toastrService.success("Deleted successfully");
         }
       });
   }

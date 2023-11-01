@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PhasesService } from './phases.service';
 import { CreatePhaseDto } from './dto/create-phase.dto';
@@ -36,8 +37,8 @@ export class PhasesController {
   // @UseGuards(RolesGuard)
   @Roles(Role.Admin)
   @Get()
-  findAll() {
-    return this.phasesService.findAll();
+  findAll(@Query() query) {
+    return this.phasesService.findAll(query);
   }
 
   @Get('active')

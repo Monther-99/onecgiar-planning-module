@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.role == "add" ? "Add New" : "Update" }} Team Member
+      {{ data.role == "add" ? "Add New" : "Edit" }} Team Member
     </p>
   </div>
 
@@ -57,7 +57,7 @@
       <mat-error
         class="error"
         *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
-        >Email or User must be not empty</mat-error
+        >User is required</mat-error
       >
     </div>
 

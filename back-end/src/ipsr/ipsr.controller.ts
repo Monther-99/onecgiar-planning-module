@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { IpsrService } from './ipsr.service';
 
 @Controller('ipsr')
@@ -6,8 +6,8 @@ export class IpsrController {
   constructor(private readonly ipsrService: IpsrService) {}
 
   @Get()
-  findAll() {
-    return this.ipsrService.findAll();
+  findAll(@Query() query) {
+    return this.ipsrService.findAll(query);
   }
 
   @Get(':id')

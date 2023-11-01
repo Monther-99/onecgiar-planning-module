@@ -37,7 +37,7 @@ export class UsersComponent implements OnInit {
     private toastr: ToastrService,
     private title: Title,
     private meta: Meta,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #04030F, #020106)";
@@ -50,12 +50,11 @@ export class UsersComponent implements OnInit {
   }
 
   sort = [
-    { name: 'ID (lowest first)', value: 'id,ASC' },
-    { name: 'ID (highest first)', value: 'id,DESC' },
-    { name: 'Name (A to Z)', value: 'full_name,ASC' },
-    { name: 'Name (Z to A)', value: 'full_name,DESC' },
+    { name: "ID (lowest first)", value: "id,ASC" },
+    { name: "ID (highest first)", value: "id,DESC" },
+    { name: "Name (A to Z)", value: "full_name,ASC" },
+    { name: "Name (Z to A)", value: "full_name,DESC" },
   ];
-
 
   async ngOnInit() {
     this.filterForm = this.fb.group({
@@ -87,7 +86,7 @@ export class UsersComponent implements OnInit {
       filters,
       this.pageIndex,
       this.pageSize
-      );
+    );
     this.dataSource = new MatTableDataSource(this.users?.result);
     this.length = this.users?.count;
     this.title.setTitle("User management");

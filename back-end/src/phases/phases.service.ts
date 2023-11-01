@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePhaseDto } from './dto/create-phase.dto';
 import { UpdatePhaseDto } from './dto/update-phase.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phase } from 'src/entities/phase.entity';
-import { In, Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 import { PhaseInitiativeOrganization } from 'src/entities/phase-initiative-organization.entity';
 import { Initiative } from 'src/entities/initiative.entity';
 import { Organization } from 'src/entities/organization.entity';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
+import { Period } from 'src/entities/period.entity';
 
 @Injectable()
 export class PhasesService {
@@ -21,6 +22,8 @@ export class PhasesService {
     private organizationRepository: Repository<Organization>,
     @InjectRepository(InitiativeRoles)
     private initiativeRolesRepository: Repository<InitiativeRoles>,
+    @InjectRepository(Period)
+    private periodRepository: Repository<Period>,
   ) {}
 
   create(createPhaseDto: any) {
@@ -36,8 +39,13 @@ export class PhasesService {
     return this.phaseRepository.save(newPhase);
   }
 
-  findAll() {
-    return this.phaseRepository.find({ relations: ['previousPhase'] });
+  findAll(query: any) {
+    return this.phaseRepository.find({ 
+      where: {
+        name: query?.name ? ILike(`%${query?.name}%`) : null,
+      },
+      relations: ['previousPhase'] 
+    });
   }
 
   findOne(id: number) {
@@ -65,8 +73,19 @@ export class PhasesService {
     );
   }
 
-  remove(id: number) {
-    return this.phaseRepository.delete({ id });
+  async remove(id: number) {
+    const phase = await this.periodRepository.find({
+      where: { 
+        phase: {
+          id: id
+        }
+      }
+    });
+    if(phase.length != 0) {
+      throw new BadRequestException('This phase cannot be deleted as it’s active.');
+    } else{
+      return this.phaseRepository.delete({ id });
+    }
   }
 
   activate(id: number) {

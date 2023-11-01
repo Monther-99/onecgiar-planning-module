@@ -48,11 +48,29 @@ export class IpsrDialogComponent implements OnInit {
     this.ipsrForm.markAllAsTouched();
     this.ipsrForm.updateValueAndValidity();
     if (this.ipsrForm.valid) {
-      await this.ipsrService.submitIpsr(this.ipsrId, this.ipsrForm.value);
-      this.toast.success("IPSR Item Updated Successfully");
-      this.dialogRef.close({ submitted: true });
+      await this.ipsrService.submitIpsr(this.ipsrId, this.ipsrForm.value).then(
+        (data) => {
+          if (this.ipsrId == 0) this.toast.success("IPSR added successfully");
+          else this.toast.success("IPSR updated successfully");
+
+          this.dialogRef.close({ submitted: true });
+        },
+        (error) => {
+          this.toast.error(error.error.message);
+        }
+      );
     }
   }
+
+  // async submit() {
+  //   this.ipsrForm.markAllAsTouched();
+  //   this.ipsrForm.updateValueAndValidity();
+  //   if (this.ipsrForm.valid) {
+  //     await this.ipsrService.submitIpsr(this.ipsrId, this.ipsrForm.value);
+  //     this.toast.success("IPSR Item added Successfully");
+  //     this.dialogRef.close({ submitted: true });
+  //   }
+  // }
 
   //Close-Dialog
   onCloseDialog() {

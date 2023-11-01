@@ -11,6 +11,7 @@ import { StatusComponent } from "./status/status.component";
 import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { HeaderService } from "../header.service";
+import { Meta, Title } from "@angular/platform-browser";
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -41,7 +42,9 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private toastrService: ToastrService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private title: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -81,6 +84,9 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     console.log("main Data", this.submissions);
     this.dataSource = new MatTableDataSource(this.submissions?.result);
     this.length = this.submissions?.count;
+
+    this.title.setTitle("Submitted versions");
+    this.meta.updateTag({ name: "description", content: "Submitted versions" });
   }
 
   filter(filters: any) {

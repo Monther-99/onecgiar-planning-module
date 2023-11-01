@@ -25,6 +25,8 @@ export class CenterStatusComponent implements OnInit {
     private centerStatusService: CenterStatusService,
     public dialog: MatDialog
   ) {}
+
+  a: any;
   ngOnInit(): void {}
 
   complete() {
@@ -32,8 +34,12 @@ export class CenterStatusComponent implements OnInit {
       .open(DeleteConfirmDialogComponent, {
         data: {
           title: "Mark as Complete",
-          message: `Are you sure you want to Mark it as complete?`,
-          svg: `../../../../assets/shared-image/checked-2.png`,
+          message: `Are you sure you want to Mark it as ${
+            this.status ? "" : "In"
+          }complete?`,
+          svg: `../../../../assets/shared-image/${
+            this.status ? "checked-2.png" : "delete-file.png"
+          }`,
         },
       })
       .afterClosed()
