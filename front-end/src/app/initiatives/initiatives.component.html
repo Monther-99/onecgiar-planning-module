@@ -119,7 +119,7 @@
                     class="color-icons-table-action"
                     matTooltip="Submit your center activites"
                     matTooltipPosition="above"
-                    *ngIf="isContributor(row.roles)"
+                    *ngIf="isContributor(row.roles) && user.role == 'user'"
                     routerLink="initiative/{{ row['id'] }}/{{
                       row['official_code']
                     }}/submission"

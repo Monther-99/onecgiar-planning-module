@@ -707,7 +707,7 @@ export class SubmissionComponent implements OnInit {
     );
     if (roles.length) {
       this.isCenter = true;
-      if (roles[0].role == ROLES.LEAD || roles[0].role == ROLES.COORDINATOR) {
+      if (roles[0].role == ROLES.LEAD || roles[0].role == ROLES.COORDINATOR || this.user.role == "admin") {
         this.partners = partners;
         this.isCenter = false;
       } else {
