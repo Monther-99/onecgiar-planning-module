@@ -17,6 +17,7 @@ import { PhaseInitiativesComponent } from "./admin/phases/phase-initiatives/phas
 import { AuthGuard } from "./guards/auth.guard";
 import { AccessDeniedComponent } from "./access-denied/access-denied.component";
 import { LicenseComponent } from "./footer/license/license.component";
+import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
 
 const routes: Routes = [
   { path: "", component: InitiativesComponent },
@@ -33,6 +34,8 @@ const routes: Routes = [
       { path: "periods", component: PeriodsComponent },
       { path: "ipsr", component: AdminIpsrComponent },
       { path: "phases/:id/initiatives", component: PhaseInitiativesComponent },
+      { path: "parameters-settings", component: ParametersSettingsComponent },
+
     ],
   },
   {

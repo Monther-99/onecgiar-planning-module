@@ -40,6 +40,8 @@
               mat-raised-button
               color="primary"
               (click)="submit()"
+              [disabled]="canSubmit.value == 0"
+              [ngClass]="{ disabled: canSubmit.value == 0 }"
             >
               Submit
             </button>
