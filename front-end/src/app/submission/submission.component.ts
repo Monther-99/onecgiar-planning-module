@@ -250,8 +250,15 @@ export class SubmissionComponent implements OnInit {
       );
     } else return false;
   }
-  partnerStatusChange(event: any) {
+  partnerStatusChange(event: any, partnerId: number) {
+    let index = 0;
+    if(!this.isCenter){
+      index = this.partners.map((d:any) => { return d.id; }).indexOf(partnerId) + 1;
+    } else {
+      index = this.partners.map((d:any) => { return d.id; }).indexOf(partnerId);
+    }
     this.InitData();
+    this.selectedTabIndex = index
   }
   async changes(
     partner_code: any,
@@ -444,6 +451,7 @@ export class SubmissionComponent implements OnInit {
 
   async refresh() {
     await this.InitData();
+    this.selectedTabIndex = 0;
   }
   results: any;
   loading = true;
@@ -699,6 +707,7 @@ export class SubmissionComponent implements OnInit {
   }
   savedValues: any = null;
   isCenter: boolean = false;
+  selectedTabIndex:number = 0;
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;

@@ -56,6 +56,7 @@
     <mat-tab-group
       *ngIf="!loading && this.partners?.length"
       class="btn--animated"
+      [selectedIndex]="selectedTabIndex"
     >
       <mat-tab *ngIf="isCenter == false" label="Summary">
         <!-- step-2 -->
@@ -398,7 +399,7 @@
 
       <!-- fgfgdd -->
 
-      <mat-tab *ngFor="let partner of partners">
+      <mat-tab *ngFor="let partner of partners" label="{{ partner.name }}">
         <ng-template mat-tab-label>
           <span style="margin-right: 10px">{{
             partner?.acronym ? partner?.acronym : partner?.name
@@ -409,7 +410,7 @@
         </ng-template>
 
         <app-center-status
-          (change)="partnerStatusChange($event)"
+          (change)="partnerStatusChange($event, partner.id)"
           [status]="!checkComplete(partner.id)"
           [initiative_id]="initiative_data.id"
           [organization_id]="partner.id"
