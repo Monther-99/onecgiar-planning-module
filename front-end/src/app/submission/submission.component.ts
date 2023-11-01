@@ -18,6 +18,7 @@ import { IpsrComponent } from "./ipsr/ipsr.component";
 import { PhasesService } from "../services/phases.service";
 import { HeaderService } from "../header.service";
 import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-confirm-dialog.component";
+import { CenterStatusService } from "./center-status.service";
 import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
@@ -37,6 +38,7 @@ export class SubmissionComponent implements OnInit {
     private AuthService: AuthService,
     private toastrService: ToastrService,
     private headerService: HeaderService,
+    private centerStatusService: CenterStatusService,
     private title2: Title,
     private meta: Meta
   ) {
@@ -248,8 +250,15 @@ export class SubmissionComponent implements OnInit {
       );
     } else return false;
   }
-  partnerStatusChange(event: any) {
+  partnerStatusChange(event: any, partnerId: number) {
+    let index = 0;
+    if(!this.isCenter){
+      index = this.partners.map((d:any) => { return d.id; }).indexOf(partnerId) + 1;
+    } else {
+      index = this.partners.map((d:any) => { return d.id; }).indexOf(partnerId);
+    }
     this.InitData();
+    this.selectedTabIndex = index
   }
   async changes(
     partner_code: any,
@@ -442,6 +451,7 @@ export class SubmissionComponent implements OnInit {
 
   async refresh() {
     await this.InitData();
+    this.selectedTabIndex = 0;
   }
   results: any;
   loading = true;
@@ -697,6 +707,7 @@ export class SubmissionComponent implements OnInit {
   }
   savedValues: any = null;
   isCenter: boolean = false;
+  selectedTabIndex:number = 0;
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
@@ -1035,21 +1046,106 @@ export class SubmissionComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          this.loading = true;
-          let result = await this.submissionService.submit(this.params.id, {
-            phase_id: this.phase.id,
-          });
-          if (result) {
-            this.toastrService.success("Data Submited successfully");
-            this.router.navigate([
-              "initiative",
-              this.initiative_data.id,
-              this.initiative_data.official_code,
-              "submited-versions",
-            ]);
+          if (this.validate()) {
+            this.loading = true;
+            let result = await this.submissionService.submit(this.params.id, {
+              phase_id: this.phase.id,
+            });
+            if (result) {
+              this.toastrService.success('Data Submitted successfully');
+              this.router.navigate([
+                'initiative',
+                this.initiative_data.id,
+                this.initiative_data.official_code,
+                'submited-versions',
+              ]);
+            }
+            this.loading = false;
           }
-          this.loading = false;
         }
       });
+  }
+
+  validate() {
+    let valid = true;
+    Object.keys(this.totals).forEach((partner_code) => {
+      Object.keys(this.totals[partner_code]).forEach((wp_id) => {
+        if (this.totals[partner_code][wp_id] != 100) valid = false;
+      });
+    });
+
+    if (!valid) {
+      this.toastrService.error(
+        'All subtotal percentages should be 100',
+        "Can't submit"
+      );
+      return valid;
+    }
+
+    Object.keys(this.perValues).forEach((partner_code) => {
+      Object.keys(this.perValues[partner_code]).forEach((wp_id) => {
+        Object.keys(this.perValues[partner_code][wp_id]).forEach((item_id) => {
+          let perChecked = Object.values(
+            this.perValues[partner_code][wp_id][item_id]
+          ).reduce((a: any, b: any) => a || b);
+          if (
+            perChecked &&
+            !this.values[partner_code][wp_id][item_id] &&
+            !this.noValuesAssigned[partner_code][wp_id][item_id]
+          )
+            valid = false;
+        });
+      });
+    });
+
+    if (!valid) {
+      this.toastrService.error(
+        'There is a checked items but not budgeted',
+        "Can't submit"
+      );
+      return valid;
+    }
+
+    return valid;
+  }
+
+  validateCenter(partner_code: any) {
+    let valid = true;
+    Object.keys(this.totals[partner_code]).forEach((wp_id) => {
+      if (this.totals[partner_code][wp_id] != 100) valid = false;
+    });
+
+    if (!valid) {
+      this.toastrService.error(
+        'All subtotal percentages should be 100',
+        "Can't complete"
+      );
+      this.centerStatusService.validPartner.next(valid);
+      return;
+    }
+
+    Object.keys(this.perValues[partner_code]).forEach((wp_id) => {
+      Object.keys(this.perValues[partner_code][wp_id]).forEach((item_id) => {
+        let perChecked = Object.values(
+          this.perValues[partner_code][wp_id][item_id]
+        ).reduce((a: any, b: any) => a || b);
+        if (
+          perChecked &&
+          !this.values[partner_code][wp_id][item_id] &&
+          !this.noValuesAssigned[partner_code][wp_id][item_id]
+        )
+          valid = false;
+      });
+    });
+
+    if (!valid) {
+      this.toastrService.error(
+        'There is a checked items but not budgeted',
+        "Can't complete"
+      );
+      this.centerStatusService.validPartner.next(valid);
+      return;
+    }
+    this.centerStatusService.validPartner.next(valid);
   }
 }
