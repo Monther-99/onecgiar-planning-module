@@ -37,11 +37,11 @@
             type="number"
             [formControlName]="'value-' + item.id"
           />
-          <!-- <mat-error
+          <mat-error
             class="error"
-            *ngIf="ipsrForm.controls?.['value-']?.errors?.['required']"
-            >Number is required</mat-error
-          > -->
+            *ngIf="ipsrForm.controls?.['value-' + item.id]?.errors?.['required']"
+            >Field is required</mat-error
+          >
         </mat-form-field>
       </div>
     </div>
