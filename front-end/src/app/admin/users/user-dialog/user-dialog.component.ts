@@ -53,7 +53,7 @@ export class UserDialogComponent implements OnInit {
       await this.usersService.submitUser(this.userId, this.userForm.value).then(
         (data) => {
           if (this.userId == 0) this.toast.success("User added successfully");
-          else this.toast.success("User added Successfully");
+          else this.toast.success("User updated successfully");
 
           this.dialogRef.close({ submitted: true });
         },

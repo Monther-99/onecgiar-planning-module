@@ -50,14 +50,35 @@ export class OrganizationDialogComponent implements OnInit {
     this.organizationForm.markAllAsTouched();
     this.organizationForm.updateValueAndValidity();
     if (this.organizationForm.valid) {
-      await this.organizationsService.submitOrganization(
-        this.organizationId,
-        this.organizationForm.value
-      );
-      this.toast.success("Organization added Successfully");
-      this.dialogRef.close({ submitted: true });
+      await this.organizationsService
+        .submitOrganization(this.organizationId, this.organizationForm.value)
+        .then(
+          (data) => {
+            if (this.organizationId == 0)
+              this.toast.success("Organization added successfully");
+            else this.toast.success("Organization updated successfully");
+
+            this.dialogRef.close({ submitted: true });
+          },
+          (error) => {
+            this.toast.error(error.error.message);
+          }
+        );
     }
   }
+
+  // async submit() {
+  //   this.organizationForm.markAllAsTouched();
+  //   this.organizationForm.updateValueAndValidity();
+  //   if (this.organizationForm.valid) {
+  //     await this.organizationsService.submitOrganization(
+  //       this.organizationId,
+  //       this.organizationForm.value
+  //     );
+  //     this.toast.success("Organization added Successfully");
+  //     this.dialogRef.close({ submitted: true });
+  //   }
+  // }
 
   //Close-Dialog
   onCloseDialog() {
