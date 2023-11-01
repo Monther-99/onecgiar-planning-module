@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
@@ -20,11 +21,24 @@ export class CenterStatusComponent implements OnInit {
 
   constructor(
     private submissionService: SubmissionService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public activatedRoute: ActivatedRoute,
+    public router: Router
   ) {}
 
+  loading = true;
+  initiative_data: any = {};
   a: any;
-  ngOnInit(): void {}
+  params: any;
+  async ngOnInit(): Promise<void> {
+    this.loading = true;
+    this.params = this.activatedRoute?.snapshot.params;
+    this.initiative_data = await this.submissionService.getInitiative(
+      this.params.id
+    );
+
+    console.log(this.initiative_data);
+  }
 
   complete() {
     this.dialog

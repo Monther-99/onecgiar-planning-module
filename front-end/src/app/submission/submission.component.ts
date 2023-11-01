@@ -716,7 +716,11 @@ export class SubmissionComponent implements OnInit {
     );
     if (roles.length) {
       this.isCenter = true;
-      if (roles[0].role == ROLES.LEAD || roles[0].role == ROLES.COORDINATOR || this.user.role == "admin") {
+      if (
+        roles[0].role == ROLES.LEAD ||
+        roles[0].role == ROLES.COORDINATOR ||
+        this.user.role == "admin"
+      ) {
         this.partners = partners;
         this.isCenter = false;
       } else {
@@ -766,6 +770,8 @@ export class SubmissionComponent implements OnInit {
       this.wp_budgets[partner_code][wp_id] = budget;
       this.refreshValues(partner_code, wp_id);
     });
+
+    console.log(this.initiative_data);
   }
 
   ngOnDestroy(): void {

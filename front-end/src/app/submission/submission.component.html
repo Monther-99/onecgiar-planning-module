@@ -19,7 +19,7 @@
               style="
                 background-image: linear-gradient(to right, #436280, #30455b);
               "
-              class="user-management__button-box__btn btn-primary-size btn--animated"
+              class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-2"
               mat-raised-button
               color="primary"
               type="button"
@@ -36,7 +36,7 @@
                 background-image: linear-gradient(to right, #436280, #30455b);
               "
               *ngIf="!this.isCenter"
-              class="user-management__button-box__btn btn-primary-size btn--animated"
+              class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-2"
               mat-raised-button
               color="primary"
               (click)="submit()"
@@ -208,6 +208,7 @@
                   </div>
                 </form>
               </div>
+
               <div class="form-container">
                 <form class="search">
                   <div class="sec-4">
@@ -413,7 +414,9 @@
           [status]="!checkComplete(partner.id)"
           [initiative_id]="initiative_data.id"
           [organization_id]="partner.id"
-        ></app-center-status>
+        >
+          
+        </app-center-status>
 
         <ng-container *ngFor="let wp of wps">
           <mat-card
