@@ -888,6 +888,7 @@ export class SubmissionComponent implements OnInit {
       if (result) {
         await this.submissionService.newCross(result);
         await this.InitData();
+        this.toastrService.success("Added successfully");
       }
     });
   }
@@ -935,6 +936,7 @@ export class SubmissionComponent implements OnInit {
       if (result) {
         await this.submissionService.newMelia(result);
         await this.InitData();
+        this.toastrService.success("Added successfully");
       }
     });
   }
