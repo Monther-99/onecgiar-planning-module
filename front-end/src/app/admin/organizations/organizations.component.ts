@@ -73,6 +73,8 @@ export class OrganizationsComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.title.setTitle("Organizations");
     this.meta.updateTag({ name: "description", content: "Organizations" });
+
+    console.log(this.organizations);
   }
 
   openDialog(id: number = 0): void {

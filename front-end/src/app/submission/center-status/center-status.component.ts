@@ -8,6 +8,7 @@ import {
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { SubmissionService } from "src/app/services/submission.service";
 import { CenterStatusService } from "../center-status.service";
+import { OrganizationsService } from "src/app/services/organizations.service";
 
 @Component({
   selector: "app-center-status",
@@ -26,21 +27,23 @@ export class CenterStatusComponent implements OnInit {
     public dialog: MatDialog,
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private centerStatusService: CenterStatusService
+    private centerStatusService: CenterStatusService,
+    private organizationsService: OrganizationsService
   ) {}
 
   loading = true;
-  initiative_data: any = {};
+  organizations: any = {};
   a: any;
   params: any;
   async ngOnInit(): Promise<void> {
     this.loading = true;
     this.params = this.activatedRoute?.snapshot.params;
-    this.initiative_data = await this.submissionService.getInitiative(
+
+    this.organizations = await this.organizationsService.getOrganization(
       this.params.id
     );
 
-    console.log(this.initiative_data);
+    console.log(this.organizations);
   }
 
   complete() {
