@@ -15,6 +15,7 @@ import { MeliaComponent } from "src/app/submission/melia/melia.component";
 import { ViewDataComponent } from "src/app/submission/view-data/view-data.component";
 import { PhasesService } from "src/app/services/phases.service";
 import { HeaderService } from "src/app/header.service";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-submited-version",
@@ -23,6 +24,7 @@ import { HeaderService } from "src/app/header.service";
 })
 export class SubmitedVersionComponent implements OnInit {
   title = "planning";
+
   constructor(
     private submissionService: SubmissionService,
     private phasesService: PhasesService,
@@ -32,7 +34,9 @@ export class SubmitedVersionComponent implements OnInit {
     public router: Router,
     private AuthService: AuthService,
     private toastrService: ToastrService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private titl2: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -245,8 +249,8 @@ export class SubmitedVersionComponent implements OnInit {
       });
     });
 
-    this.sammaryTotal['CROSS'] = 0;
-    this.sammaryTotal['IPSR'] = 0;
+    this.sammaryTotal["CROSS"] = 0;
+    this.sammaryTotal["IPSR"] = 0;
     Object.keys(this.sammary).forEach((wp_id) => {
       this.sammaryTotal[wp_id] = 0;
       Object.keys(this.sammary[wp_id]).forEach((item_id) => {
@@ -491,6 +495,9 @@ export class SubmitedVersionComponent implements OnInit {
     this.savedValues = this.submission_data.consolidated;
 
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
+
+    this.titl2.setTitle("Submitted versions");
+    this.meta.updateTag({ name: "description", content: "Submitted versions" });
   }
   savedValues: any = null;
   submission_data: any;

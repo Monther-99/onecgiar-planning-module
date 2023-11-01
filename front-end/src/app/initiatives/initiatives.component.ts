@@ -9,6 +9,7 @@ import { AssignOrganizationsComponent } from "../assign-organizations/assign-org
 import { PhasesService } from "../services/phases.service";
 import { MatDialog } from "@angular/material/dialog";
 import { HeaderService } from "../header.service";
+import { Meta, Title } from "@angular/platform-browser";
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -39,7 +40,9 @@ export class InitiativesComponent implements OnInit {
     private authService: AuthService,
     private headerService: HeaderService,
     private phasesService: PhasesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private title: Title,
+    private meta: Meta
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -58,6 +61,8 @@ export class InitiativesComponent implements OnInit {
   async ngOnInit() {
     await this.getInitiatives();
     this.user = this.authService.getLoggedInUser();
+    this.title.setTitle("Planning");
+    this.meta.updateTag({ name: "description", content: "Planning" });
   }
 
   async getInitiatives(filters = null) {
