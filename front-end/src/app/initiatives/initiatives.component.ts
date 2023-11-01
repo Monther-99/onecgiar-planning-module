@@ -59,18 +59,20 @@ export class InitiativesComponent implements OnInit {
   pageIndex: number = 1;
   allfilters: any;
   async ngOnInit() {
-    await this.getInitiatives();
+    if (this.authService.getLoggedInUser()) await this.getInitiatives();
     this.user = this.authService.getLoggedInUser();
+
     this.title.setTitle("Planning");
     this.meta.updateTag({ name: "description", content: "Planning" });
   }
 
   async getInitiatives(filters = null) {
-    this.initiatives = await this.initiativesService.getInitiatives(
-      filters,
-      this.pageIndex,
-      this.pageSize
-    );
+    if (this.authService.getLoggedInUser())
+      this.initiatives = await this.initiativesService.getInitiatives(
+        filters,
+        this.pageIndex,
+        this.pageSize
+      );
     this.dataSource = new MatTableDataSource(this.initiatives?.result);
     this.length = this.initiatives.count;
   }
