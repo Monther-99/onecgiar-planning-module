@@ -21,6 +21,7 @@ import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-co
 import { CenterStatusService } from "./center-status.service";
 import { Meta, Title } from "@angular/platform-browser";
 import { ConstantService } from "../services/constant.service";
+import { InitiativesService } from "../services/initiatives.service";
 
 @Component({
   selector: "app-submission",
@@ -29,6 +30,7 @@ import { ConstantService } from "../services/constant.service";
 })
 export class SubmissionComponent implements OnInit {
   title = "planning";
+  columnsToDisplay: string[] = ["name", "email"];
   constructor(
     private submissionService: SubmissionService,
     private phasesService: PhasesService,
@@ -42,7 +44,8 @@ export class SubmissionComponent implements OnInit {
     private centerStatusService: CenterStatusService,
     private title2: Title,
     private meta: Meta,
-    private constantsService: ConstantService
+    private constantsService: ConstantService,
+    private initiativeService: InitiativesService,
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -711,10 +714,19 @@ export class SubmissionComponent implements OnInit {
   isCenter: boolean = false;
   selectedTabIndex:number = 0;
   canSubmit: any;
+  InitiativeUsers: any;
+  leaders:any[] =[];
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     this.phase = await this.phasesService.getActivePhase();
+    this.InitiativeUsers = await this.initiativeService.getInitiativeUsers(
+      this.params.id
+    );
+    this.InitiativeUsers.map((d: any) => {
+      if(d.role == "Leader")
+        this.leaders.push(d.user)
+    });
     let partners: any = await this.phasesService.getAssignedOrgs(
       this.phase.id,
       this.params.id
