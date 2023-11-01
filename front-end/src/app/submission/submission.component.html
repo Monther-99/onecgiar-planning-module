@@ -413,6 +413,7 @@
           [status]="!checkComplete(partner.id)"
           [initiative_id]="initiative_data.id"
           [organization_id]="partner.id"
+          (clicked)="validateCenter(partner.id)"
         ></app-center-status>
 
         <ng-container *ngFor="let wp of wps">

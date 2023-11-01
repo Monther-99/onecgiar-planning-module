@@ -6,6 +6,7 @@ import {
 } from "src/app/confirm/confirm.component";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { SubmissionService } from "src/app/services/submission.service";
+import { CenterStatusService } from "../center-status.service";
 
 @Component({
   selector: "app-center-status",
@@ -17,9 +18,11 @@ export class CenterStatusComponent implements OnInit {
   @Input("initiative_id") initiative_id: number;
   @Input("status") status: boolean;
   @Output() change = new EventEmitter<any>();
+  @Output() clicked = new EventEmitter<any>();
 
   constructor(
     private submissionService: SubmissionService,
+    private centerStatusService: CenterStatusService,
     public dialog: MatDialog
   ) {}
   ngOnInit(): void {}
@@ -36,12 +39,16 @@ export class CenterStatusComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.submissionService.markStatus(
-            +this.organization_id,
-            +this.initiative_id,
-            !!this.status
-          );
-          if (result) this.change.emit(!!this.status);
+          if (this.status) this.clicked.emit();
+          const valid = this.centerStatusService.validPartner.getValue();
+          if (!this.status || (this.status && valid)) {
+            let result = await this.submissionService.markStatus(
+              +this.organization_id,
+              +this.initiative_id,
+              !!this.status
+            );
+            if (result) this.change.emit(!!this.status);
+          }
         }
       });
   }
