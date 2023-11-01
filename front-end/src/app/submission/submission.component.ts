@@ -20,6 +20,7 @@ import { HeaderService } from "../header.service";
 import { DeleteConfirmDialogComponent } from "../delete-confirm-dialog/delete-confirm-dialog.component";
 import { CenterStatusService } from "./center-status.service";
 import { Meta, Title } from "@angular/platform-browser";
+import { ConstantService } from "../services/constant.service";
 
 @Component({
   selector: "app-submission",
@@ -40,7 +41,8 @@ export class SubmissionComponent implements OnInit {
     private headerService: HeaderService,
     private centerStatusService: CenterStatusService,
     private title2: Title,
-    private meta: Meta
+    private meta: Meta,
+    private constantsService: ConstantService
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -708,6 +710,7 @@ export class SubmissionComponent implements OnInit {
   savedValues: any = null;
   isCenter: boolean = false;
   selectedTabIndex:number = 0;
+  canSubmit: any;
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
@@ -781,8 +784,7 @@ export class SubmissionComponent implements OnInit {
       this.wp_budgets[partner_code][wp_id] = budget;
       this.refreshValues(partner_code, wp_id);
     });
-
-    console.log(this.initiative_data);
+    this.canSubmit = await this.constantsService.getSubmitStatus();
   }
 
   ngOnDestroy(): void {

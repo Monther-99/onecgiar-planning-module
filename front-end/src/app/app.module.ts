@@ -70,6 +70,7 @@ import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-con
 import { SearchInitComponent } from "./search-init/search-init.component";
 import { FilterVersionComponent } from "./submited-versions/filter-version/filter-version.component";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { ParametersSettingsComponent } from './admin/parameters-settings/parameters-settings.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
     DeleteConfirmDialogComponent,
     SearchInitComponent,
     FilterVersionComponent,
+    ParametersSettingsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1926,3 +1926,6 @@ pre {
   animation: moveInBottom 0.5s ease-out 0.85s;
   animation-fill-mode: backwards;
 }
+.disabled {
+  opacity: 0.7;
+}
