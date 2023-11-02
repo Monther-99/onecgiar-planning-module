@@ -72,37 +72,18 @@ export class SubmissionController {
   getSubmissionBudgets(@Param('id') id: string) {
     return this.submissionService.getSubmissionBudgets(+id);
   }
-  
+
   @Get('save/:id')
   async getSaved(@Param('id') id) {
     return this.submissionService.getSaved(id);
   }
   @Get('initiative_id/:initiative_id')
   get(@Param('initiative_id') initiative_id, @Query() query) {
-    return this.submissionService.findSubmissionsByInitiativeId(initiative_id, query);
+    return this.submissionService.findSubmissionsByInitiativeId(
+      initiative_id,
+      query,
+    );
   }
-
-  // @UseInterceptors(CacheInterceptor)
-  // @CacheTTL(99999)
-  // @Get('toc/:id')
-  // async getToc(@Param('id') id) {
-  //   return await firstValueFrom(
-  //     this.httpService.get('https://toc.mel.cgiar.org/api/toc/' + id).pipe(
-  //       map((d: any) =>
-  //         d.data.data.filter(
-  //           (d) =>
-  //             (d.category == 'WP' && !d.group) ||
-  //             d.category == 'OUTPUT' ||
-  //             (d.category == 'OUTCOME' && d.flow_id == id),
-  //         ),
-  //       ),
-  //       catchError((error: AxiosError) => {
-  //         console.error(error);
-  //         throw new InternalServerErrorException();
-  //       }),
-  //     ),
-  //   );
-  // }
 
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(99999999)
@@ -112,7 +93,8 @@ export class SubmissionController {
     const tocs = await firstValueFrom(
       this.httpService
         .get(
-          'https://toc.mel.cgiar.org/api/flow/search?creation_start=&creation_end=&type=initiative&status=publish&order=creation_date&sort_by=DESC&title=&limit=50&page=1&latest=true',
+          process.env.TOC_API +
+            '/flow/search?creation_start=&creation_end=&type=initiative&status=publish&order=creation_date&sort_by=DESC&title=&limit=50&page=1&latest=true',
         )
         .pipe(
           map((d: any) =>
@@ -127,16 +109,16 @@ export class SubmissionController {
 
     return await firstValueFrom(
       this.httpService
-        .get('https://toc.mel.cgiar.org/api/toc/' + tocs[0].related_flow_id)
+        .get(process.env.TOC_API + '/toc/' + tocs[0].related_flow_id)
         .pipe(
           map((d: any) =>
             d.data.data.filter(
               (d) =>
-                (d.category == 'WP' && !d.group) ||
-                ((d.category == 'OUTPUT' ||
+                ((d.category == 'WP' && !d.group) ||
+                  d.category == 'OUTPUT' ||
                   d.category == 'EOI' ||
                   d.category == 'OUTCOME') &&
-                  d.flow_id == tocs[0].related_flow_id),
+                d.flow_id == tocs[0].related_flow_id,
             ),
           ),
           catchError((error: AxiosError) => {
