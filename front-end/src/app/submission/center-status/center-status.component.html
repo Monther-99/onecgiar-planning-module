@@ -1,16 +1,37 @@
-<div class="form-container">
+<!-- <div class="form-container">
   <form class="search">
-    <div class="sec-7">
-      <button
-        style="background-image: linear-gradient(to right, #436280, #30455b)"
-        class="user-management__button-box__btn btn-primary-size-2"
-        mat-raised-button
-        color="primary"
-        (click)="complete()"
-        type="button"
-      >
-        Mark as {{ status ? "" : "In" }}complete
-      </button>
+    <div class="sec-7"></div>
+
+    <div>
+      <p>
+        {{ initiative_data.name }} ‐
+        {{ initiative_data.short_name }}
+      </p>
     </div>
   </form>
+</div> -->
+<div class="container-mat-tab btn--animated">
+  <mat-card>
+    <mat-card-subtitle class="card-title"
+      >{{ organization?.name }} ‐ {{ organization?.acronym }}</mat-card-subtitle
+    >
+    <div class="form-container">
+      <form class="search">
+        <div class="sec-8">
+          <button
+            style="
+              background-image: linear-gradient(to right, #436280, #30455b);
+            "
+            class="user-management__button-box__btn btn-primary-size-2"
+            mat-raised-button
+            color="primary"
+            (click)="complete()"
+            type="button"
+          >
+            Mark as {{ status ? "" : "In" }}complete
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-card>
 </div>

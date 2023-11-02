@@ -70,6 +70,9 @@ import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-con
 import { SearchInitComponent } from "./search-init/search-init.component";
 import { FilterVersionComponent } from "./submited-versions/filter-version/filter-version.component";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { ParametersSettingsComponent } from './admin/parameters-settings/parameters-settings.component';
+import { MeliaAdminComponent } from './admin/melia-admin/melia-admin.component';
+import { MeliaAdminDialogComponent } from './admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +113,9 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
     DeleteConfirmDialogComponent,
     SearchInitComponent,
     FilterVersionComponent,
+    ParametersSettingsComponent,
+    MeliaAdminComponent,
+    MeliaAdminDialogComponent,
   ],
   imports: [
     BrowserModule,

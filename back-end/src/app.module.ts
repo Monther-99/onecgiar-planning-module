@@ -15,6 +15,8 @@ import { ConfigModule } from '@nestjs/config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { IpsrModule } from './ipsr/ipsr.module';
 import { IpsrValueModule } from './ipsr-value/ipsr-value.module';
+import { ConstantsModule } from './constants/constants.module';
+import { MeliaTypeModule } from './melia-type/melia-type.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { IpsrValueModule } from './ipsr-value/ipsr-value.module';
     MeliaModule,
     CrossCuttingModule,
     IpsrValueModule,
+    ConstantsModule,
+    MeliaTypeModule,
   ],
 })
 export class AppModule {}

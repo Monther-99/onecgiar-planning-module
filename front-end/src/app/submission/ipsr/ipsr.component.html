@@ -4,7 +4,7 @@
   </div>
 
   <div class="form-dialog-header__icon-box">
-    <button class="form-dialog-header__icon-box__btn">
+    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
       <mat-icon class="form-dialog-header__icon-box__icon-size">
         <img
           class="form-dialog-header__icon-box__icon-size__icon"
@@ -37,11 +37,11 @@
             type="number"
             [formControlName]="'value-' + item.id"
           />
-          <!-- <mat-error
+          <mat-error
             class="error"
-            *ngIf="ipsrForm.controls?.['value-']?.errors?.['required']"
-            >Number is required</mat-error
-          > -->
+            *ngIf="ipsrForm.controls?.['value-' + item.id]?.errors?.['required']"
+            >Field is required</mat-error
+          >
         </mat-form-field>
       </div>
     </div>

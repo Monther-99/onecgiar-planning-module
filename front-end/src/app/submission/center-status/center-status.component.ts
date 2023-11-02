@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import {
-  ConfirmComponent,
-  ConfirmDialogModel,
-} from "src/app/confirm/confirm.component";
+import { ActivatedRoute, Router } from "@angular/router";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { SubmissionService } from "src/app/services/submission.service";
 import { CenterStatusService } from "../center-status.service";
@@ -17,17 +14,23 @@ export class CenterStatusComponent implements OnInit {
   @Input("organization_id") organization_id: number;
   @Input("initiative_id") initiative_id: number;
   @Input("status") status: boolean;
+  @Input("organization") organization: any;
   @Output() change = new EventEmitter<any>();
   @Output() clicked = new EventEmitter<any>();
 
   constructor(
     private submissionService: SubmissionService,
-    private centerStatusService: CenterStatusService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public activatedRoute: ActivatedRoute,
+    public router: Router,
+    private centerStatusService: CenterStatusService
   ) {}
 
+  loading = true;
   a: any;
-  ngOnInit(): void {}
+  async ngOnInit(): Promise<void> {
+    this.loading = true;
+  }
 
   complete() {
     this.dialog
