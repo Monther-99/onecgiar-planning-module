@@ -45,7 +45,7 @@ export class SubmissionComponent implements OnInit {
     private title2: Title,
     private meta: Meta,
     private constantsService: ConstantService,
-    private initiativeService: InitiativesService,
+    private initiativeService: InitiativesService
   ) {
     this.headerService.background =
       "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
@@ -257,19 +257,27 @@ export class SubmissionComponent implements OnInit {
   }
   partnerStatusChange(event: any, partnerId: number) {
     let index = 0;
-    if(!this.isCenter){
-      index = this.partners.map((d:any) => { return d.id; }).indexOf(partnerId) + 1;
+    if (!this.isCenter) {
+      index =
+        this.partners
+          .map((d: any) => {
+            return d.id;
+          })
+          .indexOf(partnerId) + 1;
     } else {
-      index = this.partners.map((d:any) => { return d.id; }).indexOf(partnerId);
+      index = this.partners
+        .map((d: any) => {
+          return d.id;
+        })
+        .indexOf(partnerId);
     }
     this.InitData();
-    this.selectedTabIndex = index
+    this.selectedTabIndex = index;
   }
   tabChanged(organization: any) {
-    this.partners.map((d:any) => {
-      if(d.name == organization?.tab?.textLabel)
-      this.organizationSelected = d;
-    })
+    this.partners.map((d: any) => {
+      if (d.name == organization?.tab?.textLabel) this.organizationSelected = d;
+    });
   }
 
   async changes(
@@ -719,11 +727,11 @@ export class SubmissionComponent implements OnInit {
   }
   savedValues: any = null;
   isCenter: boolean = false;
-  selectedTabIndex:number = 0;
+  selectedTabIndex: number = 0;
   canSubmit: any;
   InitiativeUsers: any;
-  leaders:any[] =[];
-  organizationSelected:any = '';
+  leaders: any[] = [];
+  organizationSelected: any = "";
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
@@ -732,8 +740,7 @@ export class SubmissionComponent implements OnInit {
       this.params.id
     );
     this.InitiativeUsers.map((d: any) => {
-      if(d.role == "Leader")
-        this.leaders.push(d.user)
+      if (d.role == "Leader") this.leaders.push(d.user);
     });
     let partners: any = await this.phasesService.getAssignedOrgs(
       this.phase.id,
@@ -954,12 +961,11 @@ export class SubmissionComponent implements OnInit {
   }
   deleteCross(id: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: "400px",
-        data: new ConfirmDialogModel(
-          "Delete",
-          `Are you sure you want to delete this Cross-cutting item?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Delete",
+          message: `Are you sure you want to delete this Cross-cutting item?`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
@@ -1028,12 +1034,11 @@ export class SubmissionComponent implements OnInit {
   }
   async deleteMelia(id: number) {
     this.dialog
-      .open(ConfirmComponent, {
-        maxWidth: "400px",
-        data: new ConfirmDialogModel(
-          "Delete",
-          `Are you sure you want to delete this MELIA?`
-        ),
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Delete",
+          message: `Are you sure you want to delete this MELIA?`,
+        },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
@@ -1074,12 +1079,12 @@ export class SubmissionComponent implements OnInit {
               phase_id: this.phase.id,
             });
             if (result) {
-              this.toastrService.success('Data Submitted successfully');
+              this.toastrService.success("Data Submitted successfully");
               this.router.navigate([
-                'initiative',
+                "initiative",
                 this.initiative_data.id,
                 this.initiative_data.official_code,
-                'submited-versions',
+                "submited-versions",
               ]);
             }
             this.loading = false;
@@ -1098,7 +1103,7 @@ export class SubmissionComponent implements OnInit {
 
     if (!valid) {
       this.toastrService.error(
-        'All subtotal percentages should be 100',
+        "All subtotal percentages should be 100",
         "Can't submit"
       );
       return valid;
@@ -1122,7 +1127,7 @@ export class SubmissionComponent implements OnInit {
 
     if (!valid) {
       this.toastrService.error(
-        'There is a checked items but not budgeted',
+        "There is a checked items but not budgeted",
         "Can't submit"
       );
       return valid;
@@ -1139,7 +1144,7 @@ export class SubmissionComponent implements OnInit {
 
     if (!valid) {
       this.toastrService.error(
-        'All subtotal percentages should be 100',
+        "All subtotal percentages should be 100",
         "Can't complete"
       );
       this.centerStatusService.validPartner.next(valid);
@@ -1162,7 +1167,7 @@ export class SubmissionComponent implements OnInit {
 
     if (!valid) {
       this.toastrService.error(
-        'There is a checked items but not budgeted',
+        "There is a checked items but not budgeted",
         "Can't complete"
       );
       this.centerStatusService.validPartner.next(valid);
