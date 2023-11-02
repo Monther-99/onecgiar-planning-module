@@ -265,6 +265,13 @@ export class SubmissionComponent implements OnInit {
     this.InitData();
     this.selectedTabIndex = index
   }
+  tabChanged(organization: any) {
+    this.partners.map((d:any) => {
+      if(d.name == organization?.tab?.textLabel)
+      this.organizationSelected = d;
+    })
+  }
+
   async changes(
     partner_code: any,
     wp_id: any,
@@ -716,6 +723,7 @@ export class SubmissionComponent implements OnInit {
   canSubmit: any;
   InitiativeUsers: any;
   leaders:any[] =[];
+  organizationSelected:any = '';
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;

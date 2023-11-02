@@ -1,14 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
-import {
-  ConfirmComponent,
-  ConfirmDialogModel,
-} from "src/app/confirm/confirm.component";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { SubmissionService } from "src/app/services/submission.service";
 import { CenterStatusService } from "../center-status.service";
-import { OrganizationsService } from "src/app/services/organizations.service";
 
 @Component({
   selector: "app-center-status",
@@ -19,6 +14,7 @@ export class CenterStatusComponent implements OnInit {
   @Input("organization_id") organization_id: number;
   @Input("initiative_id") initiative_id: number;
   @Input("status") status: boolean;
+  @Input("organization") organization: any;
   @Output() change = new EventEmitter<any>();
   @Output() clicked = new EventEmitter<any>();
 
@@ -27,25 +23,13 @@ export class CenterStatusComponent implements OnInit {
     public dialog: MatDialog,
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private centerStatusService: CenterStatusService,
-    private organizationsService: OrganizationsService
+    private centerStatusService: CenterStatusService
   ) {}
 
   loading = true;
-  organizations: any = {};
   a: any;
-  // params: any;
   async ngOnInit(): Promise<void> {
     this.loading = true;
-    // this.params = this.activatedRoute?.snapshot.params;
-
-    this.organizations = await this.organizationsService.getOrganizations();
-
-    // this.organizations = await this.organizationsService.getOrganization(
-    //   this.params.id
-    // );
-
-    console.log(this.organizations);
   }
 
   complete() {
