@@ -72,8 +72,8 @@
 .table-box-5 {
   width: 100%;
   overflow: auto;
-  margin: 6rem 0 6rem 0;
 
+  margin: 2rem 0 7rem 0;
   th,
   td {
     /* border: 1px solid #343a40; */
@@ -699,6 +699,11 @@ mat-form-field {
   position: relative;
   animation: moveInBottom 1.5s ease-out 1.95s;
   animation-fill-mode: backwards;
+}
+
+.text-box {
+  width: 100%;
+  text-align: center;
 }
 
 .risk-nav-list {
