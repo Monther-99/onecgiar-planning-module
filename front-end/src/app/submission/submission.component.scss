@@ -807,6 +807,9 @@ mat-tab-group {
   color: transparent;
   letter-spacing: 0.2rem;
   transition: all 0.2s;
+  animation-name: moveInLeft;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
 }
 mat-card-title,
 mat-card-subtitle {
@@ -1673,6 +1676,8 @@ pre {
   width: 54.8rem;
   height: 3rem;
   margin-left: -5rem;
+  animation: moveInBottom 0.5s ease-out 0.75s;
+  animation-fill-mode: backwards;
   &__input {
     font-family: inherit;
     font-size: inherit;
