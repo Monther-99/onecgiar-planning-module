@@ -34,14 +34,16 @@ export class CenterStatusComponent implements OnInit {
   loading = true;
   organizations: any = {};
   a: any;
-  params: any;
+  // params: any;
   async ngOnInit(): Promise<void> {
     this.loading = true;
-    this.params = this.activatedRoute?.snapshot.params;
+    // this.params = this.activatedRoute?.snapshot.params;
 
-    this.organizations = await this.organizationsService.getOrganization(
-      this.params.id
-    );
+    this.organizations = await this.organizationsService.getOrganizations();
+
+    // this.organizations = await this.organizationsService.getOrganization(
+    //   this.params.id
+    // );
 
     console.log(this.organizations);
   }

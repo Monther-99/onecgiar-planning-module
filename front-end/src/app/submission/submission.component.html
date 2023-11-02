@@ -454,7 +454,7 @@
                       <th>{{ item.year }} - {{ item.quarter }}</th>
                     </ng-container>
                     <th class="per">Percentage %</th>
-                    <th class="no_budget"></th>
+                    <!-- <th class="no_budget"></th> -->
                     <th class="budget">Budget</th>
                   </tr>
 
@@ -502,6 +502,9 @@
                       <td>
                         <mat-form-field
                           class="form-dialog-content__field"
+                          matTooltip="Click to more info"
+                          [satPopoverAnchor]="popoverTargetLikelihood"
+                          (click)="popoverTargetLikelihood.toggle()"
                           floatLabel="always"
                           hideRequiredMarker
                           appearance="outline"
@@ -570,37 +573,55 @@
                           />
                           <mat-icon matSuffix>%</mat-icon>
                         </mat-form-field>
-                      </td>
-
-                      <td>
-                        <mat-checkbox
-                          *ngIf="
-                            !(
-                              perValues[partner.code][
-                                wp.ost_wp.wp_official_code
-                              ][item.id] | inQue
-                            ) &&
-                            item.category != 'EOI' &&
-                            item.category != 'OUTCOME' &&
-                            values[partner.code][wp.ost_wp.wp_official_code][
-                              item.id
-                            ] == 0
-                          "
-                          [(ngModel)]="
-                            noValuesAssigned[partner.code][
-                              wp.ost_wp.wp_official_code
-                            ][item.id]
-                          "
-                          (change)="
-                            toggleNoValues(
-                              partner.code,
-                              wp.ost_wp.wp_official_code,
-                              item.id
-                            )
-                          "
-                          color="primary"
-                          matTooltip="No budget assigned"
-                        ></mat-checkbox>
+                        <sat-popover #popoverTargetLikelihood hasBackdrop>
+                          <div class="popover">
+                            <div class="popover__head">
+                              <h3 class="popover__h3">
+                                You can mark this result as no budget assigned
+                              </h3>
+                              <mat-icon
+                                class="popover__icon"
+                                (click)="popoverTargetLikelihood.close()"
+                                >close</mat-icon
+                              >
+                            </div>
+                            <!-- <p class="popover__text">
+                              the targeted likelihood of the risk occurring
+                              within a given time horizon that could result into
+                              the targeted impact level assigned. Target
+                              likelihood could be achieved by putting in place
+                              additional controls and actions to manage the risk
+                              likelihood.
+                            </p> -->
+                            <mat-checkbox
+                              *ngIf="
+                                !(
+                                  perValues[partner.code][
+                                    wp.ost_wp.wp_official_code
+                                  ][item.id] | inQue
+                                ) &&
+                                item.category != 'EOI' &&
+                                item.category != 'OUTCOME' &&
+                                values[partner.code][
+                                  wp.ost_wp.wp_official_code
+                                ][item.id] == 0
+                              "
+                              [(ngModel)]="
+                                noValuesAssigned[partner.code][
+                                  wp.ost_wp.wp_official_code
+                                ][item.id]
+                              "
+                              (change)="
+                                toggleNoValues(
+                                  partner.code,
+                                  wp.ost_wp.wp_official_code,
+                                  item.id
+                                )
+                              "
+                              matTooltip="No budget assigned"
+                            ></mat-checkbox>
+                          </div>
+                        </sat-popover>
                       </td>
 
                       <td>
@@ -689,7 +710,7 @@
                             )
                       }}%
                     </td>
-                    <td></td>
+                    <!-- <td></td> -->
                     <td>
                       <div class="form">
                         <mat-form-field class="budget">
