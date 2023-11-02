@@ -203,44 +203,6 @@
         </mat-form-field>
       </div>
 
-      <div class="form-dialog-content__field--grid-column">
-        <div class="form-dialog-content__title-box">
-          <mat-label class="form-dialog-content__title-box__title"
-            >Partners<span class="star">*</span></mat-label
-          >
-        </div>
-
-        <ng-select
-          [items]="partners | async"
-          formControlName="partners"
-          placeholder="Partners"
-          bindLabel="name"
-          [minTermLength]="2"
-          typeToSearchText="Please enter 2 or more characters"
-          [loading]="partnersLoading"
-          [typeahead]="partnersInput"
-          [multiple]="true"
-          appearance="outline"
-        >
-          <ng-template
-            ng-option-tmp
-            let-item="item"
-            let-search="searchTerm"
-            let-index="index"
-          >
-            <div class="ng-select-option">
-              <span>{{ item.name }}</span>
-              <span *ngIf="item.acronym"> - {{ item.acronym }}</span>
-            </div>
-          </ng-template>
-        </ng-select>
-        <mat-error
-          class="error"
-          *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
-          >Partners is required</mat-error
-        >
-      </div>
-
       <!-- //Other Initiatives filed----- -->
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
@@ -259,7 +221,7 @@
             required
             formControlName="other_initiatives"
             multiple
-            [compareWith]="compareFn"
+            [compareWith]="compareId"
           >
             <ng-container *ngFor="let initiative of initiatives">
               <mat-option
@@ -293,7 +255,12 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select required formControlName="contribution_results" multiple>
+          <mat-select
+            required
+            formControlName="contribution_results"
+            multiple
+            (valueChange)="resultSelected($event)"
+          >
             <ng-container *ngFor="let result of results">
               <mat-option [value]="result.id">
                 {{ result.title }}
@@ -306,6 +273,45 @@
             >MELIA Study contributes is required</mat-error
           >
         </mat-form-field>
+      </div>
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Partners<span class="star">*</span></mat-label
+          >
+        </div>
+
+        <ng-select
+          [items]="partners | async"
+          formControlName="partners"
+          placeholder="Partners"
+          bindLabel="name"
+          [minTermLength]="2"
+          typeToSearchText="Please enter 2 or more characters"
+          [loading]="partnersLoading"
+          [typeahead]="partnersInput"
+          [multiple]="true"
+          appearance="outline"
+          [compareWith]="compareCode"
+        >
+          <ng-template
+            ng-option-tmp
+            let-item="item"
+            let-search="searchTerm"
+            let-index="index"
+          >
+            <div class="ng-select-option">
+              <span>{{ item.name }}</span>
+              <span *ngIf="item.acronym"> - {{ item.acronym }}</span>
+            </div>
+          </ng-template>
+        </ng-select>
+        <mat-error
+          class="error"
+          *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
+          >Partners is required</mat-error
+        >
       </div>
 
       <div class="form-dialog-content__field--grid-column">
@@ -370,6 +376,7 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
+            [compareWith]="compareCode"
             required
           >
           </ng-select>
@@ -423,6 +430,7 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
+            [compareWith]="compareCode"
             required
           >
           </ng-select>

@@ -40,9 +40,9 @@ export class MeliaService {
         'partners',
         'other_initiatives',
         'initiative_countries',
-        'initiative_countries.region',
+        'initiative_regions',
         'co_initiative_countries',
-        'co_initiative_countries.region'
+        'co_initiative_regions'
       ],
     });
   }
