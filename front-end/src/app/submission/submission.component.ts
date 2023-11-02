@@ -724,6 +724,8 @@ export class SubmissionComponent implements OnInit {
       name: "description",
       content: "Manage initiative activities",
     });
+
+    console.log(this.initiative_data.official_code);
   }
   savedValues: any = null;
   isCenter: boolean = false;

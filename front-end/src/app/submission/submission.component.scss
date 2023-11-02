@@ -72,7 +72,7 @@
 .table-box-5 {
   width: 100%;
   overflow: auto;
-  margin: 6rem 0 0 0;
+  margin: 6rem 0 6rem 0;
 
   th,
   td {
@@ -692,12 +692,13 @@ mat-form-field {
 
 .risk-nav-main {
   width: 94%;
-  margin: -5rem auto 4rem auto;
-
+  margin: 4rem -4rem -4rem auto;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   position: relative;
+  animation: moveInBottom 1.5s ease-out 1.95s;
+  animation-fill-mode: backwards;
 }
 
 .risk-nav-list {
@@ -810,6 +811,25 @@ mat-tab-group {
   animation-name: moveInLeft;
   animation-duration: 1s;
   animation-timing-function: ease-out;
+}
+
+.leaders-text {
+  padding: 4rem 4rem 0rem 0.2rem;
+  /* margin-top: 20px; */
+  text-align: left;
+  font-family: "Poppins", sans-serif !important;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  font-size: 2.5rem;
+  display: inline-block;
+  position: relative;
+  background-image: linear-gradient(to right, #0f212f, #0c1a25);
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: 0.2rem;
+  transition: all 0.2s;
+  margin: 0 0 -1rem 0;
 }
 mat-card-title,
 mat-card-subtitle {
@@ -943,6 +963,15 @@ mat-slide-toggle {
   max-width: 156rem;
   padding: 0 3.2rem;
   margin: 0 auto;
+}
+
+.container-mat-tab-2 {
+  /* 1140px */
+  max-width: 156rem;
+  padding: 0 3.2rem;
+  margin: 0 auto;
+  animation: moveInBottom 0.5s ease-out 0.75s;
+  animation-fill-mode: backwards;
 }
 
 .icon-sub-table {
