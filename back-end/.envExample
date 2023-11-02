@@ -4,5 +4,10 @@ DATABASE_USER=root
 DATABASE_PASSWORD=root
 DATABASE_NAME=planning
 
-SENDGRID_API_KEY=SG.XXXXXXX
-CAN_SEND_EMAILS=0
+Cognito_API=https://planning.amazoncognito.com
+Gognito_client_id=string
+Gognito_client_secret=string
+Gognito_client_redirect_uri=https://localhost:4200/auth
+
+
+TOC_API=https://toc.loc.codeobia.com/api

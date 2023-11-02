@@ -3,13 +3,13 @@ import {
   Entity,
   JoinColumn,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Melia } from './melia.entity';
 
 @Entity()
 export class MeliaTypes {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'text' })
