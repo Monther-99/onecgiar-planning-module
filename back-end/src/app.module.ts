@@ -16,6 +16,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { IpsrModule } from './ipsr/ipsr.module';
 import { IpsrValueModule } from './ipsr-value/ipsr-value.module';
 import { ConstantsModule } from './constants/constants.module';
+import { MeliaTypeModule } from './melia-type/melia-type.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ConstantsModule } from './constants/constants.module';
     CrossCuttingModule,
     IpsrValueModule,
     ConstantsModule,
+    MeliaTypeModule,
   ],
 })
 export class AppModule {}
