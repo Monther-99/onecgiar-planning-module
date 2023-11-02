@@ -92,6 +92,7 @@
       *ngIf="!loading && this.partners?.length"
       class="btn--animated"
       [selectedIndex]="selectedTabIndex"
+      (selectedTabChange)="tabChanged($event)"
     >
       <mat-tab *ngIf="isCenter == false" label="Summary">
         <!-- step-2 -->
@@ -450,6 +451,7 @@
           [status]="!checkComplete(partner.id)"
           [initiative_id]="initiative_data.id"
           [organization_id]="partner.id"
+          [organization]="organizationSelected"
           (clicked)="validateCenter(partner.id)"
         >
           ></app-center-status
