@@ -126,3 +126,15 @@ textarea::placeholder {
 .error {
   color: red;
 }
+
+.phase-box {
+  width: auto;
+  height: auto;
+  background-color: #ffffff;
+}
+
+:host {
+  ::ng-deep.mdc-dialog .mdc-dialog__content {
+    padding: 20px 24px 20px 24px !important;
+  }
+}
