@@ -1,5 +1,5 @@
-@import "../../../sass/pages/admin-module/user-management";
-@import "../../../sass/layout/admin-module/user-management";
+// @import "../../sass/pages/admin-module/user-management";
+@import "../../../sass/layout/melia-admin-dialog/melia-admin-dialog";
 // mat-option {
 //   cursor: url(../../../assets/shared-image/Vector-cursor.svg), pointer !important;
 // }
@@ -57,6 +57,7 @@
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  gap: 5rem;
 }
 
 .form-dialog-conten-button-box-3 {
@@ -111,9 +112,13 @@ textarea::placeholder {
 
 .texta {
   height: 13rem !important;
-  margin-bottom: 3rem;
+  padding: 0 2rem 0 0;
 }
 
-.m-t {
-  margin-top: 8rem !important;
+// .m-t {
+//   margin-top: 8rem !important;
+// }
+
+.m-b-texta {
+  margin-bottom: 5rem;
 }

@@ -17,52 +17,54 @@
 </div>
 
 <div class="form-dialog-conten-box-1">
-  <form [formGroup]="assignOrgsForm" class="form-dialog-content">
-    <!-- //Organizations  filed----- -->
-    <div class="form-dialog-content__field--grid-column">
-      <div class="form-dialog-content__title-box">
-        <mat-label class="form-dialog-content__title-box__title"
-          >Organizations<span class="star">*</span></mat-label
+  <mat-dialog-content>
+    <form [formGroup]="assignOrgsForm" class="form-dialog-content">
+      <!-- //Organizations  filed----- -->
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Organizations<span class="star">*</span></mat-label
+          >
+        </div>
+        <mat-form-field
+          class="form-dialog-content__field"
+          floatLabel="always"
+          hideRequiredMarker
+          appearance="outline"
         >
+          <mat-select formControlName="organizations" multiple>
+            <mat-option
+              *ngFor="let organization of organizations"
+              [value]="organization.id"
+            >
+              {{ organization.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-      <mat-form-field
-        class="form-dialog-content__field"
-        floatLabel="always"
-        hideRequiredMarker
-        appearance="outline"
-      >
-        <mat-select formControlName="organizations" multiple>
-          <mat-option
-            *ngFor="let organization of organizations"
-            [value]="organization.id"
-          >
-            {{ organization.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
 
-    <div>
-      <div class="form-dialog-conten-button-box">
-        <div class="form-dialog-conten__button-box" align="end">
-          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+      <div>
+        <div class="form-dialog-conten-button-box">
+          <div class="form-dialog-conten__button-box" align="end">
+            <!-- <button mat-button mat-dialog-close>Cancel</button> -->
 
-          <button
-            class="form-dialog-conten__button-box__btn"
-            type="submit"
-            mat-raised-button
-            mat-button
-            color="primary"
-            mat-button
-            color="primary"
-            (click)="submit()"
-          >
-            Save
-          </button>
+            <button
+              class="form-dialog-conten__button-box__btn"
+              type="submit"
+              mat-raised-button
+              mat-button
+              color="primary"
+              mat-button
+              color="primary"
+              (click)="submit()"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </mat-dialog-content>
 </div>
 
 <!-- <mat-dialog-actions align="end"> -->

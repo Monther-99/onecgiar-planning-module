@@ -1,40 +1,39 @@
 <div class="user-management__icon-box">
-    <mat-icon class="user-management__icon-box__icon">
-      <img
-        class="user-management__icon-box__icon--1"
-        src="../../assets/shared-image/setting-config-black.svg"
-        alt="~/Frontend/images/icon _setting-config-black"
-    /></mat-icon>
-    <span class="user-management__icon-box__title">Parameter settings</span>
-  </div>
-  
-  <div class="user-management__text-box">
-    <p class="user-management__text-box__title t-m-b">
-      Welcome to the Parameter settings panel, here you can manage the submit and
-      the constants table within the platform.
-    </p>
-  </div>
+  <mat-icon class="user-management__icon-box__icon">
+    <img
+      class="user-management__icon-box__icon--1"
+      src="../../assets/shared-image/setting-config-black.svg"
+      alt="~/Frontend/images/icon _setting-config-black"
+  /></mat-icon>
+  <span class="user-management__icon-box__title">Parameter settings</span>
+</div>
 
-  <div class="user-management__content--1">
-    <div class="user-management__container-1">
+<div class="user-management__text-box">
+  <p class="user-management__text-box__title t-m-b">
+    Welcome to the Parameter settings panel, here you can manage the submit and
+    the constants table within the platform.
+  </p>
+</div>
 
-        <mat-card class="result">
-            <mat-card-content>
-              <h2 class="example-h2">Submit</h2>
-          
-              <section class="example-section">
-                <mat-slide-toggle
-                  class="example-margin"
-                  [checked]="canSubmit"
-                  (change)="toggle()"
-                >
-                  Allow submit system
-                </mat-slide-toggle>
-              </section>
-            </mat-card-content>
-          </mat-card>
-          
-          <!-- <div class="table-content">
+<div class="user-management__content--1">
+  <div class="user-management__container-1">
+    <mat-card class="result">
+      <mat-card-content>
+        <h2 class="example-h2">Submit</h2>
+
+        <section class="example-section">
+          <mat-slide-toggle
+            class="example-margin"
+            [checked]="canSubmit"
+            (change)="toggle()"
+          >
+            Allow submit system
+          </mat-slide-toggle>
+        </section>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- <div class="table-content">
             <h2 class="title">Constants Table</h2>
             <div class="table-box mat-elevation-z8">
               <table mat-table [dataSource]="constants">
@@ -93,7 +92,5 @@
               </table>
             </div>
           </div> -->
-          
-
-    </div>
   </div>
+</div>
