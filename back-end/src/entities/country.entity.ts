@@ -11,13 +11,10 @@ import { Region } from './region.entity';
 @Entity()
 export class Country {
   @PrimaryGeneratedColumn()
-  id: number;
+  code: number;
 
   @Column()
   name: string;
-
-  @Column()
-  code: number;
 
   @Column()
   isoAlpha2: string;

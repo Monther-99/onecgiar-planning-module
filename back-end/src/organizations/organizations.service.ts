@@ -92,7 +92,7 @@ export class OrganizationsService {
         where: { um49Code: region.um49Code },
       });
       if (entity != null) {
-        await this.regionRepository.update({ id: entity.id }, { ...region });
+        await this.regionRepository.update(entity.um49Code, { ...region });
       } else {
         await this.createRegion(region);
       }
@@ -109,7 +109,16 @@ export class OrganizationsService {
   getRegions() {
     return this.regionRepository
       .createQueryBuilder('region')
-      .where('region.parent_region_id IS NOT NULL')
+      .where('region.parent_region_um49_code IS NOT NULL')
+      .orderBy('region.name')
+      .getMany();
+  }
+
+  getCountriesRegions(codes: number[]) {
+    return this.regionRepository
+      .createQueryBuilder('region')
+      .innerJoin(Country, 'country', 'country.region_um49_code = region.um49_code')
+      .where('country.code IN (:codes)', { codes: codes })
       .orderBy('region.name')
       .getMany();
   }
@@ -136,7 +145,7 @@ export class OrganizationsService {
         code: country.code,
       });
       if (entity != null) {
-        this.countryRepository.update(entity.id, { ...data });
+        this.countryRepository.update(entity.code, { ...data });
       } else {
         const newCountry = this.countryRepository.create({
           ...data,
@@ -171,7 +180,7 @@ export class OrganizationsService {
         code: partner.code,
       });
       if (entity != null) {
-        this.partnerRepository.update(entity.id, { ...data });
+        this.partnerRepository.update(entity.code, { ...data });
       } else {
         const newPartner = this.partnerRepository.create({
           ...data,

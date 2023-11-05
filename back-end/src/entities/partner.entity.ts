@@ -4,13 +4,10 @@ import { Melia } from './melia.entity';
 @Entity()
 export class Partner {
   @PrimaryGeneratedColumn()
-  id: number;
+  code: number;
 
   @Column()
   name: string;
-
-  @Column()
-  code: number;
 
   @Column({ nullable: true })
   acronym: string;

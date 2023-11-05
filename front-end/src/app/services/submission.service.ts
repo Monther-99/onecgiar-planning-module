@@ -220,6 +220,14 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
+  async getCountriesRegions(codes: number[]) {
+    return firstValueFrom(
+      this.http
+        .post('/api/organizations/countries-regions/', codes)
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
   async getCountries() {
     return firstValueFrom(
       this.http.get('/api/organizations/countries').pipe(map((d: any) => d))

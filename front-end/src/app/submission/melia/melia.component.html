@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.id ? "Edit" : "Add" }} MELIA
+      {{ data.id ? 'Edit' : 'Add' }} MELIA
     </p>
   </div>
 
@@ -203,47 +203,6 @@
         </mat-form-field>
       </div>
 
-      <div class="form-dialog-content__field--grid-column">
-        <div class="form-dialog-content__title-box">
-          <mat-label class="form-dialog-content__title-box__title"
-            >Partners<span class="star">*</span></mat-label
-          >
-        </div>
-
-        <ng-select
-          [items]="partners | async"
-          formControlName="partners"
-          placeholder="Partners"
-          bindLabel="name"
-          [minTermLength]="2"
-          typeToSearchText="Please enter 2 or more characters"
-          [loading]="partnersLoading"
-          [typeahead]="partnersInput"
-          [multiple]="true"
-          appearance="outline"
-        >
-          <div class="t-box">
-            <ng-template
-              ng-option-tmp
-              let-item="item"
-              let-search="searchTerm"
-              let-index="index"
-            >
-              <div class="ng-select-option">
-                <span>{{ item.name }}</span>
-                <span *ngIf="item.acronym"> - {{ item.acronym }}</span>
-              </div>
-            </ng-template>
-          </div>
-        </ng-select>
-
-        <mat-error
-          class="error"
-          *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
-          >Partners is required</mat-error
-        >
-      </div>
-
       <!-- //Other Initiatives filed----- -->
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
@@ -262,7 +221,7 @@
             required
             formControlName="other_initiatives"
             multiple
-            [compareWith]="compareFn"
+            [compareWith]="compareId"
           >
             <ng-container *ngFor="let initiative of initiatives">
               <mat-option
@@ -296,7 +255,12 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select required formControlName="contribution_results" multiple>
+          <mat-select
+            required
+            formControlName="contribution_results"
+            multiple
+            (valueChange)="resultSelected($event)"
+          >
             <ng-container *ngFor="let result of results">
               <mat-option [value]="result.id">
                 {{ result.title }}
@@ -309,6 +273,48 @@
             >MELIA Study contributes is required</mat-error
           >
         </mat-form-field>
+      </div>
+
+      <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Partners<span class="star">*</span></mat-label
+          >
+        </div>
+
+        <ng-select
+          [items]="partners | async"
+          formControlName="partners"
+          placeholder="Partners"
+          bindLabel="name"
+          [minTermLength]="2"
+          typeToSearchText="Please enter 2 or more characters"
+          [loading]="partnersLoading"
+          [typeahead]="partnersInput"
+          [multiple]="true"
+          appearance="outline"
+          [compareWith]="compareCode"
+        >
+          <div class="t-box">
+            <ng-template
+              ng-option-tmp
+              let-item="item"
+              let-search="searchTerm"
+              let-index="index"
+            >
+              <div class="ng-select-option">
+                <span>{{ item.name }}</span>
+                <span *ngIf="item.acronym"> - {{ item.acronym }}</span>
+              </div>
+            </ng-template>
+          </div>
+        </ng-select>
+
+        <mat-error
+          class="error"
+          *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
+          >Partners is required</mat-error
+        >
       </div>
 
       <div class="form-dialog-content__field--grid-column">
@@ -345,7 +351,8 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
-            (change)="loadInitCountries($event)"
+            (change)="loadInitCountries()"
+            [compareWith]="compareUmCode"
           >
           </ng-select>
           <!-- <mat-error
@@ -357,7 +364,10 @@
 
         <div
           class="form-dialog-content__field--grid-column"
-          *ngIf="meliaForm.value.initiative_regions.length"
+          *ngIf="
+            meliaForm.value.initiative_regions &&
+            meliaForm.value.initiative_regions.length
+          "
         >
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
@@ -373,6 +383,7 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
+            [compareWith]="compareCode"
             required
           >
           </ng-select>
@@ -398,7 +409,8 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
-            (change)="loadCoInitCountries($event)"
+            (change)="loadCoInitCountries()"
+            [compareWith]="compareUmCode"
           >
           </ng-select>
           <!-- <mat-error
@@ -410,7 +422,10 @@
 
         <div
           class="form-dialog-content__field--grid-column"
-          *ngIf="meliaForm.value.co_initiative_regions.length"
+          *ngIf="
+            meliaForm.value.co_initiative_regions &&
+            meliaForm.value.co_initiative_regions.length
+          "
         >
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
@@ -426,6 +441,7 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
+            [compareWith]="compareCode"
             required
           >
           </ng-select>
@@ -451,7 +467,7 @@
               (click)="submit()"
               cdkFocusInitial
             >
-              {{ data.id ? "Edit" : "Add" }}
+              {{ data.id ? 'Edit' : 'Add' }}
             </button>
           </div>
         </div>

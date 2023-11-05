@@ -11,6 +11,7 @@ import { Initiative } from './initiative.entity';
 import { MeliaTypes } from './melia-types.entity';
 import { Country } from './country.entity';
 import { Partner } from './partner.entity';
+import { Region } from './region.entity';
 
 @Entity()
 export class Melia {
@@ -62,6 +63,14 @@ export class Melia {
 
   @Column({ nullable: true })
   geo_scope: string;
+
+  @ManyToMany(() => Region, (region) => region.melia)
+  @JoinTable()
+  initiative_regions: Region[];
+
+  @ManyToMany(() => Region, (region) => region.melia_co)
+  @JoinTable()
+  co_initiative_regions: Region[];
 
   @ManyToMany(() => Country, (country) => country.melia)
   @JoinTable()
