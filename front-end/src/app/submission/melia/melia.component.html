@@ -348,7 +348,8 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
-            (change)="loadInitCountries($event)"
+            (change)="loadInitCountries()"
+            [compareWith]="compareUmCode"
           >
           </ng-select>
           <!-- <mat-error
@@ -360,7 +361,10 @@
 
         <div
           class="form-dialog-content__field--grid-column"
-          *ngIf="meliaForm.value.initiative_regions.length"
+          *ngIf="
+            meliaForm.value.initiative_regions &&
+            meliaForm.value.initiative_regions.length
+          "
         >
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
@@ -402,7 +406,8 @@
             bindLabel="name"
             [multiple]="true"
             appearance="outline"
-            (change)="loadCoInitCountries($event)"
+            (change)="loadCoInitCountries()"
+            [compareWith]="compareUmCode"
           >
           </ng-select>
           <!-- <mat-error
@@ -414,7 +419,10 @@
 
         <div
           class="form-dialog-content__field--grid-column"
-          *ngIf="meliaForm.value.co_initiative_regions.length"
+          *ngIf="
+            meliaForm.value.co_initiative_regions &&
+            meliaForm.value.co_initiative_regions.length
+          "
         >
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"

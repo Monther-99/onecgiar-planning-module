@@ -12,13 +12,10 @@ import { Melia } from './melia.entity';
 @Entity()
 export class Region {
   @PrimaryGeneratedColumn()
-  id: number;
+  um49Code: number;
 
   @Column()
   name: string;
-
-  @Column()
-  um49Code: number;
 
   @ManyToOne(() => Region, (region) => region.childRegions)
   parentRegion: Region;

@@ -23,6 +23,11 @@ export class OrganizationsController {
     return this.organizationsService.create(createOrganizationDto);
   }
 
+  @Post('countries-regions')
+  getCountriesRegions(@Body() codes: any) {
+    return this.organizationsService.getCountriesRegions(codes);
+  }
+
   @Get()
   findAll(@Query() query) {
     return this.organizationsService.findAll(query);

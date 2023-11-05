@@ -90,7 +90,7 @@ export class MeliaComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  resultSelected(event: any) {
+  async resultSelected(event: any) {
     let selectedResults = this.results.filter((result: any) =>
       event.includes(result.id)
     );
@@ -99,11 +99,19 @@ export class MeliaComponent implements OnInit {
     let selectedPartners = this.meliaForm.value.partners;
     let partners = selectedResults
       .map((d: any) => d.partners)
-      .reduce((a: any, b: any) => a.concat(b))
-      .concat(selectedPartners);
+      .reduce((a: any, b: any) => a.concat(b));
+    if (selectedPartners) partners = partners.concat(selectedPartners);
     let partnersArray: any[] = [];
     partners.forEach((partner: any) => {
       if (!partnersArray[partner.code]) partnersArray[partner.code] = partner;
+    });
+    selectedResults.forEach((result: any) => {
+      if (
+        result.responsible_organization &&
+        !partnersArray[result.responsible_organization.code]
+      )
+        partnersArray[result.responsible_organization.code] =
+          result.responsible_organization;
     });
 
     let selectedInitRegions = this.meliaForm.value.initiative_regions;
@@ -111,8 +119,12 @@ export class MeliaComponent implements OnInit {
     let regions = selectedResults
       .map((d: any) => d.region)
       .reduce((a: any, b: any) => a.concat(b));
-    let allInitRegions = regions.concat(selectedInitRegions);
-    let allCoInitRegions = regions.concat(selectedCoInitRegions);
+    let allInitRegions = regions;
+    let allCoInitRegions = regions;
+    if (selectedInitRegions)
+      allInitRegions = allInitRegions.concat(selectedInitRegions);
+    if (selectedCoInitRegions)
+      allCoInitRegions = allCoInitRegions.concat(selectedCoInitRegions);
     let initRegionsArray: any[] = [];
     let coInitRegionsArray: any[] = [];
     allInitRegions.forEach((region: any) => {
@@ -129,8 +141,12 @@ export class MeliaComponent implements OnInit {
     let countries = selectedResults
       .map((d: any) => d.country)
       .reduce((a: any, b: any) => a.concat(b));
-    let allInitCountries = countries.concat(selectedInitCountries);
-    let allCoInitCountries = countries.concat(selectedCoInitCountries);
+    let allInitCountries = countries;
+    let allCoInitCountries = countries;
+    if (selectedInitCountries)
+      allInitCountries = allInitCountries.concat(selectedInitCountries);
+    if (selectedCoInitCountries)
+      allCoInitCountries = allCoInitCountries.concat(selectedCoInitCountries);
     let initCountriesArray: any[] = [];
     let coInitCountriesArray: any[] = [];
     allInitCountries.forEach((country: any) => {
@@ -142,10 +158,36 @@ export class MeliaComponent implements OnInit {
         coInitCountriesArray[country.code] = country;
     });
 
+    let CountriesCodes = countries.map((country: any) => country.code);
+    let regionsByCountries = [];
+    if (CountriesCodes.length)
+      regionsByCountries = await this.submissionService.getCountriesRegions(
+        CountriesCodes
+      );
+
+    regionsByCountries.forEach((region: any) => {
+      if (!initRegionsArray[region.um49Code])
+        initRegionsArray[region.um49Code] = region;
+      if (!coInitRegionsArray[region.um49Code])
+        coInitRegionsArray[region.um49Code] = region;
+    });
+
+    let geoScope =
+      initRegionsArray.length || coInitRegionsArray.length
+        ? 'region'
+        : 'global';
+
     this.meliaForm.patchValue({
       partners: partnersArray,
+      geo_scope: geoScope,
       initiative_regions: initRegionsArray,
       co_initiative_regions: coInitRegionsArray,
+    });
+
+    this.loadInitCountries();
+    this.loadCoInitCountries();
+
+    this.meliaForm.patchValue({
       initiative_countries: initCountriesArray,
       co_initiative_countries: coInitCountriesArray,
     });
@@ -167,18 +209,20 @@ export class MeliaComponent implements OnInit {
     );
   }
 
-  loadInitCountries(event: any) {
-    const regionsIds = event.map((region: any) => region.id);
+  loadInitCountries() {
+    const data = this.meliaForm.value.initiative_regions;
+    const regionsCodes = data.map((region: any) => region.um49Code);
     this.initCountries = this.countries.filter((country: any) => {
-      if (country.region) return regionsIds.includes(country.region.id);
+      if (country.region) return regionsCodes.includes(country.region.um49Code);
       else return false;
     });
   }
 
-  loadCoInitCountries(event: any) {
-    const regionsIds = event.map((region: any) => region.id);
+  loadCoInitCountries() {
+    const data = this.meliaForm.value.co_initiative_regions;
+    const regionsCodes = data.map((region: any) => region.um49Code);
     this.coInitCountries = this.countries.filter((country: any) => {
-      if (country.region) return regionsIds.includes(country.region.id);
+      if (country.region) return regionsCodes.includes(country.region.um49Code);
       else return false;
     });
   }
@@ -189,6 +233,10 @@ export class MeliaComponent implements OnInit {
 
   compareCode(item: any, selected: any) {
     return item.code === selected.code;
+  }
+
+  compareUmCode(item: any, selected: any) {
+    return item.um49Code === selected.um49Code;
   }
 
   //Close-Dialog
