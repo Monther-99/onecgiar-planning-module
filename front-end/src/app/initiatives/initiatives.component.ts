@@ -82,6 +82,7 @@ export class InitiativesComponent implements OnInit {
     this.pageIndex = 1;
     this.pageSize = 10;
     this.getInitiatives(filters);
+    this.paginator.pageSize = 0;
   }
 
   async pagination(event: PageEvent) {
