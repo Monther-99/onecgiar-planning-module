@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { ConstantService } from 'src/app/services/constant.service';
+import { Component } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { Meta, Title } from "@angular/platform-browser";
+import { ToastrService } from "ngx-toastr";
+import { HeaderService } from "src/app/header.service";
+import { ConstantService } from "src/app/services/constant.service";
 @Component({
-  selector: 'app-parameters-settings',
-  templateUrl: './parameters-settings.component.html',
-  styleUrls: ['./parameters-settings.component.scss']
+  selector: "app-parameters-settings",
+  templateUrl: "./parameters-settings.component.html",
+  styleUrls: ["./parameters-settings.component.scss"],
 })
 export class ParametersSettingsComponent {
   canSubmit!: boolean;
@@ -15,7 +17,19 @@ export class ParametersSettingsComponent {
     private constantService: ConstantService,
     private dialog: MatDialog,
     private toster: ToastrService,
-  ) {}
+    private headerService: HeaderService,
+    private title: Title,
+    private meta: Meta
+  ) {
+    this.headerService.background =
+      "linear-gradient(to  bottom, #04030F, #020106)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to  top, #0F212F, #09151E)";
+  }
 
   // displayedColumns: string[] = [
   //   'id',
@@ -27,6 +41,9 @@ export class ParametersSettingsComponent {
   async ngOnInit() {
     await this.getPublishStatus();
     // await this.getContatns();
+
+    this.title.setTitle("Parameter settings");
+    this.meta.updateTag({ name: "description", content: "Parameter settings" });
   }
 
   // async getContatns() {
@@ -35,7 +52,7 @@ export class ParametersSettingsComponent {
 
   async getPublishStatus() {
     this.publishValue = await this.constantService.getSubmitStatus();
-    if (this.publishValue.value == '0') {
+    if (this.publishValue.value == "0") {
       this.canSubmit = false;
     } else {
       this.canSubmit = true;

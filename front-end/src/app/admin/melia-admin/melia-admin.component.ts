@@ -1,22 +1,28 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Meta, Title } from '@angular/platform-browser';
-import { ToastrService } from 'ngx-toastr';
-import { DeleteConfirmDialogComponent } from 'src/app/delete-confirm-dialog/delete-confirm-dialog.component';
-import { HeaderService } from 'src/app/header.service';
-import { MeliaAdminDialogComponent } from './melia-admin-dialog/melia-admin-dialog.component';
-import { MeliaTypeService } from 'src/app/services/melia-type.service';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Meta, Title } from "@angular/platform-browser";
+import { ToastrService } from "ngx-toastr";
+import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
+import { HeaderService } from "src/app/header.service";
+import { MeliaAdminDialogComponent } from "./melia-admin-dialog/melia-admin-dialog.component";
+import { MeliaTypeService } from "src/app/services/melia-type.service";
 @Component({
-  selector: 'app-melia-admin',
-  templateUrl: './melia-admin.component.html',
-  styleUrls: ['./melia-admin.component.scss']
+  selector: "app-melia-admin",
+  templateUrl: "./melia-admin.component.html",
+  styleUrls: ["./melia-admin.component.scss"],
 })
 export class MeliaAdminComponent implements OnInit {
-  columnsToDisplay: string[] = ["id", "name", "description", "availability", "actions"];
+  columnsToDisplay: string[] = [
+    "id",
+    "name",
+    "description",
+    "availability",
+    "actions",
+  ];
   dataSource: MatTableDataSource<any>;
   melia: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
