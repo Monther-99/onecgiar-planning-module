@@ -84,7 +84,17 @@
                   </tr>
                 </ng-container>
                 <tr class="total">
-                  <td [colSpan]="period.length + 1">Total</td>
+                  <td>Total</td>
+                  <ng-container *ngFor="let item of period">
+                    <td>
+                      <mat-icon
+                        class="icon-sub-table-2"
+                        color="primary"
+                        *ngIf="finalPeriodVal(item.id)"
+                        >close</mat-icon
+                      >
+                    </td>
+                  </ng-container>
                   <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
                 </tr>
               </table>
@@ -169,7 +179,23 @@
                     </tr>
                   </ng-container>
                   <tr class="total">
-                    <td [colSpan]="period.length + 2">Subtotal</td>
+                    <td colspan="2">Subtotal</td>
+                    <ng-container *ngFor="let per of period">
+                      <td>
+                        <mat-icon
+                          class="icon-sub-table-2"
+                          color="primary"
+                          *ngIf="
+                            finalItemPeriodVal(
+                              wp.ost_wp.wp_official_code,
+                              per.id
+                            )
+                          "
+                          >close</mat-icon
+                        >
+                      </td>
+                    </ng-container>
+
                     <td>
                       {{
                         toggleSummaryValues[wp.ost_wp.wp_official_code]
@@ -179,6 +205,7 @@
                             )
                       }}%
                     </td>
+
                     <td>
                       {{
                         toggleSummaryValues[wp.ost_wp.wp_official_code]
@@ -293,6 +320,7 @@
                   </ng-container>
                   <tr class="total">
                     <td [colSpan]="period.length + 2">Subtotal</td>
+
                     <td>
                       {{
                         toggleValues[partner.code][wp.ost_wp.wp_official_code]
