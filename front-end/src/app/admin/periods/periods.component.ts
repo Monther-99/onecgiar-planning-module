@@ -64,6 +64,7 @@ export class PeriodsComponent implements OnInit {
       this.pageIndex = 1;
       this.pageSize = 10;
       this.initTable(this.filters);
+      this.paginator.pageSize = 0;
     });
   }
   async pagination(event: PageEvent) {

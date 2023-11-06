@@ -21,6 +21,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
   styleUrls: ["./users.component.scss"],
 })
 export class UsersComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   columnsToDisplay: string[] = ["id", "name", "email", "role", "actions"];
   dataSource: MatTableDataSource<any>;
   users: any = [];
@@ -72,6 +74,7 @@ export class UsersComponent implements OnInit {
       this.pageIndex = 1;
       this.pageSize = 10;
       this.initTable(this.filters);
+      this.paginator.pageSize = 0;
     });
   }
 
