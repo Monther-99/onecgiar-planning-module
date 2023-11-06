@@ -975,8 +975,8 @@ mat-slide-toggle {
   /* 1140px */
   max-width: 156rem;
   padding: 0 3.2rem;
-  margin: 0 auto;
-  animation: moveInBottom 0.5s ease-out 0.75s;
+  margin: 0 auto -3rem auto;
+  animation: _ngcontent-evq-c61_moveInBottom 0.5s ease-out 0.75s;
   animation-fill-mode: backwards;
 }
 
@@ -1802,6 +1802,7 @@ pre {
       /* margin-left: 104rem; */
       width: 98%;
       justify-content: start;
+      left: -11rem;
     }
 
     .sec-1 {
