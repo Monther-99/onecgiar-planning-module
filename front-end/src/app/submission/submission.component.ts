@@ -30,6 +30,17 @@ import { InitiativesService } from "../services/initiatives.service";
 })
 export class SubmissionComponent implements OnInit {
   title = "planning";
+
+
+
+
+
+
+
+
+
+
+
   columnsToDisplay: string[] = ["name", "email"];
   constructor(
     private submissionService: SubmissionService,
