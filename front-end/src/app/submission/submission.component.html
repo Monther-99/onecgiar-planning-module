@@ -576,15 +576,22 @@
                         <mat-form-field
                           class="form-dialog-content__field"
                           [matTooltip]="
+                            !(
+                              perValues[partner.code][
+                                wp.ost_wp.wp_official_code
+                              ][item.id] | inQue
+                            ) &&
+                            item.category != 'EOI' &&
+                            item.category != 'OUTCOME' &&
                             values[partner.code][wp.ost_wp.wp_official_code][
                               item.id
-                            ] === 0
+                            ] == 0
                               ? 'You can mark this result as no budget assigned click to more info'
                               : ''
                           "
                           matTooltipPosition="left"
-                          [satPopoverAnchor]="popoverTargetLikelihood"
-                          (click)="popoverTargetLikelihood.toggle()"
+                          [satPopoverAnchor]="popoverCheckbox"
+                          (click)="popoverCheckbox.toggle()"
                           floatLabel="always"
                           hideRequiredMarker
                           appearance="outline"
@@ -653,20 +660,28 @@
                           />
                           <mat-icon matSuffix>%</mat-icon>
                         </mat-form-field>
-                        <sat-popover #popoverTargetLikelihood hasBackdrop>
+
+                        <sat-popover #popoverCheckbox hasBackdrop>
                           <div
                             class="popover"
                             *ngIf="
+                              !(
+                                perValues[partner.code][
+                                  wp.ost_wp.wp_official_code
+                                ][item.id] | inQue
+                              ) &&
+                              item.category != 'EOI' &&
+                              item.category != 'OUTCOME' &&
                               values[partner.code][wp.ost_wp.wp_official_code][
                                 item.id
-                              ] === 0
+                              ] == 0
                             "
                           >
                             <div class="popover__head">
                               <h3 class="popover__h3">No budget</h3>
                               <mat-icon
                                 class="popover__icon"
-                                (click)="popoverTargetLikelihood.close()"
+                                (click)="popoverCheckbox.close()"
                                 >close</mat-icon
                               >
                             </div>
@@ -674,18 +689,6 @@
                               You can mark this result as no budget assigned
                               <span>
                                 <mat-checkbox
-                                  *ngIf="
-                                    !(
-                                      perValues[partner.code][
-                                        wp.ost_wp.wp_official_code
-                                      ][item.id] | inQue
-                                    ) &&
-                                    item.category != 'EOI' &&
-                                    item.category != 'OUTCOME' &&
-                                    values[partner.code][
-                                      wp.ost_wp.wp_official_code
-                                    ][item.id] == 0
-                                  "
                                   [(ngModel)]="
                                     noValuesAssigned[partner.code][
                                       wp.ost_wp.wp_official_code
@@ -709,13 +712,20 @@
                       <td>
                         <mat-form-field
                           [matTooltip]="
+                            !(
+                              perValues[partner.code][
+                                wp.ost_wp.wp_official_code
+                              ][item.id] | inQue
+                            ) &&
+                            item.category != 'EOI' &&
+                            item.category != 'OUTCOME' &&
                             values[partner.code][wp.ost_wp.wp_official_code][
                               item.id
-                            ] === 0
+                            ] == 0
                               ? 'You can mark this result as no budget assigned click to more info'
                               : ''
                           "
-                          [satPopoverAnchor]="popoverCheckbox"
+                          [satPopoverAnchor]="popoverCheckboxs"
                           (click)="popoverCheckbox.toggle()"
                           class="budget"
                           *ngIf="
@@ -789,20 +799,27 @@
                         </mat-form-field>
                       </td>
 
-                      <sat-popover #popoverCheckbox hasBackdrop>
+                      <sat-popover #popoverCheckboxs hasBackdrop>
                         <div
                           class="popover-2"
                           *ngIf="
+                            !(
+                              perValues[partner.code][
+                                wp.ost_wp.wp_official_code
+                              ][item.id] | inQue
+                            ) &&
+                            item.category != 'EOI' &&
+                            item.category != 'OUTCOME' &&
                             values[partner.code][wp.ost_wp.wp_official_code][
                               item.id
-                            ] === 0
+                            ] == 0
                           "
                         >
                           <div class="popover__head">
                             <h3 class="popover__h3">No budget</h3>
                             <mat-icon
                               class="popover__icon"
-                              (click)="popoverCheckbox.close()"
+                              (click)="popoverCheckboxs.close()"
                               >close</mat-icon
                             >
                           </div>
