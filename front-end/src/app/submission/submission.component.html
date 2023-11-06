@@ -580,8 +580,9 @@
                               item.id
                             ] === 0
                               ? 'You can mark this result as no budget assigned click to more info'
-                              : 'You cannot mark this result as no budget assigned because the value on the percentage column it is greater than zero'
+                              : ''
                           "
+                          matTooltipPosition="left"
                           [satPopoverAnchor]="popoverTargetLikelihood"
                           (click)="popoverTargetLikelihood.toggle()"
                           floatLabel="always"
@@ -712,7 +713,7 @@
                               item.id
                             ] === 0
                               ? 'You can mark this result as no budget assigned click to more info'
-                              : 'You cannot mark this result as no budget assigned because the value on the percentage column it is greater than zero'
+                              : ''
                           "
                           [satPopoverAnchor]="popoverCheckbox"
                           (click)="popoverCheckbox.toggle()"
