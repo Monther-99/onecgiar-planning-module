@@ -951,6 +951,7 @@ mat-slide-toggle {
 .error {
   text-align: center;
   color: red;
+  margin-top: 2rem;
 }
 
 .wp-actions {
@@ -974,8 +975,8 @@ mat-slide-toggle {
   /* 1140px */
   max-width: 156rem;
   padding: 0 3.2rem;
-  margin: 0 auto;
-  animation: moveInBottom 0.5s ease-out 0.75s;
+  margin: 0 auto -3rem auto;
+  animation: _ngcontent-evq-c61_moveInBottom 0.5s ease-out 0.75s;
   animation-fill-mode: backwards;
 }
 
@@ -1801,6 +1802,7 @@ pre {
       /* margin-left: 104rem; */
       width: 98%;
       justify-content: start;
+      left: -11rem;
     }
 
     .sec-1 {
@@ -2126,6 +2128,91 @@ pre {
     border-right: 16px solid #efefef;
     /* border-bottom: 12px solid transparent; */
     /* transform: skewY(337deg); */
+  }
+
+  &__h3 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #000;
+    font-family: "Poppins", sans-serif !important;
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  &__icon {
+    -webkit-user-select: none;
+    user-select: none;
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    height: 24px;
+    width: 24px;
+    overflow: hidden;
+    cursor: pointer;
+    color: #0f212f;
+  }
+
+  &__primaryButton {
+    /* display: flex; */
+    align-items: center;
+    padding: 5px;
+    justify-content: space-between;
+    flex-shrink: 0;
+    background-color: #0f212f !important;
+    color: #ffffff !important;
+    text-align: center;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+
+  // .popover-icon {
+  //   width: 18px;
+  //   height: 17px;
+  //   object-fit: contain;
+  //   font-size: large;
+  // }
+
+  &__text {
+    text-align: justify;
+    color: #04030f;
+    font-size: 1.3rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 114.5%;
+    line-height: 15.75px;
+    font-family: "Poppins", sans-serif !important;
+    padding: 1.5rem 6rem 0 0;
+  }
+}
+
+.popover-2 {
+  padding: 1rem 1rem 0rem 1rem;
+  position: absolute !important;
+  background: linear-gradient(to left, #efefef, #bcbcbc) !important;
+  width: 279px !important;
+  top: 28px !important;
+  left: -201px !important;
+  border-radius: 20px !important;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 252px;
+    top: -11px;
+    border-top: 12px solid transparent;
+    border-right: 16px solid #efefef;
   }
 
   &__h3 {

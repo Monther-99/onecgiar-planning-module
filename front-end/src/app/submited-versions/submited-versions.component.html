@@ -44,7 +44,7 @@
         <p class="team-members-text-box__text">Submitted versions</p>
       </div>
 
-      <app-filter-version  (filters)="filter($event)"></app-filter-version>
+      <app-filter-version (filters)="filter($event)"></app-filter-version>
 
       <div class="table-box mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>
@@ -155,11 +155,11 @@
         </table>
         <div class="glossary-content-container user-management-paginator-box">
           <mat-paginator
-          [pageSizeOptions]="[10, 20, 30, 50, 100]"
-          [length]="length"
-          [pageIndex]="pageIndex - 1"
-          (page)="pagination($event)"
-          aria-label="Select page of users"
+            [pageSizeOptions]="[10, 20, 30, 50, 100]"
+            [length]="length"
+            [pageIndex]="pageIndex - 1"
+            (page)="pagination($event)"
+            aria-label="Select page of users"
           ></mat-paginator>
         </div>
       </div>

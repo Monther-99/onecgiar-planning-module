@@ -46,8 +46,8 @@
       >
       <div *ngIf="leaders.length != 0" class="container-mat-tab-2">
         <div class="text-box">
-        <p class="leaders-text">Leaders</p>
-      </div>
+          <p class="leaders-text">Leaders</p>
+        </div>
 
         <div class="table-box-5 mat-elevation-z8">
           <table
@@ -86,7 +86,7 @@
       <div class="form-container">
         <form class="search">
           <div class="sec-8">
-            <button
+            <!-- <button
               style="
                 background-image: linear-gradient(to right, #436280, #30455b);
               "
@@ -98,7 +98,7 @@
               (click)="refresh()"
             >
               Refresh
-            </button>
+            </button> -->
           </div>
 
           <div class="sec-7">
@@ -575,7 +575,14 @@
                       <td>
                         <mat-form-field
                           class="form-dialog-content__field"
-                          matTooltip="Click to more info"
+                          [matTooltip]="
+                            values[partner.code][wp.ost_wp.wp_official_code][
+                              item.id
+                            ] === 0
+                              ? 'You can mark this result as no budget assigned click to more info'
+                              : ''
+                          "
+                          matTooltipPosition="left"
                           [satPopoverAnchor]="popoverTargetLikelihood"
                           (click)="popoverTargetLikelihood.toggle()"
                           floatLabel="always"
@@ -647,7 +654,14 @@
                           <mat-icon matSuffix>%</mat-icon>
                         </mat-form-field>
                         <sat-popover #popoverTargetLikelihood hasBackdrop>
-                          <div class="popover">
+                          <div
+                            class="popover"
+                            *ngIf="
+                              values[partner.code][wp.ost_wp.wp_official_code][
+                                item.id
+                              ] === 0
+                            "
+                          >
                             <div class="popover__head">
                               <h3 class="popover__h3">No budget</h3>
                               <mat-icon
@@ -694,6 +708,15 @@
 
                       <td>
                         <mat-form-field
+                          [matTooltip]="
+                            values[partner.code][wp.ost_wp.wp_official_code][
+                              item.id
+                            ] === 0
+                              ? 'You can mark this result as no budget assigned click to more info'
+                              : ''
+                          "
+                          [satPopoverAnchor]="popoverCheckbox"
+                          (click)="popoverCheckbox.toggle()"
                           class="budget"
                           *ngIf="
                             item.category != 'EOI' && item.category != 'OUTCOME'
@@ -765,6 +788,58 @@
                           />
                         </mat-form-field>
                       </td>
+
+                      <sat-popover #popoverCheckbox hasBackdrop>
+                        <div
+                          class="popover-2"
+                          *ngIf="
+                            values[partner.code][wp.ost_wp.wp_official_code][
+                              item.id
+                            ] === 0
+                          "
+                        >
+                          <div class="popover__head">
+                            <h3 class="popover__h3">No budget</h3>
+                            <mat-icon
+                              class="popover__icon"
+                              (click)="popoverCheckbox.close()"
+                              >close</mat-icon
+                            >
+                          </div>
+                          <p class="popover__text">
+                            You can mark this result as no budget assigned
+                            <span>
+                              <mat-checkbox
+                                *ngIf="
+                                  !(
+                                    perValues[partner.code][
+                                      wp.ost_wp.wp_official_code
+                                    ][item.id] | inQue
+                                  ) &&
+                                  item.category != 'EOI' &&
+                                  item.category != 'OUTCOME' &&
+                                  values[partner.code][
+                                    wp.ost_wp.wp_official_code
+                                  ][item.id] == 0
+                                "
+                                [(ngModel)]="
+                                  noValuesAssigned[partner.code][
+                                    wp.ost_wp.wp_official_code
+                                  ][item.id]
+                                "
+                                (change)="
+                                  toggleNoValues(
+                                    partner.code,
+                                    wp.ost_wp.wp_official_code,
+                                    item.id
+                                  )
+                                "
+                                matTooltip="No budget assigned"
+                              ></mat-checkbox
+                            ></span>
+                          </p>
+                        </div>
+                      </sat-popover>
                     </tr>
                   </ng-container>
                   <tr class="total">

@@ -533,7 +533,11 @@
   width: 16px !important;
   height: 10px !important;
   background-color: #ffffff !important;
-  background-image: url("../../assets/shared-image/VectorNew.svg");
+  background-image: url(../../assets/shared-image/Vector-risk-m.svg) !important;
   background-position: center;
   background-size: cover;
+}
+
+::ng-deep .mat-mdc-select-arrow svg {
+  opacity: -1% !important;
 }

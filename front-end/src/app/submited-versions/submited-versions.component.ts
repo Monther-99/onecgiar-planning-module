@@ -94,6 +94,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.pageIndex = 1;
     this.pageSize = 10;
     this.initData(filters);
+    this.paginator.pageSize = 0;
   }
 
   async pagination(event: PageEvent) {
