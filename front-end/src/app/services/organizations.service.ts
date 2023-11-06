@@ -31,7 +31,7 @@ export class OrganizationsService {
   }
 
   submitOrganization(code: string = '0', data: {}) {
-    if (code) {
+    if (code != '0') {
       return firstValueFrom(
         this.http
           .patch("api/organizations/" + code, data)

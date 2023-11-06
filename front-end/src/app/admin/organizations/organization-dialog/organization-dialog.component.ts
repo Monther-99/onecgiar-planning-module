@@ -37,8 +37,8 @@ export class OrganizationDialogComponent implements OnInit {
       acronym: [null, Validators.required],
       code: [null, Validators.required],
     });
-    if (this.organizationCode) {
-      let { id, ...organizationValues } =
+    if (this.organizationCode != '0') {
+      let organizationValues =
         await this.organizationsService.getOrganization(this.organizationCode);
       this.organizationForm.setValue({
         ...organizationValues,
