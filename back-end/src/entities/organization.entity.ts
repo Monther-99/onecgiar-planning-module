@@ -11,16 +11,13 @@ import { Initiative } from './initiative.entity';
 @Entity()
 export class Organization {
   @PrimaryGeneratedColumn()
-  id: number;
+  code: string;
 
   @Column()
   name: string;
 
   @Column()
   acronym: string;
-
-  @Column()
-  code: string;
 
   @ManyToMany(() => Initiative, (initiative) => initiative.organizations)
   initiatives: Initiative[];

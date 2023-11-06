@@ -28,7 +28,17 @@ export class OrganizationsService {
     private PhInitOrgRepository: Repository<PhaseInitiativeOrganization>,
   ) {}
 
-  create(createOrganizationDto: CreateOrganizationDto) {
+  async create(createOrganizationDto: CreateOrganizationDto) {
+    let orgExist = await this.organizationRepository.findOneBy({
+      code: createOrganizationDto.code,
+    });
+
+    if (orgExist) {
+      throw new BadRequestException(
+        'Organization code already exist.',
+      );
+    }
+
     const newOrganization = this.organizationRepository.create({
       ...createOrganizationDto,
     });
@@ -43,27 +53,37 @@ export class OrganizationsService {
     });
   }
 
-  findOne(id: number) {
-    return this.organizationRepository.findOneBy({ id });
+  findOne(code: any) {
+    return this.organizationRepository.findOneBy({ code });
   }
 
-  update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
+  async update(code: any, updateOrganizationDto: UpdateOrganizationDto) {
+    if (code != updateOrganizationDto.code) {
+      let orgExist = await this.organizationRepository.findOneBy({
+        code: updateOrganizationDto.code,
+      });
+
+      if (orgExist) {
+        throw new BadRequestException('Organization code already exist.');
+      }
+    }
+
     return this.organizationRepository.update(
-      { id },
+      { code },
       { ...updateOrganizationDto },
     );
   }
 
-  async remove(id: number) {
+  async remove(code: any) {
     const orgUsed = await this.PhInitOrgRepository.find({
       where: {
-        organization_id: id
+        organization_code: code
       }
     });
     if(orgUsed.length != 0) {
       throw new BadRequestException('Organization can not be deleted, This organization is assigned for an initiative(s)')
     } else {
-      return this.organizationRepository.delete({ id });
+      return this.organizationRepository.delete({ code });
     }    
   }
 

@@ -17,12 +17,12 @@ export class CenterStatus {
   @Column({primary:true})
   initiative_id: number;
 
-  @JoinColumn({ name: 'organization_id' })
+  @JoinColumn({ name: 'organization_code' })
   @ManyToOne(() => Organization)
   organization: Organization;
 
   @Column({primary:true})
-  organization_id: number;
+  organization_code: string;
 
   @Column()
   status: boolean;

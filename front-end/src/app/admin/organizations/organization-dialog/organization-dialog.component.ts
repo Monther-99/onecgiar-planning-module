@@ -5,7 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { OrganizationsService } from "src/app/services/organizations.service";
 
 export interface DialogData {
-  id: number;
+  code: string;
 }
 
 @Component({
@@ -14,7 +14,7 @@ export interface DialogData {
   styleUrls: ["./organization-dialog.component.scss"],
 })
 export class OrganizationDialogComponent implements OnInit {
-  organizationId: number = 0;
+  organizationCode: string = '0';
   organizationForm: FormGroup;
 
   constructor(
@@ -24,7 +24,7 @@ export class OrganizationDialogComponent implements OnInit {
     private toast: ToastrService,
     private fb: FormBuilder
   ) {
-    this.organizationId = data.id;
+    this.organizationCode = data.code;
   }
 
   ngOnInit() {
@@ -37,9 +37,9 @@ export class OrganizationDialogComponent implements OnInit {
       acronym: [null, Validators.required],
       code: [null, Validators.required],
     });
-    if (this.organizationId) {
+    if (this.organizationCode) {
       let { id, ...organizationValues } =
-        await this.organizationsService.getOrganization(this.organizationId);
+        await this.organizationsService.getOrganization(this.organizationCode);
       this.organizationForm.setValue({
         ...organizationValues,
       });
@@ -51,10 +51,10 @@ export class OrganizationDialogComponent implements OnInit {
     this.organizationForm.updateValueAndValidity();
     if (this.organizationForm.valid) {
       await this.organizationsService
-        .submitOrganization(this.organizationId, this.organizationForm.value)
+        .submitOrganization(this.organizationCode, this.organizationForm.value)
         .then(
           (data) => {
-            if (this.organizationId == 0)
+            if (this.organizationCode == '0')
               this.toast.success("Organization added successfully");
             else this.toast.success("Organization updated successfully");
 

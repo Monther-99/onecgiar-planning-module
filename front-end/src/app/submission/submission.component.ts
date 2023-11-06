@@ -246,16 +246,16 @@ export class SubmissionComponent implements OnInit {
   perValuesSammary: any = {};
   perAllValues: any = {};
   sammaryTotal: any = {};
-  checkComplete(organization_id: number) {
+  checkComplete(organization_code: number) {
     if (this.initiative_data.center_status) {
       return (
         this.initiative_data.center_status.filter(
-          (d: any) => d.organization_id == organization_id
+          (d: any) => d.organization_code == organization_code
         )[0]?.status == 1
       );
     } else return false;
   }
-  partnerStatusChange(event: any, partnerId: number) {
+  partnerStatusChange(event: any, partnerCode: number) {
     let index = 0;
     if (!this.isCenter) {
       index =
@@ -263,13 +263,13 @@ export class SubmissionComponent implements OnInit {
           .map((d: any) => {
             return d.id;
           })
-          .indexOf(partnerId) + 1;
+          .indexOf(partnerCode) + 1;
     } else {
       index = this.partners
         .map((d: any) => {
           return d.id;
         })
-        .indexOf(partnerId);
+        .indexOf(partnerCode);
     }
     this.InitData();
     this.selectedTabIndex = index;
@@ -1111,18 +1111,20 @@ export class SubmissionComponent implements OnInit {
       return valid;
     }
 
-    Object.keys(this.perValues).forEach((partner_code) => {
-      Object.keys(this.perValues[partner_code]).forEach((wp_id) => {
-        Object.keys(this.perValues[partner_code][wp_id]).forEach((item_id) => {
-          let perChecked = Object.values(
-            this.perValues[partner_code][wp_id][item_id]
-          ).reduce((a: any, b: any) => a || b);
-          if (
-            perChecked &&
-            !this.values[partner_code][wp_id][item_id] &&
-            !this.noValuesAssigned[partner_code][wp_id][item_id]
-          )
-            valid = false;
+    Object.keys(this.partnersData).forEach((partner_code) => {
+      Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
+        this.partnersData[partner_code][wp_id].forEach((item: any) => {
+          if (item.category != 'EOI' && item.category != 'OUTCOME') {
+            let perChecked = Object.values(
+              this.perValues[partner_code][wp_id][item.id]
+            ).reduce((a: any, b: any) => a || b);
+            if (
+              perChecked &&
+              !this.values[partner_code][wp_id][item.id] &&
+              !this.noValuesAssigned[partner_code][wp_id][item.id]
+            )
+              valid = false;
+          }
         });
       });
     });
@@ -1152,18 +1154,20 @@ export class SubmissionComponent implements OnInit {
       this.centerStatusService.validPartner.next(valid);
       return;
     }
-
-    Object.keys(this.perValues[partner_code]).forEach((wp_id) => {
-      Object.keys(this.perValues[partner_code][wp_id]).forEach((item_id) => {
-        let perChecked = Object.values(
-          this.perValues[partner_code][wp_id][item_id]
-        ).reduce((a: any, b: any) => a || b);
-        if (
-          perChecked &&
-          !this.values[partner_code][wp_id][item_id] &&
-          !this.noValuesAssigned[partner_code][wp_id][item_id]
-        )
-          valid = false;
+    
+    Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
+      this.partnersData[partner_code][wp_id].forEach((item: any) => {
+        if (item.category != 'EOI' && item.category != 'OUTCOME') {
+          let perChecked = Object.values(
+            this.perValues[partner_code][wp_id][item.id]
+          ).reduce((a: any, b: any) => a || b);
+          if (
+            perChecked &&
+            !this.values[partner_code][wp_id][item.id] &&
+            !this.noValuesAssigned[partner_code][wp_id][item.id]
+          )
+            valid = false;
+        }
       });
     });
 

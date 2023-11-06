@@ -104,11 +104,11 @@ export class PhasesService {
       phase_id,
       initiative_id,
     });
-    data.organizations.forEach(async (organization_id) => {
+    data.organizations.forEach(async (organization_code) => {
       const newPhaseInitOrg = await this.phaseInitOrgRepo.create({
         phase_id,
         initiative_id,
-        organization_id,
+        organization_code,
       });
       await this.phaseInitOrgRepo.save(newPhaseInitOrg);
     });
@@ -134,12 +134,12 @@ export class PhasesService {
       initiative_id,
     });
 
-    let organizationsIds = [];
+    let organizationCodes = [];
     data.forEach((element) => {
-      organizationsIds.push(element.organization_id);
+      organizationCodes.push(element.organization_code);
     });
 
-    return this.organizationRepository.findBy({ id: In(organizationsIds) });
+    return this.organizationRepository.findBy({ code: In(organizationCodes) });
   }
 
   async fetchPhaseInitiativesData(phase_id: number) {
@@ -154,7 +154,7 @@ export class PhasesService {
       .leftJoin(
         Organization,
         'organizations',
-        'organizations.id = assigned_orgs.organization_id',
+        'organizations.code = assigned_orgs.organization_code',
       )
       .addSelect(
         'GROUP_CONCAT(organizations.name SEPARATOR ", ") AS assigned_organizations',

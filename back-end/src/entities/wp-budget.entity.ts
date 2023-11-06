@@ -26,11 +26,11 @@ export class WpBudget {
   wp_id: number;
 
   @ManyToOne(() => Organization)
-  @JoinColumn({ name: 'organization_id' })
+  @JoinColumn({ name: 'organization_code' })
   organization: Organization;
 
   @Column()
-  organization_id: number;
+  organization_code: string;
 
   @ManyToOne(() => Submission)
   @JoinColumn({ name: 'submission_id' })

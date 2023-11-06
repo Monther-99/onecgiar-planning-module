@@ -46,14 +46,14 @@ export class AssignOrganizationsComponent implements OnInit {
       this.phaseId,
       this.initiativeId
     );
-    let OrganizationsIds: number[] = [];
+    let OrganizationsCodes: string[] = [];
     if (AssignedOrganizations.length > 0) {
       AssignedOrganizations.forEach((organization: any) => {
-        OrganizationsIds.push(organization.id);
+        OrganizationsCodes.push(organization.code);
       });
 
       this.assignOrgsForm.setValue({
-        organizations: OrganizationsIds,
+        organizations: OrganizationsCodes,
       });
     }
   }

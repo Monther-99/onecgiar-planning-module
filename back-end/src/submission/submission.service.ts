@@ -44,16 +44,16 @@ export class SubmissionService {
     } else return { id: 'DESC' };
 }
   async updateCenterStatus(data) {
-    const { initiative_id, organization_id, status } = data;
+    const { initiative_id, organization_code, status } = data;
 
     let center_status: CenterStatus;
     center_status = await this.centerStatusRepo.findOneBy({
       initiative_id,
-      organization_id,
+      organization_code,
     });
     if (!center_status) center_status = this.centerStatusRepo.create();
     center_status.initiative_id = initiative_id;
-    center_status.organization_id = organization_id;
+    center_status.organization_code = organization_code;
     center_status.status = status;
     await this.centerStatusRepo.save(center_status);
 
@@ -181,75 +181,75 @@ export class SubmissionService {
   dataToPers(saved_data) {
     let data = { perValues: {}, values: {}, no_budget: {} };
     saved_data.forEach((result: Result) => {
-      if (!data.perValues[result.organization_id])
-        data.perValues[result.organization_id] = {};
+      if (!data.perValues[result.organization_code])
+        data.perValues[result.organization_code] = {};
       if (
-        !data.perValues[result.organization_id][
+        !data.perValues[result.organization_code][
           result.workPackage.wp_official_code
         ]
       )
-        data.perValues[result.organization_id][
+        data.perValues[result.organization_code][
           result.workPackage.wp_official_code
         ] = {};
 
       if (
-        !data.perValues[result.organization_id][
+        !data.perValues[result.organization_code][
           result.workPackage.wp_official_code
         ][result.result_uuid]
       )
-        data.perValues[result.organization_id][
+        data.perValues[result.organization_code][
           result.workPackage.wp_official_code
         ][result.result_uuid] = {};
       result.values.forEach((d) => {
         if (
-          data.perValues[result.organization_id][
+          data.perValues[result.organization_code][
             result.workPackage.wp_official_code
           ][result.result_uuid][d.period.id]
         )
-          data.perValues[result.organization_id][
+          data.perValues[result.organization_code][
             result.workPackage.wp_official_code
           ][result.result_uuid][d.period.id] = {};
-        data.perValues[result.organization_id][
+        data.perValues[result.organization_code][
           result.workPackage.wp_official_code
         ][result.result_uuid][d.period.id] = d.value;
       });
 
-      if (!data.values[result.organization_id])
-        data.values[result.organization_id] = {};
+      if (!data.values[result.organization_code])
+        data.values[result.organization_code] = {};
       if (
-        !data.values[result.organization_id][
+        !data.values[result.organization_code][
           result.workPackage.wp_official_code
         ]
       )
-        data.values[result.organization_id][
+        data.values[result.organization_code][
           result.workPackage.wp_official_code
         ] = {};
 
       if (
-        !data.values[result.organization_id][
+        !data.values[result.organization_code][
           result.workPackage.wp_official_code
         ][result.result_uuid]
       )
-        data.values[result.organization_id][
+        data.values[result.organization_code][
           result.workPackage.wp_official_code
         ][result.result_uuid] = result.value;
 
-      if (!data.no_budget[result.organization_id])
-        data.no_budget[result.organization_id] = {};
+      if (!data.no_budget[result.organization_code])
+        data.no_budget[result.organization_code] = {};
       if (
-        !data.no_budget[result.organization_id][
+        !data.no_budget[result.organization_code][
           result.workPackage.wp_official_code
         ]
       )
-        data.no_budget[result.organization_id][
+        data.no_budget[result.organization_code][
           result.workPackage.wp_official_code
         ] = {};
       if (
-        !data.no_budget[result.organization_id][
+        !data.no_budget[result.organization_code][
           result.workPackage.wp_official_code
         ][result.result_uuid]
       )
-        data.no_budget[result.organization_id][
+        data.no_budget[result.organization_code][
           result.workPackage.wp_official_code
         ][result.result_uuid] = result.no_budget;
     });
@@ -273,7 +273,7 @@ export class SubmissionService {
       wp_official_code: wp_id,
     });
     let organizationObject = await this.organizationRepository.findOneBy({
-      id: +partner_code,
+      code: partner_code,
     });
 
     let oldResult = await this.resultRepository.findOneBy({
@@ -335,7 +335,7 @@ export class SubmissionService {
     } = data;
 
     let organizationObject = await this.organizationRepository.findOneBy({
-      id: +partner_code,
+      code: partner_code,
     });
     let workPackageObject = await this.workPackageRepository.findOneBy({
       wp_official_code: wp_id,
@@ -371,7 +371,7 @@ export class SubmissionService {
 
     let oldWpBudget = await this.wpBudgetRepository.findOneBy({
       initiative_id: initiativeId,
-      organization_id: +partner_code,
+      organization_code: partner_code,
       wp_id: workPackageObject.wp_id,
       submission_id: IsNull(),
     });
@@ -382,7 +382,7 @@ export class SubmissionService {
     } else {
       const data: any = {
         initiative_id: initiativeId,
-        organization_id: +partner_code,
+        organization_code: partner_code,
         wp_id: workPackageObject.wp_id,
         budget: budget,
         submission_id: null,
@@ -406,9 +406,9 @@ export class SubmissionService {
 
     let data = {};
     wpBudgets.forEach((element) => {
-      if (!data[element.organization_id]) data[element.organization_id] = {};
+      if (!data[element.organization_code]) data[element.organization_code] = {};
 
-      data[element.organization_id][element.workPackage.wp_official_code] =
+      data[element.organization_code][element.workPackage.wp_official_code] =
         element.budget;
     });
 
@@ -423,9 +423,9 @@ export class SubmissionService {
 
     let data = {};
     wpBudgets.forEach((element) => {
-      if (!data[element.organization_id]) data[element.organization_id] = {};
+      if (!data[element.organization_code]) data[element.organization_code] = {};
 
-      data[element.organization_id][element.workPackage.wp_official_code] =
+      data[element.organization_code][element.workPackage.wp_official_code] =
         element.budget;
     });
 

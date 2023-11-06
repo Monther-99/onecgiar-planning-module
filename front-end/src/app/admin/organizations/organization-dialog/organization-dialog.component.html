@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ organizationId ? "Edit" : "Add" }} Organization
+      {{ organizationCode ? "Edit" : "Add" }} Organization
     </p>
   </div>
 
@@ -102,7 +102,7 @@
             color="primary"
             (click)="submit()"
           >
-            {{ organizationId ? "Edit" : "Add" }}
+            {{ organizationCode ? "Edit" : "Add" }}
           </button>
         </div>
       </div>

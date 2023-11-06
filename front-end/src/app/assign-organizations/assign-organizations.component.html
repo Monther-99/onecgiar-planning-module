@@ -35,7 +35,7 @@
           <mat-select formControlName="organizations" multiple>
             <mat-option
               *ngFor="let organization of organizations"
-              [value]="organization.id"
+              [value]="organization.code"
             >
               {{ organization.name }}
             </mat-option>

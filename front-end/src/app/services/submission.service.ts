@@ -8,14 +8,14 @@ import { Observable, firstValueFrom, map } from 'rxjs';
 export class SubmissionService {
   constructor(private http: HttpClient) {}
   async markStatus(
-    organization_id: number,
+    organization_code: string,
     initiative_id: number,
     status: boolean
   ) {
     return firstValueFrom(
       this.http
         .patch('/api/submission/center/status', {
-          organization_id,
+          organization_code,
           initiative_id,
           status,
         })

@@ -479,16 +479,16 @@
           <span style="margin-right: 10px">{{
             partner?.acronym ? partner?.acronym : partner?.name
           }}</span>
-          <mat-icon *ngIf="checkComplete(partner.id)"
+          <mat-icon *ngIf="checkComplete(partner.code)"
             >check_circle_outline</mat-icon
           >
         </ng-template>
 
         <app-center-status
-          (change)="partnerStatusChange($event, partner.id)"
-          [status]="!checkComplete(partner.id)"
+          (change)="partnerStatusChange($event, partner.code)"
+          [status]="!checkComplete(partner.code)"
           [initiative_id]="initiative_data.id"
-          [organization_id]="partner.id"
+          [organization_code]="partner.code"
           [organization]="organizationSelected"
           (clicked)="validateCenter(partner.code)"
         >

@@ -24,17 +24,17 @@ export class OrganizationsService {
     ).catch((e) => false);
   }
 
-  async getOrganization(id: number) {
+  async getOrganization(code: string) {
     return firstValueFrom(
-      this.http.get("api/organizations/" + id).pipe(map((d: any) => d))
+      this.http.get("api/organizations/" + code).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
-  submitOrganization(id: number = 0, data: {}) {
-    if (id) {
+  submitOrganization(code: string = '0', data: {}) {
+    if (code) {
       return firstValueFrom(
         this.http
-          .patch("api/organizations/" + id, data)
+          .patch("api/organizations/" + code, data)
           .pipe(map((d: any) => d))
       ).catch((e) => false);
     } else {

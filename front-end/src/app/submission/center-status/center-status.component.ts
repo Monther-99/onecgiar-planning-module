@@ -11,7 +11,7 @@ import { CenterStatusService } from "../center-status.service";
   styleUrls: ["./center-status.component.scss"],
 })
 export class CenterStatusComponent implements OnInit {
-  @Input("organization_id") organization_id: number;
+  @Input("organization_code") organization_code: string;
   @Input("initiative_id") initiative_id: number;
   @Input("status") status: boolean;
   @Input("organization") organization: any;
@@ -52,7 +52,7 @@ export class CenterStatusComponent implements OnInit {
           const valid = this.centerStatusService.validPartner.getValue();
           if (!this.status || (this.status && valid)) {
             let result = await this.submissionService.markStatus(
-              +this.organization_id,
+              this.organization_code,
               +this.initiative_id,
               !!this.status
             );

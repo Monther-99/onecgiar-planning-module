@@ -21,7 +21,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
   styleUrls: ["./organizations.component.scss"],
 })
 export class OrganizationsComponent implements OnInit {
-  columnsToDisplay: string[] = ["id", "name", "acronym", "code", "actions"];
+  columnsToDisplay: string[] = ["name", "acronym", "code", "actions"];
   dataSource: MatTableDataSource<any>;
   organizations: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -77,9 +77,9 @@ export class OrganizationsComponent implements OnInit {
     console.log(this.organizations);
   }
 
-  openDialog(id: number = 0): void {
+  openDialog(code: string = '0'): void {
     const dialogRef = this.dialog.open(OrganizationDialogComponent, {
-      data: { id: id },
+      data: { code: code },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

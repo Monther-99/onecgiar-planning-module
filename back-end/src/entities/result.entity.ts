@@ -31,11 +31,11 @@ export class Result {
   no_budget: boolean;
 
   @ManyToOne(() => Organization, (organization) => organization.results)
-  @JoinColumn({ name: 'organization_id' })
+  @JoinColumn({ name: 'organization_code' })
   organization: Organization;
 
   @Column()
-  organization_id: number;
+  organization_code: string;
 
   @ManyToOne(() => WorkPackage, (workPackage) => workPackage.wp_results)
   @JoinColumn({ name: 'wp_id' })
