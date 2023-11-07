@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
 import { MeliaTypes } from 'src/entities/melia-types.entity';
 import { Melia } from 'src/entities/melia.entity';
+import { Partner } from 'src/entities/partner.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -14,6 +15,8 @@ export class MeliaService {
     private meliaRepository: Repository<Melia>,
     @InjectRepository(MeliaTypes)
     private meliaTypesRepository: Repository<MeliaTypes>,
+    @InjectRepository(Partner)
+    private partnerRepository: Repository<Partner>,
     private readonly httpService: HttpService,
   ) {}
   api = process.env.Ost_API;
@@ -29,7 +32,16 @@ export class MeliaService {
     });
   }
 
-  create(data: any) {
+  async create(data: any) {
+    let { partners } = data;
+    let partnersArray = [];
+    for (let partner of partners) {
+      let partnerEntity = await this.partnerRepository.findOneBy({
+        code: partner.code,
+      });
+      if (partnerEntity) partnersArray.push(partnerEntity);
+    }
+    data.partners = partnersArray;
     return this.meliaRepository.save(this.meliaRepository.create({ ...data }));
   }
 
