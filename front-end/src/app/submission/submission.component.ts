@@ -79,6 +79,7 @@ export class SubmissionComponent implements OnInit {
   toggleValues: any = {};
   toggleSummaryValues: any = {};
   noValuesAssigned: any = {};
+  partnersStatus: any = {};
   check(values: any, code: string, id: number, item_id: string) {
     if (values[code] && values[code][id] && values[code][id][item_id]) {
       return true;
@@ -509,6 +510,7 @@ export class SubmissionComponent implements OnInit {
     this.totals = {};
     this.errors = {};
     this.noValuesAssigned = {};
+    this.partnersStatus = {};
 
     this.results = await this.submissionService.getToc(this.params.id);
     const melia_data = await this.submissionService.getMeliaByInitiative(
@@ -608,6 +610,8 @@ export class SubmissionComponent implements OnInit {
         this.toggleValues[partner.code] = {};
       if (!this.noValuesAssigned[partner.code])
         this.noValuesAssigned[partner.code] = {};
+      if (!this.partnersStatus[partner.code])
+        this.partnersStatus[partner.code] = this.checkComplete(partner.code);
 
       for (let wp of this.wps) {
         if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])

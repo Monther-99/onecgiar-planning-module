@@ -575,6 +575,7 @@
                       <ng-container *ngFor="let per of period">
                         <td>
                           <mat-checkbox
+                            [disabled]="partnersStatus[partner.code]"
                             [(ngModel)]="
                               perValues[partner.code][
                                 wp.ost_wp.wp_official_code
@@ -632,7 +633,8 @@
                               ][item.id] | inQue) ||
                               noValuesAssigned[partner.code][
                                 wp.ost_wp.wp_official_code
-                              ][item.id]
+                              ][item.id] ||
+                              partnersStatus[partner.code]
                             "
                             (keyup)="
                               changeCalc(
@@ -661,7 +663,8 @@
                               ][item.id] | inQue) ||
                               noValuesAssigned[partner.code][
                                 wp.ost_wp.wp_official_code
-                              ][item.id]
+                              ][item.id] ||
+                              partnersStatus[partner.code]
                             "
                             (keyup)="
                               changeCalc(
@@ -709,6 +712,7 @@
                               You can mark this result as no budget assigned
                               <span>
                                 <mat-checkbox
+                                  [disabled]="partnersStatus[partner.code]"
                                   [(ngModel)]="
                                     noValuesAssigned[partner.code][
                                       wp.ost_wp.wp_official_code
@@ -767,7 +771,8 @@
                               ] ||
                               noValuesAssigned[partner.code][
                                 wp.ost_wp.wp_official_code
-                              ][item.id]
+                              ][item.id] ||
+                              partnersStatus[partner.code]
                             "
                             (keyup)="
                               changeCalc(
@@ -799,7 +804,8 @@
                               ] ||
                               noValuesAssigned[partner.code][
                                 wp.ost_wp.wp_official_code
-                              ][item.id]
+                              ][item.id] ||
+                              partnersStatus[partner.code]
                             "
                             (keyup)="
                               changeCalc(
@@ -847,6 +853,7 @@
                             You can mark this result as no budget assigned
                             <span>
                               <mat-checkbox
+                                [disabled]="partnersStatus[partner.code]"
                                 *ngIf="
                                   !(
                                     perValues[partner.code][
@@ -896,6 +903,7 @@
                         <mat-form-field class="budget">
                           <mat-label>Total Budget</mat-label>
                           <input
+                            [disabled]="partnersStatus[partner.code]"
                             matInput
                             [(ngModel)]="
                               wp_budgets[partner.code][
