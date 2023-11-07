@@ -5,10 +5,11 @@ import { Melia } from 'src/entities/melia.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { MeliaTypes } from 'src/entities/melia-types.entity';
+import { Partner } from 'src/entities/partner.entity';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Melia, MeliaTypes]), HttpModule
+    TypeOrmModule.forFeature([Melia, MeliaTypes, Partner]), HttpModule
   ],
   controllers: [MeliaController],
   providers: [MeliaService]

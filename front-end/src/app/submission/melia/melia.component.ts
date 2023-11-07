@@ -64,9 +64,7 @@ export class MeliaComponent implements OnInit {
   submit() {
     if (this.meliaForm.valid) {
       this.showerror = false;
-      this.dialogRef.close({
-        formValue: this.meliaForm.value,
-      });
+      this.dialogRef.close(this.meliaForm.value);
     } else {
       this.showerror = true;
     }
@@ -207,7 +205,7 @@ export class MeliaComponent implements OnInit {
         : "global";
 
     this.meliaForm.patchValue({
-      partners: partnersArray,
+      partners: Object.values(partnersArray),
       geo_scope: geoScope,
       initiative_regions: initRegionsArray,
       co_initiative_regions: coInitRegionsArray,
