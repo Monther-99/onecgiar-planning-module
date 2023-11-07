@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.id ? 'Edit' : 'Add' }} MELIA
+      {{ data.id ? "Edit" : "Add" }} MELIA
     </p>
   </div>
 
@@ -49,7 +49,7 @@
           <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['melia_type']?.errors?.['required']"
-            >Type of MELIA study or activity is required</mat-error
+            >This field is mandatory</mat-error
           >
         </mat-form-field>
       </div>
@@ -81,7 +81,7 @@
           <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['methodology']?.errors?.['required']"
-            >Methodology applied is required</mat-error
+            >This field is mandatory</mat-error
           >
         </mat-form-field>
       </div>
@@ -135,7 +135,7 @@
           <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['questionnaires']?.errors?.['required']"
-            >Tools and template (questionnaires) is required</mat-error
+            >This field is mandatory</mat-error
           >
         </mat-form-field>
       </div>
@@ -156,14 +156,14 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select formControlName="completion_year">
+          <mat-select required formControlName="completion_year">
             <mat-option value="JAN-2015"> JAN-2015 </mat-option>
             <mat-option value="JAN-2016"> JAN-2016 </mat-option>
           </mat-select>
           <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['completion_year']?.errors?.['required']"
-            >Anticipated year of completion is required</mat-error
+            >This field is mandatory</mat-error
           >
         </mat-form-field>
       </div>
@@ -198,7 +198,7 @@
           <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['management_decisions']?.errors?.['required']"
-            >How the MELIA study or activity is required</mat-error
+            >This field is mandatory</mat-error
           >
         </mat-form-field>
       </div>
@@ -236,7 +236,7 @@
           <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['other_initiatives']?.errors?.['required']"
-            >Other Initiatives is required</mat-error
+            >This field is mandatory</mat-error
           >
         </mat-form-field>
       </div>
@@ -270,7 +270,7 @@
           <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['contribution_results']?.errors?.['required']"
-            >MELIA Study contributes is required</mat-error
+            >This field is mandatory</mat-error
           >
         </mat-form-field>
       </div>
@@ -312,15 +312,21 @@
 
         <mat-error
           class="error"
-          *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
-          >Partners is required</mat-error
+          *ngIf="meliaForm?.errors?.['atLeastOneRequired'] && showerror"
+          >This field is mandatory</mat-error
         >
+
+        <!-- <mat-error
+          class="error"
+          *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
+          >This field is mandatory</mat-error
+        > -->
       </div>
 
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Geographic scope<span class="star">*</span></mat-label
+            >Geographic scope</mat-label
           >
         </div>
         <div class="risk-report-radio-buttons-flex-box-2">
@@ -467,7 +473,7 @@
               (click)="submit()"
               cdkFocusInitial
             >
-              {{ data.id ? 'Edit' : 'Add' }}
+              {{ data.id ? "Edit" : "Add" }}
             </button>
           </div>
         </div>

@@ -906,6 +906,32 @@ mat-slide-toggle {
   color: #04030f;
 }
 
+// .total {
+//   td {
+//     // color: #9e553e !important;
+//     // font-weight: 600 !important;
+
+//     // padding-top: 20px;
+//     // border-top: solid 1px rgb(90, 90, 90);
+//     // text-align: center !important;
+//     // background-image: linear-gradient(
+//     //   to right,
+//     //   #9e543e08,
+//     //   #44241a2e
+//     // ) !important;
+
+//     font-weight: 500 !important;
+//     padding-top: 20px;
+//     border-top: solid 1px rgb(90, 90, 90);
+//     text-align: center !important;
+//     background-image: linear-gradient(to right, #0f212f, #0c1a25);
+//     -webkit-background-clip: text;
+//     color: transparent;
+//     letter-spacing: 0.2rem;
+//     transition: all 0.2s;
+//   }
+// }
+
 .total {
   td {
     // color: #9e553e !important;
@@ -919,13 +945,17 @@ mat-slide-toggle {
     //   #9e543e08,
     //   #44241a2e
     // ) !important;
-
-    font-weight: 500 !important;
+    color: #9e553e !important;
+    font-weight: 600 !important;
     padding-top: 20px;
     border-top: solid 1px rgb(90, 90, 90);
     text-align: center !important;
-    background-image: linear-gradient(to right, #0f212f, #0c1a25);
-    -webkit-background-clip: text;
+    // background-image: linear-gradient(
+    //   to right,
+    //   #9e543e08,
+    //   #44241a4e
+    // ) !important;
+    /* -webkit-background-clip: text; */
     color: transparent;
     letter-spacing: 0.2rem;
     transition: all 0.2s;
@@ -982,6 +1012,10 @@ mat-slide-toggle {
 
 .icon-sub-table {
   color: #0c1a25;
+}
+
+.icon-sub-table-2 {
+  color: #9e553e;
 }
 
 .section-submited {
@@ -1165,6 +1199,35 @@ mat-slide-toggle {
 .table-box::-webkit-resizer {
   display: block;
   height: 3rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+// .table-box tr:nth-child(odd) {
+//   background-color: #f8f9fa;
+// }
+
+.table-box tr:last-child {
+  background-color: #f8f9fa;
+  td {
+    font-size: 1.5rem;
+  }
+}
+
+.table-box-1 tr:last-child {
+  background-color: #f8f9fa;
+  td {
+    font-size: 1.5rem;
+  }
+}
+
+.table-box-2 tr:last-child {
+  background-color: #f8f9fa;
+  td {
+    font-size: 1.5rem;
+  }
 }
 
 .table-box {

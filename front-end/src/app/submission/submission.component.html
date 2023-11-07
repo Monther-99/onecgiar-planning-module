@@ -155,7 +155,7 @@
                     <ng-container *ngFor="let item of period">
                       <td>
                         <mat-icon
-                          class="icon-sub-table"
+                          class="icon-sub-table-2"
                           color="primary"
                           *ngIf="
                             perValuesSammary[wp.ost_wp.wp_official_code][
@@ -186,7 +186,7 @@
                   <ng-container *ngFor="let item of period">
                     <td>
                       <mat-icon
-                        class="icon-sub-table"
+                        class="icon-sub-table-2"
                         color="primary"
                         *ngIf="finalPeriodVal(item.id)"
                         >close</mat-icon
@@ -328,42 +328,60 @@
                       <td>
                         <ng-container *ngIf="item.category == 'MELIA'">
                           <button mat-icon-button [matMenuTriggerFor]="menu">
-                            <mat-icon>more_vert</mat-icon>
+                            <mat-icon class="icon-sub-table-2"
+                              >more_vert</mat-icon
+                            >
                           </button>
                           <mat-menu #menu="matMenu">
                             <button
                               (click)="editMelia(item.id, wp)"
                               mat-menu-item
                             >
-                              <mat-icon>edit</mat-icon> Edit
+                              <mat-icon class="icon-sub-table-2">edit</mat-icon>
+                              Edit
                             </button>
                             <button
                               (click)="deleteMelia(item.id)"
                               mat-menu-item
                             >
-                              <mat-icon>delete</mat-icon> Delete
+                              <mat-icon class="icon-sub-table-2"
+                                >delete</mat-icon
+                              >
+                              Delete
                             </button>
                             <button mat-menu-item (click)="viewData(item)">
-                              <mat-icon>visibility</mat-icon> View Data
+                              <mat-icon class="icon-sub-table-2"
+                                >visibility</mat-icon
+                              >
+                              View Data
                             </button>
                           </mat-menu>
                         </ng-container>
                         <ng-container *ngIf="item.category == 'CROSS'">
                           <button mat-icon-button [matMenuTriggerFor]="menu">
-                            <mat-icon>more_vert</mat-icon>
+                            <mat-icon class="icon-sub-table-2"
+                              >more_vert</mat-icon
+                            >
                           </button>
                           <mat-menu #menu="matMenu">
                             <button (click)="editCross(item.id)" mat-menu-item>
-                              <mat-icon>edit</mat-icon> Edit
+                              <mat-icon class="icon-sub-table-2">edit</mat-icon>
+                              Edit
                             </button>
                             <button
                               (click)="deleteCross(item.id)"
                               mat-menu-item
                             >
-                              <mat-icon>delete</mat-icon> Delete
+                              <mat-icon class="icon-sub-table-2"
+                                >delete</mat-icon
+                              >
+                              Delete
                             </button>
                             <button mat-menu-item (click)="viewData(item)">
-                              <mat-icon>visibility</mat-icon> View Data
+                              <mat-icon class="icon-sub-table-2"
+                                >visibility</mat-icon
+                              >
+                              View Data
                             </button>
                           </mat-menu>
                         </ng-container>
@@ -373,7 +391,9 @@
                           "
                         >
                           <button mat-icon-button (click)="viewData(item)">
-                            <mat-icon>visibility</mat-icon>
+                            <mat-icon class="icon-sub-table-2"
+                              >visibility</mat-icon
+                            >
                           </button>
                         </ng-container>
                       </td>
@@ -394,7 +414,7 @@
                         <td>
                           <!-- to be checked -->
                           <mat-icon
-                            class="icon-sub-table"
+                            class="icon-sub-table-2"
                             color="primary"
                             *ngIf="
                               perAllValues[wp.ost_wp.wp_official_code][item.id][
@@ -434,7 +454,7 @@
                     <ng-container *ngFor="let per of period">
                       <td>
                         <mat-icon
-                          class="icon-sub-table"
+                          class="icon-sub-table-2"
                           color="primary"
                           *ngIf="
                             finalItemPeriodVal(

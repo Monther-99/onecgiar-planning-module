@@ -57,7 +57,7 @@
       <mat-error
         class="error"
         *ngIf="memberForm?.errors?.['atLeastOneRequired'] && showerror"
-        >User is required</mat-error
+        >This field is mandatory</mat-error
       >
     </div>
 
@@ -82,7 +82,7 @@
         <mat-error
           class="error"
           *ngIf="memberForm.controls['userRole'].errors?.['required']"
-          >User Role is required</mat-error
+          >This field is mandatory</mat-error
         >
       </mat-form-field>
     </div>
@@ -112,7 +112,7 @@
       <mat-error
         class="error organizationsError"
         *ngIf="memberForm?.errors?.['organizationsRequired'] && showerror"
-        >At least one Organization should be selected</mat-error
+        >This field is mandatory</mat-error
       >
     </div>
 
