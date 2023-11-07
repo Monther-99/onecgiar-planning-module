@@ -235,7 +235,10 @@
                 *ngIf="initiative.id != data?.initiative_id"
                 [value]="initiative"
               >
-                {{ initiative.official_code }} - {{ initiative.name }}
+                <strong class="official-color">{{
+                  initiative.official_code
+                }}</strong>
+                - {{ initiative.name }}
               </mat-option>
             </ng-container>
           </mat-select>
@@ -311,7 +314,7 @@
               let-index="index"
               class="select-text"
             >
-              <div class="ng-select-option select-text">
+              <div class="ng-select-option">
                 <span class="select-text">{{ item.name }}</span>
                 <span class="select-text" *ngIf="item.acronym">
                   - {{ item.acronym }}</span
