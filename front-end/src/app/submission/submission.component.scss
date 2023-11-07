@@ -1216,6 +1216,20 @@ table {
   }
 }
 
+.table-box-1 tr:last-child {
+  background-color: #f8f9fa;
+  td {
+    font-size: 1.5rem;
+  }
+}
+
+.table-box-2 tr:last-child {
+  background-color: #f8f9fa;
+  td {
+    font-size: 1.5rem;
+  }
+}
+
 .table-box {
   width: 100%;
   overflow: auto;

@@ -43,9 +43,38 @@ export class MeliaComponent implements OnInit {
     this.savedData = data.data;
   }
 
+  private atLeastOneValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        // console.log(controls);
+        if (controls.partners.value == "" || controls.partners.value == null) {
+          return {
+            atLeastOneRequired: {
+              text: "At least one should be selected",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
+
+  showerror: boolean = false;
   submit() {
-    if (this.meliaForm.valid) this.dialogRef.close(this.meliaForm.value);
+    if (this.meliaForm.valid) {
+      this.showerror = false;
+      this.dialogRef.close({
+        formValue: this.meliaForm.value,
+      });
+    } else {
+      this.showerror = true;
+    }
   }
+
+  // submit() {
+  //   if (this.meliaForm.valid) this.dialogRef.close(this.meliaForm.value);
+  // }
   async ngOnInit() {
     this.meliaForm = this.fb.group({
       initiative_id: [this.data.initiative_id, Validators.required],
@@ -174,8 +203,8 @@ export class MeliaComponent implements OnInit {
 
     let geoScope =
       initRegionsArray.length || coInitRegionsArray.length
-        ? 'region'
-        : 'global';
+        ? "region"
+        : "global";
 
     this.meliaForm.patchValue({
       partners: partnersArray,
@@ -207,6 +236,8 @@ export class MeliaComponent implements OnInit {
         )
       )
     );
+
+    this.meliaForm.setValidators([this.atLeastOneValidator()]);
   }
 
   loadInitCountries() {

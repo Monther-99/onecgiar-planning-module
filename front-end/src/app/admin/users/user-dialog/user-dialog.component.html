@@ -44,12 +44,12 @@
         <mat-error
           class="error"
           *ngIf="userForm.controls?.['email']?.errors?.['required']"
-          >Email is required</mat-error
+          >This field is mandatory</mat-error
         >
         <mat-error
           class="error"
           *ngIf="userForm.controls?.['email']?.errors?.['email']"
-          >Valid Email is required</mat-error
+          >This field is mandatory</mat-error
         >
       </mat-form-field>
     </div>
@@ -73,7 +73,7 @@
         <mat-error
           class="error"
           *ngIf="userForm.controls?.['first_name']?.errors?.['required']"
-          >First name is required</mat-error
+          >This field is mandatory</mat-error
         >
       </mat-form-field>
     </div>
@@ -97,7 +97,7 @@
         <mat-error
           class="error"
           *ngIf="userForm.controls?.['last_name']?.errors?.['required']"
-          >Last name is required</mat-error
+          >This field is mandatory</mat-error
         >
       </mat-form-field>
     </div>
@@ -123,7 +123,7 @@
         <mat-error
           class="error"
           *ngIf="userForm.controls?.['role']?.errors?.['required']"
-          >Role is required</mat-error
+          >This field is mandatory</mat-error
         >
       </mat-form-field>
     </div>
