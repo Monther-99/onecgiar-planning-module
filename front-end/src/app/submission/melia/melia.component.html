@@ -37,7 +37,7 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select required formControlName="melia_type">
+          <mat-select class="select-text" required formControlName="melia_type">
             <mat-option
               *ngFor="let meliaType of meliaTypes"
               [value]="meliaType.id"
@@ -156,7 +156,11 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select required formControlName="completion_year">
+          <mat-select
+            class="select-text"
+            required
+            formControlName="completion_year"
+          >
             <mat-option value="JAN-2015"> JAN-2015 </mat-option>
             <mat-option value="JAN-2016"> JAN-2016 </mat-option>
           </mat-select>
@@ -218,6 +222,7 @@
           appearance="outline"
         >
           <mat-select
+            class="select-text"
             required
             formControlName="other_initiatives"
             multiple
@@ -225,6 +230,7 @@
           >
             <ng-container *ngFor="let initiative of initiatives">
               <mat-option
+                class="w"
                 required
                 *ngIf="initiative.id != data?.initiative_id"
                 [value]="initiative"
@@ -256,6 +262,7 @@
           appearance="outline"
         >
           <mat-select
+            class="select-text"
             required
             formControlName="contribution_results"
             multiple
@@ -283,6 +290,7 @@
         </div>
 
         <ng-select
+          class="select-text"
           [items]="partners | async"
           formControlName="partners"
           placeholder="Partners"
@@ -295,16 +303,19 @@
           appearance="outline"
           [compareWith]="compareCode"
         >
-          <div class="t-box">
+          <div class="t-box select-text">
             <ng-template
               ng-option-tmp
               let-item="item"
               let-search="searchTerm"
               let-index="index"
+              class="select-text"
             >
-              <div class="ng-select-option">
-                <span>{{ item.name }}</span>
-                <span *ngIf="item.acronym"> - {{ item.acronym }}</span>
+              <div class="ng-select-option select-text">
+                <span class="select-text">{{ item.name }}</span>
+                <span class="select-text" *ngIf="item.acronym">
+                  - {{ item.acronym }}</span
+                >
               </div>
             </ng-template>
           </div>
@@ -351,6 +362,7 @@
             >
           </div>
           <ng-select
+            class="select-text"
             [items]="regions"
             formControlName="initiative_regions"
             placeholder="Regions of the main initiative"
@@ -383,6 +395,7 @@
             >
           </div>
           <ng-select
+            class="select-text"
             [items]="initCountries"
             formControlName="initiative_countries"
             placeholder="Countries of the main initiative"
@@ -409,6 +422,7 @@
             >
           </div>
           <ng-select
+            class="select-text"
             [items]="regions"
             formControlName="co_initiative_regions"
             placeholder="Regions of the co-initiative"
@@ -441,6 +455,7 @@
             >
           </div>
           <ng-select
+            class="select-text"
             [items]="coInitCountries"
             formControlName="co_initiative_countries"
             placeholder="Countries of the co-initiative"

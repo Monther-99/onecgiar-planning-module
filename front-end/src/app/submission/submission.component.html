@@ -509,7 +509,7 @@
           [status]="!checkComplete(partner.code)"
           [initiative_id]="initiative_data.id"
           [organization_code]="partner.code"
-          [organization]="organizationSelected"
+          [organization]="organizationSelected[0]"
           (clicked)="validateCenter(partner.code)"
         >
           ></app-center-status

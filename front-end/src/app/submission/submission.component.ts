@@ -275,6 +275,7 @@ export class SubmissionComponent implements OnInit {
     this.InitData();
     this.selectedTabIndex = index;
   }
+
   tabChanged(organization: any) {
     this.partners.map((d: any) => {
       if (d.name == organization?.tab?.textLabel) this.organizationSelected = d;
@@ -792,6 +793,10 @@ export class SubmissionComponent implements OnInit {
       if (d[3] && d[3]?.path == "center") this.isCenter = true;
     });
 
+    this.organizationSelected = this.partners;
+
+    console.log(this.organizationSelected);
+
     this.InitData();
     this.period = await this.submissionService.getPeriods(this.phase.id);
     this.socket.connect();
@@ -818,6 +823,8 @@ export class SubmissionComponent implements OnInit {
       this.refreshValues(partner_code, wp_id);
     });
     this.canSubmit = await this.constantsService.getSubmitStatus();
+
+    console.log(this.partners);
   }
 
   ngOnDestroy(): void {
@@ -1118,7 +1125,7 @@ export class SubmissionComponent implements OnInit {
     Object.keys(this.partnersData).forEach((partner_code) => {
       Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
         this.partnersData[partner_code][wp_id].forEach((item: any) => {
-          if (item.category != 'EOI' && item.category != 'OUTCOME') {
+          if (item.category != "EOI" && item.category != "OUTCOME") {
             let perChecked = Object.values(
               this.perValues[partner_code][wp_id][item.id]
             ).reduce((a: any, b: any) => a || b);
@@ -1158,10 +1165,10 @@ export class SubmissionComponent implements OnInit {
       this.centerStatusService.validPartner.next(valid);
       return;
     }
-    
+
     Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
       this.partnersData[partner_code][wp_id].forEach((item: any) => {
-        if (item.category != 'EOI' && item.category != 'OUTCOME') {
+        if (item.category != "EOI" && item.category != "OUTCOME") {
           let perChecked = Object.values(
             this.perValues[partner_code][wp_id][item.id]
           ).reduce((a: any, b: any) => a || b);
