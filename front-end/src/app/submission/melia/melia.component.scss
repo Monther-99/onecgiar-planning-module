@@ -345,6 +345,12 @@ textarea::placeholder {
   list-style-type: none;
 }
 
+// ::ng-deep.ng-select.ng-required.ng-invalid .ng-select-container {
+//   border-color: red !important;
+//   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+//     0 0 0 3px rgba(255, 0, 0, 0.331);
+// }
+
 :host {
   ::ng-deep.ng-select .ng-select-container.ng-appearance-outline {
     /* padding: 0 0.5em; */
@@ -570,3 +576,13 @@ textarea::placeholder {
 // ::ng-deep.mat-mdc-select-value:nth-child(odd) {
 //   color: red !important;
 // }
+
+:host {
+  ::ng-deep .mat-mdc-form-field-error-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0 0 !important;
+  }
+}

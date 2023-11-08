@@ -43,15 +43,115 @@ export class MeliaComponent implements OnInit {
     this.savedData = data.data;
   }
 
-  private atLeastOneValidator = () => {
+  private partnersValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
       if (controls) {
         // console.log(controls);
         if (controls.partners.value == "" || controls.partners.value == null) {
           return {
-            atLeastOneRequired: {
-              text: "At least one should be selected",
+            partnersRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
+
+  private geographicScopeValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        // console.log(controls);
+        if (
+          controls.geo_scope.value == "" ||
+          controls.geo_scope.value == null
+        ) {
+          return {
+            geographicScopeRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
+
+  private initiativeRegionsValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        // console.log(controls);
+        if (
+          controls.initiative_regions.value == "" ||
+          controls.initiative_regions.value == null
+        ) {
+          return {
+            initiativeRegionsRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
+
+  private initiativeCountriesValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        // console.log(controls);
+        if (
+          controls.initiative_countries.value == "" ||
+          controls.initiative_countries.value == null
+        ) {
+          return {
+            initiativeCountriesRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
+
+  private coInitiativeRegionsValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        // console.log(controls);
+        if (
+          controls.co_initiative_regions.value == "" ||
+          controls.co_initiative_regions.value == null
+        ) {
+          return {
+            coInitiativeRegionsRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
+
+  private coInitiativeCountriesValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        // console.log(controls);
+        if (
+          controls.co_initiative_countries.value == "" ||
+          controls.co_initiative_countries.value == null
+        ) {
+          return {
+            coInitiativeCountriesRequired: {
+              text: "This field is mandatory",
             },
           };
         }
@@ -83,7 +183,7 @@ export class MeliaComponent implements OnInit {
       questionnaires: [this.savedData?.questionnaires],
       completion_year: [this.savedData?.completion_year],
       management_decisions: [this.savedData?.management_decisions],
-      geo_scope: [this.savedData?.geo_scope],
+      geo_scope: [this.savedData?.geo_scope, Validators.required],
       initiative_regions: [this.savedData?.initiative_regions],
       initiative_countries: [this.savedData?.initiative_countries],
       partners: [this.savedData?.partners, Validators.required],
@@ -235,7 +335,14 @@ export class MeliaComponent implements OnInit {
       )
     );
 
-    this.meliaForm.setValidators([this.atLeastOneValidator()]);
+    this.meliaForm.setValidators([
+      this.partnersValidator(),
+      this.geographicScopeValidator(),
+      this.initiativeRegionsValidator(),
+      this.initiativeCountriesValidator(),
+      this.coInitiativeRegionsValidator(),
+      this.coInitiativeCountriesValidator(),
+    ]);
   }
 
   loadInitCountries() {
