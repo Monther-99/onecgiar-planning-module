@@ -24,4 +24,7 @@ export class MeliaTypes {
   @JoinColumn()
   @OneToMany(() => Melia, (melia) => melia.meliaType)
   melia: Melia;
+
+  @Column({ default: false })
+  HideCrossCutting: boolean;
 }
