@@ -309,6 +309,7 @@
         >
           <div class="t-box select-text">
             <ng-template
+              required
               ng-option-tmp
               let-item="item"
               let-search="searchTerm"
@@ -443,6 +444,7 @@
             appearance="outline"
             (change)="loadCoInitCountries()"
             [compareWith]="compareUmCode"
+            required
           >
           </ng-select>
           <mat-error

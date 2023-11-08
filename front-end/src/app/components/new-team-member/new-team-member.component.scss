@@ -331,3 +331,20 @@
     transform: translate(0);
   }
 }
+
+:host {
+  ::ng-deep .mat-mdc-form-field-error-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0 0 !important;
+  }
+}
+
+::ng-deep.ng-select.ng-invalid.ng-touched {
+  .ng-select-container {
+    border: 1px solid red !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px #fde6e8;
+  }
+}

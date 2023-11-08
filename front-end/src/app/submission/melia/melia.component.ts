@@ -80,6 +80,8 @@ export class MeliaComponent implements OnInit {
     };
   };
 
+
+
   private initiativeRegionsValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
@@ -99,6 +101,9 @@ export class MeliaComponent implements OnInit {
       return null;
     };
   };
+
+
+  
 
   private initiativeCountriesValidator = () => {
     return (controlGroup: any) => {

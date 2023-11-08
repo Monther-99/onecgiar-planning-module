@@ -1083,7 +1083,7 @@ export class SubmissionComponent implements OnInit {
       .open(DeleteConfirmDialogComponent, {
         data: {
           title: "Submit",
-          message: `Are you sure you want to Submit?`,
+          message: `Are you sure you want to submit?`,
           svg: `../../assets/shared-image/apply.png`,
         },
       })
@@ -1120,8 +1120,8 @@ export class SubmissionComponent implements OnInit {
 
     if (!valid) {
       this.toastrService.error(
-        "All subtotal percentages should be 100",
-        "Can't submit"
+        "The subtotal of all percentages should equal 100%",
+        "Submission failed"
       );
       return valid;
     }
@@ -1147,7 +1147,7 @@ export class SubmissionComponent implements OnInit {
     if (!valid) {
       this.toastrService.error(
         "There is a checked items but not budgeted",
-        "Can't submit"
+        "Submission failed"
       );
       return valid;
     }
@@ -1163,8 +1163,8 @@ export class SubmissionComponent implements OnInit {
 
     if (!valid) {
       this.toastrService.error(
-        "All subtotal percentages should be 100",
-        "Can't complete"
+        "The subtotal of all percentages should equal 100%",
+        "Complete failed"
       );
       this.centerStatusService.validPartner.next(valid);
       return;
@@ -1189,7 +1189,7 @@ export class SubmissionComponent implements OnInit {
     if (!valid) {
       this.toastrService.error(
         "There is a checked items but not budgeted",
-        "Can't complete"
+        "Complete failed"
       );
       this.centerStatusService.validPartner.next(valid);
       return;
