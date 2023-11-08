@@ -34,6 +34,7 @@ export class MeliaAdminDialogComponent {
       name: [null, Validators.required],
       description: [null, Validators.required],
       availability: [null],
+      HideCrossCutting: [false]
     });
     if (this.meliaId) {
       let { id, ...meliaValues } = await this.MeliaTypeService.getMeliaTypeById(

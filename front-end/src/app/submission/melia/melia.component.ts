@@ -21,7 +21,7 @@ import { SubmissionService } from "src/app/services/submission.service";
 })
 export class MeliaComponent implements OnInit {
   meliaForm: FormGroup<any> = new FormGroup([]);
-  meliaTypes: any = [];
+  meliaTypes: any [] = [];
   regions: any = [];
   countries: any = [];
   initCountries: any = [];
@@ -194,6 +194,10 @@ export class MeliaComponent implements OnInit {
     });
     this.loadPartners();
     this.meliaTypes = await this.submissionService.getMeliaTypes();
+    this.meliaTypes = this.meliaTypes.filter((element: any) => {
+      if(element.HideCrossCutting == false)
+        return element;
+    })
     this.regions = await this.submissionService.getRegions();
     this.countries = await this.submissionService.getCountries();
     this.initiatives = await this.initiativesService.getInitiativesOnly();
