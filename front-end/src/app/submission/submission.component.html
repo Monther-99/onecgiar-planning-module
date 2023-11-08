@@ -390,11 +390,21 @@
                             item.category != 'CROSS' && item.category != 'MELIA'
                           "
                         >
-                          <button mat-icon-button (click)="viewData(item)">
+                          <figure
+                            matTooltip="Actions must be done in ToC"
+                            matTooltipPosition="left"
+                          >
+                            <img
+                              class="toc-img-size"
+                              src="../../assets/shared-image/toc-5.png"
+                              alt="Photo of toc"
+                            />
+                          </figure>
+                          <!-- <button mat-icon-button (click)="viewData(item)">
                             <mat-icon class="icon-sub-table-2"
                               >visibility</mat-icon
                             >
-                          </button>
+                          </button> -->
                         </ng-container>
                       </td>
                       <td class="wp-title">
