@@ -692,11 +692,11 @@ mat-form-field {
 
 .risk-nav-main {
   width: 94%;
-  margin: 4rem -4rem -4rem auto;
+  // margin: 4rem -4rem -4rem auto;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  position: relative;
+  // position: relative;
   animation: moveInBottom 1.5s ease-out 1.95s;
   animation-fill-mode: backwards;
 }
@@ -2343,4 +2343,10 @@ pre {
     font-family: "Poppins", sans-serif !important;
     padding: 1.5rem 6rem 0 0;
   }
+}
+
+.toc-img-size {
+  width: 4.8rem;
+  height: 4.8rem;
+  object-fit: contain;
 }

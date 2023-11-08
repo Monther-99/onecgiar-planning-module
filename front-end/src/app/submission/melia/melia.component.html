@@ -240,7 +240,10 @@
                 *ngIf="initiative.id != data?.initiative_id"
                 [value]="initiative"
               >
-                {{ initiative.official_code }} - {{ initiative.name }}
+                <strong class="official-color">{{
+                  initiative.official_code
+                }}</strong>
+                - {{ initiative.name }}
               </mat-option>
             </ng-container>
           </mat-select>
@@ -289,6 +292,7 @@
         </div>
 
         <ng-select
+          required
           class="select-text"
           [items]="partners | async"
           formControlName="partners"
@@ -310,7 +314,7 @@
               let-index="index"
               class="select-text"
             >
-              <div class="ng-select-option select-text">
+              <div class="ng-select-option">
                 <span class="select-text">{{ item.name }}</span>
                 <span class="select-text" *ngIf="item.acronym">
                   - {{ item.acronym }}</span
@@ -322,7 +326,7 @@
 
         <mat-error
           class="error"
-          *ngIf="meliaForm?.errors?.['atLeastOneRequired'] && showerror"
+          *ngIf="meliaForm?.errors?.['partnersRequired'] && showerror"
           >This field is mandatory</mat-error
         >
 
@@ -336,7 +340,7 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Geographic scope</mat-label
+            >Geographic scope<span class="star">*</span></mat-label
           >
         </div>
         <div class="risk-report-radio-buttons-flex-box-2">
@@ -344,9 +348,16 @@
             formControlName="geo_scope"
             aria-label="Geographic scope"
             color="primary"
+            required
           >
             <mat-radio-button value="global">Global</mat-radio-button>
             <mat-radio-button value="region">Region</mat-radio-button>
+
+            <mat-error
+              class="error"
+              *ngIf="meliaForm?.errors?.['geographicScopeRequired'] && showerror"
+              >This field is mandatory</mat-error
+            >
           </mat-radio-group>
         </div>
       </div>
@@ -361,6 +372,7 @@
             >
           </div>
           <ng-select
+            required
             class="select-text"
             [items]="regions"
             formControlName="initiative_regions"
@@ -372,11 +384,11 @@
             [compareWith]="compareUmCode"
           >
           </ng-select>
-          <!-- <mat-error
+          <mat-error
             class="error"
-            *ngIf="meliaForm.controls?.['initiative_regions']?.errors?.['required']"
-            >Regions of the main initiative is required</mat-error
-          > -->
+            *ngIf="meliaForm?.errors?.['initiativeRegionsRequired'] && showerror"
+            >This field is mandatory</mat-error
+          >
         </div>
 
         <div
@@ -405,11 +417,11 @@
             required
           >
           </ng-select>
-          <!-- <mat-error
+          <mat-error
             class="error"
-            *ngIf="meliaForm.controls?.['initiative_countries']?.errors?.['required']"
-            >Countries of the main initiative is required</mat-error
-          > -->
+            *ngIf="meliaForm?.errors?.['initiativeCountriesRequired'] && showerror"
+            >This field is mandatory</mat-error
+          >
         </div>
 
         <div class="form-dialog-content__field--grid-column">
@@ -432,11 +444,11 @@
             [compareWith]="compareUmCode"
           >
           </ng-select>
-          <!-- <mat-error
+          <mat-error
             class="error"
-            *ngIf="meliaForm.controls?.['co_initiative_regions']?.errors?.['required']"
-            >Regions of the co-initiative is required</mat-error
-          > -->
+            *ngIf="meliaForm?.errors?.['coInitiativeRegionsRequired'] && showerror"
+            >This field is mandatory</mat-error
+          >
         </div>
 
         <div
@@ -465,11 +477,11 @@
             required
           >
           </ng-select>
-          <!-- <mat-error
+          <mat-error
             class="error"
-            *ngIf="meliaForm.controls?.['co_initiative_countries']?.errors?.['required']"
-            >Countries of the co-initiative is required</mat-error
-          > -->
+            *ngIf="meliaForm?.errors?.['coInitiativeCountriesRequired'] && showerror"
+            >This field is mandatory</mat-error
+          >
         </div>
       </div>
 

@@ -1,15 +1,15 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { MeliaTypeService } from 'src/app/services/melia-type.service';
+import { Component, Inject } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { ToastrService } from "ngx-toastr";
+import { MeliaTypeService } from "src/app/services/melia-type.service";
 export interface DialogData {
   id: number;
 }
 @Component({
-  selector: 'app-melia-admin-dialog',
-  templateUrl: './melia-admin-dialog.component.html',
-  styleUrls: ['./melia-admin-dialog.component.scss']
+  selector: "app-melia-admin-dialog",
+  templateUrl: "./melia-admin-dialog.component.html",
+  styleUrls: ["./melia-admin-dialog.component.scss"],
 })
 export class MeliaAdminDialogComponent {
   meliaId: number = 0;
@@ -34,9 +34,12 @@ export class MeliaAdminDialogComponent {
       name: [null, Validators.required],
       description: [null, Validators.required],
       availability: [null],
+      HideCrossCutting: [false]
     });
     if (this.meliaId) {
-      let { id, ...meliaValues } = await this.MeliaTypeService.getMeliaTypeById(this.meliaId);
+      let { id, ...meliaValues } = await this.MeliaTypeService.getMeliaTypeById(
+        this.meliaId
+      );
       this.meliaTypeForm.setValue({
         ...meliaValues,
       });
@@ -47,9 +50,12 @@ export class MeliaAdminDialogComponent {
     this.meliaTypeForm.markAllAsTouched();
     this.meliaTypeForm.updateValueAndValidity();
     if (this.meliaTypeForm.valid) {
-      await this.MeliaTypeService.submitMeliaType(this.meliaId, this.meliaTypeForm.value).then(
+      await this.MeliaTypeService.submitMeliaType(
+        this.meliaId,
+        this.meliaTypeForm.value
+      ).then(
         (data) => {
-          if (this.meliaId == 0) this.toast.success("Melia added successfully");
+          if (this.meliaId == 0) this.toast.success("MELIA added successfully");
           else this.toast.success("MELIA updated successfully");
 
           this.dialogRef.close({ submitted: true });
@@ -60,7 +66,6 @@ export class MeliaAdminDialogComponent {
       );
     }
   }
-
 
   onCloseDialog() {
     this.dialogRef.close();

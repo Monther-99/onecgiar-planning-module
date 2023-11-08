@@ -797,7 +797,7 @@ export class SubmissionComponent implements OnInit {
       if (d[3] && d[3]?.path == "center") this.isCenter = true;
     });
 
-    this.organizationSelected = this.partners;
+    this.organizationSelected = this.partners[0];
 
     console.log(this.organizationSelected);
 

@@ -1,39 +1,39 @@
-<!-- step-1 -->
-
-<nav class="risk-nav-main">
-  <ul class="risk-nav-list">
-    <li>
-      <a class="risk-nav-link" routerLink="/">Initiatives</a>
-    </li>
-    <li>
-      <a routerLink="''" class="risk-nav-link">></a>
-    </li>
-    <li>
-      <a
-        routerLink="{{ initiative_data.id }}/{{
-          initiative_data.official_code
-        }}/submission"
-        class="risk-nav-link"
-        ><span class="line">&nbsp;</span>{{ initiative_data.official_code }}</a
-      >
-    </li>
-    <li>
-      <a routerLink="''" class="risk-nav-link">></a>
-    </li>
-    <li>
-      <a
-        routerLink="/initiative/{{ initiative_data.id }}/{{
-          initiative_data.official_code
-        }}/submission"
-        class="risk-nav-link"
-        >Manage Initiative activities</a
-      >
-    </li>
-  </ul>
-</nav>
-
 <div class="section-submited">
   <div class="container-mat-tab">
+    <!-- step-1 -->
+    <nav class="risk-nav-main">
+      <ul class="risk-nav-list">
+        <li>
+          <a class="risk-nav-link" routerLink="/">Initiatives</a>
+        </li>
+        <li>
+          <a routerLink="''" class="risk-nav-link">></a>
+        </li>
+        <li>
+          <a
+            routerLink="{{ initiative_data.id }}/{{
+              initiative_data.official_code
+            }}/submission"
+            class="risk-nav-link"
+            ><span class="line">&nbsp;</span
+            >{{ initiative_data.official_code }}</a
+          >
+        </li>
+        <li>
+          <a routerLink="''" class="risk-nav-link">></a>
+        </li>
+        <li>
+          <a
+            routerLink="/initiative/{{ initiative_data.id }}/{{
+              initiative_data.official_code
+            }}/submission"
+            class="risk-nav-link"
+            >Manage Initiative activities</a
+          >
+        </li>
+      </ul>
+    </nav>
+
     <mat-card *ngIf="!loading">
       <mat-card-title class="card-title"
         >One CGIAR Initiatives Plan of Results and Budget Template ({{
@@ -390,11 +390,21 @@
                             item.category != 'CROSS' && item.category != 'MELIA'
                           "
                         >
-                          <button mat-icon-button (click)="viewData(item)">
+                          <figure
+                            matTooltip="Actions must be done in ToC"
+                            matTooltipPosition="below"
+                          >
+                            <img
+                              class="toc-img-size"
+                              src="../../assets/shared-image/toc-5.png"
+                              alt="Photo of toc"
+                            />
+                          </figure>
+                          <!-- <button mat-icon-button (click)="viewData(item)">
                             <mat-icon class="icon-sub-table-2"
                               >visibility</mat-icon
                             >
-                          </button>
+                          </button> -->
                         </ng-container>
                       </td>
                       <td class="wp-title">
