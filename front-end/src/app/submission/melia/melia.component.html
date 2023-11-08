@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.id ? "Edit" : "Add" }} MELIA
+      {{ data.id ? 'Edit' : 'Add' }} MELIA
     </p>
   </div>
 
@@ -37,7 +37,12 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select class="select-text" required formControlName="melia_type">
+          <mat-select
+            class="select-text"
+            required
+            formControlName="melia_type"
+            (selectionChange)="fillResultsSelect()"
+          >
             <mat-option
               *ngFor="let meliaType of meliaTypes"
               [value]="meliaType.id"
@@ -255,31 +260,25 @@
           >
         </div>
 
-        <mat-form-field
-          class="form-dialog-content__field"
-          floatLabel="always"
-          hideRequiredMarker
+        <ng-select
+          class="select-text"
+          [items]="results"
+          formControlName="contribution_results"
+          placeholder="MELIA Study contributes to"
+          bindLabel="title"
+          bindValue="id"
+          [multiple]="true"
           appearance="outline"
+          required
+          (change)="resultSelected()"
         >
-          <mat-select
-            class="select-text"
-            required
-            formControlName="contribution_results"
-            multiple
-            (valueChange)="resultSelected($event)"
-          >
-            <ng-container *ngFor="let result of results">
-              <mat-option [value]="result.id">
-                {{ result.title }}
-              </mat-option>
-            </ng-container>
-          </mat-select>
-          <mat-error
-            class="error"
-            *ngIf="meliaForm.controls?.['contribution_results']?.errors?.['required']"
-            >This field is mandatory</mat-error
-          >
-        </mat-form-field>
+        </ng-select>
+
+        <mat-error
+          class="error"
+          *ngIf="meliaForm.controls?.['contribution_results']?.errors?.['required']"
+          >This field is mandatory</mat-error
+        >
       </div>
 
       <div class="form-dialog-content__field--grid-column">
@@ -488,7 +487,7 @@
               (click)="submit()"
               cdkFocusInitial
             >
-              {{ data.id ? "Edit" : "Add" }}
+              {{ data.id ? 'Edit' : 'Add' }}
             </button>
           </div>
         </div>
