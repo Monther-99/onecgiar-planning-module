@@ -210,6 +210,9 @@ export class SubmissionComponent implements OnInit {
   }
 
   toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
+    if (!!this.noValuesAssigned[partner_code][wp_official_code][item_id]) {
+      this.noValuesAssigned[partner_code][wp_official_code][item_id] = 0;
+    }
     this.values[partner_code][wp_official_code][item_id] = 0;
     this.displayValues[partner_code][wp_official_code][item_id] = 0;
     this.changeCalc(partner_code, wp_official_code, item_id, "percent");
