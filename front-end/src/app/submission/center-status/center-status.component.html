@@ -15,6 +15,11 @@
     <mat-card-subtitle class="card-title"
       >{{ organization?.name }} ‐ {{ organization?.acronym }}</mat-card-subtitle
     >
+
+    <p *ngIf="status === false"  class="text-if-complete">
+      If you need to make any change to this center, please mark it as
+      incomplete first
+    </p>
     <div class="form-container">
       <form class="search">
         <div class="sec-8">
