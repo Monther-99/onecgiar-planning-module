@@ -233,6 +233,24 @@
             multiple
             [compareWith]="compareId"
           >
+            <!-- //////////////////////////////////////////////// -->
+
+            <mat-select-trigger>
+              <mat-chip-listbox>
+                <mat-chip
+                  *ngFor="let initiative of meliaForm.value.other_initiatives"
+                  [removable]="true"
+                  (removed)="onToppingRemoved(initiative)"
+                >
+                  <strong class="official-color">{{
+                    initiative.official_code
+                  }}</strong>
+                  - {{ initiative.name }}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-listbox>
+            </mat-select-trigger>
+
             <ng-container *ngFor="let initiative of initiatives">
               <mat-option
                 class="w"
@@ -247,9 +265,10 @@
               </mat-option>
             </ng-container>
           </mat-select>
+
           <mat-error
             class="error"
-            *ngIf="meliaForm.controls?.['other_initiatives']?.errors?.['required']"
+            *ngIf="meliaForm?.errors?.['otherInitiativesRequired'] && showerror"
             >This field is mandatory</mat-error
           >
         </mat-form-field>
@@ -373,7 +392,6 @@
             >
           </div>
           <ng-select
-            required
             class="select-text"
             [items]="regions"
             formControlName="initiative_regions"
@@ -386,8 +404,9 @@
           >
           </ng-select>
           <mat-error
+         
             class="error"
-            *ngIf="meliaForm?.errors?.['initiativeRegionsRequired'] && showerror"
+            *ngIf="meliaForm?.errors?.['initiativeRegionsRequired'] && showerror "
             >This field is mandatory</mat-error
           >
         </div>
@@ -415,7 +434,6 @@
             [multiple]="true"
             appearance="outline"
             [compareWith]="compareCode"
-            required
           >
           </ng-select>
           <mat-error
@@ -443,7 +461,6 @@
             appearance="outline"
             (change)="loadCoInitCountries()"
             [compareWith]="compareUmCode"
-            required
           >
           </ng-select>
           <mat-error
@@ -476,7 +493,6 @@
             [multiple]="true"
             appearance="outline"
             [compareWith]="compareCode"
-            required
           >
           </ng-select>
           <mat-error

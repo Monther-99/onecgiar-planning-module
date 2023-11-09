@@ -639,3 +639,39 @@ textarea::placeholder {
     margin-right: -13px !important;
   }
 }
+
+// li:nth-child(odd) {
+//  margin-bottom: 1rem;
+// }
+
+// li:nth-child(even) {
+//   background-color: #e9ecef;
+// }
+
+:host {
+  ::ng-deep.mat-mdc-chip.mdc-evolution-chip--with-trailing-action
+    .mat-mdc-chip-action-label {
+    position: relative;
+    display: inline-block;
+    padding: 1px 5px;
+    white-space: nowrap;
+    //overflow: auto;
+    text-overflow: ellipsis;
+    white-space: break-spaces !important;
+    text-align: left !important;
+    color: #04030f !important;
+    font-size: 1.4rem !important;
+    font-style: normal !important;
+    line-height: 18.75px !important;
+    font-family: "Poppins", sans-serif !important;
+    white-space: normal !important;
+  }
+}
+
+:host {
+  ::ng-deep.mdc-evolution-chip-set .mdc-evolution-chip {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    height: auto !important;
+  }
+}

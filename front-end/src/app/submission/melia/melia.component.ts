@@ -44,6 +44,25 @@ export class MeliaComponent implements OnInit {
     this.savedData = data.data;
   }
 
+  private otherInitiativesValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        if (
+          controls.other_initiatives.value == "" ||
+          controls.other_initiatives.value == null
+        ) {
+          return {
+            otherInitiativesRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
+
   private contributionResultsValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
@@ -102,7 +121,7 @@ export class MeliaComponent implements OnInit {
   private initiativeRegionsValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
-      if (controls) {
+      if (controls && this.meliaForm.value.geo_scope == "region") {
         // console.log(controls);
         if (
           controls.initiative_regions.value == "" ||
@@ -122,7 +141,7 @@ export class MeliaComponent implements OnInit {
   private initiativeCountriesValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
-      if (controls) {
+      if (controls && this.meliaForm.value.geo_scope == "region") {
         // console.log(controls);
         if (
           controls.initiative_countries.value == "" ||
@@ -142,7 +161,7 @@ export class MeliaComponent implements OnInit {
   private coInitiativeRegionsValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
-      if (controls) {
+      if (controls && this.meliaForm.value.geo_scope == "region") {
         // console.log(controls);
         if (
           controls.co_initiative_regions.value == "" ||
@@ -162,7 +181,7 @@ export class MeliaComponent implements OnInit {
   private coInitiativeCountriesValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
-      if (controls) {
+      if (controls && this.meliaForm.value.geo_scope == "region") {
         // console.log(controls);
         if (
           controls.co_initiative_countries.value == "" ||
@@ -348,6 +367,7 @@ export class MeliaComponent implements OnInit {
       this.coInitiativeRegionsValidator(),
       this.coInitiativeCountriesValidator(),
       this.contributionResultsValidator(),
+      this.otherInitiativesValidator(),
     ]);
   }
 
@@ -390,5 +410,18 @@ export class MeliaComponent implements OnInit {
   //Close-Dialog
   onCloseDialog() {
     this.dialogRef.close();
+  }
+
+  onToppingRemoved(initiative: any) {
+    const toppings = this.meliaForm.value.other_initiatives as any[];
+    this.removeFirst(toppings, initiative);
+    this.meliaForm.setValue(toppings); // To trigger change detection
+  }
+
+  private removeFirst<T>(array: T[], toRemove: T): void {
+    const index = array.indexOf(toRemove);
+    if (index !== -1) {
+      array.splice(index, 1);
+    }
   }
 }
