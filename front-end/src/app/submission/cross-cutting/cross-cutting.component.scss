@@ -169,3 +169,7 @@ textarea::placeholder {
     transform: translate(0);
   }
 }
+
+::ng-deep .mdc-text-field--invalid .mdc-notched-outline > * {
+  border-color: rgba(255, 0, 0, 0) !important;
+}
