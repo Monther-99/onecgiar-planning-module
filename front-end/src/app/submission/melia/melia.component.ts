@@ -13,7 +13,7 @@ import {
 } from "rxjs";
 import { InitiativesService } from "src/app/services/initiatives.service";
 import { SubmissionService } from "src/app/services/submission.service";
-
+import { AnticipatedYearService } from "src/app/services/anticipated-year.service";
 @Component({
   selector: "app-melia",
   templateUrl: "./melia.component.html",
@@ -39,7 +39,8 @@ export class MeliaComponent implements OnInit {
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private submissionService: SubmissionService,
-    private initiativesService: InitiativesService
+    private initiativesService: InitiativesService,
+    private anticipatedYearService: AnticipatedYearService
   ) {
     this.savedData = data.data;
   }
@@ -192,6 +193,7 @@ export class MeliaComponent implements OnInit {
   // submit() {
   //   if (this.meliaForm.valid) this.dialogRef.close(this.meliaForm.value);
   // }
+  AnticipatedYear:any;
   async ngOnInit() {
     this.meliaForm = this.fb.group({
       initiative_id: [this.data.initiative_id, Validators.required],
@@ -246,6 +248,7 @@ export class MeliaComponent implements OnInit {
         );
       }
     });
+    this.AnticipatedYear = await this.anticipatedYearService.getAnticipatedYear();
   }
 
   async resultSelected() {

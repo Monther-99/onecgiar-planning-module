@@ -73,6 +73,8 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { ParametersSettingsComponent } from './admin/parameters-settings/parameters-settings.component';
 import { MeliaAdminComponent } from './admin/melia-admin/melia-admin.component';
 import { MeliaAdminDialogComponent } from './admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component';
+import { AnticipatedYearComponent } from './admin/anticipated-year/anticipated-year.component';
+import { AnticipatedYearDialogComponent } from './admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +118,8 @@ import { MeliaAdminDialogComponent } from './admin/melia-admin/melia-admin-dialo
     ParametersSettingsComponent,
     MeliaAdminComponent,
     MeliaAdminDialogComponent,
+    AnticipatedYearComponent,
+    AnticipatedYearDialogComponent,
   ],
   imports: [
     BrowserModule,

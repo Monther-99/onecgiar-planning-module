@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Submission } from './submission.entity';
+import { AnticipatedYear } from './anticipated-year.entity';
 
 export enum phaseStatus {
   OPEN = 'open',
@@ -48,6 +49,9 @@ export class Phase {
 
   @OneToMany(() => Period, (period) => period.phase)
   periods: Period[];
+
+  @OneToMany(() => AnticipatedYear, (AnticipatedYear) => AnticipatedYear.phase)
+  AnticipatedYear: AnticipatedYear[];
 
   @OneToMany(() => Submission, (submission) => submission.phase)
   submissions: Submission[];
