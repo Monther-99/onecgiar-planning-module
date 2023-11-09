@@ -21,7 +21,7 @@ import { SubmissionService } from "src/app/services/submission.service";
 })
 export class MeliaComponent implements OnInit {
   meliaForm: FormGroup<any> = new FormGroup([]);
-  meliaTypes: any [] = [];
+  meliaTypes: any[] = [];
   regions: any = [];
   countries: any = [];
   initCountries: any = [];
@@ -43,6 +43,25 @@ export class MeliaComponent implements OnInit {
   ) {
     this.savedData = data.data;
   }
+
+  private contributionResultsValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        if (
+          controls.contribution_results.value == "" ||
+          controls.contribution_results.value == null
+        ) {
+          return {
+            contributionResultsRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
 
   private partnersValidator = () => {
     return (controlGroup: any) => {
@@ -80,8 +99,6 @@ export class MeliaComponent implements OnInit {
     };
   };
 
-
-
   private initiativeRegionsValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
@@ -101,9 +118,6 @@ export class MeliaComponent implements OnInit {
       return null;
     };
   };
-
-
-  
 
   private initiativeCountriesValidator = () => {
     return (controlGroup: any) => {
@@ -200,13 +214,14 @@ export class MeliaComponent implements OnInit {
     this.loadPartners();
     this.meliaTypes = await this.submissionService.getMeliaTypes();
     this.meliaTypes = this.meliaTypes.filter((element: any) => {
-      if(element.HideCrossCutting == false)
-        return element;
-    })
+      if (element.HideCrossCutting == false) return element;
+    });
     this.regions = await this.submissionService.getRegions();
     this.countries = await this.submissionService.getCountries();
     this.initiatives = await this.initiativesService.getInitiativesOnly();
-    this.allResults = await this.submissionService.getToc(this.data.initiative_id);
+    this.allResults = await this.submissionService.getToc(
+      this.data.initiative_id
+    );
     this.fillResultsSelect();
   }
   onNoClick(): void {
@@ -216,16 +231,16 @@ export class MeliaComponent implements OnInit {
   fillResultsSelect() {
     const selectedStudy = this.meliaForm.value.melia_type;
     this.results = this.allResults.filter((result: any) => {
-      if (this.data.wp.ost_wp.wp_official_code == 'CROSS') {
+      if (this.data.wp.ost_wp.wp_official_code == "CROSS") {
         return (
-          result.category == 'OUTCOME' ||
-          (this.data.show_eoi && result.category == 'EOI')
+          result.category == "OUTCOME" ||
+          (this.data.show_eoi && result.category == "EOI")
         );
       } else {
         return (
-          (result.category == 'OUTCOME' ||
+          (result.category == "OUTCOME" ||
             ((selectedStudy == 6 || selectedStudy == 8) &&
-              result.category == 'OUTPUT')) &&
+              result.category == "OUTPUT")) &&
           (result.group == this.data.wp.id ||
             result.wp_id == this.data.wp.ost_wp.wp_official_code)
         );
@@ -297,7 +312,7 @@ export class MeliaComponent implements OnInit {
         initRegionsArray[region.um49Code] = region;
     });
 
-    let geoScope = initRegionsArray.length ? 'region' : 'global';
+    let geoScope = initRegionsArray.length ? "region" : "global";
 
     this.meliaForm.patchValue({
       partners: Object.values(partnersArray),
@@ -332,6 +347,7 @@ export class MeliaComponent implements OnInit {
       this.initiativeCountriesValidator(),
       this.coInitiativeRegionsValidator(),
       this.coInitiativeCountriesValidator(),
+      this.contributionResultsValidator(),
     ]);
   }
 

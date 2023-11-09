@@ -278,10 +278,10 @@
         </ng-select>
 
         <mat-error
-          class="error"
-          *ngIf="meliaForm.controls?.['contribution_results']?.errors?.['required']"
-          >This field is mandatory</mat-error
-        >
+        class="error"
+        *ngIf="meliaForm?.errors?.['contributionResultsRequired'] && showerror"
+        >This field is mandatory</mat-error
+      >
       </div>
 
       <div class="form-dialog-content__field--grid-column">
