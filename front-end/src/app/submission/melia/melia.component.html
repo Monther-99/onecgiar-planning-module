@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.id ? 'Edit' : 'Add' }} MELIA
+      {{ data.id ? "Edit" : "Add" }} MELIA
     </p>
   </div>
 
@@ -278,10 +278,10 @@
         </ng-select>
 
         <mat-error
-        class="error"
-        *ngIf="meliaForm?.errors?.['contributionResultsRequired'] && showerror"
-        >This field is mandatory</mat-error
-      >
+          class="error"
+          *ngIf="meliaForm?.errors?.['contributionResultsRequired'] && showerror"
+          >This field is mandatory</mat-error
+        >
       </div>
 
       <div class="form-dialog-content__field--grid-column">
@@ -501,7 +501,7 @@
               (click)="submit()"
               cdkFocusInitial
             >
-              {{ data.id ? 'Edit' : 'Add' }}
+              {{ data.id ? "Edit" : "Add" }}
             </button>
           </div>
         </div>

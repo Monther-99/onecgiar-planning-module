@@ -78,6 +78,12 @@
           cdkAutosizeMinRows="2"
           cdkAutosizeMaxRows="10"
         ></textarea>
+
+        <mat-error
+          class="error"
+          *ngIf="statusForm.controls?.['status_reason']?.errors?.['required']"
+          >This field is mandatory</mat-error
+        >
       </mat-form-field>
     </div>
 
