@@ -225,6 +225,7 @@ export class MeliaComponent implements OnInit {
       this.data.initiative_id
     );
     this.fillResultsSelect();
+    this.AnticipatedYear = await this.anticipatedYearService.getAnticipatedYear();
   }
   onNoClick(): void {
     this.dialogRef.close(false);
@@ -248,7 +249,6 @@ export class MeliaComponent implements OnInit {
         );
       }
     });
-    this.AnticipatedYear = await this.anticipatedYearService.getAnticipatedYear();
   }
 
   async resultSelected() {
