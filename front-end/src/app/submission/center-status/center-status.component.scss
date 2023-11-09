@@ -327,3 +327,7 @@ mat-slide-toggle {
   animation: moveInBottom 1.5s ease-out 1.85s;
   animation-fill-mode: backwards;
 }
+
+::ng-deep .mdc-text-field--invalid .mdc-notched-outline > * {
+  border-color: rgba(255, 0, 0, 0) !important;
+}
