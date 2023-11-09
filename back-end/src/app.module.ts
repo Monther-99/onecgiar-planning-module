@@ -17,6 +17,7 @@ import { IpsrModule } from './ipsr/ipsr.module';
 import { IpsrValueModule } from './ipsr-value/ipsr-value.module';
 import { ConstantsModule } from './constants/constants.module';
 import { MeliaTypeModule } from './melia-type/melia-type.module';
+import { AnticipatedYearModule } from './anticipated-year/anticipated-year.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { MeliaTypeModule } from './melia-type/melia-type.module';
     IpsrValueModule,
     ConstantsModule,
     MeliaTypeModule,
+    AnticipatedYearModule,
   ],
 })
 export class AppModule {}

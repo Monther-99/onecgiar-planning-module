@@ -11,7 +11,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatChipsModule } from "@angular/material/chips";
 
-
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -76,6 +75,8 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
 import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
 import { MeliaAdminDialogComponent } from "./admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component";
+import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
+import { AnticipatedYearDialogComponent } from "./admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component";
 
 @NgModule({
   declarations: [
@@ -119,6 +120,8 @@ import { MeliaAdminDialogComponent } from "./admin/melia-admin/melia-admin-dialo
     ParametersSettingsComponent,
     MeliaAdminComponent,
     MeliaAdminDialogComponent,
+    AnticipatedYearComponent,
+    AnticipatedYearDialogComponent,
   ],
   imports: [
     BrowserModule,

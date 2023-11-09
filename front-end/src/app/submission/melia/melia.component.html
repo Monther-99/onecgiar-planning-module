@@ -166,8 +166,9 @@
             required
             formControlName="completion_year"
           >
-            <mat-option value="JAN-2015"> JAN-2015 </mat-option>
-            <mat-option value="JAN-2016"> JAN-2016 </mat-option>
+            <mat-option *ngFor="let anticipatedYear of AnticipatedYear" [value]="anticipatedYear.month + ' - ' + anticipatedYear.year">
+              {{anticipatedYear.month + ' - ' + anticipatedYear.year}} 
+            </mat-option>
           </mat-select>
           <mat-error
             class="error"
