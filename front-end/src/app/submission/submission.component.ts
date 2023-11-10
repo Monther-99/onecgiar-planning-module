@@ -1121,7 +1121,7 @@ export class SubmissionComponent implements OnInit {
     let valid = true;
     Object.keys(this.totals).forEach((partner_code) => {
       Object.keys(this.totals[partner_code]).forEach((wp_id) => {
-        if (this.totals[partner_code][wp_id] != 100) valid = false;
+        if (Math.round(this.totals[partner_code][wp_id]) != 100) valid = false;
       });
     });
 
@@ -1165,7 +1165,7 @@ export class SubmissionComponent implements OnInit {
   validateCenter(partner_code: any) {
     let valid = true;
     Object.keys(this.totals[partner_code]).forEach((wp_id) => {
-      if (this.totals[partner_code][wp_id] != 100) valid = false;
+      if (Math.round(this.totals[partner_code][wp_id]) != 100) valid = false;
     });
 
     if (!valid) {
