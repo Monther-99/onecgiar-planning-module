@@ -212,7 +212,7 @@ export class MeliaComponent implements OnInit {
   // submit() {
   //   if (this.meliaForm.valid) this.dialogRef.close(this.meliaForm.value);
   // }
-  AnticipatedYear:any;
+  AnticipatedYear: any;
   async ngOnInit() {
     this.meliaForm = this.fb.group({
       initiative_id: [this.data.initiative_id, Validators.required],
@@ -244,7 +244,8 @@ export class MeliaComponent implements OnInit {
       this.data.initiative_id
     );
     this.fillResultsSelect();
-    this.AnticipatedYear = await this.anticipatedYearService.getAnticipatedYear();
+    this.AnticipatedYear =
+      await this.anticipatedYearService.getAnticipatedYear();
   }
   onNoClick(): void {
     this.dialogRef.close(false);
@@ -416,9 +417,9 @@ export class MeliaComponent implements OnInit {
   }
 
   onToppingRemoved(initiative: any) {
-    const toppings = this.meliaForm.value.other_initiatives as any[];
+    const toppings = this.meliaForm?.value?.other_initiatives as any[];
     this.removeFirst(toppings, initiative);
-    this.meliaForm.setValue(toppings); // To trigger change detection
+    this.meliaForm.controls?.["other_initiatives"].setValue(toppings); // To trigger change detection
   }
 
   private removeFirst<T>(array: T[], toRemove: T): void {
