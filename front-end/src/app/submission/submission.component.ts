@@ -571,7 +571,11 @@ export class SubmissionComponent implements OnInit {
       // ...indicators_data,
     ];
     this.wps = this.results
-      .filter((d: any) => d.category == "WP" && !d.group)
+      .filter((d: any) => {
+        if (d.category == 'WP')
+          d.title = d.ost_wp.acronym + ': ' + d.ost_wp.name;
+        return d.category == 'WP' && !d.group;
+      })
       .sort((a: any, b: any) => a.title.localeCompare(b.title));
     this.wps.unshift({
       id: "CROSS",
@@ -1117,7 +1121,7 @@ export class SubmissionComponent implements OnInit {
     let valid = true;
     Object.keys(this.totals).forEach((partner_code) => {
       Object.keys(this.totals[partner_code]).forEach((wp_id) => {
-        if (this.totals[partner_code][wp_id] != 100) valid = false;
+        if (Math.round(this.totals[partner_code][wp_id]) != 100) valid = false;
       });
     });
 
@@ -1161,7 +1165,7 @@ export class SubmissionComponent implements OnInit {
   validateCenter(partner_code: any) {
     let valid = true;
     Object.keys(this.totals[partner_code]).forEach((wp_id) => {
-      if (this.totals[partner_code][wp_id] != 100) valid = false;
+      if (Math.round(this.totals[partner_code][wp_id]) != 100) valid = false;
     });
 
     if (!valid) {
