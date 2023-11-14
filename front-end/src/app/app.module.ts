@@ -72,11 +72,12 @@ import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-con
 import { SearchInitComponent } from "./search-init/search-init.component";
 import { FilterVersionComponent } from "./submited-versions/filter-version/filter-version.component";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
-import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
-import { MeliaAdminDialogComponent } from "./admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component";
-import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
-import { AnticipatedYearDialogComponent } from "./admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component";
+import { ParametersSettingsComponent } from './admin/parameters-settings/parameters-settings.component';
+import { MeliaAdminComponent } from './admin/melia-admin/melia-admin.component';
+import { MeliaAdminDialogComponent } from './admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component';
+import { AnticipatedYearComponent } from './admin/anticipated-year/anticipated-year.component';
+import { AnticipatedYearDialogComponent } from './admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component';
+import { SubmitedVersionViewComponent } from './submited-versions/submited-version-view/submited-version-view.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { AnticipatedYearDialogComponent } from "./admin/anticipated-year/anticip
     MeliaAdminDialogComponent,
     AnticipatedYearComponent,
     AnticipatedYearDialogComponent,
+    SubmitedVersionViewComponent,
   ],
   imports: [
     BrowserModule,

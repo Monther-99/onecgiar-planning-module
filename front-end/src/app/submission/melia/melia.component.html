@@ -166,8 +166,11 @@
             required
             formControlName="completion_year"
           >
-            <mat-option *ngFor="let anticipatedYear of AnticipatedYear" [value]="anticipatedYear.month + ' - ' + anticipatedYear.year">
-              {{anticipatedYear.month + ' - ' + anticipatedYear.year}} 
+            <mat-option
+              *ngFor="let anticipatedYear of AnticipatedYear"
+              [value]="anticipatedYear.month + ' - ' + anticipatedYear.year"
+            >
+              {{ anticipatedYear.month + " - " + anticipatedYear.year }}
             </mat-option>
           </mat-select>
           <mat-error
@@ -239,7 +242,7 @@
             <mat-select-trigger>
               <mat-chip-listbox>
                 <mat-chip
-                  *ngFor="let initiative of meliaForm.value.other_initiatives"
+                  *ngFor="let initiative of meliaForm?.value?.other_initiatives"
                   [removable]="true"
                   (removed)="onToppingRemoved(initiative)"
                 >
@@ -405,7 +408,6 @@
           >
           </ng-select>
           <mat-error
-         
             class="error"
             *ngIf="meliaForm?.errors?.['initiativeRegionsRequired'] && showerror "
             >This field is mandatory</mat-error
