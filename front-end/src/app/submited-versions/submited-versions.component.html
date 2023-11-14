@@ -131,6 +131,15 @@
                       /></svg
                   ></mat-icon>
                 </button>
+                <button
+                *ngIf="row.status == 'Approved'"
+                class="team-members-icon-table"
+                matTooltip="View"
+                matTooltipPosition="above"
+                routerLink="./view/{{ row['id'] }}"
+              >
+                <mat-icon class="user-management-table__icon" style="color: rgb(158, 85, 62);">pages</mat-icon>
+              </button>
               </div>
             </td>
           </ng-container>

@@ -125,7 +125,8 @@ export class PhasesComponent implements OnInit {
       .open(DeleteConfirmDialogComponent, {
         data: {
           title: "Deactivate",
-          message: `Are you sure you want to deactivate this Phase item?`,
+          message: `Activating phase item will deactivate other active phases.
+          Are you sure you want to activate this Phase item?`,
           svg: `../../../../assets/shared-image/disabled.png`,
         },
       })
@@ -144,8 +145,7 @@ export class PhasesComponent implements OnInit {
       .open(DeleteConfirmDialogComponent, {
         data: {
           title: "Activate",
-          message: `Activating phase item will deactivate other active phases.
-          Are you sure you want to activate this Phase item?`,
+          message: `Are you sure you want to deactivate this Phase item?`,
           svg: `../../../../assets/shared-image/checked-2.png`,
         },
       })

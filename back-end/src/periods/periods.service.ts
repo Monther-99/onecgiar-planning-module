@@ -55,27 +55,26 @@ export class PeriodsService {
   }
 
   async remove(id: number) {
-    let periods: any[] = await this.resultPeriodValuesRepo.find({
+    //related to submited phase
+    let period1: any[] = await this.resultPeriodValuesRepo.find({
       where: {
         period: {
           id: id
         }
-      },
-      relations: [
-        'period',
-        'period.phase'
-      ]
-    });
-    let phase = periods.map(d => {return d.period.phase})
-    let isActive = false;
-    phase.forEach(d => {
-      if(d.active === true) {
-        isActive = true
       }
-      return isActive
     });
 
-    if(periods.length != 0) {
+    //related to an active phase.
+    let period2: any = await this.periodRepository.findOne({
+      where: {
+        id: id
+      },
+      relations: ['phase']
+    });
+
+    let isActive = period2?.phase?.active;
+
+    if(isActive || period1.length) {
       if(isActive) 
         throw new BadRequestException('The period can not be deleted as it’s related to an active phase.');
       throw new BadRequestException('The period can not be deleted as it’s related to submited phase.');
