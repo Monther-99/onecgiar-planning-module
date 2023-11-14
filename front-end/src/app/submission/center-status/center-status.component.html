@@ -10,33 +10,28 @@
     </div>
   </form>
 </div> -->
-<div class="container-mat-tab btn--animated">
-  <mat-card>
-    <mat-card-subtitle class="card-title"
+<div>
+  <div>
+    <!-- <mat-card-subtitle class="card-title"
       >{{ organization?.name }} ‐ {{ organization?.acronym }}</mat-card-subtitle
-    >
+    > -->
 
-    <p *ngIf="status === false"  class="text-if-complete">
-      If you need to make any change to this center, please mark it as
-      incomplete first
-    </p>
-    <div class="form-container">
-      <form class="search">
-        <div class="sec-8">
-          <button
-            style="
-              background-image: linear-gradient(to right, #436280, #30455b);
-            "
-            class="user-management__button-box__btn btn-primary-size-2"
-            mat-raised-button
-            color="primary"
-            (click)="complete()"
-            type="button"
-          >
-            Mark as {{ status ? "" : "In" }}complete
-          </button>
-        </div>
-      </form>
-    </div>
-  </mat-card>
+    <button
+      style="background-image: linear-gradient(to right, #436280, #30455b)"
+      class="user-management__button-box__btn btn-primary-size-2"
+      mat-raised-button
+      color="primary"
+      (click)="complete()"
+      type="button"
+    >
+      Mark as {{ status ? "" : "In" }}complete
+    </button>
+  </div>
+</div>
+
+<div>
+  <p *ngIf="status === false" class="text-if-complete">
+    If you need to make any change to this center, please mark it as incomplete
+    first
+  </p>
 </div>

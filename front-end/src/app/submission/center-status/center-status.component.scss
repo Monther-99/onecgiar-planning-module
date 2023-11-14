@@ -324,8 +324,13 @@ mat-slide-toggle {
   color: #dc3545;
   text-align: center;
   margin-bottom: 0;
-  animation: moveInBottom 1.5s ease-out 1.85s;
+  animation: _ngcontent-kwl-c55_moveInBottom 1.5s ease-out 1.85s;
   animation-fill-mode: backwards;
+  /* position: relative; */
+  /* top: 8rem; */
+  position: absolute;
+  top: 4rem;
+  left: -53rem;
 }
 
 ::ng-deep .mdc-text-field--invalid .mdc-notched-outline > * {
