@@ -1,5 +1,7 @@
 @import "../../sass/layout/admin-module/admin-module";
 @import "../../sass/pages/admin-module/user-management";
+@import "../../sass/abstracts/variables";
+@import "../../sass/components/button";
 
 .search {
   flex: 0 0 40%;
@@ -326,13 +328,86 @@ mat-slide-toggle {
   margin-bottom: 0;
   animation: _ngcontent-kwl-c55_moveInBottom 1.5s ease-out 1.85s;
   animation-fill-mode: backwards;
-  /* position: relative; */
-  /* top: 8rem; */
   position: absolute;
-  top: 4rem;
-  left: -53rem;
+  top: 14rem;
+  left: 3.1rem;
 }
 
 ::ng-deep .mdc-text-field--invalid .mdc-notched-outline > * {
   border-color: rgba(255, 0, 0, 0) !important;
+}
+
+@keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+.btn,
+.btn:link,
+.btn:visited {
+  text-decoration: none;
+
+  display: inline-block;
+
+  transition: all 0.2s;
+  position: relative;
+
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+.btn:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}
+
+.btn:active,
+.btn:focus {
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+.btn--white {
+  background-color: #0f212f;
+  color: #ffffff;
+}
+.btn--white::after {
+  background-color: #0f212f;
+}
+
+.btn--white-2 {
+  background-image: linear-gradient(to right, #436280, #30455b);
+  color: #ffffff;
+}
+.btn--white-2::after {
+  background-image: linear-gradient(to right, #436280, #30455b);
+}
+
+.btn::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 10rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+}
+
+.btn--animated {
+  animation: moveInBottom 0.5s ease-out 0.85s;
+  animation-fill-mode: backwards;
 }

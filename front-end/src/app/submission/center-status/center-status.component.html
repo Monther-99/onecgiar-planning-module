@@ -17,10 +17,10 @@
     > -->
 
     <button
-      style="background-image: linear-gradient(to right, #436280, #30455b)"
-      class="user-management__button-box__btn btn-primary-size-2"
+     
+    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
       mat-raised-button
-      color="primary"
+    
       (click)="complete()"
       type="button"
     >
@@ -29,8 +29,8 @@
   </div>
 </div>
 
-<div>
-  <p *ngIf="status === false" class="text-if-complete">
+<div class="text-if-complete">
+  <p *ngIf="status === false">
     If you need to make any change to this center, please mark it as incomplete
     first
   </p>

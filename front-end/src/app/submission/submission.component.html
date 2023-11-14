@@ -37,8 +37,9 @@
     </nav>
 
     <mat-card *ngIf="loading">
-      <mat-card-title>Loading</mat-card-title>
-      <mat-card-subtitle>Preparing Items</mat-card-subtitle>
+      <div class="risk-report-title-box">
+        <h1 class="risk-report-title-box__title">Loading Preparing Items</h1>
+      </div>
     </mat-card>
 
     <mat-tab-group
@@ -90,15 +91,20 @@
               </table>
             </div>
           </div> -->
-          <div class="form-container-2">
-            <form class="search-2">
-              <div class="sec-1">
-                <mat-card-title class="card-title-2"
-                  >One CGIAR Initiatives Plan of Results and Budget
-                  Template</mat-card-title
-                >
-              </div>
-              <!-- 
+
+          <div class="risk-report-box">
+            <div class="risk-report-title-box">
+              <h1 class="risk-report-title-box__title">
+                One CGIAR Initiatives Plan of Results and Budget Template
+              </h1>
+            </div>
+
+            <!-- <mat-card-title class="card-title-2"
+                    ></mat-card-title
+                  >
+              -->
+
+            <!-- 
               <div class="sec-2">
                 <mat-card-subtitle class="card-title"
                   >{{ initiative_data.official_code }} ‐
@@ -106,8 +112,7 @@
                 >
               </div> -->
 
-              <div class="sec-8">
-                <!-- <button
+            <!-- <button
                   style="
                     background-image: linear-gradient(to right, #436280, #30455b);
                   "
@@ -120,81 +125,50 @@
                 >
                   Refresh
                 </button> -->
-              </div>
 
-              <div class="sec-7">
+            <div class="risk-report-btn-box">
+              <!-- btn-1 -->
+              <div class="risk-report-button-box">
                 <button
-                  style="
-                    background-image: linear-gradient(
-                      to right,
-                      #436280,
-                      #30455b
-                    );
-                  "
                   *ngIf="!this.isCenter"
-                  class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-3"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
                   mat-raised-button
-                  color="primary"
-                  (click)="submit()"
-                  [disabled]="canSubmit.value == 0"
-                  [ngClass]="{ disabled: canSubmit.value == 0 }"
+                  routerLink="/initiative/{{ initiative_data.id }}/{{
+                    initiative_data.official_code
+                  }}/team-members"
                 >
                   Team members
                 </button>
               </div>
-              <div class="sec-7">
+
+              <!-- btn-2 -->
+              <div class="risk-report-button-box">
                 <button
-                  style="
-                    background-image: linear-gradient(
-                      to right,
-                      #436280,
-                      #30455b
-                    );
-                  "
                   *ngIf="!this.isCenter"
-                  class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-3"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
                   mat-raised-button
-                  color="primary"
-                  (click)="submit()"
-                  [disabled]="canSubmit.value == 0"
-                  [ngClass]="{ disabled: canSubmit.value == 0 }"
                 >
                   Export Excel
                 </button>
               </div>
-              <div class="sec-7">
+
+              <!-- btn-3 -->
+              <div class="risk-report-button-box">
                 <button
-                  style="
-                    background-image: linear-gradient(
-                      to right,
-                      #436280,
-                      #30455b
-                    );
-                  "
                   *ngIf="!this.isCenter"
-                  class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-3"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
                   mat-raised-button
-                  color="primary"
-                  (click)="submit()"
-                  [disabled]="canSubmit.value == 0"
-                  [ngClass]="{ disabled: canSubmit.value == 0 }"
                 >
                   Export Pdf
                 </button>
               </div>
-              <div class="sec-7">
+
+              <!-- btn-4 -->
+              <div class="risk-report-button-box">
                 <button
-                  style="
-                    background-image: linear-gradient(
-                      to right,
-                      #436280,
-                      #30455b
-                    );
-                  "
                   *ngIf="!this.isCenter"
-                  class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-3"
+                  class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
                   mat-raised-button
-                  color="primary"
                   (click)="submit()"
                   [disabled]="canSubmit.value == 0"
                   [ngClass]="{ disabled: canSubmit.value == 0 }"
@@ -202,11 +176,11 @@
                   Submit
                 </button>
               </div>
-            </form>
+            </div>
           </div>
 
-          <div class="form-container-3">
-            <form class="search-3">
+          <div class="form-container-4">
+            <form class="search-4">
               <div>
                 <mat-card-subtitle class="card-title-3 m-b-t"
                   >{{ initiative_data.official_code }} ‐
@@ -214,13 +188,13 @@
                 >
               </div>
 
-              <div class="card-title-3">{{ this.phase.name }}</div>
+              <div class="card-title-3 m-b-t">{{ this.phase.name }}</div>
             </form>
           </div>
         </mat-card>
 
         <mat-card>
-          <mat-card-title>Consolidated</mat-card-title>
+          <mat-card-title class="card-title-table">Consolidated</mat-card-title>
           <mat-card-content>
             <div class="table-box mat-elevation-z8">
               <table>
@@ -266,7 +240,7 @@
                   </tr>
                 </ng-container>
                 <tr class="total">
-                  <td>Total</td>
+                  <td><div class="subtotal">Total</div></td>
                   <ng-container *ngFor="let item of period">
                     <td>
                       <mat-icon
@@ -286,234 +260,291 @@
         </mat-card>
 
         <ng-container *ngFor="let wp of wps">
-          <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
-            <mat-card-title>{{ wp.title }}</mat-card-title>
-            <mat-slide-toggle
-              [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
-              (toggleChange)="
-                toggleSummaryActualValues(wp.ost_wp.wp_official_code)
-              "
-              >Show decimals</mat-slide-toggle
-            >
-            <div class="wp-actions">
-              <div class="form-container">
-                <form class="search">
-                  <div class="sec-1">
-                    <button
-                      style="
-                        background-image: linear-gradient(
-                          to right,
-                          #436280,
-                          #30455b
-                        );
-                      "
-                      class="user-management__button-box__btn btn-primary-size"
-                      mat-raised-button
-                      color="primary"
-                      *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
-                      type="button"
-                      (click)="addMelia(wp)"
-                    >
-                      <mat-icon>add</mat-icon> MELIA
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <div class="form-container">
-                <form class="search">
-                  <div class="sec-2">
-                    <button
-                      style="
-                        background-image: linear-gradient(
-                          to right,
-                          #436280,
-                          #30455b
-                        );
-                      "
-                      class="user-management__button-box__btn btn-primary-size"
-                      mat-raised-button
-                      color="primary"
-                      *ngIf="wp.id == 'IPSR'"
-                      type="button"
-                      (click)="setIPSR(wp.ost_wp.wp_official_code)"
-                    >
-                      <mat-icon>settings</mat-icon> IPSR
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <div class="form-container">
-                <form class="search">
-                  <div class="sec-3">
-                    <button
-                      style="
-                        background-image: linear-gradient(
-                          to right,
-                          #436280,
-                          #30455b
-                        );
-                      "
-                      class="user-management__button-box__btn btn-primary-size"
-                      mat-raised-button
-                      color="primary"
-                      *ngIf="wp.id == 'CROSS' && phase.show_melia"
-                      type="button"
-                      (click)="addMelia(wp)"
-                    >
-                      <mat-icon>add</mat-icon> MELIA
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <div class="form-container">
-                <form class="search">
-                  <div class="sec-4">
-                    <button
-                      style="
-                        background-image: linear-gradient(
-                          to right,
-                          #436280,
-                          #30455b
-                        );
-                      "
-                      class="user-management__button-box__btn btn-primary-size-2 btn--animated"
-                      mat-raised-button
-                      color="primary"
-                      *ngIf="wp.id == 'CROSS'"
-                      type="button"
-                      (click)="addCross()"
-                    >
-                      <mat-icon>add</mat-icon> Cross-Cutting
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <mat-card-content>
-              <div class="table-box-1 mat-elevation-z8">
-                <table>
-                  <tr>
-                    <th>Actions</th>
-                    <th>Results</th>
-                    <th>Type</th>
-                    <ng-container *ngFor="let item of period">
-                      <th>{{ item.year }} - {{ item.quarter }}</th>
-                    </ng-container>
-                    <th>Percentage %</th>
-                    <th>Budget</th>
-                  </tr>
-                  <ng-container
-                    *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
+          <div class="flex-box-2">
+            <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
+              <mat-card-title class="card-title-table">{{
+                wp.title
+              }}</mat-card-title>
+              <mat-slide-toggle
+                [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
+                (toggleChange)="
+                  toggleSummaryActualValues(wp.ost_wp.wp_official_code)
+                "
+                [ngClass]="{
+                  'show-d': wp.id != 'CROSS' && wp.id != 'IPSR',
+                  'show-d-2': wp.id == 'CROSS' && phase.show_melia,
+                  'show-d-3': wp.id == 'IPSR'
+                }"
+                >Show decimals</mat-slide-toggle
+              >
+              <div class="wp-actions flex-box">
+                <!-- btn-1 -->
+                <div class="risk-report-button-box">
+                  <button
+                    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
+                    mat-raised-button
+                    *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
+                    type="button"
+                    (click)="addMelia(wp)"
                   >
+                    <mat-icon class="create-risk">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="13"
+                        height="13"
+                        viewBox="0 0 13 13"
+                        fill="none"
+                      >
+                        <path
+                          d="M11.5556 0H1.44444C0.642778 0 0 0.65 0 1.44444V11.5556C0 12.35 0.642778 13 1.44444 13H11.5556C12.35 13 13 12.35 13 11.5556V1.44444C13 0.65 12.35 0 11.5556 0ZM11.5556 11.5556H1.44444V1.44444H11.5556V11.5556ZM5.77778 10.1111H7.22222V7.22222H10.1111V5.77778H7.22222V2.88889H5.77778V5.77778H2.88889V7.22222H5.77778V10.1111Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </mat-icon>
+                    MELIA
+                  </button>
+                </div>
+
+                <!-- btn-2 -->
+                <div class="risk-report-button-box">
+                  <button
+                    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
+                    mat-raised-button
+                    *ngIf="wp.id == 'IPSR'"
+                    type="button"
+                    (click)="setIPSR(wp.ost_wp.wp_official_code)"
+                  >
+                    <mat-icon class="create-risk">settings</mat-icon> IPSR
+                  </button>
+                </div>
+                <!-- btn-3 -->
+                <div class="risk-report-button-box">
+                  <button
+                    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn m-l"
+                    mat-raised-button
+                    *ngIf="wp.id == 'CROSS' && phase.show_melia"
+                    type="button"
+                    (click)="addMelia(wp)"
+                  >
+                    <mat-icon class="create-risk">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="13"
+                        height="13"
+                        viewBox="0 0 13 13"
+                        fill="none"
+                      >
+                        <path
+                          d="M11.5556 0H1.44444C0.642778 0 0 0.65 0 1.44444V11.5556C0 12.35 0.642778 13 1.44444 13H11.5556C12.35 13 13 12.35 13 11.5556V1.44444C13 0.65 12.35 0 11.5556 0ZM11.5556 11.5556H1.44444V1.44444H11.5556V11.5556ZM5.77778 10.1111H7.22222V7.22222H10.1111V5.77778H7.22222V2.88889H5.77778V5.77778H2.88889V7.22222H5.77778V10.1111Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </mat-icon>
+                    MELIA
+                  </button>
+                </div>
+
+                <!-- btn-3 -->
+                <div class="risk-report-button-box">
+                  <button
+                    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
+                    mat-raised-button
+                    *ngIf="wp.id == 'CROSS'"
+                    type="button"
+                    (click)="addCross()"
+                  >
+                    <mat-icon class="create-risk">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="13"
+                        height="13"
+                        viewBox="0 0 13 13"
+                        fill="none"
+                      >
+                        <path
+                          d="M11.5556 0H1.44444C0.642778 0 0 0.65 0 1.44444V11.5556C0 12.35 0.642778 13 1.44444 13H11.5556C12.35 13 13 12.35 13 11.5556V1.44444C13 0.65 12.35 0 11.5556 0ZM11.5556 11.5556H1.44444V1.44444H11.5556V11.5556ZM5.77778 10.1111H7.22222V7.22222H10.1111V5.77778H7.22222V2.88889H5.77778V5.77778H2.88889V7.22222H5.77778V10.1111Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </mat-icon>
+                    Cross-Cutting
+                  </button>
+                </div>
+              </div>
+
+              <mat-card-content>
+                <div class="table-box-1 mat-elevation-z8">
+                  <table>
                     <tr>
-                      <td>
-                        <ng-container *ngIf="item.category == 'MELIA'">
-                          <button mat-icon-button [matMenuTriggerFor]="menu">
-                            <mat-icon class="icon-sub-table-2"
-                              >more_vert</mat-icon
-                            >
-                          </button>
-                          <mat-menu #menu="matMenu">
-                            <button
-                              (click)="editMelia(item.id, wp)"
-                              mat-menu-item
-                            >
-                              <mat-icon class="icon-sub-table-2">edit</mat-icon>
-                              Edit
-                            </button>
-                            <button
-                              (click)="deleteMelia(item.id)"
-                              mat-menu-item
-                            >
+                      <th>Actions</th>
+                      <th>Results</th>
+                      <th>Type</th>
+                      <ng-container *ngFor="let item of period">
+                        <th>{{ item.year }} - {{ item.quarter }}</th>
+                      </ng-container>
+                      <th>Percentage %</th>
+                      <th>Budget</th>
+                    </tr>
+                    <ng-container
+                      *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
+                    >
+                      <tr>
+                        <td>
+                          <ng-container *ngIf="item.category == 'MELIA'">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
                               <mat-icon class="icon-sub-table-2"
-                                >delete</mat-icon
+                                >more_vert</mat-icon
                               >
-                              Delete
                             </button>
-                            <button mat-menu-item (click)="viewData(item)">
+                            <mat-menu #menu="matMenu">
+                              <button
+                                (click)="editMelia(item.id, wp)"
+                                mat-menu-item
+                              >
+                                <mat-icon class="icon-sub-table-2"
+                                  >edit</mat-icon
+                                >
+                                Edit
+                              </button>
+                              <button
+                                (click)="deleteMelia(item.id)"
+                                mat-menu-item
+                              >
+                                <mat-icon class="icon-sub-table-2"
+                                  >delete</mat-icon
+                                >
+                                Delete
+                              </button>
+                              <button mat-menu-item (click)="viewData(item)">
+                                <mat-icon class="icon-sub-table-2"
+                                  >visibility</mat-icon
+                                >
+                                View Data
+                              </button>
+                            </mat-menu>
+                          </ng-container>
+                          <ng-container *ngIf="item.category == 'CROSS'">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
                               <mat-icon class="icon-sub-table-2"
-                                >visibility</mat-icon
+                                >more_vert</mat-icon
                               >
-                              View Data
                             </button>
-                          </mat-menu>
-                        </ng-container>
-                        <ng-container *ngIf="item.category == 'CROSS'">
-                          <button mat-icon-button [matMenuTriggerFor]="menu">
-                            <mat-icon class="icon-sub-table-2"
-                              >more_vert</mat-icon
-                            >
-                          </button>
-                          <mat-menu #menu="matMenu">
-                            <button (click)="editCross(item.id)" mat-menu-item>
-                              <mat-icon class="icon-sub-table-2">edit</mat-icon>
-                              Edit
-                            </button>
-                            <button
-                              (click)="deleteCross(item.id)"
-                              mat-menu-item
-                            >
-                              <mat-icon class="icon-sub-table-2"
-                                >delete</mat-icon
+                            <mat-menu #menu="matMenu">
+                              <button
+                                (click)="editCross(item.id)"
+                                mat-menu-item
                               >
-                              Delete
-                            </button>
-                            <button mat-menu-item (click)="viewData(item)">
-                              <mat-icon class="icon-sub-table-2"
-                                >visibility</mat-icon
+                                <mat-icon class="icon-sub-table-2"
+                                  >edit</mat-icon
+                                >
+                                Edit
+                              </button>
+                              <button
+                                (click)="deleteCross(item.id)"
+                                mat-menu-item
                               >
-                              View Data
-                            </button>
-                          </mat-menu>
-                        </ng-container>
-                        <ng-container
-                          *ngIf="
-                            item.category != 'CROSS' && item.category != 'MELIA'
-                          "
-                        >
-                          <figure
-                            matTooltip="Actions must be done in ToC"
-                            matTooltipPosition="below"
+                                <mat-icon class="icon-sub-table-2"
+                                  >delete</mat-icon
+                                >
+                                Delete
+                              </button>
+                              <button mat-menu-item (click)="viewData(item)">
+                                <mat-icon class="icon-sub-table-2"
+                                  >visibility</mat-icon
+                                >
+                                View Data
+                              </button>
+                            </mat-menu>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="
+                              item.category != 'CROSS' &&
+                              item.category != 'MELIA'
+                            "
                           >
-                            <img
-                              class="toc-img-size"
-                              src="../../assets/shared-image/toc-5.png"
-                              alt="Photo of toc"
-                            />
-                          </figure>
-                          <!-- <button mat-icon-button (click)="viewData(item)">
+                            <figure
+                              matTooltip="Actions must be done in ToC"
+                              matTooltipPosition="below"
+                            >
+                              <img
+                                class="toc-img-size"
+                                src="../../assets/shared-image/toc-5.png"
+                                alt="Photo of toc"
+                              />
+                            </figure>
+                            <!-- <button mat-icon-button (click)="viewData(item)">
                             <mat-icon class="icon-sub-table-2"
                               >visibility</mat-icon
                             >
                           </button> -->
+                          </ng-container>
+                        </td>
+                        <td class="wp-title">
+                          <ng-container *ngIf="item?.meliaType?.name">
+                            {{ item?.meliaType.name }}
+                          </ng-container>
+                          <ng-container *ngIf="!item?.meliaType?.name">
+                            {{
+                              item?.ipsr?.id
+                                ? item?.ipsr.title + " (" + item.value + ")"
+                                : item.title
+                            }}
+                          </ng-container>
+                        </td>
+                        <td>{{ item.category }}</td>
+                        <ng-container *ngFor="let per of period">
+                          <td>
+                            <!-- to be checked -->
+                            <mat-icon
+                              class="icon-sub-table-2"
+                              color="primary"
+                              *ngIf="
+                                perAllValues[wp.ost_wp.wp_official_code][
+                                  item.id
+                                ][per.id] == true
+                              "
+                              >close</mat-icon
+                            >
+                          </td>
                         </ng-container>
-                      </td>
-                      <td class="wp-title">
-                        <ng-container *ngIf="item?.meliaType?.name">
-                          {{ item?.meliaType.name }}
-                        </ng-container>
-                        <ng-container *ngIf="!item?.meliaType?.name">
+                        <td>
                           {{
-                            item?.ipsr?.id
-                              ? item?.ipsr.title + " (" + item.value + ")"
-                              : item.title
+                            toggleSummaryValues[wp.ost_wp.wp_official_code]
+                              ? sammary[wp.ost_wp.wp_official_code][item.id]
+                              : roundNumber(
+                                  sammary[wp.ost_wp.wp_official_code][item.id]
+                                )
+                          }}%
+                        </td>
+                        <td>
+                          {{
+                            toggleSummaryValues[wp.ost_wp.wp_official_code]
+                              ? summaryBudgets[wp.ost_wp.wp_official_code][
+                                  item.id
+                                ]
+                              : roundNumber(
+                                  summaryBudgets[wp.ost_wp.wp_official_code][
+                                    item.id
+                                  ]
+                                )
                           }}
-                        </ng-container>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <tr class="total">
+                      <td colspan="3">
+                        <div class="subtotal">Subtotal</div>
                       </td>
-                      <td>{{ item.category }}</td>
                       <ng-container *ngFor="let per of period">
                         <td>
-                          <!-- to be checked -->
                           <mat-icon
                             class="icon-sub-table-2"
                             color="primary"
                             *ngIf="
-                              perAllValues[wp.ost_wp.wp_official_code][item.id][
+                              finalItemPeriodVal(
+                                wp.ost_wp.wp_official_code,
                                 per.id
-                              ] == true
+                              )
                             "
                             >close</mat-icon
                           >
@@ -522,67 +553,27 @@
                       <td>
                         {{
                           toggleSummaryValues[wp.ost_wp.wp_official_code]
-                            ? sammary[wp.ost_wp.wp_official_code][item.id]
+                            ? sammaryTotal[wp.ost_wp.wp_official_code]
                             : roundNumber(
-                                sammary[wp.ost_wp.wp_official_code][item.id]
+                                sammaryTotal[wp.ost_wp.wp_official_code]
                               )
                         }}%
                       </td>
                       <td>
                         {{
                           toggleSummaryValues[wp.ost_wp.wp_official_code]
-                            ? summaryBudgets[wp.ost_wp.wp_official_code][
-                                item.id
-                              ]
+                            ? summaryBudgetsTotal[wp.ost_wp.wp_official_code]
                             : roundNumber(
-                                summaryBudgets[wp.ost_wp.wp_official_code][
-                                  item.id
-                                ]
+                                summaryBudgetsTotal[wp.ost_wp.wp_official_code]
                               )
                         }}
                       </td>
                     </tr>
-                  </ng-container>
-                  <tr class="total">
-                    <td colspan="3">Subtotal</td>
-                    <ng-container *ngFor="let per of period">
-                      <td>
-                        <mat-icon
-                          class="icon-sub-table-2"
-                          color="primary"
-                          *ngIf="
-                            finalItemPeriodVal(
-                              wp.ost_wp.wp_official_code,
-                              per.id
-                            )
-                          "
-                          >close</mat-icon
-                        >
-                      </td>
-                    </ng-container>
-                    <td>
-                      {{
-                        toggleSummaryValues[wp.ost_wp.wp_official_code]
-                          ? sammaryTotal[wp.ost_wp.wp_official_code]
-                          : roundNumber(
-                              sammaryTotal[wp.ost_wp.wp_official_code]
-                            )
-                      }}%
-                    </td>
-                    <td>
-                      {{
-                        toggleSummaryValues[wp.ost_wp.wp_official_code]
-                          ? summaryBudgetsTotal[wp.ost_wp.wp_official_code]
-                          : roundNumber(
-                              summaryBudgetsTotal[wp.ost_wp.wp_official_code]
-                            )
-                      }}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </mat-card-content>
-          </mat-card>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </ng-container> </mat-tab
       >.
 
@@ -647,15 +638,15 @@
               </table>
             </div>
           </div> -->
-          <div class="form-container-2">
-            <form class="search-2">
-              <div class="sec-1">
-                <mat-card-title class="card-title-2"
-                  >One CGIAR Initiatives Plan of Results and Budget
-                  Template</mat-card-title
-                >
-              </div>
-              <!-- 
+
+          <div class="risk-report-box">
+            <div class="risk-report-title-box">
+              <h1 class="risk-report-title-box__title">
+                One CGIAR Initiatives Plan of Results and Budget Template
+              </h1>
+            </div>
+
+            <!-- 
               <div class="sec-2">
                 <mat-card-subtitle class="card-title"
                   >{{ initiative_data.official_code }} ‐
@@ -663,8 +654,7 @@
                 >
               </div> -->
 
-              <div class="sec-8">
-                <!-- <button
+            <!-- <button
                   style="
                     background-image: linear-gradient(to right, #436280, #30455b);
                   "
@@ -677,69 +667,45 @@
                 >
                   Refresh
                 </button> -->
-              </div>
-
-              <div class="sec-7">
+            <div class="risk-report-btn-box">
+              <!-- btn-1 -->
+              <div class="risk-report-button-box">
                 <button
-                  style="
-                    background-image: linear-gradient(
-                      to right,
-                      #436280,
-                      #30455b
-                    );
-                  "
                   *ngIf="!this.isCenter"
-                  class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-2"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
                   mat-raised-button
-                  color="primary"
-                  (click)="submit()"
-                  [disabled]="canSubmit.value == 0"
-                  [ngClass]="{ disabled: canSubmit.value == 0 }"
+                  routerLink="/initiative/{{ initiative_data.id }}/{{
+                    initiative_data.official_code
+                  }}/team-members"
                 >
                   Team members
                 </button>
               </div>
-              <div class="sec-7">
+
+              <!-- btn-2 -->
+              <div class="risk-report-button-box">
                 <button
-                  style="
-                    background-image: linear-gradient(
-                      to right,
-                      #436280,
-                      #30455b
-                    );
-                  "
                   *ngIf="!this.isCenter"
-                  class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-2"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
                   mat-raised-button
-                  color="primary"
-                  (click)="submit()"
-                  [disabled]="canSubmit.value == 0"
-                  [ngClass]="{ disabled: canSubmit.value == 0 }"
                 >
                   Export Excel
                 </button>
               </div>
-              <div class="sec-7">
+
+              <!-- btn-3 -->
+              <div class="risk-report-button-box">
                 <button
-                  style="
-                    background-image: linear-gradient(
-                      to right,
-                      #436280,
-                      #30455b
-                    );
-                  "
                   *ngIf="!this.isCenter"
-                  class="user-management__button-box__btn btn-primary-size btn--animated btn-primary-size-2"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
                   mat-raised-button
-                  color="primary"
-                  (click)="submit()"
-                  [disabled]="canSubmit.value == 0"
-                  [ngClass]="{ disabled: canSubmit.value == 0 }"
                 >
                   Export Pdf
                 </button>
               </div>
-              <div class="sec-7">
+
+              <!-- btn-4 -->
+              <div class="risk-report-button-box">
                 <app-center-status
                   (change)="partnerStatusChange($event, partner.code)"
                   [status]="!checkComplete(partner.code)"
@@ -748,10 +714,10 @@
                   [organization]="organizationSelected"
                   (clicked)="validateCenter(partner.code)"
                 >
-                  ></app-center-status
-                >
+                  >
+                </app-center-status>
               </div>
-            </form>
+            </div>
           </div>
 
           <div class="form-container-3">
@@ -775,7 +741,9 @@
               partnersData[partner.code][wp.ost_wp.wp_official_code]
             "
           >
-            <mat-card-title>{{ wp.title }}</mat-card-title>
+            <mat-card-title class="card-title-table">{{
+              wp.title
+            }}</mat-card-title>
             <mat-slide-toggle
               [(ngModel)]="
                 toggleValues[partner.code][wp.ost_wp.wp_official_code]
@@ -783,6 +751,7 @@
               (toggleChange)="
                 toggleActualValues(partner.code, wp.ost_wp.wp_official_code)
               "
+              class="show-d-1"
               >Show decimals</mat-slide-toggle
             >
 
@@ -1140,7 +1109,9 @@
                     </tr>
                   </ng-container>
                   <tr class="total">
-                    <td [colSpan]="period.length + 2">Subtotal</td>
+                    <td [colSpan]="period.length + 2">
+                      <div class="subtotal">Subtotal</div>
+                    </td>
                     <td>
                       {{
                         toggleValues[partner.code][wp.ost_wp.wp_official_code]
