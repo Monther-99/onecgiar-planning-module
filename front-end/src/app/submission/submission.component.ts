@@ -210,9 +210,6 @@ export class SubmissionComponent implements OnInit {
   }
 
   toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
-    if (!!this.noValuesAssigned[partner_code][wp_official_code][item_id]) {
-      this.noValuesAssigned[partner_code][wp_official_code][item_id] = 0;
-    }
     this.values[partner_code][wp_official_code][item_id] = 0;
     this.displayValues[partner_code][wp_official_code][item_id] = 0;
     this.changeCalc(partner_code, wp_official_code, item_id, "percent");
@@ -1119,88 +1116,71 @@ export class SubmissionComponent implements OnInit {
 
   validate() {
     let valid = true;
-    Object.keys(this.totals).forEach((partner_code) => {
-      Object.keys(this.totals[partner_code]).forEach((wp_id) => {
-        if (Math.round(this.totals[partner_code][wp_id]) != 100) valid = false;
-      });
-    });
-
-    if (!valid) {
-      this.toastrService.error(
-        "The subtotal of all percentages should equal 100%",
-        "Submission failed"
-      );
-      return valid;
-    }
-
+    let message = '';
     Object.keys(this.partnersData).forEach((partner_code) => {
-      Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
-        this.partnersData[partner_code][wp_id].forEach((item: any) => {
-          if (item.category != "EOI" && item.category != "OUTCOME") {
-            let perChecked = Object.values(
-              this.perValues[partner_code][wp_id][item.id]
-            ).reduce((a: any, b: any) => a || b);
-            if (
-              perChecked &&
-              !this.values[partner_code][wp_id][item.id] &&
-              !this.noValuesAssigned[partner_code][wp_id][item.id]
-            )
-              valid = false;
-          }
-        });
-      });
+      let result = this.validateCenter(partner_code, true);
+      if (!result.valid) {
+        valid = result.valid;
+        message = result.message;
+      }
     });
-
     if (!valid) {
       this.toastrService.error(
-        "There is a checked items but not budgeted",
+        message,
         "Submission failed"
       );
-      return valid;
     }
-
     return valid;
   }
 
-  validateCenter(partner_code: any) {
+  validateCenter(partner_code: any, is_submit = false) {
     let valid = true;
-    Object.keys(this.totals[partner_code]).forEach((wp_id) => {
-      if (Math.round(this.totals[partner_code][wp_id]) != 100) valid = false;
-    });
-
-    if (!valid) {
-      this.toastrService.error(
-        "The subtotal of all percentages should equal 100%",
-        "Complete failed"
-      );
-      this.centerStatusService.validPartner.next(valid);
-      return;
-    }
-
+    let message = '';
     Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
-      this.partnersData[partner_code][wp_id].forEach((item: any) => {
-        if (item.category != "EOI" && item.category != "OUTCOME") {
-          let perChecked = Object.values(
-            this.perValues[partner_code][wp_id][item.id]
-          ).reduce((a: any, b: any) => a || b);
-          if (
-            perChecked &&
-            !this.values[partner_code][wp_id][item.id] &&
-            !this.noValuesAssigned[partner_code][wp_id][item.id]
-          )
-            valid = false;
-        }
-      });
+      let result = this.validateWp(partner_code, wp_id);
+      if (!result.valid) {
+        valid = result.valid;
+        message = result.message;
+      }
+    });
+    if (!is_submit) {
+      if (!valid) this.toastrService.error(message, 'Complete failed');
+      this.centerStatusService.validPartner.next(valid);
+    }
+    return {
+      valid: valid,
+      message: message,
+    };
+  }
+
+  validateWp(partner_code: any, wp_id: any) {
+    let valid = true;
+    let wpChecked = false;
+    let message = '';
+    this.partnersData[partner_code][wp_id].forEach((item: any) => {
+      if (item.category != 'EOI' && item.category != 'OUTCOME') {
+        let perChecked = Object.values(
+          this.perValues[partner_code][wp_id][item.id]
+        ).reduce((a: any, b: any) => a || b);
+        if (
+          perChecked &&
+          !this.values[partner_code][wp_id][item.id] &&
+          !this.noValuesAssigned[partner_code][wp_id][item.id]
+        )
+          valid = false;
+        if (perChecked) wpChecked = true;
+      }
     });
 
-    if (!valid) {
-      this.toastrService.error(
-        "There is a checked items but not budgeted",
-        "Complete failed"
-      );
-      this.centerStatusService.validPartner.next(valid);
-      return;
+    if (wpChecked && Math.round(this.totals[partner_code][wp_id]) != 100) {
+      valid = false;
+      message = 'The subtotal of all percentages should equal 100%';
+    } else if (!valid) {
+      message = 'There is a checked items but not budgeted';
     }
-    this.centerStatusService.validPartner.next(valid);
+    return {
+      valid: valid,
+      message: message,
+    };
   }
 }
