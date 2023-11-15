@@ -78,25 +78,4 @@ export class AssignOrganizationsComponent implements OnInit {
   onCloseDialog() {
     this.dialogRef.close();
   }
-
-  organName: any;
-
-  onToppingRemoved(organization: any) {
-    // for (let i = 0; i < this.organizations.length; i++) {
-    //   if (this.organizations[i].code === organization) {
-    //     this.organName = this.organizations[i].name;
-    //     console.log(this.organName);
-    //   }
-    // }
-    const toppings = this.assignOrgsForm?.value?.organizations as any[];
-    this.removeFirst(toppings, organization);
-    this.assignOrgsForm.controls?.["organizations"].setValue(toppings); // To trigger change detection
-  }
-
-  private removeFirst<T>(array: T[], toRemove: T): void {
-    const index = array.indexOf(toRemove);
-    if (index !== -1) {
-      array.splice(index, 1);
-    }
-  }
 }

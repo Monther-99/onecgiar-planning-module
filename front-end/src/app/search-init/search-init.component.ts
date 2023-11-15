@@ -1,22 +1,19 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Output } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 export enum ROLES {
-  LEAD = 'Leader',
-  COORDINATOR = 'Coordinator',
-  CONTRIBUTOR = 'Contributor'
+  LEAD = "Leader",
+  COORDINATOR = "Coordinator",
+  CONTRIBUTOR = "Contributor",
 }
 
 @Component({
-  selector: 'app-search-init',
-  templateUrl: './search-init.component.html',
-  styleUrls: ['./search-init.component.scss']
+  selector: "app-search-init",
+  templateUrl: "./search-init.component.html",
+  styleUrls: ["./search-init.component.scss"],
 })
 export class SearchInitComponent {
-  constructor(
-    private fb: FormBuilder,
-
-  ) {}
+  constructor(private fb: FormBuilder) {}
   filterForm: FormGroup = new FormGroup({});
 
   @Output() filters: EventEmitter<any> = new EventEmitter<any>();
@@ -24,25 +21,24 @@ export class SearchInitComponent {
   roles = [ROLES.COORDINATOR, ROLES.LEAD, ROLES.CONTRIBUTOR];
 
   sort = [
-    { name: 'Initiative ID (lowest first)', value: 'id,ASC' },
-    { name: 'Initiative ID (highest first)', value: 'id,DESC' },
-    { name: 'Initiative Name (A to Z)', value: 'name,ASC' },
-    { name: 'Initiative Name (Z to A)', value: 'name,DESC' },
-    { name: 'Updated at (Oldest)', value: 'last_update_at,ASC' },
-    { name: 'Updated at (Newest)', value: 'last_update_at,DESC' },
+    { name: "Initiative ID (lowest first)", value: "id,ASC" },
+    { name: "Initiative ID (highest first)", value: "id,DESC" },
+    { name: "Initiative Name (A to Z)", value: "name,ASC" },
+    { name: "Initiative Name (Z to A)", value: "name,DESC" },
+    { name: "Updated on (Oldest)", value: "last_update_at,ASC" },
+    { name: "Updated on (Newest)", value: "last_update_at,DESC" },
   ];
 
   status = [
-    { name: 'Draft', value: 'Draft' },
-    { name: 'Pending', value: 'Pending' },
-    { name: 'Approved', value: 'Approved' },
-    { name: 'Rejected', value: 'Rejected' },
+    { name: "Draft", value: "Draft" },
+    { name: "Pending", value: "Pending" },
+    { name: "Approved", value: "Approved" },
+    { name: "Rejected", value: "Rejected" },
   ];
-
 
   myIni: boolean = false;
   myIniChange() {
-    this.filterForm.controls['my_ini'].setValue(this.myIni);
+    this.filterForm.controls["my_ini"].setValue(this.myIni);
   }
   setForm() {
     let time: any = null;

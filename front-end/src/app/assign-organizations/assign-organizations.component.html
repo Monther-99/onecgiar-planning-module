@@ -35,24 +35,6 @@
           <mat-select formControlName="organizations" multiple>
             <!-- //////////////////////////////////////////////// -->
 
-            <mat-select-trigger>
-              <mat-chip-listbox>
-                <mat-chip
-                  *ngFor="
-                    let organization of assignOrgsForm?.value?.['organizations']
-                  "
-                  [removable]="true"
-                  (removed)="onToppingRemoved(organization)"
-                >
-                  <strong class="official-color">
-                    {{ organization }}
-                  </strong>
-
-                  <mat-icon matChipRemove>cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-listbox>
-            </mat-select-trigger>
-
             <mat-option
               [value]="organization.code"
               *ngFor="let organization of organizations"
