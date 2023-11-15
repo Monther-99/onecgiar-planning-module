@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HeaderService } from 'src/app/header.service';
-import { PhasesService } from 'src/app/services/phases.service';
-import { SubmissionService } from 'src/app/services/submission.service';
-import { AppSocket } from 'src/app/socket.service';
+import { Component } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { Meta, Title } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import { HeaderService } from "src/app/header.service";
+import { PhasesService } from "src/app/services/phases.service";
+import { SubmissionService } from "src/app/services/submission.service";
+import { AppSocket } from "src/app/socket.service";
 
 @Component({
-  selector: 'app-submited-version-view',
-  templateUrl: './submited-version-view.component.html',
-  styleUrls: ['./submited-version-view.component.scss']
+  selector: "app-submited-version-view",
+  templateUrl: "./submited-version-view.component.html",
+  styleUrls: ["./submited-version-view.component.scss"],
 })
 export class SubmitedVersionViewComponent {
   title = "planning";
@@ -32,8 +32,9 @@ export class SubmitedVersionViewComponent {
       "linear-gradient(to  bottom, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  bottom, #436280, #30455B)";
+
     this.headerService.backgroundFooter =
-      "linear-gradient(to top right, #436280, #263749)";
+      "linear-gradient(to top right, #0f212f, #0f212f)";
   }
   user: any;
   data: any = [];

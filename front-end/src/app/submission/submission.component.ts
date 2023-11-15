@@ -54,8 +54,9 @@ export class SubmissionComponent implements OnInit {
       "linear-gradient(to  bottom, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  bottom, #436280, #30455B)";
+
     this.headerService.backgroundFooter =
-      "linear-gradient(to top right, #436280, #263749)";
+      "linear-gradient(to top right, #0f212f, #0f212f)";
   }
   user: any;
   data: any = [];
@@ -1096,15 +1097,15 @@ export class SubmissionComponent implements OnInit {
         if (dialogResult == true) {
           let incompleteCenters = this.incompleteCenters();
           if (incompleteCenters.length) {
-            let message = incompleteCenters.length > 1 ? 'Centers' : 'Center';
+            let message = incompleteCenters.length > 1 ? "Centers" : "Center";
             message +=
-              ' (' +
-              incompleteCenters.join(', ') +
-              ') are incomplete, Are you sure you want to submit?';
+              " (" +
+              incompleteCenters.join(", ") +
+              ") are incomplete, Are you sure you want to submit?";
             this.dialog
               .open(DeleteConfirmDialogComponent, {
                 data: {
-                  title: 'Submit',
+                  title: "Submit",
                   message: message,
                   svg: `../../assets/shared-image/apply.png`,
                 },
@@ -1151,7 +1152,7 @@ export class SubmissionComponent implements OnInit {
 
   validate() {
     let valid = true;
-    let message = '';
+    let message = "";
     Object.keys(this.partnersData).forEach((partner_code) => {
       let result = this.validateCenter(partner_code, true);
       if (!result.valid) {
@@ -1160,17 +1161,14 @@ export class SubmissionComponent implements OnInit {
       }
     });
     if (!valid) {
-      this.toastrService.error(
-        message,
-        "Submission failed"
-      );
+      this.toastrService.error(message, "Submission failed");
     }
     return valid;
   }
 
   validateCenter(partner_code: any, is_submit = false) {
     let valid = true;
-    let message = '';
+    let message = "";
     Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
       let result = this.validateWp(partner_code, wp_id);
       if (!result.valid) {
@@ -1179,7 +1177,7 @@ export class SubmissionComponent implements OnInit {
       }
     });
     if (!is_submit) {
-      if (!valid) this.toastrService.error(message, 'Complete failed');
+      if (!valid) this.toastrService.error(message, "Complete failed");
       this.centerStatusService.validPartner.next(valid);
     }
     return {
@@ -1191,9 +1189,9 @@ export class SubmissionComponent implements OnInit {
   validateWp(partner_code: any, wp_id: any) {
     let valid = true;
     let wpChecked = false;
-    let message = '';
+    let message = "";
     this.partnersData[partner_code][wp_id].forEach((item: any) => {
-      if (item.category != 'EOI' && item.category != 'OUTCOME') {
+      if (item.category != "EOI" && item.category != "OUTCOME") {
         let perChecked = Object.values(
           this.perValues[partner_code][wp_id][item.id]
         ).reduce((a: any, b: any) => a || b);
@@ -1209,9 +1207,9 @@ export class SubmissionComponent implements OnInit {
 
     if (wpChecked && Math.round(this.totals[partner_code][wp_id]) != 100) {
       valid = false;
-      message = 'The subtotal of all percentages should equal 100%';
+      message = "The subtotal of all percentages should equal 100%";
     } else if (!valid) {
-      message = 'There is a checked items but not budgeted';
+      message = "There is a checked items but not budgeted";
     }
     return {
       valid: valid,

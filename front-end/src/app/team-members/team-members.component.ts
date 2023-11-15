@@ -43,8 +43,9 @@ export class TeamMembersComponent {
       "linear-gradient(to  bottom, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  bottom, #436280, #30455B)";
+
     this.headerService.backgroundFooter =
-      "linear-gradient(to top right, #436280, #263749)";
+      "linear-gradient(to top right, #0f212f, #0f212f)";
   }
   user_info: any;
   my_roles: any;
