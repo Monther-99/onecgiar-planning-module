@@ -1,142 +1,126 @@
 <div class="form-dialog-header">
-    <div class="form-dialog-header__text-box">
-      <p class="form-dialog-header__text-box__text">
-        {{ anticipatedYearId ? "Edit" : "Add" }} Anticipated Year
-      </p>
-    </div>
-  
-    <div class="form-dialog-header__icon-box">
-      <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
-        <mat-icon class="form-dialog-header__icon-box__icon-size">
-          <img
-            class="form-dialog-header__icon-box__icon-size__icon"
-            src="../../../assets/shared-image/Vector-close.svg"
-            alt="~/Frontend/images/icon _ Vector-close"
-          />
-        </mat-icon>
-      </button>
-    </div>
+  <div class="form-dialog-header__text-box">
+    <p class="form-dialog-header__text-box__text">
+      {{ anticipatedYearId ? "Edit" : "Add" }} Anticipated Year
+    </p>
   </div>
-  
-  <div class="form-dialog-conten-box-1">
-    <form [formGroup]="anticipatedYearForm" class="form-dialog-content">
 
+  <div class="form-dialog-header__icon-box">
+    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
+      <mat-icon class="form-dialog-header__icon-box__icon-size">
+        <img
+          class="form-dialog-header__icon-box__icon-size__icon"
+          src="../../../assets/shared-image/Vector-close.svg"
+          alt="~/Frontend/images/icon _ Vector-close"
+        />
+      </mat-icon>
+    </button>
+  </div>
+</div>
 
-        
+<div class="form-dialog-conten-box-1">
+  <form [formGroup]="anticipatedYearForm" class="form-dialog-content">
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Month<span class="star">*</span></mat-label
+        >
+      </div>
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <mat-select formControlName="month">
+          <mat-option *ngFor="let month of months" [value]="month.value">
+            {{ month.layout }}
+          </mat-option>
+        </mat-select>
 
+        <mat-error
+          class="error"
+          *ngIf="anticipatedYearForm.controls?.['month']?.errors?.['required']"
+          >This field is mandatory</mat-error
+        >
+      </mat-form-field>
+    </div>
 
-        <div class="form-dialog-content__field--grid-column">
-            <div class="form-dialog-content__title-box">
-              <mat-label class="form-dialog-content__title-box__title"
-                >Month<span class="star">*</span></mat-label
-              >
-            </div>
-            <mat-form-field
-              class="form-dialog-content__field"
-              floatLabel="always"
-              hideRequiredMarker
-              appearance="outline"
-            >
-              <mat-select formControlName="month">
-                <mat-option *ngFor="let month of months" [value]="month.value">
-                    {{month.layout}}
-                </mat-option>
-              </mat-select>
-      
-              <mat-error
-                class="error"
-                *ngIf="anticipatedYearForm.controls?.['month']?.errors?.['required']"
-                >This field is mandatory</mat-error
-              >
-            </mat-form-field>
-          </div>
-  
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Year<span class="star">*</span></mat-label
+        >
+      </div>
 
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <input
+          matInput
+          type="number"
+          formControlName="year"
+          pattern="^\d{4}$"
+          #year
+        />
+        <mat-error
+          class="error"
+          *ngIf="anticipatedYearForm.controls?.['year']?.errors?.['required']"
+          >This field is mandatory</mat-error
+        >
+      </mat-form-field>
+    </div>
 
+    <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__title-box">
+        <mat-label class="form-dialog-content__title-box__title"
+          >Phase<span class="star">*</span></mat-label
+        >
+      </div>
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <mat-select formControlName="phase" required>
+          <mat-option *ngFor="let phase of phases" [value]="phase.id">
+            {{ phase.name }}
+          </mat-option>
+        </mat-select>
 
+        <mat-error
+          class="error"
+          *ngIf="anticipatedYearForm.controls?.['phase']?.errors?.['required']"
+          >This field is mandatory</mat-error
+        >
+      </mat-form-field>
+    </div>
 
+    <div>
+      <div class="form-dialog-conten-button-box">
+        <div class="form-dialog-conten__button-box m-t" align="end">
+          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
 
-
-
-
-        <div class="form-dialog-content__field--grid-column">
-            <div class="form-dialog-content__title-box">
-              <mat-label class="form-dialog-content__title-box__title"
-                >Year<span class="star">*</span></mat-label
-              >
-            </div>
-  
-            <mat-form-field
-              class="form-dialog-content__field"
-              floatLabel="always"
-              hideRequiredMarker
-              appearance="outline"
-            >
-              <input
-                matInput
-                type="number"
-                formControlName="year"
-                pattern="^\d{4}$"
-                #year
-              />
-              <mat-error
-                class="error"
-                *ngIf="anticipatedYearForm.controls?.['year']?.errors?.['required']"
-                >This field is mandatory</mat-error
-              >
-            </mat-form-field>
-        </div>
-  
-
-
-        <div class="form-dialog-content__field--grid-column">
-            <div class="form-dialog-content__title-box">
-              <mat-label class="form-dialog-content__title-box__title"
-                >Phase<span class="star">*</span></mat-label
-              >
-            </div>
-            <mat-form-field
-              class="form-dialog-content__field"
-              floatLabel="always"
-              hideRequiredMarker
-              appearance="outline"
-            >
-              <mat-select formControlName="phase">
-                <mat-option *ngFor="let phase of phases" [value]="phase.id">
-                  {{ phase.name }}
-                </mat-option>
-              </mat-select>
-      
-              <mat-error
-                class="error"
-                *ngIf="anticipatedYearForm.controls?.['phase']?.errors?.['required']"
-                >This field is mandatory</mat-error
-              >
-            </mat-form-field>
-          </div>
-  
-      <div>
-        <div class="form-dialog-conten-button-box">
-          <div class="form-dialog-conten__button-box m-t" align="end">
-            <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-  
-            <button
-              class="form-dialog-conten__button-box__btn"
-              type="submit"
-              mat-raised-button
-              mat-button
-              color="primary"
-              (click)="submit()"
-            >
-              {{ anticipatedYearId ? "Edit" : "Add" }}
-            </button>
-          </div>
+          <button
+            class="form-dialog-conten__button-box__btn"
+            type="submit"
+            mat-raised-button
+            mat-button
+            color="primary"
+            (click)="submit()"
+          >
+            {{ anticipatedYearId ? "Edit" : "Add" }}
+          </button>
         </div>
       </div>
-    </form>
-  </div>
-  
-  <!-- <mat-dialog-actions align="end"> -->
-  <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-  <!-- </mat-dialog-actions> -->
-  
+    </div>
+  </form>
+</div>
+
+<!-- <mat-dialog-actions align="end"> -->
+<!-- <button mat-button mat-dialog-close>Cancel</button> -->
+<!-- </mat-dialog-actions> -->
