@@ -204,8 +204,8 @@
                     <th>{{ item.year }} - {{ item.quarter }}</th>
                   </ng-container>
 
-                  <th>Percentage %</th>
-                  <th>Budget</th>
+                  <th>Budget Percentage</th>
+                  <th>Budget (USD)</th>
                 </tr>
                 <ng-container *ngFor="let wp of wps">
                   <tr>
@@ -382,8 +382,8 @@
                       <ng-container *ngFor="let item of period">
                         <th>{{ item.year }} - {{ item.quarter }}</th>
                       </ng-container>
-                      <th>Percentage %</th>
-                      <th>Budget</th>
+                      <th>Budget Percentage</th>
+                      <th>Budget (USD)</th>
                     </tr>
                     <ng-container
                       *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
@@ -768,9 +768,9 @@
                     <ng-container *ngFor="let item of period">
                       <th>{{ item.year }} - {{ item.quarter }}</th>
                     </ng-container>
-                    <th class="per">Percentage %</th>
+                    <th class="per">Budget Percentage</th>
                     <!-- <th class="no_budget"></th> -->
-                    <th class="budget">Budget</th>
+                    <th class="budget">Budget (USD)</th>
                   </tr>
 
                   <ng-container
@@ -815,26 +815,27 @@
                           ></mat-checkbox>
                         </td>
                       </ng-container>
-                      <td>
+                      <td
+                        [matTooltip]="
+                          !(
+                            perValues[partner.code][wp.ost_wp.wp_official_code][
+                              item.id
+                            ] | inQue
+                          ) &&
+                          item.category != 'EOI' &&
+                          item.category != 'OUTCOME' &&
+                          values[partner.code][wp.ost_wp.wp_official_code][
+                            item.id
+                          ] == 0
+                            ? 'You can mark this result as no budget assigned click to more info'
+                            : ''
+                        "
+                        matTooltipPosition="left"
+                        [satPopoverAnchor]="popoverCheckbox"
+                        (click)="popoverCheckbox.toggle()"
+                      >
                         <mat-form-field
                           class="form-dialog-content__field"
-                          [matTooltip]="
-                            !(
-                              perValues[partner.code][
-                                wp.ost_wp.wp_official_code
-                              ][item.id] | inQue
-                            ) &&
-                            item.category != 'EOI' &&
-                            item.category != 'OUTCOME' &&
-                            values[partner.code][wp.ost_wp.wp_official_code][
-                              item.id
-                            ] == 0
-                              ? 'You can mark this result as no budget assigned click to more info'
-                              : ''
-                          "
-                          matTooltipPosition="left"
-                          [satPopoverAnchor]="popoverCheckbox"
-                          (click)="popoverCheckbox.toggle()"
                           floatLabel="always"
                           hideRequiredMarker
                           appearance="outline"

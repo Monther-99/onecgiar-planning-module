@@ -1346,6 +1346,7 @@ table {
 
   td:nth-child(1) {
     text-align: left;
+    max-width: 400px;
   }
 
   // th:nth-child(2) {
@@ -1583,6 +1584,7 @@ table {
 
   td:nth-child(1) {
     text-align: left;
+    max-width: 400px;
   }
 
   // th:nth-child(2) {
@@ -1746,6 +1748,7 @@ table {
   flex-direction: column;
   /* margin: 2rem; */
   padding: 1.5rem 0 0 0;
+  align-items: center;
 }
 
 pre {
@@ -2383,6 +2386,7 @@ pre {
 
   td:nth-child(2) {
     text-align: left;
+    max-width: 400px;
   }
 
   // th:nth-child(3) {

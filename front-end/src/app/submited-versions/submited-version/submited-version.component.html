@@ -57,7 +57,7 @@
                     <th>{{ item.year }} - {{ item.quarter }}</th>
                   </ng-container>
 
-                  <th>Percentage %</th>
+                  <th>Budget Percentage</th>
                 </tr>
                 <ng-container *ngFor="let wp of wps">
                   <tr>
@@ -120,8 +120,8 @@
                     <ng-container *ngFor="let item of period">
                       <th>{{ item.year }} - {{ item.quarter }}</th>
                     </ng-container>
-                    <th>Percentage %</th>
-                    <th>Budget</th>
+                    <th>Budget Percentage</th>
+                    <th>Budget (USD)</th>
                   </tr>
                   <ng-container
                     *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
