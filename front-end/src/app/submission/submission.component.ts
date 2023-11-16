@@ -1084,62 +1084,45 @@ export class SubmissionComponent implements OnInit {
       .subscribe(async (dialogResult) => {});
   }
 
-  submit() {
-    ///////////////////
+  async submit() {
+    let message = 'Are you sure you want to submit?';
+    let incompleteCenters = this.incompleteCenters();
+    if (incompleteCenters.length) {
+      message = incompleteCenters.length > 1 ? 'Centers' : 'Center';
+      message +=
+        ' (' +
+        incompleteCenters.join(', ') +
+        ') are incomplete, Are you sure you want to submit?';
+    }
     this.dialog
       .open(DeleteConfirmDialogComponent, {
         data: {
-          title: "Submit",
-          message: `Are you sure you want to submit?`,
+          title: 'Submit',
+          message: message,
           svg: `../../assets/shared-image/apply.png`,
         },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let incompleteCenters = this.incompleteCenters();
-          if (incompleteCenters.length) {
-            let message = incompleteCenters.length > 1 ? "Centers" : "Center";
-            message +=
-              " (" +
-              incompleteCenters.join(", ") +
-              ") are incomplete, Are you sure you want to submit?";
-            this.dialog
-              .open(DeleteConfirmDialogComponent, {
-                data: {
-                  title: "Submit",
-                  message: message,
-                  svg: `../../assets/shared-image/apply.png`,
-                },
-              })
-              .afterClosed()
-              .subscribe(async (centersDialogResult) => {
-                if (centersDialogResult == true) this.finishSubmit();
-              });
-          } else {
-            this.finishSubmit();
+          if (this.validate()) {
+            this.loading = true;
+            let result = await this.submissionService.submit(this.params.id, {
+              phase_id: this.phase.id,
+            });
+            if (result) {
+              this.toastrService.success('Data Submitted successfully');
+              this.router.navigate([
+                'initiative',
+                this.initiative_data.id,
+                this.initiative_data.official_code,
+                'submited-versions',
+              ]);
+            }
+            this.loading = false;
           }
         }
       });
-  }
-
-  async finishSubmit() {
-    if (this.validate()) {
-      this.loading = true;
-      let result = await this.submissionService.submit(this.params.id, {
-        phase_id: this.phase.id,
-      });
-      if (result) {
-        this.toastrService.success("Data Submitted successfully");
-        this.router.navigate([
-          "initiative",
-          this.initiative_data.id,
-          this.initiative_data.official_code,
-          "submited-versions",
-        ]);
-      }
-      this.loading = false;
-    }
   }
 
   incompleteCenters() {
