@@ -227,7 +227,7 @@
                     <td>
                       {{
                         sammaryTotal[wp.ost_wp.wp_official_code]
-                          | number : "1.2-2"
+                          | number : '1.2-2'
                       }}%
                     </td>
                     <td>
@@ -251,7 +251,7 @@
                       >
                     </td>
                   </ng-container>
-                  <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+                  <td>{{ wpsTotalSum | number : '1.2-2' }}%</td>
                   <td>{{ roundNumber(summaryBudgetsAllTotal) }}</td>
                 </tr>
               </table>
@@ -486,7 +486,7 @@
                           <ng-container *ngIf="!item?.meliaType?.name">
                             {{
                               item?.ipsr?.id
-                                ? item?.ipsr.title + " (" + item.value + ")"
+                                ? item?.ipsr.title + ' (' + item.value + ')'
                                 : item.title
                             }}
                           </ng-container>
@@ -586,6 +586,9 @@
           }}</span>
           <mat-icon *ngIf="checkComplete(partner.code)"
             >check_circle_outline</mat-icon
+          >
+          <mat-icon *ngIf="centerHasError[partner.code]" style="color: red"
+            >error_outline</mat-icon
           >
         </ng-template>
 
@@ -712,7 +715,7 @@
                   [initiative_id]="initiative_data.id"
                   [organization_code]="partner.code"
                   [organization]="organizationSelected"
-                  (clicked)="validateCenter(partner.code)"
+                  (clicked)="validateCenter(partner.code, true)"
                 >
                   >
                 </app-center-status>
@@ -780,7 +783,14 @@
                       ]
                     "
                   >
-                    <tr>
+                    <tr
+                      [ngClass]="{
+                        itemHasError:
+                          itemHasError[partner.code][
+                            wp.ost_wp.wp_official_code
+                          ][item.id]
+                      }"
+                    >
                       <td class="wp-title">
                         <ng-container *ngIf="item?.meliaType?.name">
                           {{ item?.meliaType.name }}
@@ -788,7 +798,7 @@
                         <ng-container *ngIf="!item?.meliaType?.name">
                           {{
                             item?.ipsr?.id
-                              ? item?.ipsr.title + " (" + item.value + ")"
+                              ? item?.ipsr.title + ' (' + item.value + ')'
                               : item.title
                           }}
                         </ng-container>

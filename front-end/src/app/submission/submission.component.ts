@@ -80,6 +80,8 @@ export class SubmissionComponent implements OnInit {
   toggleSummaryValues: any = {};
   noValuesAssigned: any = {};
   partnersStatus: any = {};
+  centerHasError: any = {};
+  itemHasError: any = {};
   check(values: any, code: string, id: number, item_id: string) {
     if (values[code] && values[code][id] && values[code][id][item_id]) {
       return true;
@@ -159,6 +161,7 @@ export class SubmissionComponent implements OnInit {
           value: percentValue,
         });
       this.sammaryCalc();
+      this.validateCenter(partner_code, false);
     }, 500);
 
     // localStorage.setItem('initiatives', JSON.stringify(this.values));
@@ -184,6 +187,7 @@ export class SubmissionComponent implements OnInit {
           budget,
         });
       this.sammaryCalc();
+      this.validateCenter(partner_code, false);
     }, 500);
   }
 
@@ -387,13 +391,6 @@ export class SubmissionComponent implements OnInit {
         Object.keys(this.values[code][wp_id]).forEach((d) => {
           total += +this.values[code][wp_id][d];
         });
-        if (total > 100) {
-          this.errors[code][wp_id] =
-            "total percentage cannot be over 100 percent";
-          this.toggleValues[code][wp_id] = true;
-        } else {
-          this.errors[code][wp_id] = null;
-        }
         this.totals[code][wp_id] = total;
 
         Object.keys(this.values[code][wp_id]).forEach((item_id) => {
@@ -511,6 +508,8 @@ export class SubmissionComponent implements OnInit {
     this.errors = {};
     this.noValuesAssigned = {};
     this.partnersStatus = {};
+    this.centerHasError = {};
+    this.itemHasError = {};
 
     this.results = await this.submissionService.getToc(this.params.id);
     const melia_data = await this.submissionService.getMeliaByInitiative(
@@ -616,6 +615,10 @@ export class SubmissionComponent implements OnInit {
         this.noValuesAssigned[partner.code] = {};
       if (!this.partnersStatus[partner.code])
         this.partnersStatus[partner.code] = this.checkComplete(partner.code);
+      if (!this.centerHasError[partner.code])
+        this.centerHasError[partner.code] = false;
+      if (!this.itemHasError[partner.code])
+        this.itemHasError[partner.code] = {};  
 
       for (let wp of this.wps) {
         if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])
@@ -633,6 +636,8 @@ export class SubmissionComponent implements OnInit {
           this.summaryBudgets[wp.ost_wp.wp_official_code] = {};
         if (!this.summaryBudgetsTotal[wp.ost_wp.wp_official_code])
           this.summaryBudgetsTotal[wp.ost_wp.wp_official_code] = 0;
+        if (!this.itemHasError[partner.code][wp.ost_wp.wp_official_code])
+          this.itemHasError[partner.code][wp.ost_wp.wp_official_code] = {};
 
         const result = await this.getDataForWp(
           wp.id,
@@ -674,6 +679,8 @@ export class SubmissionComponent implements OnInit {
           this.noValuesAssigned[partner.code][wp.ost_wp.wp_official_code][
             item.id
           ] = false;
+          this.itemHasError[partner.code][wp.ost_wp.wp_official_code][item.id] =
+            false;
           if (!this.summaryBudgets[wp.ost_wp.wp_official_code][item.id])
             this.summaryBudgets[wp.ost_wp.wp_official_code][item.id] = 0;
 
@@ -737,8 +744,6 @@ export class SubmissionComponent implements OnInit {
       name: "description",
       content: "Manage initiative activities",
     });
-
-    console.log(this.initiative_data.official_code);
   }
   savedValues: any = null;
   isCenter: boolean = false;
@@ -802,9 +807,6 @@ export class SubmissionComponent implements OnInit {
     });
 
     this.organizationSelected = this.partners[0];
-
-    console.log(this.organizationSelected);
-
     this.InitData();
     this.period = await this.submissionService.getPeriods(this.phase.id);
     this.socket.connect();
@@ -831,8 +833,6 @@ export class SubmissionComponent implements OnInit {
       this.refreshValues(partner_code, wp_id);
     });
     this.canSubmit = await this.constantsService.getSubmitStatus();
-
-    console.log(this.partners);
   }
 
   ngOnDestroy(): void {
@@ -1153,7 +1153,7 @@ export class SubmissionComponent implements OnInit {
     let valid = true;
     let message = '';
     Object.keys(this.partnersData).forEach((partner_code) => {
-      let result = this.validateCenter(partner_code, true);
+      let result = this.validateCenter(partner_code, false);
       if (!result.valid) {
         valid = result.valid;
         message = result.message;
@@ -1168,7 +1168,7 @@ export class SubmissionComponent implements OnInit {
     return valid;
   }
 
-  validateCenter(partner_code: any, is_submit = false) {
+  validateCenter(partner_code: any, is_mark = false) {
     let valid = true;
     let message = '';
     Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
@@ -1178,10 +1178,11 @@ export class SubmissionComponent implements OnInit {
         message = result.message;
       }
     });
-    if (!is_submit) {
+    if (is_mark) {
       if (!valid) this.toastrService.error(message, 'Complete failed');
       this.centerStatusService.validPartner.next(valid);
     }
+    this.centerHasError[partner_code] = !valid;
     return {
       valid: valid,
       message: message,
@@ -1199,18 +1200,29 @@ export class SubmissionComponent implements OnInit {
         ).reduce((a: any, b: any) => a || b);
         if (
           perChecked &&
-          !this.values[partner_code][wp_id][item.id] &&
+          !+this.values[partner_code][wp_id][item.id] &&
           !this.noValuesAssigned[partner_code][wp_id][item.id]
-        )
+        ) {
           valid = false;
+          this.itemHasError[partner_code][wp_id][item.id] = true;
+        } else {
+          this.itemHasError[partner_code][wp_id][item.id] = false;
+        }
         if (perChecked) wpChecked = true;
       }
     });
 
+    this.errors[partner_code][wp_id] = null;
     if (wpChecked && Math.round(this.totals[partner_code][wp_id]) != 100) {
       valid = false;
+      if (this.totals[partner_code][wp_id] > 100)
+        this.toggleValues[partner_code][wp_id] = true;
+      this.errors[partner_code][wp_id] =
+        'Subtotal percentage should equal 100%';
       message = 'The subtotal of all percentages should equal 100%';
     } else if (!valid) {
+      this.errors[partner_code][wp_id] =
+        'There is a checked items but not budgeted';
       message = 'There is a checked items but not budgeted';
     }
     return {
