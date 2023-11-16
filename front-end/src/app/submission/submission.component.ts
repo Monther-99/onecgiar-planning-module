@@ -54,8 +54,9 @@ export class SubmissionComponent implements OnInit {
       "linear-gradient(to  bottom, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to  bottom, #436280, #30455B)";
+
     this.headerService.backgroundFooter =
-      "linear-gradient(to top right, #436280, #263749)";
+      "linear-gradient(to top right, #0f212f, #0f212f)";
   }
   user: any;
   data: any = [];
@@ -997,10 +998,12 @@ export class SubmissionComponent implements OnInit {
         }
       });
   }
+  
   addMelia(wp: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
       autoFocus: false,
       data: {
+        id:'add',
         wp: wp,
         initiative_id: this.params.id,
         show_eoi: this.phase?.show_eoi,
@@ -1096,15 +1099,15 @@ export class SubmissionComponent implements OnInit {
         if (dialogResult == true) {
           let incompleteCenters = this.incompleteCenters();
           if (incompleteCenters.length) {
-            let message = incompleteCenters.length > 1 ? 'Centers' : 'Center';
+            let message = incompleteCenters.length > 1 ? "Centers" : "Center";
             message +=
-              ' (' +
-              incompleteCenters.join(', ') +
-              ') are incomplete, Are you sure you want to submit?';
+              " (" +
+              incompleteCenters.join(", ") +
+              ") are incomplete, Are you sure you want to submit?";
             this.dialog
               .open(DeleteConfirmDialogComponent, {
                 data: {
-                  title: 'Submit',
+                  title: "Submit",
                   message: message,
                   svg: `../../assets/shared-image/apply.png`,
                 },
@@ -1151,7 +1154,7 @@ export class SubmissionComponent implements OnInit {
 
   validate() {
     let valid = true;
-    let message = '';
+    let message = "";
     Object.keys(this.partnersData).forEach((partner_code) => {
       let result = this.validateCenter(partner_code, false);
       if (!result.valid) {
@@ -1160,17 +1163,14 @@ export class SubmissionComponent implements OnInit {
       }
     });
     if (!valid) {
-      this.toastrService.error(
-        message,
-        "Submission failed"
-      );
+      this.toastrService.error(message, "Submission failed");
     }
     return valid;
   }
 
   validateCenter(partner_code: any, is_mark = false) {
     let valid = true;
-    let message = '';
+    let message = "";
     Object.keys(this.partnersData[partner_code]).forEach((wp_id) => {
       let result = this.validateWp(partner_code, wp_id);
       if (!result.valid) {
@@ -1192,9 +1192,9 @@ export class SubmissionComponent implements OnInit {
   validateWp(partner_code: any, wp_id: any) {
     let valid = true;
     let wpChecked = false;
-    let message = '';
+    let message = "";
     this.partnersData[partner_code][wp_id].forEach((item: any) => {
-      if (item.category != 'EOI' && item.category != 'OUTCOME') {
+      if (item.category != "EOI" && item.category != "OUTCOME") {
         let perChecked = Object.values(
           this.perValues[partner_code][wp_id][item.id]
         ).reduce((a: any, b: any) => a || b);

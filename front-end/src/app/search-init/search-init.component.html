@@ -123,13 +123,18 @@
     </div>
     <!-- //Reset Button----- -->
     <div class="sec-7">
-      <button
-        class="risk-management-reset-btn"
-        mat-raised-button
-        (click)="resetForm()"
-      >
-        Reset
-      </button>
+      <div class="risk-report-button-box">
+        <button
+          class="risk-report-button-box__btn btn--animated btn--white btn"
+          mat-raised-button
+          (click)="resetForm()"
+        >
+          <mat-icon class="create-risk">
+            <span class="material-symbols-outlined"> reset_wrench </span>
+          </mat-icon>
+          Reset
+        </button>
+      </div>
     </div>
   </form>
 </div>
@@ -150,13 +155,13 @@
       </mat-checkbox>
     </div>
     <!-- //Reset Button----- -->
-    <div>
+    <div class="risk-report-button-box">
       <button
-        class="risk-management-export-btn"
+        class="risk-report-button-box__btn btn--animated btn--chestnut btn"
         mat-raised-button
         (click)="export()"
       >
-        <mat-icon class="risk-management-export-box-icon">
+        <mat-icon class="create-risk-2">
           <svg
             class="risk-management-export-box-icon"
             xmlns="http://www.w3.org/2000/svg"

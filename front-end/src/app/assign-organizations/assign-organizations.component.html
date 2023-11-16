@@ -35,24 +35,6 @@
           <mat-select formControlName="organizations" multiple>
             <!-- //////////////////////////////////////////////// -->
 
-            <mat-select-trigger>
-              <mat-chip-listbox>
-                <mat-chip
-                  *ngFor="
-                    let organization of assignOrgsForm?.value?.['organizations']
-                  "
-                  [removable]="true"
-                  (removed)="onToppingRemoved(organization)"
-                >
-                  <strong class="official-color">
-                    {{ organization }}
-                  </strong>
-
-                  <mat-icon matChipRemove>cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-listbox>
-            </mat-select-trigger>
-
             <mat-option
               [value]="organization.code"
               *ngFor="let organization of organizations"
@@ -67,19 +49,23 @@
         <div class="form-dialog-conten-button-box">
           <div class="form-dialog-conten__button-box" align="end">
             <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-
-            <button
-              class="form-dialog-conten__button-box__btn"
-              type="submit"
-              mat-raised-button
-              mat-button
-              color="primary"
-              mat-button
-              color="primary"
-              (click)="submit()"
-            >
-              Save
-            </button>
+            <div class="risk-report-button-box">
+              <button
+                class="risk-report-button-box__btn btn--animated btn--chestnut btn"
+                type="submit"
+                mat-raised-button
+                mat-button
+                color="primary"
+                mat-button
+                color="primary"
+                (click)="submit()"
+              >
+                <mat-icon class="create-risk">
+                  <span class="material-symbols-outlined"> data_saver_on </span>
+                </mat-icon>
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>

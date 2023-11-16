@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.id ? "Edit" : "Add" }} MELIA
+      {{ data.id == "add" ? "Add" : "Edit" }} MELIA
     </p>
   </div>
 
@@ -520,7 +520,7 @@
               (click)="submit()"
               cdkFocusInitial
             >
-              {{ data.id ? "Edit" : "Add" }}
+              {{ data.id == "add" ? "Add" : "Edit" }}
             </button>
           </div>
         </div>

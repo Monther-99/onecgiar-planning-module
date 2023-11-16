@@ -231,3 +231,15 @@
     }
   }
 }
+
+:host {
+  ::ng-deep.mat-sort-header-container {
+    /* display: flex; */
+    cursor: pointer;
+    align-items: center;
+    letter-spacing: normal;
+    outline: 0;
+    display: flex !important;
+    justify-content: center !important;
+  }
+}

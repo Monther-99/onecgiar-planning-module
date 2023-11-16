@@ -45,13 +45,14 @@ export class InitiativesComponent implements OnInit {
     private meta: Meta
   ) {
     this.headerService.background =
-      "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
+      "linear-gradient(to right, #0F212F, #0E1E2B)";
     this.headerService.backgroundNavMain =
-      "linear-gradient(to  bottom, #436280, #30455B)";
+      "linear-gradient(to right, #436280, #30455B)";
     this.headerService.backgroundUserNavButton =
-      "linear-gradient(to  bottom, #436280, #30455B)";
+      "linear-gradient(to right, #436280, #30455B)";
+
     this.headerService.backgroundFooter =
-      "linear-gradient(to top right, #436280, #263749)";
+      "linear-gradient(to top right, #0f212f, #0f212f)";
   }
   user: any;
   length!: number;
