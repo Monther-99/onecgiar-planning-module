@@ -22,6 +22,8 @@ import { CenterStatusService } from "./center-status.service";
 import { Meta, Title } from "@angular/platform-browser";
 import { ConstantService } from "../services/constant.service";
 import { InitiativesService } from "../services/initiatives.service";
+import { filter, from, iif, of, switchMap, tap } from "rxjs";
+import { RESOURCE_CACHE_PROVIDER } from "@angular/platform-browser-dynamic";
 
 @Component({
   selector: "app-submission",
@@ -998,12 +1000,12 @@ export class SubmissionComponent implements OnInit {
         }
       });
   }
-  
+
   addMelia(wp: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
       autoFocus: false,
       data: {
-        id:'add',
+        id: "add",
         wp: wp,
         initiative_id: this.params.id,
         show_eoi: this.phase?.show_eoi,
