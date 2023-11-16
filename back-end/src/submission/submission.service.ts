@@ -44,16 +44,18 @@ export class SubmissionService {
     } else return { id: 'DESC' };
 }
   async updateCenterStatus(data) {
-    const { initiative_id, organization_code, status } = data;
+    const { initiative_id, organization_code, phase_id, status } = data;
 
     let center_status: CenterStatus;
     center_status = await this.centerStatusRepo.findOneBy({
       initiative_id,
       organization_code,
+      phase_id
     });
     if (!center_status) center_status = this.centerStatusRepo.create();
     center_status.initiative_id = initiative_id;
     center_status.organization_code = organization_code;
+    center_status.phase_id = phase_id;
     center_status.status = status;
     await this.centerStatusRepo.save(center_status);
 

@@ -6,6 +6,7 @@ import {
 } from 'typeorm';
 import { Initiative } from './initiative.entity';
 import { Organization } from './organization.entity';
+import { Phase } from './phase.entity';
 
 @Entity()
 export class CenterStatus {
@@ -23,6 +24,13 @@ export class CenterStatus {
 
   @Column({primary:true})
   organization_code: string;
+
+  @JoinColumn({ name: 'phase_id' })
+  @ManyToOne(() => Phase)
+  phase: Phase;
+
+  @Column({ primary: true })
+  phase_id: number;
 
   @Column()
   status: boolean;

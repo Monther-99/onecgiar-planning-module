@@ -259,7 +259,9 @@ export class SubmissionComponent implements OnInit {
     if (this.initiative_data.center_status) {
       return (
         this.initiative_data.center_status.filter(
-          (d: any) => d.organization_code == organization_code
+          (d: any) =>
+            d.organization_code == organization_code &&
+            d.phase_id == this.phase.id
         )[0]?.status == 1
       );
     } else return false;
