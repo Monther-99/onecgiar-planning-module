@@ -51,6 +51,7 @@ export class CenterStatusComponent implements OnInit {
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
           if (this.status) this.clicked.emit();
+
           const valid = this.centerStatusService.validPartner.getValue();
           if (!this.status || (this.status && valid)) {
             let result = await this.submissionService.markStatus(
@@ -58,13 +59,12 @@ export class CenterStatusComponent implements OnInit {
               +this.initiative_id,
               !!this.status
             );
+            if (this.status === false) {
+              this.toast.success("mark as incompleted");
+            } else {
+              this.toast.success("marked as completed");
+            }
             if (result) this.change.emit(!!this.status);
-          }
-
-          if (this.status === true) {
-            this.toast.success("marked as completed");
-          } else {
-            this.toast.success("mark as incompleted");
           }
         }
       });
