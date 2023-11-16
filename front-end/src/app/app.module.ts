@@ -77,7 +77,6 @@ import { MeliaAdminComponent } from './admin/melia-admin/melia-admin.component';
 import { MeliaAdminDialogComponent } from './admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component';
 import { AnticipatedYearComponent } from './admin/anticipated-year/anticipated-year.component';
 import { AnticipatedYearDialogComponent } from './admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component';
-import { SubmitedVersionViewComponent } from './submited-versions/submited-version-view/submited-version-view.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +122,6 @@ import { SubmitedVersionViewComponent } from './submited-versions/submited-versi
     MeliaAdminDialogComponent,
     AnticipatedYearComponent,
     AnticipatedYearDialogComponent,
-    SubmitedVersionViewComponent,
   ],
   imports: [
     BrowserModule,
