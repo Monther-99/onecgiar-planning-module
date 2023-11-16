@@ -257,7 +257,7 @@ export class SubmissionService {
   }
   async getSaved(id) {
     const saved_data = await this.resultRepository.find({
-      where: { initiative_id: id },
+      where: { initiative_id: id, submission_id: IsNull() },
       relations: ['values', 'workPackage', 'values.period'],
     });
     return this.dataToPers(saved_data);

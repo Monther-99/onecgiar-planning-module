@@ -52,6 +52,10 @@ export class Result {
   @ManyToOne(() => Submission, (submission) => submission.results)
   @JoinColumn({ name: 'submission_id' })
   submission: Submission;
+
+  @Column({ nullable: true })
+  submission_id: number;
+
   @Column()
   initiative_id: number;
   @ManyToOne(() => Initiative, (initiative) => initiative)
