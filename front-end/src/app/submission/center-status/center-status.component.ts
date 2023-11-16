@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/delete-confirm-dialog.component";
 import { SubmissionService } from "src/app/services/submission.service";
 import { CenterStatusService } from "../center-status.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-center-status",
@@ -23,7 +24,8 @@ export class CenterStatusComponent implements OnInit {
     public dialog: MatDialog,
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private centerStatusService: CenterStatusService
+    private centerStatusService: CenterStatusService,
+    private toast: ToastrService
   ) {}
 
   loading = true;
@@ -57,6 +59,12 @@ export class CenterStatusComponent implements OnInit {
               !!this.status
             );
             if (result) this.change.emit(!!this.status);
+          }
+
+          if (this.status === true) {
+            this.toast.success("marked as completed");
+          } else {
+            this.toast.success("mark as incompleted");
           }
         }
       });

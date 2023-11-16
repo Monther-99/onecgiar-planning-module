@@ -22,6 +22,8 @@ import { CenterStatusService } from "./center-status.service";
 import { Meta, Title } from "@angular/platform-browser";
 import { ConstantService } from "../services/constant.service";
 import { InitiativesService } from "../services/initiatives.service";
+import { filter, from, iif, of, switchMap, tap } from "rxjs";
+import { RESOURCE_CACHE_PROVIDER } from "@angular/platform-browser-dynamic";
 
 @Component({
   selector: "app-submission",
@@ -998,12 +1000,12 @@ export class SubmissionComponent implements OnInit {
         }
       });
   }
-  
+
   addMelia(wp: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
       autoFocus: false,
       data: {
-        id:'add',
+        id: "add",
         wp: wp,
         initiative_id: this.params.id,
         show_eoi: this.phase?.show_eoi,
@@ -1085,42 +1087,37 @@ export class SubmissionComponent implements OnInit {
   }
 
   submit() {
-    ///////////////////
-    this.dialog
-      .open(DeleteConfirmDialogComponent, {
-        data: {
-          title: "Submit",
-          message: `Are you sure you want to submit?`,
-          svg: `../../assets/shared-image/apply.png`,
-        },
-      })
-      .afterClosed()
-      .subscribe(async (dialogResult) => {
-        if (dialogResult == true) {
-          let incompleteCenters = this.incompleteCenters();
-          if (incompleteCenters.length) {
-            let message = incompleteCenters.length > 1 ? "Centers" : "Center";
-            message +=
-              " (" +
-              incompleteCenters.join(", ") +
-              ") are incomplete, Are you sure you want to submit?";
-            this.dialog
-              .open(DeleteConfirmDialogComponent, {
-                data: {
-                  title: "Submit",
-                  message: message,
-                  svg: `../../assets/shared-image/apply.png`,
-                },
-              })
-              .afterClosed()
-              .subscribe(async (centersDialogResult) => {
-                if (centersDialogResult == true) this.finishSubmit();
-              });
-          } else {
-            this.finishSubmit();
-          }
-        }
-      });
+    let incompleteCenters = this.incompleteCenters();
+    let message2 = incompleteCenters.length > 1 ? "Centers" : "Center";
+    message2 +=
+      " (" +
+      incompleteCenters.join(", ") +
+      ") are incomplete, Are you sure you want to submit?";
+
+    const obs$ =
+      incompleteCenters.length === 0
+        ? this.dialog
+            .open(DeleteConfirmDialogComponent, {
+              data: {
+                title: "Submit",
+                message: `Are you sure you want to submit?`,
+                svg: `../../assets/shared-image/apply.png`,
+              },
+            })
+            .afterClosed()
+        : this.dialog
+            .open(DeleteConfirmDialogComponent, {
+              data: {
+                title: "Submit",
+                message: message2,
+                svg: `../../assets/shared-image/apply.png`,
+              },
+            })
+            .afterClosed();
+
+    obs$.subscribe(async (result) => {
+      if (result) this.finishSubmit();
+    });
   }
 
   async finishSubmit() {
