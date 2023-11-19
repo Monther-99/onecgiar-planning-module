@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { firstValueFrom, map } from "rxjs";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -19,7 +20,7 @@ export class PeriodsService {
           finalFilters[element] = filters[element];
       });
     return firstValueFrom(
-      this.http.get(`api/periods?page=${page}&limit=${limit}`, {params: finalFilters}).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+`/periods?page=${page}&limit=${limit}`, {params: finalFilters}).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class MeliaTypeService {
 
   async getMeliaTypeById(id: any) {
     return firstValueFrom(
-      this.http.get('/api/melia-type/' + id).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+'/melia-type/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
@@ -38,13 +39,13 @@ export class MeliaTypeService {
           finalFilters[element] = filters[element];
       });
       return firstValueFrom(
-        this.http.get('/api/melia-type', { params: finalFilters }).pipe(map((d: any) => d))
+        this.http.get(environment.api_url+'/melia-type', { params: finalFilters }).pipe(map((d: any) => d))
       ).catch((e) => false);
   }
 
   async deleteMeliaType(id: number) {
     return firstValueFrom(
-      this.http.delete('/api/melia-type/' + id).pipe(map((d: any) => d))
+      this.http.delete(environment.api_url+'/melia-type/' + id).pipe(map((d: any) => d))
     );
   }
 }

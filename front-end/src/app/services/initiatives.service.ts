@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class InitiativesService {
 
   async getInitiative(id: number) {
     return firstValueFrom(
-      this.http.get('/api/initiatives/' + id).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+'/initiatives/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
   async getInitiatives(filters: any = null , page: any, limit: any) {
@@ -24,11 +25,11 @@ export class InitiativesService {
           finalFilters[element] = filters[element];
       });
       return firstValueFrom(
-        this.http.get(`/api/initiatives/full?page=${page}&limit=${limit}`, { params: finalFilters }).pipe(map((d: any) => d))
+        this.http.get(environment.api_url+`/initiatives/full?page=${page}&limit=${limit}`, { params: finalFilters }).pipe(map((d: any) => d))
       ).catch((e) => false);
     } else {
       return firstValueFrom(
-        this.http.get(`/api/initiatives/full?page=${page}&limit=${limit}`).pipe(map((d: any) => d))
+        this.http.get(environment.api_url+`/initiatives/full?page=${page}&limit=${limit}`).pipe(map((d: any) => d))
       ).catch((e) => false);
     }
 
@@ -36,14 +37,14 @@ export class InitiativesService {
 
   async getInitiativesOnly() {
     return firstValueFrom(
-      this.http.get('/api/initiatives').pipe(map((d: any) => d))
+      this.http.get(environment.api_url+'/initiatives').pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
   getInitiativeUsers(id: number) {
     return firstValueFrom(
       this.http
-        .get(`api/initiatives/${id}/roles`, {
+        .get(environment.api_url+`/initiatives/${id}/roles`, {
         })
         .pipe(map((d) => d))
     );
@@ -52,7 +53,7 @@ export class InitiativesService {
    // roles
    getInitiativeRoles(initiativeId: number) {
     return this.http
-      .get( 'api/initiatives/' + initiativeId + '/roles', {
+      .get( environment.api_url+'/initiatives/' + initiativeId + '/roles', {
       })
       .toPromise();
   }
@@ -60,7 +61,7 @@ export class InitiativesService {
   createNewInitiativeRole(initiativeId: number, role: any): Observable<any>{
     return this.http
       .post<any>(
-       'api/initiatives/' + initiativeId + '/roles',
+       environment.api_url+'/initiatives/' + initiativeId + '/roles',
        role
       )
   }
@@ -68,7 +69,7 @@ export class InitiativesService {
   updateInitiativeRole(initiativeId: number, roleId: number, role: any): Observable<any> {
     return this.http
       .put(
-       'api/initiatives/' + initiativeId + '/roles/' + roleId,
+       environment.api_url+'/initiatives/' + initiativeId + '/roles/' + roleId,
        role
       );
   }
@@ -76,7 +77,7 @@ export class InitiativesService {
   deleteInitiativeRole(initiativeId: number, roleId: number) {
     return this.http
       .delete(
-       'api/initiatives/' + initiativeId + '/roles/' + roleId
+       environment.api_url+'/initiatives/' + initiativeId + '/roles/' + roleId
       )
       .toPromise();
   }

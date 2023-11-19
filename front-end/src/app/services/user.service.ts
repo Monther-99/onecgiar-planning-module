@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, firstValueFrom, map } from "rxjs";
 
 import jwt_decode from "jwt-decode";
+import { environment } from "src/environments/environment";
 @Injectable({
   providedIn: "root",
 })
@@ -28,7 +29,7 @@ export class UserService {
       });
     return firstValueFrom(
       this.http
-        .get(`api/users?page=${page}&limit=${limit}`, {
+        .get(environment.api_url+`/users?page=${page}&limit=${limit}`, {
           params: finalFilters,
         })
         .pipe(map((d) => d))
@@ -47,7 +48,7 @@ export class UserService {
 
     return firstValueFrom(
       this.http
-        .get(`api/users`, {
+        .get(environment.api_url+`/users`, {
           params: finalFilters,
         })
         .pipe(map((d) => d))
@@ -64,7 +65,7 @@ export class UserService {
   //       if (filters[element] != null && filters[element] != "")
   //         finalFilters[element] = filters[element];
   //     });
-  //   return this.http.get(`api/users`, {
+  //   return this.http.get(environment.api_url+`/users`, {
   //     params: finalFilters,
   //   });
   // }
@@ -86,7 +87,7 @@ export class UserService {
   // }
 
   // this.http
-  // .get(`api/users`, {
+  // .get(environment.api_url+`/users`, {
   //   params: finalFilters,
   // }
 
@@ -103,7 +104,7 @@ export class UserService {
   // async addUser(data: any) {
   //   return firstValueFrom(
   //     this.http
-  //       .post(`api/users`, data, {
+  //       .post(environment.api_url+`/users`, data, {
   //       })
   //       .pipe(map((d) => d))
   //   ).catch((e) => false);
@@ -112,7 +113,7 @@ export class UserService {
   // async updateUser(data: any) {
   //   return firstValueFrom(
   //     this.http
-  //       .put(`api/users`, data, {
+  //       .put(environment.api_url+`/users`, data, {
   //       })
   //       .pipe(map((d) => d))
   //   ).catch((e) => false);
@@ -120,7 +121,7 @@ export class UserService {
   // async deleteUser(id: any) {
   //   return firstValueFrom(
   //     this.http
-  //       .delete(`api/users/${id}`, {
+  //       .delete(environment.api_url+`/users/${id}`, {
 
   //       })
   //       .pipe(map((d) => d))
@@ -154,7 +155,7 @@ export class UserService {
           finalFilters[element] = filters[element];
       });
     return firstValueFrom(
-      this.http.get(`api/users?page=${page}&limit=${limit}`, {params: finalFilters}).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+`/users?page=${page}&limit=${limit}`, {params: finalFilters}).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 

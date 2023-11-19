@@ -25,7 +25,7 @@ export class AuthService {
 
   async logintoAWS(code: any, redirect_url: any = null) {
     let { access_token, expires_in } = await firstValueFrom(
-      this.http.post('api/auth/aws', { code }).pipe(
+      this.http.post(environment.api_url+'/auth/aws', { code }).pipe(
         map((d: any) => d),
         catchError((e) => {
           this.goToLogin(redirect_url, 'AWS');
