@@ -38,9 +38,9 @@
 
   transition: all 0.3s;
 
-  color: #9e553e;
+  color: #5569dd;
   font-family: "Poppins", sans-serif !important;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -48,7 +48,7 @@
 
 .risk-nav-link:hover,
 .risk-nav-link:active {
-  color: #874835;
+  color: #5569dd;
 }
 
 .line {
@@ -429,10 +429,12 @@
     color: #0f212f;
     text-align: center;
     font-family: "Poppins", sans-serif !important;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-style: normal;
     font-weight: 400;
     line-height: 114.5%; /* 1.374rem */
+    // background-color: #f0f0f0;
+    // padding: 0.5rem;
   }
 
   th {
@@ -447,7 +449,8 @@
     // background-image: linear-gradient(to bottom, #436280, #39536d);
     // background-image: linear-gradient(to bottom, #0f212f, #060e14);
     // background-image: linear-gradient(to top right, #0f212f, #060e14);
-    background: linear-gradient(to bottom left, #0f212f, #0d1c28);
+    // background: linear-gradient(to bottom left, #0f212f, #0d1c28);
+    background: linear-gradient(to right, #2a2e45, #212537);
     font-style: normal;
   }
 
@@ -546,4 +549,74 @@
 
 .last {
   background-color: #e8ebff;
+}
+
+::ng-deep.mdc-tooltip__surface {
+  background-color: #04030f !important;
+}
+
+::ng-deep.mdc-list-item--selected .mdc-list-item__primary-text,
+.mdc-list-item--activated .mdc-list-item__primary-text {
+  /* color: var(--mdc-theme-primary, #673ab7); */
+  color: #2a2e45 !important;
+}
+
+:host {
+  ::ng-deep.mat-mdc-option .mdc-list-item__primary-text {
+    white-space: normal;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    text-decoration: inherit;
+    text-transform: inherit;
+    margin-right: auto;
+    color: #2a2e45 !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 1.3rem !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+  }
+}
+
+::ng-deep.cdk-overlay-pane:not(.mat-mdc-select-panel-above)
+  .mdc-menu-surface.mat-mdc-select-panel {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform-origin: top center;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+::ng-deep.mat-mdc-option .mdc-list-item__primary-text {
+  white-space: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+  margin-right: auto;
+  color: #2a2e45 !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 1.4rem !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  line-height: normal !important;
+}
+
+::ng-deep.mat-primary
+  .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+.mat-primary
+  .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: #5569dd !important;
+}
+
+::ng-deep.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+.mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: #5569dd !important;
 }

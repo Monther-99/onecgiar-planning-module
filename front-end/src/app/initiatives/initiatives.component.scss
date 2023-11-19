@@ -714,7 +714,7 @@
   // }
 
   .color-icons-table-action {
-    color: #9e553e;
+    color: #403f3f;
   }
 
   // th:nth-child(5) {
@@ -775,6 +775,8 @@
     font-style: normal;
     font-weight: 400;
     line-height: 114.5%; /* 1.374rem */
+    // background-color: #f0f0f0;
+    padding: 0.5rem;
   }
 
   th {
@@ -788,7 +790,7 @@
     text-align: center;
     // background-image: linear-gradient(to bottom, #436280, #39536d);
     // background: linear-gradient(to bottom left, #436280, #30455b);
-    background: linear-gradient(to bottom left, #0f212f, #0d1c28);
+    background: linear-gradient(to right, #2a2e45, #212537);
     // border: 0.2rem solid #154c83;
     font-style: normal;
   }
@@ -803,13 +805,13 @@
     font-weight: 600;
   }
 
-  .text-s-c-linear {
-    background-image: linear-gradient(to bottom, #0f212f, #0c1a25);
-    -webkit-background-clip: text;
-    color: transparent;
-    letter-spacing: 0.1rem;
-    transition: all 0.2s;
-  }
+  // .text-s-c-linear {
+  //   background-image: linear-gradient(to bottom, #2f2f2f, #2f2f2f);
+  //   -webkit-background-clip: text;
+  //   color: transparent;
+  //   letter-spacing: 0.1rem;
+  //   transition: all 0.2s;
+  // }
 
   @media only screen and (max-width: 48em) {
     th,
@@ -1221,4 +1223,42 @@
 
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+::ng-deep.mdc-tooltip__surface {
+  /* background-color: var(--mdc-plain-tooltip-container-color, #fff); */
+  background-color: #04030f !important;
+}
+
+::ng-deep.mat-mdc-option .mdc-list-item__primary-text {
+  white-space: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+  margin-right: auto;
+  color: #2a2e45 !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 1.4rem !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: normal !important;
+}
+
+::ng-deep.cdk-overlay-pane:not(.mat-mdc-select-panel-above)
+  .mdc-menu-surface.mat-mdc-select-panel {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform-origin: top center;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+::ng-deep.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full,
+.mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
+  background: #5569dd !important;
 }

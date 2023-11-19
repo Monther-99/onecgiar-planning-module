@@ -57,9 +57,11 @@
           <div class="form-dialog-conten-button-box">
             <div class="form-dialog-conten__button-box m-t" align="end">
               <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-
+              <div class="risk-report-button-box">
+              
+               
               <button
-                class="form-dialog-conten__button-box__btn"
+              class="risk-report-button-box__btn btn--animated btn--chestnut btn"
                 type="submit"
                 mat-raised-button
                 mat-button
@@ -67,8 +69,12 @@
                 (click)="submit()"
                 cdkFocusInitial
               >
+              <mat-icon class="create-risk">
+                <span class="material-symbols-outlined"> data_saver_on </span>
+              </mat-icon>
                 Save
               </button>
+              </div>
             </div>
           </div>
         </div>

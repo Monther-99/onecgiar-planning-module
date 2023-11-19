@@ -458,11 +458,11 @@
 }
 
 .btn--chestnut {
-  background-color: #9e553e !important;
+  background-color: #5569dd !important;
   color: #ffffff;
 }
 .btn--chestnut::after {
-  background-color: #9e553e !important;
+  background-color: #5569dd !important;
 }
 
 .btn--white-2 {
@@ -489,4 +489,39 @@
 .btn--animated {
   animation: moveInBottom 0.5s ease-out 0.85s;
   animation-fill-mode: backwards;
+}
+
+::ng-deep.cdk-overlay-pane:not(.mat-mdc-select-panel-above)
+  .mdc-menu-surface.mat-mdc-select-panel {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform-origin: top center;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+::ng-deep.mat-mdc-option .mdc-list-item__primary-text {
+  white-space: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+  margin-right: auto;
+  color: #2a2e45 !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 1.4rem !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  line-height: normal !important;
+}
+
+::ng-deep.mat-primary
+  .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+.mat-primary
+  .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: #5569dd !important;
 }

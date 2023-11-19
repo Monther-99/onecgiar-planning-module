@@ -227,7 +227,7 @@
                     <td>
                       {{
                         sammaryTotal[wp.ost_wp.wp_official_code]
-                          | number : '1.2-2'
+                          | number : "1.2-2"
                       }}%
                     </td>
                     <td>
@@ -251,7 +251,7 @@
                       >
                     </td>
                   </ng-container>
-                  <td>{{ wpsTotalSum | number : '1.2-2' }}%</td>
+                  <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
                   <td>{{ roundNumber(summaryBudgetsAllTotal) }}</td>
                 </tr>
               </table>
@@ -486,7 +486,7 @@
                           <ng-container *ngIf="!item?.meliaType?.name">
                             {{
                               item?.ipsr?.id
-                                ? item?.ipsr.title + ' (' + item.value + ')'
+                                ? item?.ipsr.title + " (" + item.value + ")"
                                 : item.title
                             }}
                           </ng-container>
@@ -708,7 +708,7 @@
               </div>
 
               <!-- btn-4 -->
-              <div class="risk-report-button-box">
+              <div class="risk-report-button-box" style="height: 37px">
                 <app-center-status
                   (change)="partnerStatusChange($event, partner.code)"
                   [status]="!checkComplete(partner.code)"
@@ -798,7 +798,7 @@
                         <ng-container *ngIf="!item?.meliaType?.name">
                           {{
                             item?.ipsr?.id
-                              ? item?.ipsr.title + ' (' + item.value + ')'
+                              ? item?.ipsr.title + " (" + item.value + ")"
                               : item.title
                           }}
                         </ng-container>
@@ -968,6 +968,10 @@
 
                       <td>
                         <mat-form-field
+                          class="form-dialog-content__field"
+                          floatLabel="always"
+                          hideRequiredMarker
+                          appearance="outline"
                           [matTooltip]="
                             !(
                               perValues[partner.code][
@@ -1135,9 +1139,16 @@
                     <!-- <td></td> -->
                     <td>
                       <div class="form">
-                        <mat-form-field class="budget">
-                          <mat-label>Total Budget</mat-label>
+                        <mat-form-field
+                          class="form-dialog-content__field"
+                          floatLabel="always"
+                          hideRequiredMarker
+                          appearance="outline"
+                          class="budget"
+                        >
+                          <!-- <mat-label>Total Budget</mat-label> -->
                           <input
+                            placeholder="Total Budget"
                             [disabled]="partnersStatus[partner.code]"
                             matInput
                             [(ngModel)]="

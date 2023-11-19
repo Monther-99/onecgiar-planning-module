@@ -5,6 +5,7 @@ import { DeleteConfirmDialogComponent } from "src/app/delete-confirm-dialog/dele
 import { SubmissionService } from "src/app/services/submission.service";
 import { CenterStatusService } from "../center-status.service";
 import { ToastrService } from "ngx-toastr";
+import { HeaderService } from "src/app/header.service";
 
 @Component({
   selector: "app-center-status",
@@ -25,8 +26,13 @@ export class CenterStatusComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     private centerStatusService: CenterStatusService,
-    private toast: ToastrService
-  ) {}
+    private toast: ToastrService,
+    private headerService: HeaderService
+  ) {
+    this.headerService.backgroundDeleteYes = "#5569dd";
+    this.headerService.backgroundDeleteClose = "#808080";
+    this.headerService.backgroundDeleteLr = "#5569dd";
+  }
 
   loading = true;
   a: any;
@@ -43,7 +49,7 @@ export class CenterStatusComponent implements OnInit {
             this.status ? "" : "In"
           }complete?`,
           svg: `../../../../assets/shared-image/${
-            this.status ? "checked-2.png" : "delete-file.png"
+            this.status ? "checked-center.png" : "uncompleted.png"
           }`,
         },
       })

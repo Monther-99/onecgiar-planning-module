@@ -1,5 +1,9 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
@@ -54,7 +58,7 @@ export class MeliaService {
         'initiative_countries',
         'initiative_regions',
         'co_initiative_countries',
-        'co_initiative_regions'
+        'co_initiative_regions',
       ],
     });
   }
@@ -62,6 +66,7 @@ export class MeliaService {
   update(id: string, data: any) {
     return this.meliaRepository.save({ id, ...data });
   }
+
   remove(id: string) {
     return this.meliaRepository.delete({ id });
   }
@@ -116,12 +121,11 @@ export class MeliaService {
             initiative_id,
           {
             headers: {
-              auth:await this.loginOst(),
+              auth: await this.loginOst(),
             },
           },
         )
         .pipe(map((d: any) => d.data.response.meliaStudiesActivities)),
     );
   }
- 
 }

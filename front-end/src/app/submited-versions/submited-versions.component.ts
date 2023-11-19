@@ -47,14 +47,14 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     private meta: Meta
   ) {
     this.headerService.background =
-    "linear-gradient(to right, #0F212F, #0E1E2B)";
-  this.headerService.backgroundNavMain =
-    "linear-gradient(to right, #436280, #30455B)";
-  this.headerService.backgroundUserNavButton =
-    "linear-gradient(to right, #436280, #30455B)";
+      "linear-gradient(to right, #04030F, #04030F)";
+    this.headerService.backgroundNavMain =
+      "linear-gradient(to right, #2A2E45, #212537)";
+    this.headerService.backgroundUserNavButton =
+      "linear-gradient(to right, #2A2E45, #212537)";
 
-  this.headerService.backgroundFooter =
-    "linear-gradient(to top right, #0f212f, #0f212f)";
+    this.headerService.backgroundFooter =
+      "linear-gradient(to top right, #2A2E45, #212537)";
   }
   user: any;
   params: any;

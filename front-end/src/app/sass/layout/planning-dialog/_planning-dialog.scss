@@ -6,8 +6,13 @@
   align-items: center;
   height: 4.5rem;
   // border-radius: 0.2rem 0.2rem 0rem 0;
+  background-image: linear-gradient(
+    to right bottom,
+    #04030f,
+    #04030f
+  ) !important;
 
-  background-image: linear-gradient(to right, #436280, #30455b);
+  // background-image: linear-gradient(to right, #436280, #30455b);
   padding: 0 1rem;
 
   &__text-box {
@@ -30,7 +35,7 @@
 
     &__btn {
       border: none;
-      background-color: #26374900;
+      background-color: #04030f;
       cursor: pointer;
     }
   }
@@ -161,7 +166,7 @@
     width: 16px !important;
     height: 10px !important;
     background-color: #ffffff !important;
-    background-image: url("../../../../assets/shared-image/VectorNew.svg") !important;
+    background-image: url("../../../../assets/shared-image/Vector-risk-m.svg");
     background-position: center;
     background-size: cover;
   }

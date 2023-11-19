@@ -51,14 +51,17 @@ export class SubmissionComponent implements OnInit {
     private initiativeService: InitiativesService
   ) {
     this.headerService.background =
-      "linear-gradient(to  bottom, #0F212F, #0E1E2B)";
+      "linear-gradient(to right, #04030F, #04030F)";
     this.headerService.backgroundNavMain =
-      "linear-gradient(to  bottom, #436280, #30455B)";
+      "linear-gradient(to right, #2A2E45, #212537)";
     this.headerService.backgroundUserNavButton =
-      "linear-gradient(to  bottom, #436280, #30455B)";
+      "linear-gradient(to right, #2A2E45, #212537)";
 
     this.headerService.backgroundFooter =
-      "linear-gradient(to top right, #0f212f, #0f212f)";
+      "linear-gradient(to top right, #2A2E45, #212537)";
+    this.headerService.backgroundDeleteYes = "#5569dd";
+    this.headerService.backgroundDeleteClose = "#808080";
+    this.headerService.backgroundDeleteLr = "#5569dd";
   }
   user: any;
   data: any = [];
@@ -621,7 +624,7 @@ export class SubmissionComponent implements OnInit {
       if (!this.centerHasError[partner.code])
         this.centerHasError[partner.code] = false;
       if (!this.itemHasError[partner.code])
-        this.itemHasError[partner.code] = {};  
+        this.itemHasError[partner.code] = {};
 
       for (let wp of this.wps) {
         if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])
@@ -960,7 +963,7 @@ export class SubmissionComponent implements OnInit {
 
   addCross() {
     const dialogRef = this.dialog.open(CrossCuttingComponent, {
-      data: { initiative_id: this.params.id },
+      data: { id: "add", initiative_id: this.params.id },
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
@@ -989,6 +992,7 @@ export class SubmissionComponent implements OnInit {
         data: {
           title: "Delete",
           message: `Are you sure you want to delete this Cross-cutting item?`,
+          svg: `../../../../assets/shared-image/delete-user.png`,
         },
       })
       .afterClosed()
@@ -1064,6 +1068,7 @@ export class SubmissionComponent implements OnInit {
         data: {
           title: "Delete",
           message: `Are you sure you want to delete this MELIA?`,
+          svg: `../../../../assets/shared-image/delete-user.png`,
         },
       })
       .afterClosed()
@@ -1087,20 +1092,19 @@ export class SubmissionComponent implements OnInit {
   }
 
   async submit() {
-    let message = 'Are you sure you want to submit?';
+    let messages = "Are you sure you want to submit?";
     let incompleteCenters = this.incompleteCenters();
     if (incompleteCenters.length) {
-      message = incompleteCenters.length > 1 ? 'Centers' : 'Center';
-      message +=
-        ' (' +
-        incompleteCenters.join(', ') +
-        ') are incomplete, Are you sure you want to submit?';
+      messages = incompleteCenters.length > 1 ? "Centers" : "Center";
+      messages += "  are incomplete:";
     }
     this.dialog
       .open(DeleteConfirmDialogComponent, {
         data: {
-          title: 'Submit',
-          message: message,
+          title: "Submit",
+          message2: messages,
+          f: incompleteCenters,
+          k: `Are you sure you want to submit?`,
           svg: `../../assets/shared-image/apply.png`,
         },
       })
@@ -1113,12 +1117,12 @@ export class SubmissionComponent implements OnInit {
               phase_id: this.phase.id,
             });
             if (result) {
-              this.toastrService.success('Data Submitted successfully');
+              this.toastrService.success("Data Submitted successfully");
               this.router.navigate([
-                'initiative',
+                "initiative",
                 this.initiative_data.id,
                 this.initiative_data.official_code,
-                'submited-versions',
+                "submited-versions",
               ]);
             }
             this.loading = false;
@@ -1164,7 +1168,7 @@ export class SubmissionComponent implements OnInit {
       }
     });
     if (is_mark) {
-      if (!valid) this.toastrService.error(message, 'Complete failed');
+      if (!valid) this.toastrService.error(message, "Complete failed");
       this.centerStatusService.validPartner.next(valid);
     }
     this.centerHasError[partner_code] = !valid;
@@ -1203,12 +1207,12 @@ export class SubmissionComponent implements OnInit {
       if (this.totals[partner_code][wp_id] > 100)
         this.toggleValues[partner_code][wp_id] = true;
       this.errors[partner_code][wp_id] =
-        'Subtotal percentage should equal 100%';
-      message = 'The subtotal of all percentages should equal 100%';
+        "Subtotal percentage should equal 100%";
+      message = "The subtotal of all percentages should equal 100%";
     } else if (!valid) {
       this.errors[partner_code][wp_id] =
-        'There is a checked items but not budgeted';
-      message = 'There is a checked items but not budgeted';
+        "There is a checked items but not budgeted";
+      message = "There is a checked items but not budgeted";
     }
     return {
       valid: valid,

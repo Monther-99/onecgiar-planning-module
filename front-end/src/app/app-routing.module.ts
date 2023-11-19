@@ -40,9 +40,9 @@ const routes: Routes = [
       { path: "parameters-settings", component: ParametersSettingsComponent },
       { path: "melia", component: MeliaAdminComponent },
       { path: "Anticipated-year", component: AnticipatedYearComponent },
-
     ],
   },
+
   {
     path: "initiative/:id/:code/submission",
     component: SubmissionComponent,
@@ -77,6 +77,11 @@ const routes: Routes = [
   {
     path: "license",
     component: LicenseComponent,
+  },
+
+  {
+    path: "team-members",
+    component: TeamMembersComponent,
   },
 ];
 

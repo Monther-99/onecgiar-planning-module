@@ -37,9 +37,9 @@
 
   transition: all 0.3s;
 
-  color: #9e553e;
+  color: #5569dd;
   font-family: "Poppins", sans-serif !important;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -47,7 +47,7 @@
 
 .risk-nav-link:hover,
 .risk-nav-link:active {
-  color: #874835;
+  color: #5569dd;
 }
 
 .line {
@@ -418,13 +418,14 @@
   td {
     border: 1px solid #b9b9b9b5;
 
-    color: #0f212f;
+    color: #2f2f2f;
     text-align: center;
     font-family: "Poppins", sans-serif !important;
     font-size: 1.2rem;
     font-style: normal;
     font-weight: 400;
     line-height: 114.5%; /* 1.374rem */
+    // background-color: #f0f0f0;
   }
 
   th {
@@ -439,7 +440,8 @@
     // background-image: linear-gradient(to bottom, #436280, #39536d);
     // background-image: linear-gradient(to bottom, #0f212f, #060e14);
     // background-image: linear-gradient(to top right, #0f212f, #060e14);
-    background: linear-gradient(to bottom left, #0f212f, #0d1c28);
+    // background: linear-gradient(to bottom left, #0f212f, #0d1c28);
+    background: linear-gradient(to right, #2a2e45, #212537);
     font-style: normal;
   }
 
@@ -609,11 +611,11 @@
 }
 
 .btn--white {
-  background-color: #0f212f;
+  background-color: #5569dd !important;
   color: #ffffff;
 }
 .btn--white::after {
-  background-color: #0f212f;
+  background-color: #5569dd !important;
 }
 
 .btn--white-2 {
@@ -640,4 +642,34 @@
 .btn--animated {
   animation: moveInBottom 0.5s ease-out 0.85s;
   animation-fill-mode: backwards;
+}
+
+::ng-deep.mdc-tooltip__surface {
+  background-color: #04030f !important;
+}
+
+::ng-deep.mdc-list-item--selected .mdc-list-item__primary-text,
+.mdc-list-item--activated .mdc-list-item__primary-text {
+  /* color: var(--mdc-theme-primary, #673ab7); */
+  color: #2a2e45 !important;
+}
+
+:host {
+  ::ng-deep.mat-mdc-option .mdc-list-item__primary-text {
+    white-space: normal;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    text-decoration: inherit;
+    text-transform: inherit;
+    margin-right: auto;
+    color: #2a2e45 !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 1.3rem !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+  }
 }
