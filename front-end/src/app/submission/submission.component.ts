@@ -1003,7 +1003,7 @@ export class SubmissionComponent implements OnInit {
       });
   }
 
-  addMelia(wp: any) {
+  addMelia(wp: any, cross: boolean) {
     const dialogRef = this.dialog.open(MeliaComponent, {
       autoFocus: false,
       data: {
@@ -1011,6 +1011,7 @@ export class SubmissionComponent implements OnInit {
         wp: wp,
         initiative_id: this.params.id,
         show_eoi: this.phase?.show_eoi,
+        cross: cross
       },
     });
 

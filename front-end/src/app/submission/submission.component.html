@@ -285,7 +285,7 @@
                     mat-raised-button
                     *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
                     type="button"
-                    (click)="addMelia(wp)"
+                    (click)="addMelia(wp, false)"
                   >
                     <mat-icon class="create-risk">
                       <svg
@@ -324,7 +324,7 @@
                     mat-raised-button
                     *ngIf="wp.id == 'CROSS' && phase.show_melia"
                     type="button"
-                    (click)="addMelia(wp)"
+                    (click)="addMelia(wp, true)"
                   >
                     <mat-icon class="create-risk">
                       <svg

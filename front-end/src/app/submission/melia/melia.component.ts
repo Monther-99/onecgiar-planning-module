@@ -234,9 +234,10 @@ export class MeliaComponent implements OnInit {
     });
     this.loadPartners();
     this.meliaTypes = await this.submissionService.getMeliaTypes();
-    this.meliaTypes = this.meliaTypes.filter((element: any) => {
-      if (element.HideCrossCutting == false) return element;
-    });
+    if(this.data.cross == true || this.data.wp.id == 'CROSS')
+      this.meliaTypes = this.meliaTypes.filter((element: any) => {
+        if (element.HideCrossCutting == false) return element;
+      });
     this.regions = await this.submissionService.getRegions();
     this.countries = await this.submissionService.getCountries();
     this.initiatives = await this.initiativesService.getInitiativesOnly();
