@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AnticipatedYear } from 'src/entities/anticipated-year.entity';
 import { Brackets, Repository } from 'typeorm';
@@ -36,7 +36,15 @@ export class AnticipatedYearController {
         });
     }
     @Delete(':id')
-    remove(@Param('id') id: string) {
+    async remove(@Param('id') id: number) {
+      const AnticipatedYear = await this.AnticipatedYearRepository.findOne({
+        where: {
+          id: id
+        },
+        relations: ['phase']
+      });
+      if(AnticipatedYear.phase.active)
+        throw new BadRequestException('The Anticipated Year can not be deleted as it’s related to an active phase.');
       return this.AnticipatedYearRepository.delete(id);
     }
 
