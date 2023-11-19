@@ -120,7 +120,7 @@ export class PhasesService {
     initiativeRoles.forEach(async (initiativeRole) => {
       if (initiativeRole.organizations.length) {
         initiativeRole.organizations = initiativeRole.organizations.filter(
-          (org: any) => data.organizations.includes(org.id),
+          (org: any) => data.organizations.includes(org.code),
         );
         await this.initiativeRolesRepository.save(initiativeRole);
       }
