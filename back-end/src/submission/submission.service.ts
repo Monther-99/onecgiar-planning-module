@@ -402,7 +402,7 @@ export class SubmissionService {
 
   async getWpsBudgets(initiative_id: number) {
     const wpBudgets = await this.wpBudgetRepository.find({
-      where: { initiative_id },
+      where: { initiative_id, submission_id: IsNull() },
       relations: ['workPackage'],
     });
 
