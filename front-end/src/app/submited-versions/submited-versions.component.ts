@@ -13,9 +13,9 @@ import { ToastrService } from "ngx-toastr";
 import { HeaderService } from "../header.service";
 import { Meta, Title } from "@angular/platform-browser";
 import { AppSocket } from "../socket.service";
-import { jsPDF } from 'jspdf';
-import { LoaderService } from 'src/app/services/loader.service';
-import { PhasesService } from 'src/app/services/phases.service';
+import { jsPDF } from "jspdf";
+import { LoaderService } from "src/app/services/loader.service";
+import { PhasesService } from "src/app/services/phases.service";
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -39,7 +39,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   submissions: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('pdfcontent', {static: false}) pdfcontent: ElementRef;
+  @ViewChild("pdfcontent", { static: false }) pdfcontent: ElementRef;
 
   constructor(
     private submissionService: SubmissionService,
@@ -51,7 +51,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     private title: Title,
     private meta: Meta,
     public loader: LoaderService,
-    private phasesService: PhasesService,
+    private phasesService: PhasesService
   ) {
     this.headerService.background =
       "linear-gradient(to right, #04030F, #04030F)";
@@ -123,18 +123,6 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     });
   }
 
-  
-
-
-
-
-
-
-
-
-
-
-
   data: any = [];
   wps: any = [];
   partners: any = [];
@@ -181,7 +169,6 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     if (this.totals[code] && this.totals[code][id])
       return this.totals[code][id];
   }
-
 
   perValues: any = {};
   perValuesSammary: any = {};
@@ -339,8 +326,8 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   loading = false;
   initiative_data: any = {};
   ipsr_value_data: any;
-  async pdfData(lastSubmitionId:any) {
-    console.log(lastSubmitionId)
+  async pdfData(lastSubmitionId: any) {
+    console.log(lastSubmitionId);
     this.loading = true;
     this.wpsTotalSum = 0;
     this.perValues = {};
@@ -530,22 +517,19 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
 
-    this.loader.setLoading(true)
+    this.loader.setLoading(true);
     setTimeout(() => {
       this.exportPDF();
     }, 1000);
-   
+
     this.meta.updateTag({ name: "description", content: "Submitted versions" });
   }
   savedValues: any = null;
   submission_data: any;
 
-
-
-
-  async generatePDF(lastSubmitionId:any) {
+  async generatePDF(lastSubmitionId: any) {
     this.toPdf = true;
-    
+
     this.submission_data = await this.submissionService.getSubmissionsById(
       lastSubmitionId
     );
@@ -562,8 +546,6 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.pdfData(lastSubmitionId);
     this.period = this.submission_data.phase.periods;
   }
-
-
 
   percentValue(value: number, totalBudget: number) {
     return (value / totalBudget) * 100;
@@ -708,23 +690,22 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     // let doc = new jsPDF('portrait', 'pt', 'a4');
     // let doc = new jsPDF('portrait', 'pt', [1550, 10000]);
     let doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'pt',
+      orientation: "portrait",
+      unit: "pt",
       format: [
-        this.pdfcontent.nativeElement.scrollWidth ,
-        this.pdfcontent.nativeElement.scrollHeight +100,
+        this.pdfcontent.nativeElement.scrollWidth,
+        this.pdfcontent.nativeElement.scrollHeight + 100,
       ],
       // format: [1500, height + 400]
     });
     setTimeout(() => {
       doc.html(content, {
-        callback: (doc) => {
-          doc.save('Planning-' + this.officalCode + '.pdf');
+        callback: (doc: any) => {
+          doc.save("Planning-" + this.officalCode + ".pdf");
           this.toPdf = false;
           this.loader.setLoading(false);
         },
       });
     }, 500);
-
   }
 }
