@@ -247,6 +247,9 @@ export class MeliaComponent implements OnInit {
     this.fillResultsSelect();
     this.AnticipatedYear =
       await this.anticipatedYearService.getAnticipatedYear();
+    this.AnticipatedYear = this.AnticipatedYear.filter((d:any) => {
+      return d.phase?.active == true;
+    })
   }
   onNoClick(): void {
     this.dialogRef.close(false);
