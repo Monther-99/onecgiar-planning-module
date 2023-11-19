@@ -262,7 +262,9 @@ export class SubmissionComponent implements OnInit {
     if (this.initiative_data.center_status) {
       return (
         this.initiative_data.center_status.filter(
-          (d: any) => d.organization_code == organization_code
+          (d: any) =>
+            d.organization_code == organization_code &&
+            d.phase_id == this.phase.id
         )[0]?.status == 1
       );
     } else return false;
@@ -1005,7 +1007,7 @@ export class SubmissionComponent implements OnInit {
       });
   }
 
-  addMelia(wp: any) {
+  addMelia(wp: any, cross: boolean) {
     const dialogRef = this.dialog.open(MeliaComponent, {
       autoFocus: false,
       data: {
@@ -1013,6 +1015,7 @@ export class SubmissionComponent implements OnInit {
         wp: wp,
         initiative_id: this.params.id,
         show_eoi: this.phase?.show_eoi,
+        cross: cross
       },
     });
 

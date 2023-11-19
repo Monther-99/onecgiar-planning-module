@@ -290,6 +290,7 @@
                 <mat-icon class="user-management-table__icon">block</mat-icon>
               </button>
               <button
+                *ngIf="showManageInit"
                 routerLink="{{ phase.id }}/initiatives"
                 class="user-management-table-icon"
                 matTooltip="Manage Initiatives"

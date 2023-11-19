@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, ViewChild } from "@angular/core";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -12,6 +12,10 @@ import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { HeaderService } from "../header.service";
 import { Meta, Title } from "@angular/platform-browser";
+import { AppSocket } from "../socket.service";
+import { jsPDF } from 'jspdf';
+import { LoaderService } from 'src/app/services/loader.service';
+import { PhasesService } from 'src/app/services/phases.service';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -35,6 +39,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   submissions: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('pdfcontent', {static: false}) pdfcontent: ElementRef;
 
   constructor(
     private submissionService: SubmissionService,
@@ -44,7 +49,9 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     private toastrService: ToastrService,
     private headerService: HeaderService,
     private title: Title,
-    private meta: Meta
+    private meta: Meta,
+    public loader: LoaderService,
+    private phasesService: PhasesService,
   ) {
     this.headerService.background =
       "linear-gradient(to right, #04030F, #04030F)";
@@ -114,5 +121,610 @@ export class SubmitedVersionsComponent implements AfterViewInit {
         this.toastrService.success("Status changed successfully");
       }
     });
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  data: any = [];
+  wps: any = [];
+  partners: any = [];
+  result: any;
+  partnersData: any = {};
+  sammary: any = {};
+  allData: any = {};
+  values: any = {};
+  totals: any = {};
+  displayValues: any = {};
+  summaryBudgets: any = {};
+  summaryBudgetsTotal: any = {};
+  wp_budgets: any = {};
+  budgetValues: any = {};
+  displayBudgetValues: any = {};
+  toggleValues: any = {};
+  toggleSummaryValues: any = {};
+  errors: any = {};
+  period: Array<any> = [];
+  check(values: any, code: string, id: number, item_id: string) {
+    if (values[code] && values[code][id] && values[code][id][item_id]) {
+      return true;
+    } else if (values[code] && !values[code][id]) {
+      values[code][id] = {};
+      values[code][id][item_id] = 0;
+      this.totals[code][id] = 0;
+      this.errors[code][id] = null;
+      return true;
+    } else if (values[code] && values[code][id] && !values[code][id][item_id]) {
+      values[code][id][item_id] = 0;
+      return true;
+    } else {
+      values[code] = {};
+      values[code][id] = {};
+      values[code][id][item_id] = 0;
+      this.totals[code] = {};
+      this.totals[code][id] = 0;
+      this.errors[code] = {};
+      this.errors[code][id] = null;
+      return true;
+    }
+  }
+  calclate(code: any, id: any) {
+    if (this.totals[code] && this.totals[code][id])
+      return this.totals[code][id];
+  }
+
+
+  perValues: any = {};
+  perValuesSammary: any = {};
+  perAllValues: any = {};
+  sammaryTotal: any = {};
+
+  async changes(
+    partner_code: any,
+    wp_id: any,
+    item_id: any,
+    per_id: number,
+    value: any
+  ) {
+    if (!this.perValues[partner_code]) this.perValues[partner_code] = {};
+    if (!this.perValues[partner_code][wp_id])
+      this.perValues[partner_code][wp_id] = {};
+    if (!this.perValues[partner_code][wp_id][item_id])
+      this.perValues[partner_code][wp_id][item_id] = {};
+
+    this.perValues[partner_code][wp_id][item_id][per_id] = value;
+
+    this.allvalueChange();
+  }
+
+  wpsTotalSum = 0;
+  sammaryCalc() {
+    let totalsum: any = {};
+    let totalsumcenter: any = {};
+    let totalWp: any = {};
+    this.summaryBudgets = {};
+    this.summaryBudgetsTotal = {};
+
+    Object.keys(this.budgetValues).forEach((partner_code) => {
+      Object.keys(this.budgetValues[partner_code]).forEach((wp_id) => {
+        if (!this.summaryBudgets[wp_id]) this.summaryBudgets[wp_id] = {};
+        if (!this.summaryBudgetsTotal[wp_id])
+          this.summaryBudgetsTotal[wp_id] = 0;
+        Object.keys(this.budgetValues[partner_code][wp_id]).forEach(
+          (item_id) => {
+            if (!this.summaryBudgets[wp_id][item_id])
+              this.summaryBudgets[wp_id][item_id] = 0;
+            this.summaryBudgets[wp_id][item_id] +=
+              +this.budgetValues[partner_code][wp_id][item_id];
+            this.summaryBudgetsTotal[wp_id] +=
+              +this.budgetValues[partner_code][wp_id][item_id];
+          }
+        );
+      });
+    });
+
+    Object.keys(this.summaryBudgets).forEach((wp_id) => {
+      if (this.summaryBudgetsTotal[wp_id]) {
+        Object.keys(this.summaryBudgets[wp_id]).forEach((item_id) => {
+          this.sammary[wp_id][item_id] = this.percentValue(
+            this.summaryBudgets[wp_id][item_id],
+            this.summaryBudgetsTotal[wp_id]
+          );
+        });
+      }
+    });
+
+    Object.keys(this.values).forEach((code) => {
+      Object.keys(this.values[code]).forEach((wp_id) => {
+        let total = 0;
+        Object.keys(this.values[code][wp_id]).forEach((d) => {
+          total += +this.values[code][wp_id][d];
+        });
+        if (total > 100) {
+          this.errors[code][wp_id] =
+            "total percentage cannot be over 100 percent";
+        } else {
+          this.errors[code][wp_id] = null;
+        }
+        this.totals[code][wp_id] = total;
+
+        Object.keys(this.values[code][wp_id]).forEach((item_id) => {
+          if (!totalsum[wp_id]) totalsum[wp_id] = {};
+          if (!totalsum[wp_id][item_id]) totalsum[wp_id][item_id] = 0;
+          totalsum[wp_id][item_id] += +this.values[code][wp_id][item_id];
+        });
+        // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
+      });
+    });
+
+    Object.keys(this.totals).forEach((code) => {
+      Object.keys(this.totals[code]).forEach((wp_id) => {
+        if (!totalsumcenter[wp_id]) totalsumcenter[wp_id] = 0;
+        totalsumcenter[wp_id] += +this.totals[code][wp_id];
+        // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
+      });
+    });
+
+    Object.keys(totalsum).forEach((wp_id) => {
+      Object.keys(totalsum[wp_id]).forEach((item_id) => {
+        if (!totalWp[wp_id]) totalWp[wp_id] = {};
+        if (+totalsum[wp_id][item_id] && +totalsumcenter[wp_id])
+          totalWp[wp_id][item_id] =
+            +(+totalsum[wp_id][item_id] / +totalsumcenter[wp_id]) * 100;
+        else totalWp[wp_id][item_id] = 0;
+      });
+    });
+
+    this.sammaryTotal["CROSS"] = 0;
+    this.sammaryTotal["IPSR"] = 0;
+    Object.keys(this.sammary).forEach((wp_id) => {
+      this.sammaryTotal[wp_id] = 0;
+      Object.keys(this.sammary[wp_id]).forEach((item_id) => {
+        this.sammaryTotal[wp_id] += totalWp[wp_id][item_id];
+      });
+    });
+    this.wpsTotalSum = 0;
+    Object.keys(this.sammaryTotal).forEach((wp_id) => {
+      this.wpsTotalSum += this.sammaryTotal[wp_id];
+    });
+    this.wpsTotalSum = this.wpsTotalSum / Object.keys(this.sammaryTotal).length;
+  }
+  allvalueChange() {
+    for (let wp of this.wps) {
+      this.allData[wp.ost_wp.wp_official_code].forEach((item: any) => {
+        this.period.forEach((element) => {
+          if (!this.perAllValues[wp.ost_wp.wp_official_code])
+            this.perAllValues[wp.ost_wp.wp_official_code] = {};
+          if (!this.perAllValues[wp.ost_wp.wp_official_code][item.id])
+            this.perAllValues[wp.ost_wp.wp_official_code][item.id] = {};
+          this.perAllValues[wp.ost_wp.wp_official_code][item.id][element.id] =
+            false;
+        });
+      });
+    }
+    this.wps.forEach((wp: any) => {
+      this.period.forEach((per) => {
+        this.perValuesSammary[wp.ost_wp.wp_official_code][per.id] = false;
+      });
+    });
+
+    Object.keys(this.perValues).forEach((partner_code) => {
+      Object.keys(this.perValues[partner_code]).forEach((wp_id) => {
+        Object.keys(this.perValues[partner_code][wp_id]).forEach((item_id) => {
+          Object.keys(this.perValues[partner_code][wp_id][item_id]).forEach(
+            (per_id) => {
+              if (this.perValues[partner_code][wp_id][item_id][per_id] == true)
+                this.perAllValues[wp_id][item_id][per_id] =
+                  this.perValues[partner_code][wp_id][item_id][per_id];
+
+              if (this.perValues[partner_code][wp_id][item_id][per_id] == true)
+                this.perValuesSammary[wp_id][per_id] = true;
+            }
+          );
+        });
+      });
+    });
+  }
+
+  results: any;
+  loading = false;
+  initiative_data: any = {};
+  ipsr_value_data: any;
+  async pdfData(lastSubmitionId:any) {
+    console.log(lastSubmitionId)
+    this.loading = true;
+    this.wpsTotalSum = 0;
+    this.perValues = {};
+    this.perValuesSammary = {};
+    this.perAllValues = {};
+    this.sammaryTotal = {};
+    this.data = [];
+    this.wps = [];
+    this.partnersData = {};
+    this.sammary = {};
+    this.summaryBudgets = {};
+    this.summaryBudgetsTotal = {};
+    this.wp_budgets = {};
+    this.toggleValues = {};
+    this.budgetValues = {};
+    this.budgetValues = {};
+    this.displayBudgetValues = {};
+    this.allData = {};
+    this.values = {};
+    this.displayValues = {};
+    this.totals = {};
+    this.errors = {};
+
+    this.wp_budgets = await this.submissionService.getBudgets(lastSubmitionId);
+    this.results = this.submission_data.toc_data;
+    const melia_data = await this.submissionService.getMeliaByInitiative(
+      this.initiative_data.id
+    );
+    const cross_data = await this.submissionService.getCrossByInitiative(
+      this.initiative_data.id
+    );
+    this.ipsr_value_data = await this.submissionService.getIpsrByInitiative(
+      this.initiative_data.id
+    );
+    cross_data.map((d: any) => {
+      d["category"] = "CROSS";
+      d["wp_id"] = "CROSS";
+      return d;
+    });
+    melia_data.map((d: any) => {
+      d["category"] = "MELIA";
+      return d;
+    });
+    this.ipsr_value_data.map((d: any) => {
+      d["category"] = "IPSR";
+      d["wp_id"] = "IPSR";
+      return d;
+    });
+    this.results = [
+      ...cross_data,
+      ...melia_data,
+      ...this.ipsr_value_data,
+      ...this.results,
+      // ...indicators_data,
+    ];
+    this.wps = this.results
+      .filter((d: any) => d.category == "WP" && !d.group)
+      .sort((a: any, b: any) => a.title.localeCompare(b.title));
+    this.wps.unshift({
+      id: "CROSS",
+      title: "Cross Cutting",
+      category: "CROSS",
+      ost_wp: { wp_official_code: "CROSS" },
+    });
+    this.wps.push({
+      id: "IPSR",
+      title: "Innovation packages & Scalling Readiness",
+      category: "IPSR",
+      ost_wp: { wp_official_code: "IPSR" },
+    });
+    for (let partner of this.partners) {
+      if (!this.budgetValues[partner.code])
+        this.budgetValues[partner.code] = {};
+
+      if (!this.displayBudgetValues[partner.code])
+        this.displayBudgetValues[partner.code] = {};
+
+      for (let wp of this.wps) {
+        if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
+        if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])
+          this.wp_budgets[partner.code][wp.ost_wp.wp_official_code] = null;
+
+        if (!this.toggleValues[partner.code])
+          this.toggleValues[partner.code] = {};
+        if (!this.toggleValues[partner.code][wp.ost_wp.wp_official_code])
+          this.toggleValues[partner.code][wp.ost_wp.wp_official_code] = false;
+
+        if (!this.budgetValues[partner.code][wp.ost_wp.wp_official_code])
+          this.budgetValues[partner.code][wp.ost_wp.wp_official_code] = {};
+
+        if (!this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code])
+          this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code] =
+            {};
+
+        if (!this.summaryBudgets[wp.ost_wp.wp_official_code])
+          this.summaryBudgets[wp.ost_wp.wp_official_code] = {};
+
+        if (!this.summaryBudgetsTotal[wp.ost_wp.wp_official_code])
+          this.summaryBudgetsTotal[wp.ost_wp.wp_official_code] = 0;
+
+        const result = await this.getDataForWp(
+          wp.id,
+          partner.code,
+          wp.ost_wp.wp_official_code
+        );
+        if (result.length) {
+          if (!this.partnersData[partner.code])
+            this.partnersData[partner.code] = {};
+          this.partnersData[partner.code][wp.ost_wp.wp_official_code] = result;
+        }
+        if (!this.perValuesSammary[wp.ost_wp.wp_official_code])
+          this.perValuesSammary[wp.ost_wp.wp_official_code] = {};
+        this.period.forEach((element) => {
+          if (!this.perValuesSammary[wp.ost_wp.wp_official_code][element.id])
+            this.perValuesSammary[wp.ost_wp.wp_official_code][element.id] =
+              false;
+        });
+        result.forEach((item: any) => {
+          this.check(
+            this.values,
+            partner.code,
+            wp.ost_wp.wp_official_code,
+            item.id
+          );
+          this.check(
+            this.displayValues,
+            partner.code,
+            wp.ost_wp.wp_official_code,
+            item.id
+          );
+          this.budgetValues[partner.code][wp.ost_wp.wp_official_code][item.id] =
+            null;
+
+          this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code][
+            item.id
+          ] = null;
+
+          if (!this.summaryBudgets[wp.ost_wp.wp_official_code][item.id])
+            this.summaryBudgets[wp.ost_wp.wp_official_code][item.id] = 0;
+
+          if (!this.perValues[partner.code]) this.perValues[partner.code] = {};
+          if (!this.perValues[partner.code][wp.ost_wp.wp_official_code])
+            this.perValues[partner.code][wp.ost_wp.wp_official_code] = {};
+          if (
+            !this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id]
+          )
+            this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id] =
+              {};
+
+          this.period.forEach((element) => {
+            this.perValues[partner.code][wp.ost_wp.wp_official_code][item.id][
+              element.id
+            ] = false;
+          });
+
+          this.period.forEach((element) => {
+            if (!this.perAllValues[wp.ost_wp.wp_official_code])
+              this.perAllValues[wp.ost_wp.wp_official_code] = {};
+            if (!this.perAllValues[wp.ost_wp.wp_official_code][item.id])
+              this.perAllValues[wp.ost_wp.wp_official_code][item.id] = {};
+
+            this.perAllValues[wp.ost_wp.wp_official_code][item.id][element.id] =
+              false;
+
+            if (!this.sammary[wp.ost_wp.wp_official_code])
+              this.sammary[wp.ost_wp.wp_official_code] = {};
+            if (!this.sammary[wp.ost_wp.wp_official_code][item.id])
+              this.sammary[wp.ost_wp.wp_official_code][item.id] = 0;
+
+            if (!this.sammaryTotal[wp.ost_wp.wp_official_code])
+              this.sammaryTotal[wp.ost_wp.wp_official_code] = 0;
+          });
+        });
+      }
+      this.loading = false;
+    }
+
+    for (let wp of this.wps) {
+      this.allData[wp.ost_wp.wp_official_code] = await this.getDataForWp(
+        wp.id,
+        null,
+        wp.ost_wp.wp_official_code
+      );
+    }
+
+    this.savedValues = this.submission_data.consolidated;
+
+    this.setvalues(this.savedValues.values, this.savedValues.perValues);
+
+    this.loader.setLoading(true)
+    setTimeout(() => {
+      this.exportPDF();
+    }, 1000);
+   
+    this.meta.updateTag({ name: "description", content: "Submitted versions" });
+  }
+  savedValues: any = null;
+  submission_data: any;
+
+
+
+
+  async generatePDF(lastSubmitionId:any) {
+    this.toPdf = true;
+    
+    this.submission_data = await this.submissionService.getSubmissionsById(
+      lastSubmitionId
+    );
+    this.initiative_data = this.submission_data.initiative;
+
+    this.partners = await this.phasesService.getAssignedOrgs(
+      this.submission_data.phase.id,
+      this.initiative_data.id
+    );
+    if (this.partners.length < 1) {
+      this.partners = await this.submissionService.getOrganizations();
+    }
+
+    this.pdfData(lastSubmitionId);
+    this.period = this.submission_data.phase.periods;
+  }
+
+
+
+  percentValue(value: number, totalBudget: number) {
+    return (value / totalBudget) * 100;
+  }
+
+  budgetValue(value: number, totalBudget: number) {
+    return (value * totalBudget) / 100;
+  }
+
+  toggleActualValues(partner_code: any, wp_official_code: any) {
+    this.toggleValues[partner_code][wp_official_code] =
+      !this.toggleValues[partner_code][wp_official_code];
+  }
+
+  toggleSummaryActualValues(wp_official_code: any) {
+    this.toggleSummaryValues[wp_official_code] =
+      !this.toggleSummaryValues[wp_official_code];
+  }
+
+  roundNumber(value: number) {
+    return Math.round(value);
+  }
+
+  finalPeriodVal(period_id: any) {
+    return this.wps
+      .map(
+        (wp: any) =>
+          this.perValuesSammary[wp.ost_wp.wp_official_code][period_id]
+      )
+      .reduce((a: any, b: any) => a || b);
+  }
+
+  finalItemPeriodVal(wp_id: any, period_id: any) {
+    let periods = this.allData[wp_id].map(
+      (item: any) => this.perAllValues[wp_id][item.id][period_id]
+    );
+    if (periods.length) return periods.reduce((a: any, b: any) => a || b);
+    else return false;
+  }
+
+  setvalues(valuesToSet: any, perValuesToSet: any) {
+    if (valuesToSet != null)
+      Object.keys(this.values).forEach((code) => {
+        Object.keys(this.values[code]).forEach((wp_id) => {
+          Object.keys(this.values[code][wp_id]).forEach((item_id) => {
+            if (
+              valuesToSet[code] &&
+              valuesToSet[code][wp_id] &&
+              valuesToSet[code][wp_id][item_id]
+            ) {
+              let percentValue = +valuesToSet[code][wp_id][item_id];
+              let budgetValue = this.budgetValue(
+                percentValue,
+                this.wp_budgets[code][wp_id]
+              );
+              this.values[code][wp_id][item_id] = percentValue;
+              this.displayValues[code][wp_id][item_id] =
+                Math.round(percentValue);
+              this.budgetValues[code][wp_id][item_id] = budgetValue;
+              this.displayBudgetValues[code][wp_id][item_id] =
+                Math.round(budgetValue);
+            } else {
+              this.values[code][wp_id][item_id] = 0;
+              this.displayValues[code][wp_id][item_id] = 0;
+              this.budgetValues[code][wp_id][item_id] = 0;
+              this.displayBudgetValues[code][wp_id][item_id] = 0;
+            }
+            // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
+          });
+        });
+      });
+    if (perValuesToSet != null)
+      Object.keys(this.perValues).forEach((code) => {
+        Object.keys(this.perValues[code]).forEach((wp_id) => {
+          Object.keys(this.perValues[code][wp_id]).forEach((item_id) => {
+            Object.keys(this.perValues[code][wp_id][item_id]).forEach(
+              (per_id) => {
+                if (
+                  perValuesToSet[code] &&
+                  perValuesToSet[code][wp_id] &&
+                  perValuesToSet[code][wp_id][item_id]
+                )
+                  this.perValues[code][wp_id][item_id][per_id] =
+                    perValuesToSet[code][wp_id][item_id][per_id];
+                // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
+              }
+            );
+          });
+        });
+      });
+
+    this.sammaryCalc();
+    this.allvalueChange();
+  }
+  async getDataForWp(
+    id: string,
+    partner_code: any | null = null,
+    official_code = null
+  ) {
+    let wp_data = this.results.filter((d: any) => {
+      if (partner_code)
+        return (
+          (d.category == "OUTPUT" ||
+            d.category == "OUTCOME" ||
+            d.category == "EOI" ||
+            d.category == "CROSS" ||
+            d.category == "IPSR" ||
+            // d.category == 'INDICATOR' ||
+            d.category == "MELIA") &&
+          (d.group == id ||
+            d.wp_id == official_code ||
+            (official_code == "CROSS" && d.category == "EOI"))
+        );
+      else
+        return (
+          ((d.category == "OUTPUT" ||
+            d.category == "OUTCOME" ||
+            d.category == "EOI" ||
+            d.category == "IPSR" ||
+            d.category == "CROSS" ||
+            // d.category == 'INDICATOR' ||
+            d.category == "MELIA") &&
+            (d.group == id || d.wp_id == official_code)) ||
+          (official_code == "CROSS" && d.category == "EOI")
+        );
+    });
+
+    wp_data.sort(this.compare);
+
+    return wp_data;
+  }
+
+  compare(a: any, b: any) {
+    if (a.category == "OUTPUT" && b.category == "OUTCOME") return -1;
+    if (b.category == "OUTPUT" && a.category == "OUTCOME") return 1;
+    return 0;
+  }
+  toPdf: boolean = false;
+  exportPDF() {
+    let content = this.pdfcontent.nativeElement;
+    this.pdfcontent.nativeElement.width;
+    // let doc = new jsPDF('portrait', 'pt', 'a4');
+    // let doc = new jsPDF('portrait', 'pt', [1550, 10000]);
+    let doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'pt',
+      format: [
+        this.pdfcontent.nativeElement.scrollWidth ,
+        this.pdfcontent.nativeElement.scrollHeight +100,
+      ],
+      // format: [1500, height + 400]
+    });
+    setTimeout(() => {
+      doc.html(content, {
+        callback: (doc) => {
+          doc.save('Planning-' + this.officalCode + '.pdf');
+          this.toPdf = false;
+          this.loader.setLoading(false);
+        },
+      });
+    }, 500);
+
   }
 }

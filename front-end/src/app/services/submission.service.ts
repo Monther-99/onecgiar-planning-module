@@ -10,6 +10,7 @@ export class SubmissionService {
   async markStatus(
     organization_code: string,
     initiative_id: number,
+    phase_id: number,
     status: boolean
   ) {
     return firstValueFrom(
@@ -17,6 +18,7 @@ export class SubmissionService {
         .patch('/api/submission/center/status', {
           organization_code,
           initiative_id,
+          phase_id,
           status,
         })
         .pipe(map((d: any) => d))

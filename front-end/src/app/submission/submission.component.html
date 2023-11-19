@@ -285,7 +285,7 @@
                     mat-raised-button
                     *ngIf="wp.id != 'CROSS' && wp.id != 'IPSR'"
                     type="button"
-                    (click)="addMelia(wp)"
+                    (click)="addMelia(wp, false)"
                   >
                     <mat-icon class="create-risk">
                       <svg
@@ -324,7 +324,7 @@
                     mat-raised-button
                     *ngIf="wp.id == 'CROSS' && phase.show_melia"
                     type="button"
-                    (click)="addMelia(wp)"
+                    (click)="addMelia(wp, true)"
                   >
                     <mat-icon class="create-risk">
                       <svg
@@ -714,6 +714,7 @@
                   [status]="!checkComplete(partner.code)"
                   [initiative_id]="initiative_data.id"
                   [organization_code]="partner.code"
+                  [phase_id]="phase.id"
                   [organization]="organizationSelected"
                   (clicked)="validateCenter(partner.code, true)"
                 >
@@ -1003,7 +1004,7 @@
                               (perValues[partner.code][
                                 wp.ost_wp.wp_official_code
                               ][item.id] | inQue) ||
-                              !wp_budgets[partner.code][
+                              !+wp_budgets[partner.code][
                                 wp.ost_wp.wp_official_code
                               ] ||
                               noValuesAssigned[partner.code][
@@ -1036,7 +1037,7 @@
                               (perValues[partner.code][
                                 wp.ost_wp.wp_official_code
                               ][item.id] | inQue) ||
-                              !wp_budgets[partner.code][
+                              !+wp_budgets[partner.code][
                                 wp.ost_wp.wp_official_code
                               ] ||
                               noValuesAssigned[partner.code][

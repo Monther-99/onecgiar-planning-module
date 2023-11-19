@@ -15,6 +15,7 @@ import { HeaderService } from "src/app/header.service";
 export class CenterStatusComponent implements OnInit {
   @Input("organization_code") organization_code: string;
   @Input("initiative_id") initiative_id: number;
+  @Input("phase_id") phase_id: number;
   @Input("status") status: boolean;
   @Input("organization") organization: any;
   @Output() change = new EventEmitter<any>();
@@ -63,6 +64,7 @@ export class CenterStatusComponent implements OnInit {
             let result = await this.submissionService.markStatus(
               this.organization_code,
               +this.initiative_id,
+              this.phase_id,
               !!this.status
             );
             if (this.status === false) {

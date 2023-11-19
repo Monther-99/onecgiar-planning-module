@@ -20,7 +20,6 @@ import { LicenseComponent } from "./footer/license/license.component";
 import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
 import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
 import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
-import { SubmitedVersionViewComponent } from "./submited-versions/submited-version-view/submited-version-view.component";
 
 const routes: Routes = [
   { path: "", component: InitiativesComponent },
@@ -61,11 +60,6 @@ const routes: Routes = [
   {
     path: "initiative/:id/:code/submited-versions/:id",
     component: SubmitedVersionComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "initiative/:id/:code/submited-versions/view/:id",
-    component: SubmitedVersionViewComponent,
     canActivate: [AuthGuard],
   },
   {
