@@ -58,7 +58,7 @@ export class PhasesComponent implements OnInit {
     this.headerService.backgroundFooter =
       "linear-gradient(to  top, #0F212F, #09151E)";
   }
-
+  showManageInit:boolean = false;
   filterForm: FormGroup = new FormGroup({});
   filters: any;
   setForm() {
