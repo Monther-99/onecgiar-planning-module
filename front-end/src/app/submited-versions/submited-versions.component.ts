@@ -529,7 +529,12 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.savedValues = this.submission_data.consolidated;
 
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
-    this.exportPDF()
+
+    this.loader.setLoading(true)
+    setTimeout(() => {
+      this.exportPDF();
+    }, 1000);
+   
     this.meta.updateTag({ name: "description", content: "Submitted versions" });
   }
   savedValues: any = null;
@@ -538,7 +543,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
 
 
-  async soso(lastSubmitionId:any) {
+  async generatePDF(lastSubmitionId:any) {
     this.toPdf = true;
     
     this.submission_data = await this.submissionService.getSubmissionsById(
@@ -556,10 +561,6 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.pdfData(lastSubmitionId);
     this.period = this.submission_data.phase.periods;
-
-    this.loader.setLoading(true)
-    
-
   }
 
 
@@ -711,11 +712,10 @@ export class SubmitedVersionsComponent implements AfterViewInit {
       unit: 'pt',
       format: [
         this.pdfcontent.nativeElement.scrollWidth ,
-        this.pdfcontent.nativeElement.scrollHeight +100000,
+        this.pdfcontent.nativeElement.scrollHeight +100,
       ],
       // format: [1500, height + 400]
     });
-    this.loader.setLoading(true);
     setTimeout(() => {
       doc.html(content, {
         callback: (doc) => {
