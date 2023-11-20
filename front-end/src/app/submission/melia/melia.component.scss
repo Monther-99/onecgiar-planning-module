@@ -446,7 +446,8 @@ textarea::placeholder {
     .ng-value
     .ng-value-label {
     display: inline-block;
-    padding: 1px 5px;
+    padding: 1rem 13px 0.5rem 0.5rem;
+
     white-space: nowrap;
     // overflow: auto;
     text-overflow: ellipsis;
@@ -850,4 +851,18 @@ textarea::placeholder {
 .btn--animated {
   animation: moveInBottom 0.5s ease-out 0.85s;
   animation-fill-mode: backwards;
+}
+
+:host {
+  ::ng-deep.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+    /* background-color: var(--mdc-chip-elevated-container-color, transparent); */
+    background-color: #ebf5ff !important;
+  }
+}
+
+::ng-deep.mat-primary
+  .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+.mat-primary
+  .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: #5569dd !important;
 }
