@@ -377,7 +377,7 @@ export class SubmitedVersionComponent implements OnInit {
     });
     this.wps.push({
       id: "IPSR",
-      title: "Innovation packages & Scalling Readiness",
+      title: "Innovation Packages & Scaling Readiness (IPSR)",
       category: "IPSR",
       ost_wp: { wp_official_code: "IPSR" },
     });
