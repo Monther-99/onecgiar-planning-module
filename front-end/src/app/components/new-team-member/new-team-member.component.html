@@ -87,33 +87,35 @@
       </mat-form-field>
     </div>
 
-    <div class="form-dialog-content__field--grid-column">
-      <div
-        *ngIf="userRole.value == 'Contributor'"
-        class="form-dialog-content__title-box"
-      >
+
+
+
+    <div class="form-dialog-content__field--grid-column" *ngIf="userRole?.value == 'Contributor'">
+      <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
           >Select organizations<span class="star">*</span></mat-label
         >
       </div>
-
-      <ng-select
-        *ngIf="userRole.value == 'Contributor'"
-        [closeOnSelect]="false"
+      <mat-form-field
+        class="form-dialog-content__field"
+        floatLabel="always"
+        hideRequiredMarker
         appearance="outline"
-        [items]="organizations"
-        bindLabel="name"
-        formControlName="organizations"
-        [hideSelected]="true"
-        [minTermLength]="2"
-        [multiple]="true"
       >
-      </ng-select>
-      <mat-error
-        class="error organizationsError"
-        *ngIf="memberForm?.errors?.['organizationsRequired'] && showerror"
-        >This field is mandatory</mat-error
-      >
+        <mat-select
+          formControlName="organizations"
+          multiple
+          [compareWith]="compareOrganization"
+        >
+          <!-- //////////////////////////////////////////////// -->
+          <mat-option
+            *ngFor="let organization of organizations | orderSelectPipe"
+            [value]="organization"
+          >
+            {{ organization.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div>

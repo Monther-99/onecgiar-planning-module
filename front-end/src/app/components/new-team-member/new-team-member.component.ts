@@ -190,6 +190,14 @@ export class NewTeamMemberComponent implements OnInit {
     }
   }
 
+
+  compareOrganization(o1: any, o2: any) {
+    if(o1.name == o2.name && o1.id == o2.id )
+    return true;
+    else return false
+  }
+
+  
   bindValue: any = {
     full_name: "full_name",
     email: "email",
@@ -229,6 +237,7 @@ export class NewTeamMemberComponent implements OnInit {
     // console.log(this.users);
     // this.loadPeople();
     // this.loadPeople2();
+    console.log(this.data)
     this.populateMemberForm();
   }
 
