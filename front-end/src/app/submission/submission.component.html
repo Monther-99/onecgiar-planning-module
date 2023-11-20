@@ -38,7 +38,7 @@
 
     <mat-card *ngIf="loading">
       <div class="risk-report-title-box">
-        <h1 class="risk-report-title-box__title">Loading Preparing Items</h1>
+        <h1 class="risk-report-title-box__title">Loading Items</h1>
       </div>
     </mat-card>
 
@@ -199,7 +199,7 @@
             <div class="table-box mat-elevation-z8">
               <table>
                 <tr>
-                  <th>WP</th>
+                  <th>Results</th>
                   <ng-container *ngFor="let item of period">
                     <th>{{ item.year }} - {{ item.quarter }}</th>
                   </ng-container>

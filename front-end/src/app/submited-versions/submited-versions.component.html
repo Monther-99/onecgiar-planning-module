@@ -182,7 +182,13 @@
 </div>
 
 <div class="margin" style="margin-top: 30000px">
-  <div class="PDF" #pdfcontent id="pdfcontent" *ngIf="toPdf" style="font-family: Balsamiq-Sans, serif; letter-spacing: 0.01px;">
+  <div
+    class="PDF"
+    #pdfcontent
+    id="pdfcontent"
+    *ngIf="toPdf"
+    style="font-family: Balsamiq-Sans, serif; letter-spacing: 0.01px"
+  >
     <div class="container-mat-tab">
       <mat-card>
         <!-- <mat-card-title class="card-title"
@@ -242,7 +248,7 @@
             <div class="table-box mat-elevation-z8">
               <table>
                 <tr>
-                  <th>WP</th>
+                  <th>Results</th>
                   <ng-container *ngFor="let item of period">
                     <th>{{ item.year }} - {{ item.quarter }}</th>
                   </ng-container>
