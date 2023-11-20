@@ -360,10 +360,25 @@
                     </tr>
                   </ng-container>
                   <tr class="total">
-                    <td [colSpan]="period.length + 2">
+                    <td [colSpan]="2">
                       <span class="subtotal">Subtotal</span>
                     </td>
 
+                    <ng-container *ngFor="let per of period">
+                      <td>
+                        <mat-icon
+                          class="icon-sub-table-2"
+                          color="primary"
+                          *ngIf="
+                            finalItemPeriodVal(
+                              wp.ost_wp.wp_official_code,
+                              per.id
+                            )
+                          "
+                          >close</mat-icon
+                        >
+                      </td>
+                    </ng-container>
                     <td>
                       {{
                         toggleValues[partner.code][wp.ost_wp.wp_official_code]
