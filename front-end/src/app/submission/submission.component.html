@@ -376,7 +376,7 @@
                 <div class="table-box-1 mat-elevation-z8">
                   <table>
                     <tr>
-                      <th>Actions</th>
+                      <th *ngIf="!(wp.id == 'IPSR')">Actions</th>
                       <th>Results</th>
                       <th>Type</th>
                       <ng-container *ngFor="let item of period">
@@ -389,7 +389,7 @@
                       *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
                     >
                       <tr>
-                        <td>
+                        <td *ngIf="!(wp.id == 'IPSR')">
                           <ng-container *ngIf="item.category == 'MELIA'">
                             <button mat-icon-button [matMenuTriggerFor]="menu">
                               <mat-icon class="icon-sub-table-2"
@@ -532,7 +532,7 @@
                       </tr>
                     </ng-container>
                     <tr class="total">
-                      <td colspan="3">
+                      <td [attr.colspan]="wp.id == 'IPSR' ? 2 : 3">
                         <div class="subtotal">Subtotal</div>
                       </td>
                       <ng-container *ngFor="let per of period">
