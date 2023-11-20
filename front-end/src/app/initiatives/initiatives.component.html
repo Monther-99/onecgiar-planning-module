@@ -167,10 +167,10 @@
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="8">
                 No results matching({{
-                  allfilters.name ||
-                    allfilters.my_role ||
-                    allfilters.initiative_id ||
-                    allfilters.status
+                  allfilters?.name ||
+                    allfilters?.my_role ||
+                    allfilters?.initiative_id ||
+                    allfilters?.status
                 }})
               </td>
             </tr>
