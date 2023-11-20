@@ -13,11 +13,11 @@ export class AnticipatedYearService {
   submitAnticipatedYear(id: number = 0, data: {}) {
     if (id) {
       return firstValueFrom(
-        this.http.put("api/anticipated-year/" + id, data).pipe(map((d: any) => d))
+        this.http.put(environment.api_url+"/anticipated-year/" + id, data).pipe(map((d: any) => d))
       ).catch((e) => false);
     } else {
       return firstValueFrom(
-        this.http.post("api/anticipated-year", data).pipe(map((d: any) => d))
+        this.http.post(environment.api_url+"/anticipated-year", data).pipe(map((d: any) => d))
       ).catch((e) => false);
     }
   }

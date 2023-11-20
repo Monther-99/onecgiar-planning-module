@@ -59,7 +59,7 @@ export class InitiativesService {
   async importInitiatives() {
     const initiativesData = await firstValueFrom(
       this.httpService
-        .get('https://api.clarisa.cgiar.org/api/allInitiatives')
+        .get('https://api.clarisa.cgiar.org/api/initiatives')
         .pipe(
           map((d: any) => d.data),
           catchError((error: AxiosError) => {

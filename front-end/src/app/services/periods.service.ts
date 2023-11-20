@@ -26,25 +26,25 @@ export class PeriodsService {
 
   async getPeriod(id: number) {
     return firstValueFrom(
-      this.http.get("api/periods/" + id).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+"/periods/" + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
   submitPeriod(id: number = 0, data: {}) {
     if (id) {
       return firstValueFrom(
-        this.http.patch("api/periods/" + id, data).pipe(map((d: any) => d))
+        this.http.patch(environment.api_url+"/periods/" + id, data).pipe(map((d: any) => d))
       ).catch((e) => false);
     } else {
       return firstValueFrom(
-        this.http.post("api/periods", data).pipe(map((d: any) => d))
+        this.http.post(environment.api_url+"/periods", data).pipe(map((d: any) => d))
       ).catch((e) => false);
     }
   }
 
   deletePeriod(id: number) {
     return firstValueFrom(
-      this.http.delete("api/periods/" + id).pipe(map((d: any) => d))
+      this.http.delete(environment.api_url+"/periods/" + id).pipe(map((d: any) => d))
     );
   }
 }

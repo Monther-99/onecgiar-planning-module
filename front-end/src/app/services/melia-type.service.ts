@@ -13,11 +13,11 @@ export class MeliaTypeService {
   submitMeliaType(id: number = 0, data: {}) {
     if (id) {
       return firstValueFrom(
-        this.http.put("api/melia-type/" + id, data).pipe(map((d: any) => d))
+        this.http.put(environment.api_url+"/melia-type/" + id, data).pipe(map((d: any) => d))
       ).catch((e) => false);
     } else {
       return firstValueFrom(
-        this.http.post("api/melia-type", data).pipe(map((d: any) => d))
+        this.http.post(environment.api_url+"/melia-type", data).pipe(map((d: any) => d))
       ).catch((e) => false);
     }
   }
