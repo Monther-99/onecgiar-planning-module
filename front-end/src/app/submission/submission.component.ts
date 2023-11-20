@@ -37,7 +37,7 @@ export class SubmissionComponent implements OnInit {
   constructor(
     private submissionService: SubmissionService,
     private phasesService: PhasesService,
-    private socket: AppSocket,
+    public socket: AppSocket,
     public dialog: MatDialog,
     public activatedRoute: ActivatedRoute,
     public router: Router,
@@ -503,6 +503,7 @@ export class SubmissionComponent implements OnInit {
   initiative_data: any = {};
   ipsr_value_data: any;
   phase: any;
+  partnersStatuses:any;
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -530,6 +531,7 @@ export class SubmissionComponent implements OnInit {
     this.partnersStatus = {};
     this.centerHasError = {};
     this.itemHasError = {};
+    this.partnersStatuses={}
 
     this.results = await this.submissionService.getToc(this.params.id);
     const melia_data = await this.submissionService.getMeliaByInitiative(
@@ -624,6 +626,8 @@ export class SubmissionComponent implements OnInit {
     //   ).values(),
     // ];
     for (let partner of this.partners) {
+      this.partnersStatuses[partner.code]=this.checkComplete(partner.code);
+      console.log(this.partnersStatuses[partner.code])
       if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
       if (!this.budgetValues[partner.code])
         this.budgetValues[partner.code] = {};
@@ -855,6 +859,14 @@ export class SubmissionComponent implements OnInit {
       const { partner_code, wp_id, budget } = data;
       this.wp_budgets[partner_code][wp_id] = budget;
       this.refreshValues(partner_code, wp_id);
+    });
+    this.socket.on('statusOfCenter', (data: any) => {
+      if (
+        this.params.id == data.initiative_id
+      ) {
+        this.partnersStatuses[data.organization_code] = !data.status;
+        console.log('this.partnersStatuses',this.partnersStatuses,data.status)
+      }
     });
     this.canSubmit = await this.constantsService.getSubmitStatus();
   }
