@@ -1,55 +1,78 @@
 <div class="section-submited">
-  <nav class="risk-nav-main">
-    <ul class="risk-nav-list">
-      <li>
-        <a class="risk-nav-link" routerLink="/">Initiatives</a>
-      </li>
-      <li>
-        <a routerLink="''" class="risk-nav-link">></a>
-      </li>
-      <li>
-        <a
-          routerLink="{{ initiativeId }}/{{ officalCode }}/submission"
-          class="risk-nav-link"
-          ><span class="line">&nbsp;</span>{{ officalCode }}</a
-        >
-      </li>
-      <li>
-        <a routerLink="''" class="risk-nav-link">></a>
-      </li>
-      <li>
-        <a
-          routerLink="{{ initiativeId }}/{{ officalCode }}/team-members"
-          class="risk-nav-link"
-          >Submitted versions</a
-        >
-      </li>
-    </ul>
-  </nav>
+  <mat-card *ngIf="loading">
+    <div class="risk-report-title-box-2">
+      <h1 class="risk-report-title-box-2__title">Loading Items</h1>
+    </div>
+  </mat-card>
+
   <div class="container-mat-tab">
-    <mat-card>
-      <mat-card-title class="card-title"
+    <nav class="risk-nav-main">
+      <ul class="risk-nav-list">
+        <li>
+          <a class="risk-nav-link" routerLink="/">Initiatives</a>
+        </li>
+        <li>
+          <a routerLink="''" class="risk-nav-link">></a>
+        </li>
+        <li>
+          <a
+            routerLink="{{ initiativeId }}/{{ officalCode }}/submission"
+            class="risk-nav-link"
+            ><span class="line">&nbsp;</span>{{ officalCode }}</a
+          >
+        </li>
+        <li>
+          <a routerLink="''" class="risk-nav-link">></a>
+        </li>
+        <li>
+          <a
+            routerLink="{{ initiativeId }}/{{ officalCode }}/team-members"
+            class="risk-nav-link"
+            >Submitted versions</a
+          >
+        </li>
+      </ul>
+    </nav>
+    <mat-card *ngIf="!loading">
+      <div class="risk-report-title-box">
+        <h1 class="risk-report-title-box__title">
+          One CGIAR Initiatives Plan of Results and Budget Template
+        </h1>
+      </div>
+
+      <div class="form-container-4">
+        <form class="search-4">
+          <div>
+            <mat-card-subtitle class="card-title-3 m-b-t"
+              >{{ initiative_data.official_code }} ‐
+              {{ initiative_data.name }}</mat-card-subtitle
+            >
+          </div>
+        </form>
+      </div>
+      <!-- <mat-card-title class="card-title"
         ><span class="card-title"
           >One CGIAR Initiatives Plan of Results and Budget Template</span
         ></mat-card-title
-      >
-      <mat-card-subtitle class="card-title"
+      > -->
+      <!-- <mat-card-subtitle class="card-title"
         ><span class="card-title"
           >{{ initiative_data.official_code }}‐{{ initiative_data.name }}</span
         ></mat-card-subtitle
-      >
+      > -->
     </mat-card>
-    <mat-card *ngIf="loading">
+
+    <!-- <mat-card *ngIf="loading">
       <mat-card-title>Loading</mat-card-title>
       <mat-card-subtitle>Preparing Items</mat-card-subtitle>
-    </mat-card>
+    </mat-card> -->
 
     <mat-tab-group *ngIf="!loading && this.partners?.length">
       <mat-tab label="Summary">
         <mat-card>
-          <mat-card-title>Consolidated</mat-card-title>
+          <mat-card-title class="card-title-table">Consolidated</mat-card-title>
           <mat-card-content>
-            <div class="table-box mat-elevation-z8">
+            <div class="table-box-6 mat-elevation-z8">
               <table>
                 <tr>
                   <th>Results</th>
@@ -84,7 +107,7 @@
                   </tr>
                 </ng-container>
                 <tr class="total">
-                  <td>Total</td>
+                  <td><span class="subtotal">Total</span></td>
                   <ng-container *ngFor="let item of period">
                     <td>
                       <mat-icon
@@ -102,124 +125,135 @@
           </mat-card-content>
         </mat-card>
         <ng-container *ngFor="let wp of wps">
-          <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
-            <mat-card-title>{{ wp.title }}</mat-card-title>
-            <mat-slide-toggle
-              [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
-              (toggleChange)="
-                toggleSummaryActualValues(wp.ost_wp.wp_official_code)
-              "
-              ><span class="m-s-toggle">Show decimals</span></mat-slide-toggle
-            >
-            <mat-card-content>
-              <div class="table-box mat-elevation-z8">
-                <table>
-                  <tr>
-                    <th>WP/Results</th>
-                    <th>Type</th>
-                    <ng-container *ngFor="let item of period">
-                      <th>{{ item.year }} - {{ item.quarter }}</th>
-                    </ng-container>
-                    <th>Budget Percentage</th>
-                    <th>Budget (USD)</th>
-                  </tr>
-                  <ng-container
-                    *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
-                  >
+          <div class="flex-box-2">
+            <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
+              <mat-card-title class="card-title-table">{{
+                wp.title
+              }}</mat-card-title>
+              <mat-slide-toggle
+                [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
+                (toggleChange)="
+                  toggleSummaryActualValues(wp.ost_wp.wp_official_code)
+                "
+                [ngClass]="{
+                  'show-d': wp.id != 'CROSS' && wp.id != 'IPSR',
+                  'show-d-2': wp.id == 'CROSS',
+                  'show-d-3': wp.id == 'IPSR'
+                }"
+                >Show decimals</mat-slide-toggle
+              >
+              <mat-card-content>
+                <div class="table-box mat-elevation-z8">
+                  <table>
                     <tr>
-                      <td class="wp-title">
-                        <ng-container *ngIf="item?.meliaType?.name">
-                          {{ item?.meliaType.name }}
+                      <th>WP/Results</th>
+                      <th>Type</th>
+                      <ng-container *ngFor="let item of period">
+                        <th>{{ item.year }} - {{ item.quarter }}</th>
+                      </ng-container>
+                      <th>Budget Percentage</th>
+                      <th>Budget (USD)</th>
+                    </tr>
+                    <ng-container
+                      *ngFor="let item of allData[wp.ost_wp.wp_official_code]"
+                    >
+                      <tr>
+                        <td class="wp-title">
+                          <ng-container *ngIf="item?.meliaType?.name">
+                            {{ item?.meliaType.name }}
+                          </ng-container>
+                          <ng-container *ngIf="!item?.meliaType?.name">
+                            {{
+                              item?.ipsr?.id
+                                ? item?.ipsr.title + " (" + item.value + ")"
+                                : item.title
+                            }}
+                          </ng-container>
+                        </td>
+                        <td>{{ item.category }}</td>
+                        <ng-container *ngFor="let per of period">
+                          <td>
+                            <!-- to be checked -->
+                            <mat-icon
+                              class="icon-sub-table"
+                              *ngIf="
+                                perAllValues[wp.ost_wp.wp_official_code][
+                                  item.id
+                                ][per.id] == true
+                              "
+                              >close</mat-icon
+                            >
+                          </td>
                         </ng-container>
-                        <ng-container *ngIf="!item?.meliaType?.name">
+                        <td>
                           {{
-                            item?.ipsr?.id
-                              ? item?.ipsr.title + " (" + item.value + ")"
-                              : item.title
+                            toggleSummaryValues[wp.ost_wp.wp_official_code]
+                              ? sammary[wp.ost_wp.wp_official_code][item.id]
+                              : roundNumber(
+                                  sammary[wp.ost_wp.wp_official_code][item.id]
+                                )
+                          }}%
+                        </td>
+                        <td>
+                          {{
+                            toggleSummaryValues[wp.ost_wp.wp_official_code]
+                              ? summaryBudgets[wp.ost_wp.wp_official_code][
+                                  item.id
+                                ]
+                              : roundNumber(
+                                  summaryBudgets[wp.ost_wp.wp_official_code][
+                                    item.id
+                                  ]
+                                )
                           }}
-                        </ng-container>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <tr class="total">
+                      <td colspan="2">
+                        <span class="subtotal">Subtotal</span>
                       </td>
-                      <td>{{ item.category }}</td>
                       <ng-container *ngFor="let per of period">
                         <td>
-                          <!-- to be checked -->
                           <mat-icon
-                            class="icon-sub-table"
+                            class="icon-sub-table-2"
+                            color="primary"
                             *ngIf="
-                              perAllValues[wp.ost_wp.wp_official_code][item.id][
+                              finalItemPeriodVal(
+                                wp.ost_wp.wp_official_code,
                                 per.id
-                              ] == true
+                              )
                             "
                             >close</mat-icon
                           >
                         </td>
                       </ng-container>
+
                       <td>
                         {{
                           toggleSummaryValues[wp.ost_wp.wp_official_code]
-                            ? sammary[wp.ost_wp.wp_official_code][item.id]
+                            ? sammaryTotal[wp.ost_wp.wp_official_code]
                             : roundNumber(
-                                sammary[wp.ost_wp.wp_official_code][item.id]
+                                sammaryTotal[wp.ost_wp.wp_official_code]
                               )
                         }}%
                       </td>
+
                       <td>
                         {{
                           toggleSummaryValues[wp.ost_wp.wp_official_code]
-                            ? summaryBudgets[wp.ost_wp.wp_official_code][
-                                item.id
-                              ]
+                            ? summaryBudgetsTotal[wp.ost_wp.wp_official_code]
                             : roundNumber(
-                                summaryBudgets[wp.ost_wp.wp_official_code][
-                                  item.id
-                                ]
+                                summaryBudgetsTotal[wp.ost_wp.wp_official_code]
                               )
                         }}
                       </td>
                     </tr>
-                  </ng-container>
-                  <tr class="total">
-                    <td colspan="2">Subtotal</td>
-                    <ng-container *ngFor="let per of period">
-                      <td>
-                        <mat-icon
-                          class="icon-sub-table-2"
-                          color="primary"
-                          *ngIf="
-                            finalItemPeriodVal(
-                              wp.ost_wp.wp_official_code,
-                              per.id
-                            )
-                          "
-                          >close</mat-icon
-                        >
-                      </td>
-                    </ng-container>
-
-                    <td>
-                      {{
-                        toggleSummaryValues[wp.ost_wp.wp_official_code]
-                          ? sammaryTotal[wp.ost_wp.wp_official_code]
-                          : roundNumber(
-                              sammaryTotal[wp.ost_wp.wp_official_code]
-                            )
-                      }}%
-                    </td>
-
-                    <td>
-                      {{
-                        toggleSummaryValues[wp.ost_wp.wp_official_code]
-                          ? summaryBudgetsTotal[wp.ost_wp.wp_official_code]
-                          : roundNumber(
-                              summaryBudgetsTotal[wp.ost_wp.wp_official_code]
-                            )
-                      }}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </mat-card-content>
-          </mat-card>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </ng-container>
       </mat-tab>
       <mat-tab
@@ -233,7 +267,9 @@
               partnersData[partner.code][wp.ost_wp.wp_official_code]
             "
           >
-            <mat-card-title>{{ wp.title }}</mat-card-title>
+            <mat-card-title class="card-title-table">{{
+              wp.title
+            }}</mat-card-title>
             <mat-slide-toggle
               [(ngModel)]="
                 toggleValues[partner.code][wp.ost_wp.wp_official_code]
@@ -241,6 +277,11 @@
               (toggleChange)="
                 toggleActualValues(partner.code, wp.ost_wp.wp_official_code)
               "
+              [ngClass]="{
+                'show-d': wp.id != 'CROSS' && wp.id != 'IPSR',
+                'show-d-2': wp.id == 'CROSS',
+                'show-d-3': wp.id == 'IPSR'
+              }"
               >Show decimals</mat-slide-toggle
             >
             <mat-card-content>
@@ -319,7 +360,9 @@
                     </tr>
                   </ng-container>
                   <tr class="total">
-                    <td [colSpan]="period.length + 2">Subtotal</td>
+                    <td [colSpan]="period.length + 2">
+                      <span class="subtotal">Subtotal</span>
+                    </td>
 
                     <td>
                       {{
