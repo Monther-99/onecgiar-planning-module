@@ -168,7 +168,7 @@ export class SubmissionComponent implements OnInit {
         });
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
-    }, 500);
+    }, 1000);
 
     // localStorage.setItem('initiatives', JSON.stringify(this.values));
   }
@@ -194,7 +194,7 @@ export class SubmissionComponent implements OnInit {
         });
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
-    }, 500);
+    }, 1000);
   }
 
   percentValue(value: number, totalBudget: number) {
