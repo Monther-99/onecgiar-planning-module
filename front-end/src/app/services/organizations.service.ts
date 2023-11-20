@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { firstValueFrom, map } from "rxjs";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -20,14 +21,14 @@ export class OrganizationsService {
       });
     return firstValueFrom(
       this.http
-        .get("/api/organizations", { params: finalFilters })
+        .get(environment.api_url+"/organizations", { params: finalFilters })
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
   async getOrganization(code: string) {
     return firstValueFrom(
-      this.http.get("api/organizations/" + code).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+"/organizations/" + code).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
@@ -35,19 +36,19 @@ export class OrganizationsService {
     if (code != "0") {
       return firstValueFrom(
         this.http
-          .patch("api/organizations/" + code, data)
+          .patch(environment.api_url+"/organizations/" + code, data)
           .pipe(map((d: any) => d))
       );
     } else {
       return firstValueFrom(
-        this.http.post("api/organizations", data).pipe(map((d: any) => d))
+        this.http.post(environment.api_url+"/organizations", data).pipe(map((d: any) => d))
       );
     }
   }
 
   deleteOrganization(id: number) {
     return firstValueFrom(
-      this.http.delete("api/organizations/" + id).pipe(map((d: any) => d))
+      this.http.delete(environment.api_url+"/organizations/" + id).pipe(map((d: any) => d))
     );
   }
 }
