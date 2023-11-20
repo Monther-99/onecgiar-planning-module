@@ -141,8 +141,22 @@
                 </button>
               </div>
 
-              <!-- btn-2 -->
+              <!-- btn-3 -->
               <div class="risk-report-button-box">
+                <button
+                  *ngIf="!this.isCenter"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  mat-raised-button
+                  routerLink="/initiative/{{ initiative_data.id }}/{{
+                    initiative_data.official_code
+                  }}/submited-versions"
+                >
+                  Submitted versions
+                </button>
+              </div>
+
+              <!-- btn-2 -->
+              <!-- <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
                   class="risk-report-button-box__btn btn--animated btn--white btn"
@@ -150,18 +164,7 @@
                 >
                   Export Excel
                 </button>
-              </div>
-
-              <!-- btn-3 -->
-              <div class="risk-report-button-box">
-                <button
-                  *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
-                  mat-raised-button
-                >
-                  Export Pdf
-                </button>
-              </div>
+              </div> -->
 
               <!-- btn-4 -->
               <div class="risk-report-button-box">
@@ -685,8 +688,22 @@
                 </button>
               </div>
 
-              <!-- btn-2 -->
+              <!-- btn-3 -->
               <div class="risk-report-button-box">
+                <button
+                  *ngIf="!this.isCenter"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  mat-raised-button
+                  routerLink="/initiative/{{ initiative_data.id }}/{{
+                    initiative_data.official_code
+                  }}/submited-versions"
+                >
+                  Submitted versions
+                </button>
+              </div>
+
+              <!-- btn-2 -->
+              <!-- <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
                   class="risk-report-button-box__btn btn--animated btn--white btn"
@@ -694,19 +711,7 @@
                 >
                   Export Excel
                 </button>
-              </div>
-
-              <!-- btn-3 -->
-              <div class="risk-report-button-box">
-                <button
-                  *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
-                  mat-raised-button
-                >
-                  Export Pdf
-                </button>
-              </div>
-
+              </div> -->
               <!-- btn-4 -->
               <div class="risk-report-button-box" style="height: 37px">
                 <app-center-status
