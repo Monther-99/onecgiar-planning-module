@@ -77,6 +77,7 @@ import { MeliaAdminComponent } from './admin/melia-admin/melia-admin.component';
 import { MeliaAdminDialogComponent } from './admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component';
 import { AnticipatedYearComponent } from './admin/anticipated-year/anticipated-year.component';
 import { AnticipatedYearDialogComponent } from './admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component';
+import { OrderSelectPipePipe } from './components/order-select-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { AnticipatedYearDialogComponent } from './admin/anticipated-year/anticip
     MeliaAdminDialogComponent,
     AnticipatedYearComponent,
     AnticipatedYearDialogComponent,
+    OrderSelectPipePipe,
   ],
   imports: [
     BrowserModule,
