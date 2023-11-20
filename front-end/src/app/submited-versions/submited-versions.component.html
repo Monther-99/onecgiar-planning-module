@@ -182,7 +182,7 @@
 </div>
 
 <div class="margin" style="margin-top: 30000px">
-  <div class="PDF" #pdfcontent id="pdfcontent" *ngIf="toPdf">
+  <div class="PDF" #pdfcontent id="pdfcontent" *ngIf="toPdf" style="font-family: Balsamiq-Sans, serif; letter-spacing: 0.01px;">
     <div class="container-mat-tab">
       <mat-card>
         <!-- <mat-card-title class="card-title"
@@ -221,6 +221,10 @@
                   }})</span
                 >
               </mat-card-subtitle>
+            </div>
+
+            <div class="card-title-3 m-b-t">
+              {{ this.submission_data?.phase.name }}
             </div>
           </form>
         </div>
@@ -298,7 +302,14 @@
                       >
                     </td>
                   </ng-container>
-                  <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+                  <td
+                    style="
+                      font-family: Balsamiq-Sans, serif;
+                      letter-spacing: 0.01px;
+                    "
+                  >
+                    {{ wpsTotalSum | number : "1.2-2" }}%
+                  </td>
                 </tr>
               </table>
             </div>

@@ -1502,38 +1502,26 @@ table {
 
   td {
     border: 1px solid #b9b9b9b5;
-
-    color: #0f212f;
     text-align: center;
+    color: #04030f;
     font-family: "Poppins", sans-serif !important;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-style: normal;
     font-weight: 400;
     line-height: 114.5%; /* 1.374rem */
-    // background-color: #f0f0f0;
-
-    /* font-weight: 500; */
-    /* margin: 16px 0 12px 0; */
-    /* display: block; */
-    /* max-width: 450px; */
-    /* min-width: 250px; */
-    white-space: normal !important;
+    letter-spacing: 0.01px;
   }
 
   th {
+    color: #ffffff;
+    text-align: center;
     font-family: "Poppins", sans-serif !important;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    font-style: normal;
     font-weight: 500;
     line-height: 130%; /* 1.56rem */
-    // background-color: #436280;
-    color: #ffffff;
-    letter-spacing: 0em;
-    text-align: center;
-    // background-image: linear-gradient(to bottom, #436280, #39536d);
-    // background: linear-gradient(to bottom left, #436280, #30455b);
     background: linear-gradient(to right, #2a2e45, #212537);
-    // border: 0.2rem solid #154c83;
-    font-style: normal;
+    letter-spacing: 0.01px;
   }
 
   // ::ng-deep .mat-elevation-z20,
@@ -1682,22 +1670,15 @@ table {
 
   td {
     border: 1px solid #b9b9b9b5;
-
-    color: #0f212f;
     text-align: center;
+    color: #04030f;
     font-family: "Poppins", sans-serif !important;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-style: normal;
     font-weight: 400;
-    line-height: 114.5%; /* 1.374rem */
-    // background-color: #f0f0f0;
+    letter-spacing: 0.01px;
 
-    /* font-weight: 500; */
-    /* margin: 16px 0 12px 0; */
-    /* display: block; */
-    /* max-width: 450px; */
-    /* min-width: 250px; */
-    white-space: normal !important;
+    line-height: 114.5%; /* 1.374rem */
   }
 
   th {
@@ -1713,6 +1694,7 @@ table {
     background: linear-gradient(to right, #2a2e45, #212537);
     // border: 0.2rem solid #154c83;
     font-style: normal;
+    letter-spacing: 0.01px;
   }
 
   // ::ng-deep .mat-elevation-z20,

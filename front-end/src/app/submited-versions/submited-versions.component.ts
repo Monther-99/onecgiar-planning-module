@@ -690,8 +690,9 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     // let doc = new jsPDF('portrait', 'pt', 'a4');
     // let doc = new jsPDF('portrait', 'pt', [1550, 10000]);
     let doc = new jsPDF({
-      orientation: "portrait",
-      unit: "pt",
+      orientation: "p",
+      unit: "px",
+
       format: [
         this.pdfcontent.nativeElement.scrollWidth,
         this.pdfcontent.nativeElement.scrollHeight + 100,
