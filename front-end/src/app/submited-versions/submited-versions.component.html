@@ -72,7 +72,7 @@
 
           <!-- created_at -->
           <ng-container matColumnDef="created_at">
-            <th mat-header-cell *matHeaderCellDef>Created at</th>
+            <th mat-header-cell *matHeaderCellDef>Created on</th>
             <td mat-cell *matCellDef="let row">{{ row.created_at | date }}</td>
           </ng-container>
 
@@ -181,12 +181,11 @@
   </div>
 </div>
 
-<div class="margin" style="margin-top: 30000px">
+<div class="margin" style="margin-top: 30000px" *ngIf="toPdf">
   <div
     class="PDF"
     #pdfcontent
     id="pdfcontent"
-    *ngIf="toPdf"
     style="font-family: Balsamiq-Sans, serif; letter-spacing: 0.01px"
   >
     <div class="container-mat-tab">
