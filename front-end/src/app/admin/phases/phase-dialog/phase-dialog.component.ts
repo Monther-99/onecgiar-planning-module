@@ -46,6 +46,11 @@ export class PhaseDialogComponent implements OnInit {
       show_melia: [false],
     });
     this.phases = await this.phasesService.getPhases();
+    this.phases = this.phases.filter((d:any) => d.id != this.phaseId);
+    if(this.phases.length == 0)
+      this.phaseForm.controls['previousPhase'].clearValidators();
+      this.phaseForm.controls['previousPhase'].updateValueAndValidity();
+
     this.tocPhases = await this.phasesService.getTocPhases();
     if (this.phaseId) {
       let { id, previousPhase, active, ...phaseValues } =
