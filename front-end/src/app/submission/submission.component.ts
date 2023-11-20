@@ -168,7 +168,7 @@ export class SubmissionComponent implements OnInit {
         });
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
-    }, 500);
+    }, 1000);
 
     // localStorage.setItem('initiatives', JSON.stringify(this.values));
   }
@@ -194,7 +194,7 @@ export class SubmissionComponent implements OnInit {
         });
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
-    }, 500);
+    }, 1000);
   }
 
   percentValue(value: number, totalBudget: number) {
@@ -293,8 +293,20 @@ export class SubmissionComponent implements OnInit {
     this.partners.map((d: any) => {
       if (d.name == organization?.tab?.textLabel) this.organizationSelected = d;
     });
+    this.updatePath(organization)
   }
-
+  updatePath(tab:any) {
+    this.router.navigate(
+      [], // Remain on current route
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {
+          tab: tab.index,
+        },
+        queryParamsHandling: 'merge', // Merge new params with existing params
+      }
+    );
+  }
   async changes(
     partner_code: any,
     wp_id: any,
@@ -746,7 +758,11 @@ export class SubmissionComponent implements OnInit {
       this.savedValues.perValues,
       this.savedValues.no_budget
     );
-
+    const tab =  this.activatedRoute.snapshot.queryParamMap.get('tab')
+    if(tab)
+    this.selectedTabIndex = Number(tab);
+    else
+    this.selectedTabIndex = 0
     this.title2.setTitle("Manage initiative activities");
     this.meta.updateTag({
       name: "description",
