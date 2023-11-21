@@ -40,16 +40,13 @@ export class CenterStatusComponent implements OnInit {
   a: any;
   async ngOnInit(): Promise<void> {
     this.loading = true;
-    console.log('status',this.status);
     this.socket.on('statusOfCenter', (data: any) => {
       if (
         this.initiative_id == data.initiative_id &&
         this.phase_id == data.phase_id &&
         this.organization_code == data.organization_code
       ) {
-        console.log('statusOfCenter status',data.status,this.status);
         this.status = data.status;
-        console.log('statusOfCenter status after',data.status, this.status);
       }
     });
   }

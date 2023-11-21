@@ -165,6 +165,7 @@ export class SubmissionComponent implements OnInit {
           wp_id,
           item_id,
           value: percentValue,
+          no_budget: this.noValuesAssigned[partner_code][wp_id][item_id]
         });
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
@@ -503,7 +504,6 @@ export class SubmissionComponent implements OnInit {
   initiative_data: any = {};
   ipsr_value_data: any;
   phase: any;
-  partnersStatuses:any;
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -531,7 +531,6 @@ export class SubmissionComponent implements OnInit {
     this.partnersStatus = {};
     this.centerHasError = {};
     this.itemHasError = {};
-    this.partnersStatuses={}
 
     this.results = await this.submissionService.getToc(this.params.id);
     const melia_data = await this.submissionService.getMeliaByInitiative(
@@ -626,8 +625,7 @@ export class SubmissionComponent implements OnInit {
     //   ).values(),
     // ];
     for (let partner of this.partners) {
-      this.partnersStatuses[partner.code]=this.checkComplete(partner.code);
-      console.log(this.partnersStatuses[partner.code])
+      this.partnersStatus[partner.code] = this.checkComplete(partner.code);
       if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
       if (!this.budgetValues[partner.code])
         this.budgetValues[partner.code] = {};
@@ -636,9 +634,7 @@ export class SubmissionComponent implements OnInit {
       if (!this.toggleValues[partner.code])
         this.toggleValues[partner.code] = {};
       if (!this.noValuesAssigned[partner.code])
-        this.noValuesAssigned[partner.code] = {};
-      if (!this.partnersStatus[partner.code])
-        this.partnersStatus[partner.code] = this.checkComplete(partner.code);
+        this.noValuesAssigned[partner.code] = {};        
       if (!this.centerHasError[partner.code])
         this.centerHasError[partner.code] = false;
       if (!this.itemHasError[partner.code])
@@ -752,7 +748,7 @@ export class SubmissionComponent implements OnInit {
         wp.ost_wp.wp_official_code
       );
     }
-
+    this.allData.IPSR = this.allData.IPSR.filter((d:any) =>  d.value != null)
     this.savedValues = await this.submissionService.getSavedData(
       this.params.id
     );
@@ -843,7 +839,7 @@ export class SubmissionComponent implements OnInit {
       this.changes(partner_code, wp_id, item_id, per_id, value);
     });
     this.socket.on("setDataValue-" + this.params.id, (data: any) => {
-      const { partner_code, wp_id, item_id, value } = data;
+      const { partner_code, wp_id, item_id, value, no_budget } = data;
       this.values[partner_code][wp_id][item_id] = value;
       this.displayValues[partner_code][wp_id][item_id] = Math.round(value);
       let budgetValue = this.budgetValue(
@@ -853,6 +849,7 @@ export class SubmissionComponent implements OnInit {
       this.budgetValues[partner_code][wp_id][item_id] = budgetValue;
       this.displayBudgetValues[partner_code][wp_id][item_id] =
         Math.round(budgetValue);
+      this.noValuesAssigned[partner_code][wp_id][item_id] = no_budget;
       if (!this.isCenter) this.sammaryCalc();
     });
     this.socket.on("setDataBudget-" + this.params.id, (data: any) => {
@@ -864,8 +861,7 @@ export class SubmissionComponent implements OnInit {
       if (
         this.params.id == data.initiative_id
       ) {
-        this.partnersStatuses[data.organization_code] = !data.status;
-        console.log('this.partnersStatuses',this.partnersStatuses,data.status)
+        this.partnersStatus[data.organization_code] = !data.status;
       }
     });
     this.canSubmit = await this.constantsService.getSubmitStatus();

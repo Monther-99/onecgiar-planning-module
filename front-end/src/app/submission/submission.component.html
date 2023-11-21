@@ -488,7 +488,7 @@
                           </ng-container>
                           <ng-container *ngIf="!item?.meliaType?.name">
                             {{
-                              item?.ipsr?.id && item.value != null
+                              item?.ipsr?.id
                                 ? item?.ipsr.title + " (" + item.value + ")"
                                 : item.title
                             }}
@@ -587,7 +587,7 @@
           <span style="margin-right: 10px">{{
             partner?.acronym ? partner?.acronym : partner?.name
           }}</span>
-          <mat-icon *ngIf="partnersStatuses[partner.code]"
+          <mat-icon *ngIf="partnersStatus[partner.code]"
             >check_circle_outline</mat-icon
           >
           <mat-icon *ngIf="centerHasError[partner.code]" style="color: red"
