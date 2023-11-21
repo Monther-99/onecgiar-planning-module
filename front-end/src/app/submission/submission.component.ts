@@ -669,6 +669,7 @@ export class SubmissionComponent implements OnInit {
             this.partnersData[partner.code] = {};
           this.partnersData[partner.code][wp.ost_wp.wp_official_code] = result;
         }
+        
         if (!this.perValuesSammary[wp.ost_wp.wp_official_code])
           this.perValuesSammary[wp.ost_wp.wp_official_code] = {};
         this.period.forEach((element) => {
@@ -738,6 +739,9 @@ export class SubmissionComponent implements OnInit {
           });
         });
       }
+      this.partnersData[partner.code].IPSR = this.partnersData[partner.code].IPSR.filter((d:any) => 
+        d.value != null
+      );
       this.loading = false;
     }
 
