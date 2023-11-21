@@ -1213,6 +1213,12 @@ export class SubmissionComponent implements OnInit {
     let valid = true;
     let wpChecked = false;
     let message = "";
+    if (!this.partnersData[partner_code][wp_id]) {
+      return {
+        valid: valid,
+        message: message,
+      };
+    }
     this.partnersData[partner_code][wp_id].forEach((item: any) => {
       if (item.category != "EOI" && item.category != "OUTCOME") {
         let perChecked = Object.values(
