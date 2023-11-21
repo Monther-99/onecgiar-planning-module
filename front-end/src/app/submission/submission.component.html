@@ -587,7 +587,7 @@
           <span style="margin-right: 10px">{{
             partner?.acronym ? partner?.acronym : partner?.name
           }}</span>
-          <mat-icon *ngIf="partnersStatuses[partner.code]"
+          <mat-icon *ngIf="partnersStatus[partner.code]"
             >check_circle_outline</mat-icon
           >
           <mat-icon *ngIf="centerHasError[partner.code]" style="color: red"
