@@ -739,7 +739,7 @@ export class SubmissionComponent implements OnInit {
           });
         });
       }
-      this.partnersData[partner.code].IPSR = this.partnersData[partner.code].IPSR.filter((d:any) => 
+      this.partnersData[partner.code].IPSR = this.partnersData[partner.code]?.IPSR?.filter((d:any) => 
         d.value != null
       );
       this.loading = false;
