@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ organizationCode != '0' ? "Edit" : "Add" }} Organization
+      {{ organizationCode != "0" ? "Edit" : "Add" }} Organization
     </p>
   </div>
 
@@ -93,17 +93,18 @@
       <div class="form-dialog-conten-button-box">
         <div class="form-dialog-conten__button-box" align="end">
           <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-
-          <button
-            class="form-dialog-conten__button-box__btn"
-            type="submit"
-            mat-raised-button
-            mat-button
-            color="primary"
-            (click)="submit()"
-          >
-            {{ organizationCode != '0' ? "Edit" : "Add" }}
-          </button>
+          <div class="risk-report-button-box">
+            <button
+              class="risk-report-button-box__btn btn--animated btn--chestnut btn"
+              type="submit"
+              mat-raised-button
+              mat-button
+              color="primary"
+              (click)="submit()"
+            >
+              {{ organizationCode != "0" ? "Edit" : "Add" }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -63,6 +63,7 @@
     font-weight: 500;
     line-height: normal;
     // width: 491px;
+    padding: 0 2rem;
   }
 
   &__text-3 {
@@ -158,8 +159,10 @@
 
 .dialog-img-2 {
   // margin: 1.5rem;
+  width: 78px;
+  height: 50px;
+  margin: 1.5rem;
   object-fit: contain;
-  padding: 0.5rem;
 }
 
 .dialog-img-3 {
