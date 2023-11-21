@@ -87,7 +87,7 @@ export class PeriodsComponent implements OnInit {
     this.phases = this.phases.filter(
       (value, index, self) =>
         index ===
-        self.findIndex((t) => t.id === value.id && t.name === value.name)
+        self.findIndex((t) => t?.id === value?.id && t?.name === value?.name)
     );
     this.title.setTitle("Periods");
     this.meta.updateTag({ name: "description", content: "Periods" });
