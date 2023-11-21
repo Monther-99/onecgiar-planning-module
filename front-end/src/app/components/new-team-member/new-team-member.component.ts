@@ -13,6 +13,7 @@ import {
   tap,
 } from "rxjs";
 import { PhasesService } from "src/app/services/phases.service";
+import { SubmissionService } from "src/app/services/submission.service";
 import { UserService } from "src/app/services/user.service";
 
 export enum ROLES {
@@ -34,7 +35,8 @@ export class NewTeamMemberComponent implements OnInit {
     private dialogRef: MatDialogRef<NewTeamMemberComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any = {},
     private usersService: UserService,
-    private phasesService: PhasesService
+    private phasesService: PhasesService,
+    private submissionService: SubmissionService
   ) {}
 
   // people$: Observable<any[]> = new Observable();
@@ -144,6 +146,9 @@ export class NewTeamMemberComponent implements OnInit {
       activePhase.id,
       this.data.initiative_id
     );
+    if (this.organizations.length < 1) {
+      this.organizations = await this.submissionService.getOrganizations();
+    }
     if (this.data?.member?.user_id) {
       const users: any = await this.usersService.getUsers(
         { user_id: this.data?.member?.user_id },
