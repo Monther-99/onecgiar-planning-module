@@ -499,6 +499,7 @@
   display: flex !important;
   flex-direction: column !important;
   gap: 1rem !important;
+  max-height: 200px;
 }
 
 ::ng-deep.mat-mdc-option .mdc-list-item__primary-text {
