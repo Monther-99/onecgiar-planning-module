@@ -100,17 +100,18 @@
       <div class="form-dialog-conten-button-box">
         <div class="form-dialog-conten__button-box m-t" align="end">
           <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-
-          <button
-            class="form-dialog-conten__button-box__btn"
-            type="submit"
-            mat-raised-button
-            mat-button
-            color="primary"
-            (click)="submit()"
-          >
-            {{ meliaId ? "Edit" : "Add" }}
-          </button>
+          <div class="risk-report-button-box">
+            <button
+              class="risk-report-button-box__btn btn--animated btn--chestnut btn"
+              type="submit"
+              mat-raised-button
+              mat-button
+              color="primary"
+              (click)="submit()"
+            >
+              {{ meliaId ? "Edit" : "Add" }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

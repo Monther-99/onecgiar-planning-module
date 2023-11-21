@@ -49,6 +49,10 @@ export class PeriodsComponent implements OnInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
     this.headerService.backgroundFooter =
       "linear-gradient(to  top, #0F212F, #09151E)";
+
+      this.headerService.backgroundDeleteYes = "#FF5A54";
+      this.headerService.backgroundDeleteClose = "#04030F";
+      this.headerService.backgroundDeleteLr = "#04030F";
   }
 
   async ngOnInit() {

@@ -44,6 +44,10 @@ export class OrganizationsComponent implements OnInit {
       "linear-gradient(to  top, #0F212F, #09151E)";
     this.headerService.backgroundFooter =
       "linear-gradient(to  top, #0F212F, #09151E)";
+
+    this.headerService.backgroundDeleteYes = "#FF5A54";
+    this.headerService.backgroundDeleteClose = "#04030F";
+    this.headerService.backgroundDeleteLr = "#04030F";
   }
 
   filterForm: FormGroup = new FormGroup({});
@@ -77,7 +81,7 @@ export class OrganizationsComponent implements OnInit {
     console.log(this.organizations);
   }
 
-  openDialog(code: string = '0'): void {
+  openDialog(code: string = "0"): void {
     const dialogRef = this.dialog.open(OrganizationDialogComponent, {
       data: { code: code },
     });
