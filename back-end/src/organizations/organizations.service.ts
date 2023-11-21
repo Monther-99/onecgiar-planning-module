@@ -49,6 +49,9 @@ export class OrganizationsService {
     return await this.organizationRepository.find({
       where: {
         name: query?.name ? ILike(`%${query?.name}%`) : null, 
+      },
+      order: {
+        name: 'ASC'
       }
     });
   }
