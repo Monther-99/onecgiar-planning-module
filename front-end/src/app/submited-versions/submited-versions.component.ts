@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  EventEmitter,
+  Output,
+} from "@angular/core";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -41,6 +48,10 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild("pdfcontent", { static: false }) pdfcontent: ElementRef;
 
+  @Output("pdfClicked") pdfClicked = new EventEmitter<{
+    serverName: string;
+  }>();
+
   constructor(
     private submissionService: SubmissionService,
     private authService: AuthService,
@@ -71,6 +82,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   length!: number;
   pageSize: number = 10;
   pageIndex: number = 1;
+  nameK = "download";
   async ngAfterViewInit() {
     this.params = this.activatedRoute?.snapshot.params;
     await this.initData();
@@ -517,7 +529,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
 
-    this.loader.setLoading(true);
+    this.loader.setLoading(true, "Downloading");
     setTimeout(() => {
       this.exportPDF();
     }, 1000);
@@ -545,6 +557,8 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.pdfData(lastSubmitionId);
     this.period = this.submission_data.phase.periods;
+
+    this.pdfClicked.emit({ serverName: this.nameK });
   }
 
   percentValue(value: number, totalBudget: number) {

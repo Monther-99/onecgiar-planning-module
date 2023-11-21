@@ -10,7 +10,7 @@
 }
 
 .cssload-speeding-wheel {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   left: 48%;
@@ -27,6 +27,29 @@
   -ms-animation: cssload-spin 500ms infinite linear;
   -webkit-animation: cssload-spin 500ms infinite linear;
   -moz-animation: cssload-spin 500ms infinite linear;
+}
+
+.cssload-speeding-wheel-2 {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 47.5%;
+  top: 46%;
+  width: 69px;
+  height: 63px;
+  margin: 0 auto;
+  color: #5569dd;
+
+  font-family: "Josefin Sans", sans-serif !important;
+
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 130%;
+
+  letter-spacing: 0em;
+  text-align: center;
+
+  font-style: normal;
 }
 
 @keyframes cssload-spin {
@@ -62,4 +85,112 @@
     -moz-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.current-training {
+  padding: 30px;
+}
+
+span[class^="dot-"] {
+  opacity: 0;
+}
+.dot-one {
+  color: #5569dd;
+
+  font-family: "Josefin Sans", sans-serif !important;
+
+  font-size: 2.2rem !important;
+  font-weight: 700;
+  line-height: 130%;
+
+  letter-spacing: 0em;
+  text-align: center;
+  margin-top: -0.4rem;
+  margin-left: -0.2rem;
+  font-style: normal;
+  animation: dot-one 2s infinite linear;
+}
+.dot-two {
+  color: #5569dd;
+
+  font-family: "Josefin Sans", sans-serif !important;
+
+  font-size: 2.2rem !important;
+  font-weight: 700;
+  line-height: 130%;
+
+  letter-spacing: 0em;
+  text-align: center;
+
+  font-style: normal;
+  margin-top: -0.4rem;
+  margin-left: -0.2rem;
+  animation: dot-two 2s infinite linear;
+}
+.dot-three {
+  color: #5569dd;
+
+  font-family: "Josefin Sans", sans-serif !important;
+
+  font-size: 2.2rem !important;
+  font-weight: 700;
+  line-height: 130%;
+
+  letter-spacing: 0em;
+  text-align: center;
+
+  font-style: normal;
+  margin-top: -0.4rem;
+  margin-left: -0.2rem;
+  animation: dot-three 2s infinite linear;
+}
+@keyframes dot-one {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes dot-two {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes dot-three {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.dot-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
