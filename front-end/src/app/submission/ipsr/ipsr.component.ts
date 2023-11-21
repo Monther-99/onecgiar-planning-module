@@ -35,7 +35,7 @@ export class IpsrComponent implements OnInit {
         ? this.values.filter((d: any) => d.ipsr_id == item.id)
         : [];
       let ipsrValue = ipsrValueArr.length ? ipsrValueArr[0].value : null;
-      obj["value-" + item.id] = [ipsrValue, Validators.required];
+      obj["value-" + item.id] = [ipsrValue];
     });
     this.ipsrForm = this.fb.group({
       ...obj,
