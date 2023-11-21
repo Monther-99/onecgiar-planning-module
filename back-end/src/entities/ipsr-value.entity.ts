@@ -33,7 +33,7 @@ export class IpsrValue {
   @Column()
   initiative_id: number;
 
-  @Column()
+  @Column({ default: null })
   value: number;
 
 }
