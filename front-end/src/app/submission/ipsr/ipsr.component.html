@@ -30,7 +30,7 @@
             *ngFor="let item of ipsrs"
           >
             <mat-label class="form-dialog-content__title-box__title"
-              >{{ item.title }} - Number<span class="star">*</span></mat-label
+              >{{ item.title }} - Number</mat-label
             >
 
             <mat-form-field
@@ -58,22 +58,22 @@
             <div class="form-dialog-conten__button-box m-t" align="end">
               <!-- <button mat-button mat-dialog-close>Cancel</button> -->
               <div class="risk-report-button-box">
-              
-               
-              <button
-              class="risk-report-button-box__btn btn--animated btn--chestnut btn"
-                type="submit"
-                mat-raised-button
-                mat-button
-                color="primary"
-                (click)="submit()"
-                cdkFocusInitial
-              >
-              <mat-icon class="create-risk">
-                <span class="material-symbols-outlined"> data_saver_on </span>
-              </mat-icon>
-                Save
-              </button>
+                <button
+                  class="risk-report-button-box__btn btn--animated btn--chestnut btn"
+                  type="submit"
+                  mat-raised-button
+                  mat-button
+                  color="primary"
+                  (click)="submit()"
+                  cdkFocusInitial
+                >
+                  <mat-icon class="create-risk">
+                    <span class="material-symbols-outlined">
+                      data_saver_on
+                    </span>
+                  </mat-icon>
+                  Save
+                </button>
               </div>
             </div>
           </div>
