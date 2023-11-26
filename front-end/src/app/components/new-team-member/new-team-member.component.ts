@@ -6,7 +6,6 @@ import {
   Subject,
   catchError,
   concat,
-  debounceTime,
   distinctUntilChanged,
   of,
   switchMap,
@@ -39,61 +38,12 @@ export class NewTeamMemberComponent implements OnInit {
     private submissionService: SubmissionService
   ) {}
 
-  // people$: Observable<any[]> = new Observable();
-  // peopleLoading = false;
-  // peopleInput$ = new Subject<string>();
-  // private loadPeople() {
-  //   this.people$ = concat(
-  //     of([]), // default items
-  //     this.peopleInput$.pipe(
-  //       distinctUntilChanged(),
-  //       debounceTime(500),
-  //       tap(() => (this.peopleLoading = true)),
-  //       switchMap((term: string) => {
-  //         const filter = {
-  //           full_name: term,
-  //           email: term,
-  //           search: "teamMember",
-  //         };
-  //         return this.usersService.getUsersForTeamMember(filter).pipe(
-  //           catchError(() => of([])), // empty list on error
-  //           tap(() => (this.peopleLoading = false))
-  //         );
-  //       })
-  //     )
-  //   );
-  // }
-
-  // private loadPeople2() {
-  //   this.peoples$ = concat(
-  //     of([]), // default items
-  //     this.peopleInputs$.pipe(
-  //       distinctUntilChanged(),
-  //       debounceTime(500),
-  //       tap(() => (this.peopleLoadings = true)),
-  //       switchMap((term: any) => {
-  //         const filter = {
-  //           phase_id: term,
-  //           initiative_id: term,
-  //         };
-  //         return this.phasesService
-  //           .getAssignedOrgs(filter.phase_id, filter.initiative_id)
-  //           .pipe(
-  //             catchError(() => of([])), // empty list on error
-  //             tap(() => (this.peopleLoadings = false))
-  //           );
-  //       })
-  //     )
-  //   );
-  // }
-
   confirmation: any = "";
   organizations: any = [];
-  users: any = [];
+  users: Observable<any[]>;
+  usersInput = new Subject<string>();
+  usersLoading = false;
 
-  showConfirm(content: any) {
-    console.log(content);
-  }
   Roles: any[] = [
     { value: ROLES.LEAD, viewValue: ROLES.LEAD },
     { value: ROLES.COORDINATOR, viewValue: ROLES.COORDINATOR },
@@ -103,10 +53,9 @@ export class NewTeamMemberComponent implements OnInit {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
       if (controls) {
-        // console.log(controls);
         if (
           controls.email.value == "" &&
-          (controls.user_id.value == "" || controls.user_id.value == null)
+          (controls.user.value == "" || controls.user.value == null)
         ) {
           return {
             atLeastOneRequired: {
@@ -149,15 +98,6 @@ export class NewTeamMemberComponent implements OnInit {
     if (this.organizations.length < 1) {
       this.organizations = await this.submissionService.getOrganizations();
     }
-    if (this.data?.member?.user_id) {
-      const users: any = await this.usersService.getUsers(
-        { user_id: this.data?.member?.user_id },
-        1,
-        10
-      );
-
-      this.users = users.result;
-    }
     this.memberForm = this.fb.group({
       email: [
         this.data.role == "add" ? "" : this.data.member.email,
@@ -167,13 +107,14 @@ export class NewTeamMemberComponent implements OnInit {
         this.data.role == "add" ? "" : this.data.member.role,
         Validators.required,
       ],
-      user_id: [this.data?.member?.user_id ? this.data?.member?.user_id : null],
+      user: [this.data?.member?.user ? this.data?.member?.user : null],
       organizations: [
         this.data?.member?.organizations
           ? this.data?.member?.organizations
           : null,
       ],
     });
+    this.loadUsers();
     this.memberForm.setValidators([
       this.atLeastOneValidator(),
       this.organizationValidator(),
@@ -202,35 +143,24 @@ export class NewTeamMemberComponent implements OnInit {
     else return false
   }
 
-  
-  bindValue: any = {
-    full_name: "full_name",
-    email: "email",
-  };
-
-  haveSameChar!: boolean;
-  searchValue: string = "";
-  async search(event: any) {
-    this.searchValue = event.term;
-    const filters = {
-      full_name: this.searchValue,
-      email: this.searchValue,
-      search: "teamMember",
-    };
-    this.users = await this.usersService.getUsersForTeamMember(filters);
-    let i = this.searchValue.length;
-
-    for (let user of this.users) {
-      if (this.searchValue == user.full_name.substring(0, i)) {
-        this.haveSameChar = true;
-      } else if (this.searchValue == user.email.substring(0, i)) {
-        this.haveSameChar = false;
-      }
-    }
+  private loadUsers() {
+    this.users = concat(
+      of([]), // default items
+      this.usersInput.pipe(
+        distinctUntilChanged(),
+        tap(() => (this.usersLoading = true)),
+        switchMap((term) =>
+          this.usersService.searchUsers(term).pipe(
+            catchError(() => of([])), // empty list on error
+            tap(() => (this.usersLoading = false))
+          )
+        )
+      )
+    );
   }
 
-  compareWith(v1: any, v2: any) {
-    return v1?.user_id === v2?.user_id;
+  compareUsers(item: any, selected: any) {
+    return item === selected.id;
   }
   loading: boolean = false;
 
@@ -238,15 +168,9 @@ export class NewTeamMemberComponent implements OnInit {
   peopleInputSearch$ = new Subject<any>();
 
   async ngOnInit() {
-    // this.users = await this.usersService.getUsers();
-    // console.log(this.users);
-    // this.loadPeople();
-    // this.loadPeople2();
-    console.log(this.data)
     this.populateMemberForm();
   }
 
-  //Close-Dialog
   onCloseDialog() {
     this.dialogRef.close();
   }

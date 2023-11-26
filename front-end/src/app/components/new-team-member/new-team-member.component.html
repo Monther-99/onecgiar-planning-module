@@ -30,17 +30,18 @@
       </div>
 
       <ng-select
-        [items]="users"
+        [items]="users | async"
         appearance="outline"
-        [bindLabel]="bindValue.full_name"
-        bindValue="id"
+        bindLabel="full_name"
         [hideSelected]="true"
         [minTermLength]="2"
         labelForId="id"
-        formControlName="user_id"
+        formControlName="user"
+        placeholder="User"
         typeToSearchText="Please enter 2 or more characters to search"
-        (search)="search($event)"
-        #agesSelect
+        [loading]="usersLoading"
+        [typeahead]="usersInput"
+        [compareWith]="compareUsers"
       >
         <ng-template
           ng-option-tmp

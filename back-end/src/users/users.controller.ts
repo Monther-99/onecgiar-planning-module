@@ -6,25 +6,16 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   Query,
-  StreamableFile,
-  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiCreatedResponse,
-  ApiProperty,
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from '../entities/user.entity'
 
 import { UsersService } from './users.service';
-import { createReadStream } from 'fs';
-import { join } from 'path';
-import { unlink } from 'fs/promises';
-import { query } from 'express';
 import { Brackets, ILike } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -46,17 +37,10 @@ export class UsersController {
       return obj;
     } else return { id: 'ASC' };
   }
+
   @Get()
   async getUsers(@Query() query) {
     console.log(query)
-    if(query.search == 'teamMember') {
-      return this.usersService.userRepository.createQueryBuilder('users')
-      .where("users.full_name like :full_name", { full_name: `%${query.full_name}%` })
-      .orWhere("users.email like :email", { email: `%${query.email}%` })
-      .select(['users.id as id', 'users.full_name as full_name', 'users.email as email'])
-      .getRawMany()
-    }
-    else {
     const take = query.limit || 10
     const skip=(Number(query.page)-1)*take;
     const result = await this.usersService.userRepository.createQueryBuilder('user');
@@ -82,7 +66,6 @@ export class UsersController {
       result: finalResult[0],
       count: finalResult[1]
     }
-    }
   }
 
   @Post()
@@ -93,6 +76,11 @@ export class UsersController {
   @Get('all')
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('search/:term')
+  async searchUsers(@Param('term') term: string) {
+    return this.usersService.searchUsers(term);
   }
 
   @Get(':id')

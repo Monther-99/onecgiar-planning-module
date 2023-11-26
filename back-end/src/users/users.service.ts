@@ -54,4 +54,13 @@ export class UsersService {
   remove(id: number) {
     return this.userRepository.delete({ id });
   }
+
+  searchUsers(term: string) {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .where('user.full_name like :name', { name: `%${term}%` })
+      .orWhere('user.email like :email', { email: `%${term}%` })
+      .orderBy('user.full_name')
+      .getMany();
+  }
 }

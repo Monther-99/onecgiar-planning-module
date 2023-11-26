@@ -136,7 +136,7 @@ export class TeamMembersComponent {
             initiative_id: this.initiativeId,
             email: result.formValue.email,
             role: result.formValue.userRole,
-            user_id: result.formValue.user_id,
+            user_id: result.formValue.user.id,
             organizations: result.formValue.organizations,
           })
           .subscribe(
@@ -165,7 +165,7 @@ export class TeamMembersComponent {
           .updateInitiativeRole(this.initiativeId, roleId, {
             initiative_id: this.initiativeId,
             id: roleId,
-            user_id: result.formValue.user_id,
+            user_id: result.formValue.user.id,
             email: result.formValue.email,
             role: result.formValue.userRole,
             organizations: result.formValue.organizations,
