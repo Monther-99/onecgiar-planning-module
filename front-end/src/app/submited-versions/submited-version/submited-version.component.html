@@ -81,6 +81,7 @@
                   </ng-container>
 
                   <th>Budget Percentage</th>
+                  <th>Budget (USD)</th>
                 </tr>
                 <ng-container *ngFor="let wp of wps">
                   <tr>
@@ -104,6 +105,13 @@
                           | number : "1.2-2"
                       }}%
                     </td>
+                    <td>
+                      {{
+                        roundNumber(
+                          summaryBudgetsTotal[wp.ost_wp.wp_official_code]
+                        )
+                      }}
+                    </td>
                   </tr>
                 </ng-container>
                 <tr class="total">
@@ -119,6 +127,7 @@
                     </td>
                   </ng-container>
                   <td>{{ wpsTotalSum | number : "1.2-2" }}%</td>
+                  <td>{{ roundNumber(summaryBudgetsAllTotal) }}</td>
                 </tr>
               </table>
             </div>
