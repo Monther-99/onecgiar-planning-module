@@ -165,7 +165,7 @@ export class SubmissionComponent implements OnInit {
           wp_id,
           item_id,
           value: percentValue,
-          no_budget: this.noValuesAssigned[partner_code][wp_id][item_id]
+          no_budget: this.noValuesAssigned[partner_code][wp_id][item_id],
         });
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
@@ -294,9 +294,9 @@ export class SubmissionComponent implements OnInit {
     this.partners.map((d: any) => {
       if (d.name == organization?.tab?.textLabel) this.organizationSelected = d;
     });
-    this.updatePath(organization)
+    this.updatePath(organization);
   }
-  updatePath(tab:any) {
+  updatePath(tab: any) {
     this.router.navigate(
       [], // Remain on current route
       {
@@ -304,7 +304,7 @@ export class SubmissionComponent implements OnInit {
         queryParams: {
           tab: tab.index,
         },
-        queryParamsHandling: 'merge', // Merge new params with existing params
+        queryParamsHandling: "merge", // Merge new params with existing params
       }
     );
   }
@@ -634,7 +634,7 @@ export class SubmissionComponent implements OnInit {
       if (!this.toggleValues[partner.code])
         this.toggleValues[partner.code] = {};
       if (!this.noValuesAssigned[partner.code])
-        this.noValuesAssigned[partner.code] = {};        
+        this.noValuesAssigned[partner.code] = {};
       if (!this.centerHasError[partner.code])
         this.centerHasError[partner.code] = false;
       if (!this.itemHasError[partner.code])
@@ -669,7 +669,7 @@ export class SubmissionComponent implements OnInit {
             this.partnersData[partner.code] = {};
           this.partnersData[partner.code][wp.ost_wp.wp_official_code] = result;
         }
-        
+
         if (!this.perValuesSammary[wp.ost_wp.wp_official_code])
           this.perValuesSammary[wp.ost_wp.wp_official_code] = {};
         this.period.forEach((element) => {
@@ -739,9 +739,9 @@ export class SubmissionComponent implements OnInit {
           });
         });
       }
-      this.partnersData[partner.code].IPSR = this.partnersData[partner.code]?.IPSR?.filter((d:any) => 
-        d.value != null
-      );
+      this.partnersData[partner.code].IPSR = this.partnersData[
+        partner.code
+      ]?.IPSR?.filter((d: any) => d.value != null);
       this.loading = false;
     }
 
@@ -752,7 +752,7 @@ export class SubmissionComponent implements OnInit {
         wp.ost_wp.wp_official_code
       );
     }
-    this.allData.IPSR = this.allData.IPSR.filter((d:any) =>  d.value != null)
+    this.allData.IPSR = this.allData.IPSR.filter((d: any) => d.value != null);
     this.savedValues = await this.submissionService.getSavedData(
       this.params.id
     );
@@ -762,11 +762,9 @@ export class SubmissionComponent implements OnInit {
       this.savedValues.perValues,
       this.savedValues.no_budget
     );
-    const tab =  this.activatedRoute.snapshot.queryParamMap.get('tab')
-    if(tab)
-    this.selectedTabIndex = Number(tab);
-    else
-    this.selectedTabIndex = 0
+    const tab = this.activatedRoute.snapshot.queryParamMap.get("tab");
+    if (tab) this.selectedTabIndex = Number(tab);
+    else this.selectedTabIndex = 0;
     this.title2.setTitle("Manage initiative activities");
     this.meta.updateTag({
       name: "description",
@@ -861,10 +859,8 @@ export class SubmissionComponent implements OnInit {
       this.wp_budgets[partner_code][wp_id] = budget;
       this.refreshValues(partner_code, wp_id);
     });
-    this.socket.on('statusOfCenter', (data: any) => {
-      if (
-        this.params.id == data.initiative_id
-      ) {
+    this.socket.on("statusOfCenter", (data: any) => {
+      if (this.params.id == data.initiative_id) {
         this.partnersStatus[data.organization_code] = !data.status;
       }
     });
@@ -1043,7 +1039,7 @@ export class SubmissionComponent implements OnInit {
         wp: wp,
         initiative_id: this.params.id,
         show_eoi: this.phase?.show_eoi,
-        cross: cross
+        cross: cross,
       },
     });
 
@@ -1248,8 +1244,8 @@ export class SubmissionComponent implements OnInit {
       message = "The subtotal of all percentages should equal 100%";
     } else if (!valid) {
       this.errors[partner_code][wp_id] =
-        "There is a checked items but not budgeted";
-      message = "There is a checked items but not budgeted";
+        "There is a checked item(s) but not budgeted";
+      message = "There is a checked item(s) but not budgeted";
     }
     return {
       valid: valid,
