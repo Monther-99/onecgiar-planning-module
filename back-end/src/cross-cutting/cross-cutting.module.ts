@@ -9,6 +9,7 @@ import { CrossCutting } from 'src/entities/cross-cutting.entity';
     TypeOrmModule.forFeature([CrossCutting])
   ],
   controllers: [CrossCuttingController],
-  providers: [CrossCuttingService]
+  providers: [CrossCuttingService],
+  exports: [CrossCuttingService]
 })
 export class CrossCuttingModule {}

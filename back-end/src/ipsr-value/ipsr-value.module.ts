@@ -8,7 +8,8 @@ import { IpsrModule } from 'src/ipsr/ipsr.module';
 @Module({
   imports: [TypeOrmModule.forFeature([IpsrValue]),IpsrModule],
   controllers: [IpsrValueController],
-  providers: [IpsrValueService]
+  providers: [IpsrValueService],
+  exports: [IpsrValueService]
 })
 export class IpsrValueModule {}
 

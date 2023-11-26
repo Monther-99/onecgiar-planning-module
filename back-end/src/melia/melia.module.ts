@@ -12,6 +12,7 @@ import { Partner } from 'src/entities/partner.entity';
     TypeOrmModule.forFeature([Melia, MeliaTypes, Partner]), HttpModule
   ],
   controllers: [MeliaController],
-  providers: [MeliaService]
+  providers: [MeliaService],
+  exports: [MeliaService]
 })
 export class MeliaModule {}

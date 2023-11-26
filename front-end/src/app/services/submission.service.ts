@@ -25,6 +25,14 @@ export class SubmissionService {
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async excel(id: any) {
+    return firstValueFrom(
+      this.http.get('/api/submission/excel/' + id).pipe(map((d: any) => d))
+    );
+  }
+
+
   async getToc(id: any) {
     return firstValueFrom(
       this.http.get(environment.api_url+'/submission/toc/' + id).pipe(map((d: any) => d))

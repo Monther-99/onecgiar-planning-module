@@ -148,34 +148,34 @@ export class SubmitedVersionComponent implements OnInit {
 
     this.allvalueChange();
   }
-  async changeEnable(
-    partner_code: any,
-    wp_id: any,
-    item_id: any,
-    per_id: number,
-    event: any
-  ) {
-    this.changes(partner_code, wp_id, item_id, per_id, event.checked);
-    const result = await this.submissionService.saveResultValues(
-      this.params.id,
-      {
-        partner_code,
-        wp_id,
-        item_id,
-        per_id,
-        value: event.checked,
-      }
-    );
-    if (result)
-      this.socket.emit("setDataValues", {
-        id: this.params.id,
-        partner_code,
-        wp_id,
-        item_id,
-        per_id,
-        value: event.checked,
-      });
-  }
+  // async changeEnable(
+  //   partner_code: any,
+  //   wp_id: any,
+  //   item_id: any,
+  //   per_id: number,
+  //   event: any
+  // ) {
+  //   this.changes(partner_code, wp_id, item_id, per_id, event.checked);
+  //   const result = await this.submissionService.saveResultValues(
+  //     this.params.id,
+  //     {
+  //       partner_code,
+  //       wp_id,
+  //       item_id,
+  //       per_id,
+  //       value: event.checked,
+  //     }
+  //   );
+  //   if (result)
+  //     this.socket.emit("setDataValues", {
+  //       id: this.params.id,
+  //       partner_code,
+  //       wp_id,
+  //       item_id,
+  //       per_id,
+  //       value: event.checked,
+  //     });
+  // }
   wpsTotalSum = 0;
   sammaryCalc() {
     let totalsum: any = {};
@@ -291,6 +291,7 @@ export class SubmitedVersionComponent implements OnInit {
       });
     });
 
+    //from here
     Object.keys(this.perValues).forEach((partner_code) => {
       Object.keys(this.perValues[partner_code]).forEach((wp_id) => {
         Object.keys(this.perValues[partner_code][wp_id]).forEach((item_id) => {
@@ -405,7 +406,7 @@ export class SubmitedVersionComponent implements OnInit {
 
         if (!this.budgetValues[partner.code][wp.ost_wp.wp_official_code])
           this.budgetValues[partner.code][wp.ost_wp.wp_official_code] = {};
-
+        // console.log(this.budgetValues[partner.code][wp.ost_wp.wp_official_code])
         if (!this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code])
           this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code] =
             {};
@@ -421,6 +422,7 @@ export class SubmitedVersionComponent implements OnInit {
           partner.code,
           wp.ost_wp.wp_official_code
         );
+        // console.log(result)
         if (result.length) {
           if (!this.partnersData[partner.code])
             this.partnersData[partner.code] = {};
@@ -429,6 +431,8 @@ export class SubmitedVersionComponent implements OnInit {
         if (!this.perValuesSammary[wp.ost_wp.wp_official_code])
           this.perValuesSammary[wp.ost_wp.wp_official_code] = {};
         this.period.forEach((element) => {
+          // console.log('wp.ost_wp.wp_official_code ==> ', wp.ost_wp.wp_official_code)
+          // console.log('per.id ==> ', element.id)
           if (!this.perValuesSammary[wp.ost_wp.wp_official_code][element.id])
             this.perValuesSammary[wp.ost_wp.wp_official_code][element.id] =
               false;
@@ -500,8 +504,10 @@ export class SubmitedVersionComponent implements OnInit {
         wp.ost_wp.wp_official_code
       );
     }
+    // console.log(this.allData)
 
     this.savedValues = this.submission_data.consolidated;
+    console.log(this.savedValues)
 
     this.setvalues(this.savedValues.values, this.savedValues.perValues);
 
@@ -520,6 +526,7 @@ export class SubmitedVersionComponent implements OnInit {
     this.submission_data = await this.submissionService.getSubmissionsById(
       this.params.id
     );
+    console.log(this.submission_data)
     this.initiative_data = this.submission_data.initiative;
 
     this.partners = await this.phasesService.getAssignedOrgs(
@@ -536,7 +543,6 @@ export class SubmitedVersionComponent implements OnInit {
     this.initiativeId = this.params.id;
     this.officalCode = this.params.code;
 
-    console.log(this.params5);
   }
 
   ngOnDestroy(): void {

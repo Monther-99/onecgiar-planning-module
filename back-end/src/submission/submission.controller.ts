@@ -8,6 +8,7 @@ import {
   Post,
   Query,
   Request,
+  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -132,5 +133,10 @@ export class SubmissionController {
   @Get(':id')
   getbyid(@Param('id') id) {
     return this.submissionService.findSubmissionsById(id);
+  }
+
+  @Get('excel/:id')
+  excel(@Param('id') id, @Res() res: any) {
+    return this.submissionService.generateExcel(id, res)
   }
 }
