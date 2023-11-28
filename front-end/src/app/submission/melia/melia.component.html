@@ -48,6 +48,9 @@
               [value]="meliaType.id"
             >
               {{ meliaType.name }}
+              <app-popover>
+                {{ meliaType.description }}
+              </app-popover>
             </mat-option>
           </mat-select>
 
@@ -64,8 +67,9 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Methodology applied<span class="star">*</span></mat-label
-          >
+            >Methodology applied<span class="star">*</span>
+            <app-popover  id="6"></app-popover
+          ></mat-label>
         </div>
 
         <mat-form-field
@@ -103,6 +107,7 @@
               >Non-experimental</mat-radio-button
             >
           </mat-radio-group>
+          <app-popover top="0px"  id="7"></app-popover>
           <!-- <mat-error
             class="error"
             *ngIf="meliaForm.controls?.['experimental']?.errors?.['required']"
@@ -116,10 +121,9 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Tools and template (questionnaires)<span class="star"
-              >*</span
-            ></mat-label
-          >
+            >Tools and template (questionnaires)<span class="star">*</span>
+            <app-popover  id="8"></app-popover>
+          </mat-label>
         </div>
 
         <mat-form-field
@@ -149,10 +153,9 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Anticipated year of completion<span class="star"
-              >*</span
-            ></mat-label
-          >
+            >Anticipated year of completion<span class="star">*</span>
+            <app-popover  id="9"></app-popover>
+          </mat-label>
         </div>
 
         <mat-form-field
@@ -187,10 +190,9 @@
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
             >How the MELIA study or activity will inform management decisions
-            and contribute to internal learning<span class="star"
-              >*</span
-            ></mat-label
-          >
+            and contribute to internal learning<span class="star">*</span>
+            <app-popover  id="10"></app-popover>
+          </mat-label>
         </div>
 
         <mat-form-field
@@ -220,8 +222,9 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Other Initiatives<span class="star">*</span></mat-label
-          >
+            >Other Initiatives<span class="star">*</span>
+            <app-popover  id="11"></app-popover>
+          </mat-label>
         </div>
 
         <mat-form-field
@@ -282,8 +285,9 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >MELIA Study contributes to<span class="star">*</span></mat-label
-          >
+            >MELIA Study contributes to<span class="star">*</span>
+            <app-popover  id="12"></app-popover>
+          </mat-label>
         </div>
 
         <ng-select
@@ -310,8 +314,9 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Partners<span class="star">*</span></mat-label
-          >
+            >Partners<span class="star">*</span>
+            <app-popover  id="13"></app-popover>
+          </mat-label>
         </div>
 
         <ng-select
@@ -364,8 +369,9 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Geographic scope<span class="star">*</span></mat-label
-          >
+            >Geographic scope<span class="star">*</span>
+            <app-popover  id="14"></app-popover>
+          </mat-label>
         </div>
         <div class="risk-report-radio-buttons-flex-box-2">
           <mat-radio-group

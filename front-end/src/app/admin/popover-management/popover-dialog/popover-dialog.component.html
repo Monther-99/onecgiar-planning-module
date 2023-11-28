@@ -1,0 +1,55 @@
+<div class="form-dialog-header">
+  <div class="form-dialog-header__text-box">
+    <p class="form-dialog-header__text-box__text">Edit Popover</p>
+  </div>
+
+  <div class="form-dialog-header__icon-box">
+    <button class="form-dialog-header__icon-box__btn" (click)="onCloseDialog()">
+      <mat-icon class="form-dialog-header__icon-box__icon-size">
+        <img
+          class="form-dialog-header__icon-box__icon-size__icon"
+          src="../../../assets/shared-image/Vector-close.svg"
+          alt="~/Frontend/images/icon _ Vector-close"
+        />
+      </mat-icon>
+    </button>
+  </div>
+</div>
+
+<section>
+  <mat-label class="form-dialog-content__title-box__title"
+    >Description<span class="star">*</span></mat-label
+  >
+
+  <app-editor
+    [form]="form"
+    [controller]="'description'"
+    [showToolbar]="true"
+    [withoutUpload]="true"
+  ></app-editor>
+  <mat-error
+    class="error"
+    *ngIf="form.controls?.['description']?.errors?.['required']"
+    >This field is mandatory</mat-error
+  >
+
+  <div class="form-dialog-conten-box-1">
+    <div></div>
+    <div class="form-dialog-conten-button-box">
+      <div class="form-dialog-conten__button-box" align="end">
+        <div class="risk-report-button-box">
+          <button
+            class="risk-report-button-box__btn btn--animated btn--chestnut btn"
+            type="submit"
+            mat-raised-button
+            mat-button
+            color="primary"
+            (click)="submit()"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

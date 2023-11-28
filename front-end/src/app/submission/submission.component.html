@@ -197,7 +197,11 @@
         </mat-card>
 
         <mat-card>
-          <mat-card-title class="card-title-table">Consolidated</mat-card-title>
+          <mat-card-title class="card-title-table">
+            Consolidated
+            <app-popover id="1"></app-popover>
+          </mat-card-title>
+
           <mat-card-content>
             <div class="table-box mat-elevation-z8">
               <table>
@@ -262,12 +266,15 @@
           </mat-card-content>
         </mat-card>
 
-        <ng-container *ngFor="let wp of wps">
+        <ng-container *ngFor="let wp of wps; first as isFirst; last as isLast">
           <div class="flex-box-2">
             <mat-card *ngIf="allData[wp.ost_wp.wp_official_code]">
-              <mat-card-title class="card-title-table">{{
-                wp.title
-              }}</mat-card-title>
+              <mat-card-title class="card-title-table"
+                >{{ wp.title }}
+                <app-popover
+                  [id]="isFirst ? '15' : isLast ? '16' : '2'"
+                ></app-popover>
+              </mat-card-title>
               <mat-slide-toggle
                 [(ngModel)]="toggleSummaryValues[wp.ost_wp.wp_official_code]"
                 (toggleChange)="
@@ -744,16 +751,19 @@
           </div>
         </mat-card>
 
-        <ng-container *ngFor="let wp of wps">
+        <ng-container *ngFor="let wp of wps; first as isFirst; last as isLast">
           <mat-card
             *ngIf="
               partnersData[partner.code] &&
               partnersData[partner.code][wp.ost_wp.wp_official_code]
             "
           >
-            <mat-card-title class="card-title-table">{{
-              wp.title
-            }}</mat-card-title>
+            <mat-card-title class="card-title-table"
+              >{{ wp.title }}
+              <app-popover
+                [id]="isFirst ? '17' : isLast ? '18' : '3'"
+              ></app-popover>
+            </mat-card-title>
             <mat-slide-toggle
               [(ngModel)]="
                 toggleValues[partner.code][wp.ost_wp.wp_official_code]

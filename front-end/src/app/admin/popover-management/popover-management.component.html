@@ -1,0 +1,92 @@
+<div class="user-management__icon-box">
+  <mat-icon class="user-management__icon-box__icon">
+    <svg
+      class="cc stroke-color"
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="30"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="currentColor"
+        d="M24 18.714v4.8c0 .288-.192.48-.48.48h-4.8c-.288 0-.48-.192-.48-.48v-4.8c0-.288.192-.48.48-.48h1.92v-1.92h-8.16v1.92h1.92c.288 0 .48.192.48.48v4.8c0 .288-.192.48-.48.48H9.6c-.288 0-.48-.192-.48-.48v-4.8c0-.288.192-.48.48-.48h1.92v-1.92H3.36v1.92h1.92c.288 0 .48.192.48.48v4.8c0 .288-.192.48-.48.48H.48c-.288 0-.48-.192-.48-.48v-4.8c0-.288.192-.48.48-.48H2.4v-2.4c0-.288.192-.48.48-.48h8.64v-1.44h.96v1.44h8.64c.288 0 .48.192.48.48v2.4h1.92c.288 0 .48.192.48.48zm-13.92 4.32h3.84v-3.84h-3.84zm-9.12 0H4.8v-3.84H.96Zm18.24 0h3.84v-3.84H19.2ZM6.24 9.642V3.546c0-.192.096-.336.24-.432L11.76.042a.818.818 0 0 1 .48 0l5.28 3.072c.144.096.24.24.24.432v6.096c0 .144-.096.288-.24.384l-5.28 3.072q-.096.048-.24.048t-.24-.048l-5.28-3.072c-.144-.096-.24-.24-.24-.384Zm10.56-.288V4.362l-4.32 2.496v4.992zm-9.6 0l4.32 2.496V6.858L7.2 4.362Zm.48-5.808L12 5.994l4.32-2.448L12 1.05Z"
+        fill="black"
+      />
+    </svg>
+  </mat-icon>
+  <span class="user-management__icon-box__title">Popover management</span>
+</div>
+
+<div class="user-management__text-box--1">
+  <p class="user-management__text-box__title">
+    Welcome to the popover management panel, here you can manage the popover
+    table within the platform.
+  </p>
+</div>
+
+<div class="user-management__content--1">
+  <div class="user-management__container">
+    <div class="table-box mat-elevation-z8">
+      <table mat-table matSort [dataSource]="dataSource">
+        <tr
+          class="table-header"
+          mat-header-row
+          *matHeaderRowDef="columnsToDisplay"
+        ></tr>
+        <tr
+          class="table-header"
+          mat-row
+          *matRowDef="let myRowData; columns: columnsToDisplay"
+        ></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="5">
+            No results matching({{ filters?.name }})
+          </td>
+        </tr>
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.id }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let element">
+            <div [innerHTML]="element.description | trustHTML"></div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="m">
+              <button
+                class="user-management-table-icon"
+                matTooltip="Edit"
+                (click)="openDialog(element.id)"
+              >
+                <mat-icon class="user-management-table__icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="21"
+                    viewBox="0 0 22 21"
+                    fill="none"
+                  >
+                    <path
+                      d="M17.6917 7.80937L13.7958 4.13437L15.0792 2.90938C15.4306 2.57396 15.8623 2.40625 16.3744 2.40625C16.8859 2.40625 17.3174 2.57396 17.6687 2.90938L18.9521 4.13437C19.3035 4.46979 19.4868 4.87462 19.5021 5.34887C19.5174 5.82254 19.3493 6.22708 18.9979 6.5625L17.6917 7.80937ZM16.3625 9.1L6.64583 18.375H2.75V14.6562L12.4667 5.38125L16.3625 9.1Z"
+                      fill="#04030F"
+                    /></svg
+                ></mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+      </table>
+    </div>
+  </div>
+</div>

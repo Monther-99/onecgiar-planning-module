@@ -1,0 +1,29 @@
+<mat-icon
+  (click)="isOpen = !isOpen"
+  type="button"
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+>
+  help
+</mat-icon>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen"
+  [cdkConnectedOverlayBackdropClass]="'popover-backdrop'"
+  (backdropClick)="isOpen = !isOpen"
+>
+  <section>
+    <div *ngIf="id">
+      {{id}}
+      <section [innerHTML]="(popover?.description || id) | trustHTML"></section>
+      <mat-icon (click)="isOpen = !isOpen"> close </mat-icon>
+    </div>
+    <div *ngIf="!id">
+      <ng-content></ng-content>
+      <mat-icon (click)="isOpen = !isOpen"> close </mat-icon>
+    </div>
+  </section>
+</ng-template>

@@ -30,8 +30,11 @@
             *ngFor="let item of ipsrs"
           >
             <mat-label class="form-dialog-content__title-box__title"
-              >{{ item.title }} - Number</mat-label
-            >
+              >{{ item.title }} - Number
+              <app-popover>
+                {{item.description}}
+              </app-popover>
+            </mat-label>
 
             <mat-form-field
               class="form-dialog-content__field"
