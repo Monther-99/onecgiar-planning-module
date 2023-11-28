@@ -492,19 +492,19 @@ export class SubmissionService {
     let lockupArray = [];
     wps.forEach((wp: any) => {
       ConsolidatedData.push({
-        wp_title: wp.title,
+        Results: wp.title,
         wp_official_code: wp.ost_wp.wp_official_code,
-        total: this.sammaryTotal[wp.ost_wp.wp_official_code],
+        Budget_Percentage: this.sammaryTotal[wp.ost_wp.wp_official_code] + '%',
       });
     });
     ConsolidatedData.push({
-      wp_title: 'Total',
-      total: this.wpsTotalSum,
+      Results: 'Total',
+      total: this.wpsTotalSum + '%',
     });
 
     ConsolidatedData.map((d: any) => {
       period.forEach((per: any) => {
-        if (d.wp_title != 'Total')
+        if (d.Results != 'Total')
           d[per.year + '-' + per.quarter] =
             this.perValuesSammary[d.wp_official_code][per.id] == true
               ? 'X'
@@ -517,7 +517,7 @@ export class SubmissionService {
     });
 
     lockupArray = ConsolidatedData.map((d: any) => {
-      return d.wp_title;
+      return d.Results;
     });
 
     return {
@@ -534,12 +534,12 @@ export class SubmissionService {
       data = this.allData[wp.ost_wp.wp_official_code].map((d: any) => {
         return {
           id: d.id,
-          title: d?.meliaType?.name
+          WP_Results: d?.meliaType?.name
             ? d?.meliaType?.name
             : d?.ipsr?.id
             ? d?.ipsr.title + ' (' + d.value + ')'
             : d.title,
-          type: d.category,
+          Type: d.category,
           BudgetPercentage: this.toggleSummaryValues[wp.ost_wp.wp_official_code]
             ? this.sammary[wp.ost_wp.wp_official_code][d.id]
             : this.roundNumber(this.sammary[wp.ost_wp.wp_official_code][d.id]) +
@@ -553,7 +553,8 @@ export class SubmissionService {
       });
 
       data.push({
-        title: 'Subtotal',
+        WP_Results: 'Subtotal',
+        Type: null,
         BudgetPercentage: this.toggleSummaryValues[wp.ost_wp.wp_official_code]
           ? this.sammaryTotal[wp.ost_wp.wp_official_code]
           : this.roundNumber(this.sammaryTotal[wp.ost_wp.wp_official_code]) +
@@ -567,7 +568,7 @@ export class SubmissionService {
 
       data.map((d: any) => {
         period.forEach((per: any) => {
-          if (d.title != 'Subtotal')
+          if (d.WP_Results != 'Subtotal')
             d[per.year + '-' + per.quarter] =
               this.perAllValues[wp.ost_wp.wp_official_code][d.id][per.id] ==
               true
@@ -599,12 +600,12 @@ export class SubmissionService {
           (d: any) => {
             return {
               id: d.id,
-              title: d?.meliaType?.name
+              WP_Results: d?.meliaType?.name
                 ? d?.meliaType?.name
                 : d?.ipsr?.id
                 ? d?.ipsr.title + ' (' + d.value + ')'
                 : d.title,
-              category: d.category,
+              Type: d.category,
               Percentage: this.toggleValues[partner.code][
                 wp.ost_wp.wp_official_code
               ]
@@ -625,7 +626,8 @@ export class SubmissionService {
           },
         );
         data.push({
-          title: 'Subtotal',
+          WP_Results: 'Subtotal',
+          Type: null,
           Percentage: this.toggleValues[partner.code][
             wp.ost_wp.wp_official_code
           ]
@@ -638,7 +640,7 @@ export class SubmissionService {
 
         data.map((d: any) => {
           period.forEach((per: any) => {
-            if (d.title != 'Subtotal')
+            if (d.WP_Results != 'Subtotal')
               d[per?.year + '-' + per?.quarter] =
                 this.perValues[partner?.code][wp?.ost_wp?.wp_official_code][
                   d?.id
@@ -925,13 +927,25 @@ export class SubmissionService {
     const file_name = 'All-planning-.xlsx';
     //ConsolidatedData.unshift({"Consolidated":""})
     var wb = XLSX.utils.book_new();
+
+
+    ConsolidatedData.forEach(object => {
+      delete object['wp_official_code'];
+    });
+
     let ArrayOfArrays = [
       ['Consolidated'],
       Object.keys(ConsolidatedData[0]),
       ...ConsolidatedData.map((d) => Object.values(d)),
     ];
+    for(let data of allData) {
+        data.forEach(object => {
+          delete object['id'];
+        })
+    }
+
     for (let i = 0; i < lockupArray.length - 1; i++) {
-      console.log(lockupArray[i]);
+      // console.log([lockupArray[i]]);
       ArrayOfArrays.push([]);
       ArrayOfArrays.push([]);
       ArrayOfArrays.push([]);
@@ -939,13 +953,18 @@ export class SubmissionService {
       ArrayOfArrays.push(Object.keys(allData[i][0]));
       ArrayOfArrays.push(...allData[i].map((d) => Object.values(d)));
     }
-    // this.prepareAllDataExcelAdmin(ConsolidatedData);
-    //console.log(ArrayOfArrays);
     const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
-    // ws['!merges'] = merges;
 
     XLSX.utils.book_append_sheet(wb, ws, 'Summary');
     let indexPartner = 0;
+
+    for(let partner of partnersData) {
+      partner.forEach(par => {
+        par.forEach(object => {
+        delete object['id'];
+      })
+      })
+    }
     for (let partner of partners) {
       partnersData;
 
