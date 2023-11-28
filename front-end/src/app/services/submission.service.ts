@@ -32,7 +32,7 @@ export class SubmissionService {
     const data = await firstValueFrom(
       this.http.get('/api/submission/excel/' + id, { responseType: 'blob' }).pipe(map((d: Blob) => d))
     );
-    saveAs(data, 'All-Risks.xlsx');
+    saveAs(data, 'Planning.xlsx');
   }
 
 
