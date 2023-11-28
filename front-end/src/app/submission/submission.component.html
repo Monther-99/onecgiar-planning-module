@@ -11,9 +11,13 @@
         </li>
         <li>
           <a
-            routerLink="{{ initiative_data.id }}/{{
-              initiative_data.official_code
-            }}/submission"
+            [routerLink]="[
+              '/',
+              'initiative',
+              initiative_data.id,
+              initiative_data.official_code,
+              'submission'
+            ]"
             class="risk-nav-link"
             ><span class="line">&nbsp;</span
             >{{ initiative_data.official_code }}</a

@@ -6,24 +6,26 @@
           <a class="risk-nav-link" routerLink="/">Initiatives</a>
         </li>
         <li>
-          <a routerLink="''" class="risk-nav-link">>></a>
+          <a routerLink="./" class="risk-nav-link">>></a>
         </li>
         <li>
           <a
-            routerLink="{{ initiativeId }}/{{ officalCode }}"
+            [routerLink]="[
+              '/',
+              'initiative',
+              initiativeId,
+              officalCode,
+              'submission'
+            ]"
             class="risk-nav-link"
             ><span class="line">&nbsp;</span>{{ officalCode }}</a
           >
         </li>
         <li>
-          <a routerLink="''" class="risk-nav-link">/</a>
+          <a routerLink="./" class="risk-nav-link">/</a>
         </li>
         <li>
-          <a
-            routerLink="{{ initiativeId }}/{{ officalCode }}/team-members"
-            class="risk-nav-link"
-            >Team members</a
-          >
+          <a routerLink="./" class="risk-nav-link">Team members</a>
         </li>
       </ul>
     </nav>
