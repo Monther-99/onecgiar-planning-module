@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as saveAs from 'file-saver';
 import { Observable, firstValueFrom, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -26,10 +27,12 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
+
   async excel(id: any) {
-    return firstValueFrom(
-      this.http.get('/api/submission/excel/' + id).pipe(map((d: any) => d))
+    const data = await firstValueFrom(
+      this.http.get('/api/submission/excel/' + id, { responseType: 'blob' }).pipe(map((d: Blob) => d))
     );
+    saveAs(data, 'All-Risks.xlsx');
   }
 
 

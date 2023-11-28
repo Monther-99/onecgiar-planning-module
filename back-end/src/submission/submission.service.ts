@@ -468,7 +468,7 @@ export class SubmissionService {
   }
 
   prepareAllDataExcelAdmin(wps) {
-    let finaldata = [];
+    let ConsolidatedData = [];
     let merges = [
       {
         s: { c: 1, r: 0 },
@@ -480,36 +480,130 @@ export class SubmissionService {
 
       this.mapTemplateConsolidatedData(template, element);
      
-      finaldata.push(template)
+      ConsolidatedData.push(template)
 
     });
     
-    return { finaldata, merges };
+    return { ConsolidatedData, merges };
   }
 
 
-  getConsolidatedData(wps, period) {
+  getConsolidatedData(wps:any[], period:any[]) {
     let ConsolidatedData = [];
+    let lockupArray = [];
     wps.forEach((wp:any) => {
-      period.forEach((per:any) => {
         ConsolidatedData.push({
           wp_title: wp.title,
-          per: this.perValuesSammary[wp.ost_wp.wp_official_code][per.id] === true ? 'X' : '',
+          wp_official_code: wp.ost_wp.wp_official_code,
           total : this.sammaryTotal[wp.ost_wp.wp_official_code]
         })
-      });
     });
-    period.forEach((per:any) => {
-      ConsolidatedData.push({
-        wp_title : 'Total',
-        per: this.finalPeriodVal(per.id) ? 'X' : '',
-        total : this.wpsTotalSum
+    ConsolidatedData.push({
+      wp_title : 'Total',
+      total : this.wpsTotalSum
+    })
+
+    ConsolidatedData.map((d:any) => {
+      period.forEach((per:any) => {
+        if(d.wp_title != 'Total')
+          d[per.year + '-' + per.quarter] = this.perValuesSammary[d.wp_official_code][per.id] == true ? 'X' : '';
+        else
+          d[per.year + '-' + per.quarter] = this.finalPeriodVal(per.id) ? 'X' : '';
       })
     });
-    return ConsolidatedData;
+
+    lockupArray = ConsolidatedData.map((d:any) => {
+      return d.wp_title;
+    })
+
+    return {
+      ConsolidatedData: ConsolidatedData,
+      lockupArray: lockupArray
+    }
   }
 
 
+
+  getAllData(wps: any[], period: any[]) {
+    let data;
+    let newArray = [];
+
+    wps.forEach((wp:any) => {
+      data = this.allData[wp.ost_wp.wp_official_code].map((d: any) => {
+        return {
+          id: d.id,
+          title: d?.meliaType?.name ? d?.meliaType?.name : d?.ipsr?.id ? d?.ipsr.title + " (" + d.value + ")" : d.title,
+          type: d.category,
+          BudgetPercentage : this.toggleSummaryValues[wp.ost_wp.wp_official_code] ? this.sammary[wp.ost_wp.wp_official_code][d.id] : this.roundNumber(
+            this.sammary[wp.ost_wp.wp_official_code][d.id]
+          ) + '%',
+          Budget_USD: this.toggleSummaryValues[wp.ost_wp.wp_official_code] ? this.summaryBudgets[wp.ost_wp.wp_official_code][d.id] : this.roundNumber(
+            this.summaryBudgets[wp.ost_wp.wp_official_code][
+              d.id
+            ]
+          )
+        } 
+      });
+
+      data.push({
+        title: 'Subtotal',
+        BudgetPercentage: this.toggleSummaryValues[wp.ost_wp.wp_official_code] ? this.sammaryTotal[wp.ost_wp.wp_official_code] : this.roundNumber(this.sammaryTotal[wp.ost_wp.wp_official_code]) + '%',
+        Budget_USD: this.toggleSummaryValues[wp.ost_wp.wp_official_code] ? this.summaryBudgetsTotal[wp.ost_wp.wp_official_code] : this.roundNumber(this.summaryBudgetsTotal[wp.ost_wp.wp_official_code])
+      });
+
+      data.map((d:any) => {
+        period.forEach((per:any) => {
+          if(d.title != "Subtotal")
+            d[per.year + '-' + per.quarter] = this.perAllValues[wp.ost_wp.wp_official_code][d.id][per.id] == true ? 'X' : '';
+          else
+            d[per.year + '-' + per.quarter] = this.finalItemPeriodVal(wp.ost_wp.wp_official_code,per.id) ? 'X' : '';
+        })
+      });
+
+    
+
+
+      newArray.push(data)
+    });
+    return newArray
+  }
+
+  getPartnersData(wps: any[], period: any[], partners: any[]) {
+    let data;
+    let newArray = [];
+
+    partners.forEach((partner:any) => {
+      const partnersWp = [];
+      wps.forEach((wp:any) => {
+        data = this.partnersData[partner.code][wp.ost_wp.wp_official_code].map((d: any) => {
+          return {
+            id: d.id,
+            title: d?.meliaType?.name ? d?.meliaType?.name : d?.ipsr?.id ? d?.ipsr.title + " (" + d.value + ")" : d.title,
+            category: d.category,
+            Percentage : this.toggleValues[partner.code][wp.ost_wp.wp_official_code] ? this.values[partner.code][wp.ost_wp.wp_official_code][d.id] : this.displayValues[partner.code][wp.ost_wp.wp_official_code][d.id] + '%',
+            Budget: this.toggleValues[partner.code][wp.ost_wp.wp_official_code] ? this.budgetValues[partner.code][wp.ost_wp.wp_official_code][d.id] : this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code][d.id],
+          } 
+        });
+        data.push({
+          title: 'Subtotal',
+          Percentage: this.toggleValues[partner.code][wp.ost_wp.wp_official_code] ? this.totals[partner.code][wp.ost_wp.wp_official_code] : this.roundNumber(this.totals[partner.code][wp.ost_wp.wp_official_code]) + '%',
+          Budget: this.wp_budgets[partner.code][wp.ost_wp.wp_official_code]
+        });
+
+        data.map((d:any) => {
+          period.forEach((per:any) => {
+            if(d.title != "Subtotal")
+              d[per?.year + '-' + per?.quarter] = this.perValues[partner?.code][wp?.ost_wp?.wp_official_code][d?.id][per?.id] == true ? 'X' : '';
+            else
+              d[per?.year + '-' + per?.quarter] = this.finalItemPeriodVal(wp?.ost_wp.wp_official_code,per?.id) ? 'X' : '';
+          })
+        });
+        partnersWp.push(data);
+      });
+     newArray.push(partnersWp)
+    });
+    return newArray;
+  }
 
 
 
@@ -543,7 +637,7 @@ export class SubmissionService {
   params: any;
   initiative_data: any = {};
   ipsr_value_data: any;
-  async generateExcel(submissionId: any,res: Response) {
+  async generateExcel(submissionId: any) {
     this.perValues = {};
     this.perValuesSammary = {};
     this.perAllValues = {};
@@ -557,7 +651,6 @@ export class SubmissionService {
     this.summaryBudgetsTotal = {};
     this.wp_budgets = {};
     this.toggleValues = {};
-    this.budgetValues = {};
     this.budgetValues = {};
     this.displayBudgetValues = {};
     this.allData = {};
@@ -766,51 +859,52 @@ export class SubmissionService {
 
 
 
+    const {ConsolidatedData} = this.getConsolidatedData(this.wps, this.period);
+    const {lockupArray} = this.getConsolidatedData(this.wps, this.period);
 
-    const ConsolidatedData = this.getConsolidatedData(this.wps, this.period)
 
-      // console.log('fofo => ', ConsolidatedData)
+    const allData = this.getAllData(this.wps, this.period);
 
-      const file_name = 'All-Risks-.xlsx';
+    const partnersData = this.getPartnersData(this.wps, this.period, partners);
+
+
+
+    const file_name = 'All-planning-.xlsx';
 
     var wb = XLSX.utils.book_new();
-    const { finaldata, merges } = this.prepareAllDataExcelAdmin(ConsolidatedData);
-    const ws = XLSX.utils.json_to_sheet(finaldata);
-    ws['!merges'] = merges;
+    this.prepareAllDataExcelAdmin(ConsolidatedData);
+    const ws = XLSX.utils.json_to_sheet(ConsolidatedData);
+    // ws['!merges'] = merges;
 
-    XLSX.utils.book_append_sheet(wb, ws, 'plan');
+    XLSX.utils.book_append_sheet(wb, ws, 'Consolidated');
 
-    // const file = createReadStream(
-    //   join(process.cwd(), 'generated_files', file_name),
-    // );
-    const fileName = join(process.cwd(),  'sheet.xlsx')
+    await XLSX.writeFile(
+      wb,
+      join(process.cwd(), 'generated_files', file_name),
+    );
+    const file = createReadStream(
+      join(process.cwd(), 'generated_files', file_name),
+    );
 
-    await  XLSX.writeFile(wb, fileName)
-
-    return res.download(fileName)
-
-
+    setTimeout(async () => {
+      try {
+        unlink(join(process.cwd(), 'generated_files', file_name),null);
+      } catch (e) {}
+    }, 9000);
+    return new StreamableFile(file, {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      disposition: `attachment; filename="${file_name}"`,
+    });
 
 
     // return {
-    //   perValuesSammary: this.perValuesSammary,
-    //   sub: submission,
-    //   results: this.results,
-    //   wps: this.wps,
-    //   // wp_budgets: this.wp_budgets,
-    //   // budgetValues: this.budgetValues,
-    //   // toggleValues: this.toggleValues,
-    //   // displayBudgetValues: this.displayBudgetValues,
-    //   // summaryBudgets: this.summaryBudgets,
-    //   // summaryBudgetsTotal: this.summaryBudgetsTotal,
-    //   // partnersData: this.partnersData,
-    //   // perValuesSammary: this.perValuesSammary,
-    //   perValues: this.perValues,
-    //   // allData: this.allData
-    //   sammaryTotal: this.sammaryTotal,
-    //   perAllValues: this.perAllValues,
-    //   wpsTotalSum: this.wpsTotalSum,
-    //   period : this.period
+
+
+    //   ConsolidatedData: ConsolidatedData,
+    //   summary_data: allData,
+    //   lockupArray:lockupArray,
+    //   partners: partnersData
+
     // }
 
   }
@@ -1097,5 +1191,20 @@ export class SubmissionService {
       )
       .reduce((a: any, b: any) => a || b);
   }
+  roundNumber(value: number) {
+    return Math.round(value);
+  }
 
+  toggleSummaryActualValues(wp_official_code: any) {
+    this.toggleSummaryValues[wp_official_code] =
+      !this.toggleSummaryValues[wp_official_code];
+  }
+
+  finalItemPeriodVal(wp_id: any, period_id: any) {
+    let periods = this.allData[wp_id].map(
+      (item: any) => this.perAllValues[wp_id][item.id][period_id]
+    );
+    if (periods.length) return periods.reduce((a: any, b: any) => a || b);
+    else return false;
+  }
 }

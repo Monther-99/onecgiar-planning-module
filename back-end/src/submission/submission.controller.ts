@@ -18,6 +18,7 @@ import { catchError, firstValueFrom, map } from 'rxjs';
 import { AxiosError } from 'axios';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Response } from '@nestjs/common';
 @UseGuards(JwtAuthGuard)
 @Controller('submission')
 export class SubmissionController {
@@ -136,7 +137,7 @@ export class SubmissionController {
   }
 
   @Get('excel/:id')
-  excel(@Param('id') id, @Res() res: any) {
-    return this.submissionService.generateExcel(id, res)
+  async excel(@Param('id') id) {
+    return await this.submissionService.generateExcel(id)
   }
 }
