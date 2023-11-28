@@ -15,15 +15,17 @@ import { UpdatePhaseDto } from './dto/update-phase.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/role/roles.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Phases')
-// @UseGuards(AuthGuard)
 @Controller('phases')
 export class PhasesController {
   constructor(private readonly phasesService: PhasesService) {}
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Post()
   create(@Body() createPhaseDto: CreatePhaseDto) {
     return this.phasesService.create(createPhaseDto);
@@ -34,8 +36,6 @@ export class PhasesController {
     return this.phasesService.assignOrganizations(data);
   }
 
-  // @UseGuards(RolesGuard)
-  @Roles(Role.Admin)
   @Get()
   findAll(@Query() query) {
     return this.phasesService.findAll(query);
@@ -51,11 +51,15 @@ export class PhasesController {
     return this.phasesService.findOne(+id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Get('activate/:id')
   activate(@Param('id') id: string) {
     return this.phasesService.activate(+id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Get('deactivate/:id')
   deactivate(@Param('id') id: string) {
     return this.phasesService.deactivate(+id);
@@ -77,11 +81,15 @@ export class PhasesController {
     );
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePhaseDto: UpdatePhaseDto) {
     return this.phasesService.update(+id, updatePhaseDto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.phasesService.remove(+id);

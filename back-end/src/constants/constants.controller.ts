@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Patch, Put } from '@nestjs/common';
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Constants } from 'src/entities/constants.entity';
 import { Repository } from 'typeorm';
 
+@UseGuards(JwtAuthGuard)
 @Controller('constants')
 export class ConstantsController {
     constructor(

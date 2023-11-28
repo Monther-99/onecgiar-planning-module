@@ -1,8 +1,10 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AnticipatedYear } from 'src/entities/anticipated-year.entity';
 import { Brackets, Repository } from 'typeorm';
 
+@UseGuards(JwtAuthGuard)
 @Controller('anticipated-year')
 export class AnticipatedYearController {
     constructor(

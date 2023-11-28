@@ -6,9 +6,15 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { MeliaService } from './melia.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/role/roles.guard';
+import { Roles } from 'src/role/roles.decorator';
+import { Role } from 'src/role/role.enum';
 
+@UseGuards(JwtAuthGuard)
 @Controller('melia')
 export class MeliaController {
   constructor(private readonly meliaService: MeliaService) {}
@@ -28,6 +34,8 @@ export class MeliaController {
     return this.meliaService.getMeliaTypes();
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Get('import/types')
   async getImportMeliaTypes() {
     await this.meliaService.importMeliaTypes();
@@ -38,6 +46,7 @@ export class MeliaController {
   findInitiative_id(@Param('initiative_id') initiative_id) {
     return this.meliaService.findByInitiativeID(initiative_id);
   }
+
   @Get(':id')
   findOne(@Param('id') id) {
     return this.meliaService.findOne(id);
@@ -47,6 +56,7 @@ export class MeliaController {
   update(@Param('id') id: string, @Body() body) {
     return this.meliaService.update(id, body);
   }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.meliaService.remove(id);

@@ -13,8 +13,9 @@ import {
 import { InitiativesService } from './initiatives.service';
 import { ApiTags } from '@nestjs/swagger';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Initiatives')
 @Controller('initiatives')
 export class InitiativesController {
@@ -32,15 +33,12 @@ export class InitiativesController {
     return 'wp imported successfully';
   }
 
-
-
   @Get()
   async findAll() {
     return this.initiativesService.findAll();
   }
 
   @Get('full')
-  @UseGuards(AuthGuard('jwt'))
   async findAllFull(@Query() query: any, @Req() req) {
     return this.initiativesService.findAllFull(query, req);
   }
@@ -78,6 +76,7 @@ export class InitiativesController {
       roles,
     );
   }
+  
   @Delete(':initiative_id/roles/:initiative_roles_id')
   deleteRoles(
     @Param('initiative_id') initiative_id: number,

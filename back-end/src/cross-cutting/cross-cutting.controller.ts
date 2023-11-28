@@ -1,7 +1,9 @@
 
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CrossCuttingService } from './cross-cutting.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('cross-cutting')
 export class CrossCuttingController {
   constructor(private readonly CrossCuttingService: CrossCuttingService) {}

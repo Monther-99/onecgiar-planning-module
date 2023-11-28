@@ -1,14 +1,15 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
-  Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { IpsrValueService } from './ipsr-value.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('ipsr-value')
 export class IpsrValueController {
   constructor(private readonly ipsrValueService: IpsrValueService) {}

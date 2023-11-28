@@ -7,17 +7,25 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/role/roles.guard';
+import { Roles } from 'src/role/roles.decorator';
+import { Role } from 'src/role/role.enum';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('Organizations')
 @Controller('organizations')
 export class OrganizationsController {
   constructor(private readonly organizationsService: OrganizationsService) {}
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Post()
   create(@Body() createOrganizationDto: CreateOrganizationDto) {
     return this.organizationsService.create(createOrganizationDto);
@@ -58,24 +66,32 @@ export class OrganizationsController {
     return this.organizationsService.findOne(+id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Get('import/regions')
   async importRegions() {
     await this.organizationsService.importRegions();
     return 'Regions imported successfully';
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Get('import/countries')
   async importCountries() {
     await this.organizationsService.importCountries();
     return 'Countries imported successfully';
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Get('import/partners')
   async importPartners() {
     await this.organizationsService.importPartners();
     return 'Partners imported successfully';
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -84,6 +100,8 @@ export class OrganizationsController {
     return this.organizationsService.update(+id, updateOrganizationDto);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.organizationsService.remove(+id);
