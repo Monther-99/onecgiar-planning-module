@@ -20,6 +20,7 @@ import { LicenseComponent } from "./footer/license/license.component";
 import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
 import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
 import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
+import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
 
 const routes: Routes = [
   { path: "", component: InitiativesComponent },
@@ -39,6 +40,7 @@ const routes: Routes = [
       { path: "parameters-settings", component: ParametersSettingsComponent },
       { path: "melia", component: MeliaAdminComponent },
       { path: "Anticipated-year", component: AnticipatedYearComponent },
+      { path: "popover-management", component: PopoverManagementComponent },
     ],
   },
 

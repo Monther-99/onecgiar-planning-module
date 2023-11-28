@@ -72,12 +72,17 @@ import { DeleteConfirmDialogComponent } from "./delete-confirm-dialog/delete-con
 import { SearchInitComponent } from "./search-init/search-init.component";
 import { FilterVersionComponent } from "./submited-versions/filter-version/filter-version.component";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { ParametersSettingsComponent } from './admin/parameters-settings/parameters-settings.component';
-import { MeliaAdminComponent } from './admin/melia-admin/melia-admin.component';
-import { MeliaAdminDialogComponent } from './admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component';
-import { AnticipatedYearComponent } from './admin/anticipated-year/anticipated-year.component';
-import { AnticipatedYearDialogComponent } from './admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component';
-import { OrderSelectPipePipe } from './components/order-select-pipe.pipe';
+import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
+import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
+import { MeliaAdminDialogComponent } from "./admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component";
+import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
+import { AnticipatedYearDialogComponent } from "./admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component";
+import { OrderSelectPipePipe } from "./components/order-select-pipe.pipe";
+import { PopoverModule } from "./share/popover/popover.module";
+import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
+import { PopoverDialogComponent } from './admin/popover-management/popover-dialog/popover-dialog.component';
+import { EditorModule } from "./share/editor/editor.module";
+import { TrustHTMLModule } from "./share/trust-html/trust-html.module";
 
 @NgModule({
   declarations: [
@@ -124,6 +129,8 @@ import { OrderSelectPipePipe } from './components/order-select-pipe.pipe';
     AnticipatedYearComponent,
     AnticipatedYearDialogComponent,
     OrderSelectPipePipe,
+    PopoverManagementComponent,
+    PopoverDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -162,6 +169,9 @@ import { OrderSelectPipePipe } from './components/order-select-pipe.pipe';
     MatRadioModule,
     NoopAnimationsModule,
     SatPopoverModule,
+    PopoverModule,
+    EditorModule,
+    TrustHTMLModule
   ],
   providers: [
     AppSocket,
