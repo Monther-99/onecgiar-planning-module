@@ -962,8 +962,8 @@ export class SubmissionService {
       partner.forEach(par => {
         par.forEach(object => {
         delete object['id'];
-      })
-      })
+        });
+      });
     }
     for (let partner of partners) {
       partnersData;
@@ -1000,12 +1000,12 @@ export class SubmissionService {
       disposition: `attachment; filename="${file_name}"`,
     });
 
-    return {
-      ConsolidatedData: ConsolidatedData,
-      summary_data: allData,
-      lockupArray: lockupArray,
-      partners: partnersData,
-    };
+    // return {
+    //   ConsolidatedData: ConsolidatedData,
+    //   summary_data: allData,
+    //   lockupArray: lockupArray,
+    //   partners: partnersData,
+    // };
   }
 
   wpsTotalSum = 0;
