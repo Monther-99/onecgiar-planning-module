@@ -1052,8 +1052,11 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
+  
   async setIPSR(wp_official_code: any) {
     const dialogRef = this.dialog.open(IpsrComponent, {
+      height: '70%',
+   autoFocus: false,
       data: {
         wp_id: wp_official_code,
         initiative_id: this.params.id,
@@ -1074,6 +1077,8 @@ export class SubmissionComponent implements OnInit {
 
   async editMelia(id: number, wp: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
+      height: '70%',
+      autoFocus: false,
       data: {
         initiative_id: this.params.id,
         wp: wp,
