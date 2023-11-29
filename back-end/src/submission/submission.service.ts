@@ -25,6 +25,7 @@ import * as XLSX from 'xlsx-js-style';
 import { join } from 'path';
 import { createReadStream, unlink } from 'fs';
 import { Response } from 'express';
+import { merge } from 'rxjs';
 
 @Injectable()
 export class SubmissionService {
@@ -923,86 +924,245 @@ export class SubmissionService {
     const allData = this.getAllData(this.wps, this.period);
 
     const partnersData = this.getPartnersData(this.wps, this.period, partners);
-
+    const merges = [];
     const file_name = 'All-planning-.xlsx';
     //ConsolidatedData.unshift({"Consolidated":""})
     var wb = XLSX.utils.book_new();
+    function addAfterChild(data, trigChild, newAttribute, newValue) {
+      var newObj = {};
+      Object.keys(data).some(function (k) {
+        newObj[k] = data[k];
+        if (k === trigChild) {
+          newObj[newAttribute] = newValue;
+        }
+      });
 
-    ConsolidatedData.forEach((object) => {
+      return newObj;
+    }
+    let ConsolidatedDatanew = ConsolidatedData.map((d) =>
+      addAfterChild(d, 'Results', 'Type', ''),
+    );
+
+    ConsolidatedDatanew = ConsolidatedDatanew.map((d) =>
+      addAfterChild(d, 'Budget_Percentage', 'Budget', ''),
+    );
+    ConsolidatedDatanew = ConsolidatedDatanew.map((d) =>
+      addAfterChild(d, 'total', 'Budget', ''),
+    );
+
+    ConsolidatedDatanew.forEach((object) => {
       delete object['wp_official_code'];
     });
 
+    console.log(ConsolidatedDatanew);
+
     let ArrayOfArrays = [
+      // [
+      //   {
+      //     v: 'Consolidated',
+      //     s: {
+      //       alignment: {
+      //         horizontal: 'center',
+      //         vertical: 'center',
+      //         wrapText: true,
+      //       },
+      //       fill: { fgColor: { rgb: "2a2e45"} },
+      //       font: {color: { rgb: 'ffffff' }, name: 'Courier', sz: 24 },
+      //     },
+      //   },
+      // ],
       [
         {
-          v: 'Consolidated',
+          v: 'Total Initiative',
           s: {
             alignment: {
               horizontal: 'center',
               vertical: 'center',
               wrapText: true,
             },
-            fill: { fgColor: { rgb: "2a2e45"} },
-            font: {color: { rgb: 'ffffff' }, name: 'Courier', sz: 24 },
           },
         },
+        ...Object.keys(ConsolidatedDatanew[0]).map((d) => {
+          return {
+            v: d,
+            s: {
+              alignment: {
+                horizontal: 'center',
+                vertical: 'center',
+              },
+            },
+          };
+        }),
       ],
-      Object.keys(ConsolidatedData[0]),
-      ...ConsolidatedData.map((d) => Object.values(d)),
+      ...ConsolidatedDatanew.map((d) => [
+        '',
+        ...Object.values(d).map((d, index) => {
+          if (index == 0)
+            return {
+              v: d,
+              s: {
+                alignment: {
+                  horizontal: 'left',
+                  vertical: 'top',
+                  wrapText: true,
+                },
+              },
+            };
+          else
+            return {
+              v: d,
+              s: {
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center',
+                },
+              },
+            };
+        }),
+      ]),
     ];
 
+    merges.push({
+      s: { c: 0, r: 0 },
+      e: { c: 0, r: ConsolidatedDatanew.length },
+    });
+    function EmptyCols(num) {
+      return new Array(num);
+    }
     for (let data of allData) {
       data.forEach((object) => {
         delete object['id'];
       });
     }
-
+    let rowStart = ArrayOfArrays.length;
     for (let i = 0; i < lockupArray.length - 1; i++) {
-      // console.log([lockupArray[i]]);
-      ArrayOfArrays.push([]);
-      ArrayOfArrays.push([]);
-      ArrayOfArrays.push([]);
-      ArrayOfArrays.push([lockupArray[i]]);
-      ArrayOfArrays.push(Object.keys(allData[i][0]));
-      ArrayOfArrays.push(...allData[i].map((d) => Object.values(d)));
+      ArrayOfArrays.push(
+        ...allData[i].map((d) => [
+          {
+            v: lockupArray[i],
+            s: {
+              alignment: {
+                horizontal: 'center',
+                vertical: 'center',
+                wrapText: true,
+              },
+            },
+          },
+          ...Object.values(d).map((d, index) => {
+            if (index == 0)
+              return {
+                v: String(d),
+                s: {
+                  alignment: {
+                    horizontal: 'left',
+                    vertical: 'top',
+                    wrapText: true,
+                  },
+                },
+              };
+            else
+              return {
+                v: String(d),
+                s: {
+                  alignment: {
+                    horizontal: 'center',
+                    vertical: 'center',
+                  },
+                },
+              };
+            return d;
+          }),
+        ]),
+      );
+
+      merges.push({
+        s: { c: 0, r: rowStart },
+        e: { c: 0, r: ArrayOfArrays.length - 1 },
+      });
+      rowStart = ArrayOfArrays.length;
     }
     const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
 
-    const merges = [{ s: { c: 0, r: 0 }, e: { c: 4, r: 0 } }];
     ws['!merges'] = merges;
-    ws['!cols'] = [{ wpx: 500 }, { wpx: 100 }];
-    ws['!rows'] = [{ hpt: 100 }];
+    ws['!cols'] = [{ wpx: 120 }, { wpx: 320 }];
+    //ws['!rows'] = [{ hpt: 100 }];
 
     XLSX.utils.book_append_sheet(wb, ws, 'Summary');
 
     let indexPartner = 0;
 
-    // for(let partner of partnersData) {
-    //   partner.forEach(par => {
-    //     par.forEach(object => {
-    //     delete object['id'];
-    //     });
-    //   });
-    // }
-    // for (let partner of partners) {
-    //   partnersData;
+    for (let partner of partnersData) {
+      partner.forEach((par) => {
+        par.forEach((object) => {
+          delete object['id'];
+        });
+      });
+    }
+    for (let partner of partners) {
+      let mergesPartners = [];
 
-    //   let ArrayOfArrays = [];
-    //   for (let i = 0; i < lockupArray.length - 1; i++) {
-    //     ArrayOfArrays.push([]);
-    //     ArrayOfArrays.push([]);
-    //     ArrayOfArrays.push([]);
-    //     ArrayOfArrays.push([lockupArray[i]]);
-    //     ArrayOfArrays.push(Object.keys(partnersData[indexPartner][i][0]));
-    //     ArrayOfArrays.push(
-    //       ...partnersData[indexPartner][i].map((d) => Object.values(d)),
-    //     );
-    //   }
-    //   const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
+      partnersData;
 
-    //   XLSX.utils.book_append_sheet(wb, ws, partner.acronym);
-    //   indexPartner++;
-    // }
+      let ArrayOfArrays = [];
+      let rowStart = ArrayOfArrays.length;
+      for (let i = 0; i < lockupArray.length - 1; i++) {
+        ArrayOfArrays.push([
+          {
+            v: String(lockupArray[i]),
+            s: {
+              alignment: {
+                horizontal: 'center',
+                vertical: 'center',
+                wrapText: true,
+              },
+            },
+          },
+          ...Object.keys(partnersData[indexPartner][i][0]),
+        ]);
+        ArrayOfArrays.push(
+          ...partnersData[indexPartner][i].map((d) => [
+            '',
+            ...Object.values(d).map((d,index)=>{
+               
+              if(index == 0)
+              return {
+                v: String(d),
+                s: {
+                  alignment: {
+                    horizontal: 'center',
+                    vertical: 'center',
+                    wrapText: true,
+                  },
+                },
+              }
+              else{
+                return {
+                  v: String(d),
+                  s: {
+                    alignment: {
+                      horizontal: 'center',
+                      vertical: 'center',
+                    },
+                  },
+                }
+              }
+            }),
+          ]),
+        );
+        mergesPartners.push({
+          s: { c: 0, r: rowStart },
+          e: { c: 0, r: ArrayOfArrays.length - 1 },
+        });
+        rowStart = ArrayOfArrays.length;
+      }
+      const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
+
+      ws['!merges'] = mergesPartners;
+      ws['!cols'] = [{ wpx: 120 }, { wpx: 320 }];
+      XLSX.utils.book_append_sheet(wb, ws, partner.acronym);
+
+      indexPartner++;
+    }
 
     await XLSX.writeFile(
       wb,
