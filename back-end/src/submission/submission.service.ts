@@ -21,7 +21,7 @@ import { MeliaService } from 'src/melia/melia.service';
 import { CrossCuttingService } from 'src/cross-cutting/cross-cutting.service';
 import { IpsrValueService } from 'src/ipsr-value/ipsr-value.service';
 import { PhasesService } from 'src/phases/phases.service';
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
 import { join } from 'path';
 import { createReadStream, unlink } from 'fs';
 import { Response } from 'express';
@@ -928,20 +928,33 @@ export class SubmissionService {
     //ConsolidatedData.unshift({"Consolidated":""})
     var wb = XLSX.utils.book_new();
 
-
-    ConsolidatedData.forEach(object => {
+    ConsolidatedData.forEach((object) => {
       delete object['wp_official_code'];
     });
 
     let ArrayOfArrays = [
-      ['Consolidated'],
+      [
+        {
+          v: 'Consolidated',
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+            fill: { fgColor: { rgb: "2a2e45"} },
+            font: {color: { rgb: 'ffffff' }, name: 'Courier', sz: 24 },
+          },
+        },
+      ],
       Object.keys(ConsolidatedData[0]),
       ...ConsolidatedData.map((d) => Object.values(d)),
     ];
-    for(let data of allData) {
-        data.forEach(object => {
-          delete object['id'];
-        })
+
+    for (let data of allData) {
+      data.forEach((object) => {
+        delete object['id'];
+      });
     }
 
     for (let i = 0; i < lockupArray.length - 1; i++) {
@@ -955,37 +968,47 @@ export class SubmissionService {
     }
     const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
 
+    const merges = [{ s: { c: 0, r: 0 }, e: { c: 4, r: 0 } }];
+    ws['!merges'] = merges;
+    ws['!cols'] = [{ wpx: 500 }, { wpx: 100 }];
+    ws['!rows'] = [{ hpt: 100 }];
+
     XLSX.utils.book_append_sheet(wb, ws, 'Summary');
+
     let indexPartner = 0;
 
-    for(let partner of partnersData) {
-      partner.forEach(par => {
-        par.forEach(object => {
-        delete object['id'];
-        });
-      });
-    }
-    for (let partner of partners) {
-      partnersData;
+    // for(let partner of partnersData) {
+    //   partner.forEach(par => {
+    //     par.forEach(object => {
+    //     delete object['id'];
+    //     });
+    //   });
+    // }
+    // for (let partner of partners) {
+    //   partnersData;
 
-      let ArrayOfArrays = [];
-      for (let i = 0; i < lockupArray.length - 1; i++) {
-        ArrayOfArrays.push([]);
-        ArrayOfArrays.push([]);
-        ArrayOfArrays.push([]);
-        ArrayOfArrays.push([lockupArray[i]]);
-        ArrayOfArrays.push(Object.keys(partnersData[indexPartner][i][0]));
-        ArrayOfArrays.push(
-          ...partnersData[indexPartner][i].map((d) => Object.values(d)),
-        );
-      }
-      const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
+    //   let ArrayOfArrays = [];
+    //   for (let i = 0; i < lockupArray.length - 1; i++) {
+    //     ArrayOfArrays.push([]);
+    //     ArrayOfArrays.push([]);
+    //     ArrayOfArrays.push([]);
+    //     ArrayOfArrays.push([lockupArray[i]]);
+    //     ArrayOfArrays.push(Object.keys(partnersData[indexPartner][i][0]));
+    //     ArrayOfArrays.push(
+    //       ...partnersData[indexPartner][i].map((d) => Object.values(d)),
+    //     );
+    //   }
+    //   const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
 
-      XLSX.utils.book_append_sheet(wb, ws, partner.acronym);
-      indexPartner++;
-    }
+    //   XLSX.utils.book_append_sheet(wb, ws, partner.acronym);
+    //   indexPartner++;
+    // }
 
-    await XLSX.writeFile(wb, join(process.cwd(), 'generated_files', file_name));
+    await XLSX.writeFile(
+      wb,
+      join(process.cwd(), 'generated_files', file_name),
+      { cellStyles: true },
+    );
     const file = createReadStream(
       join(process.cwd(), 'generated_files', file_name),
     );
