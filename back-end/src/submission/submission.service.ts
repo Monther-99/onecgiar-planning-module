@@ -492,36 +492,34 @@ export class SubmissionService {
     let ConsolidatedData = [];
     let lockupArray = [];
     wps.forEach((wp: any) => {
-      ConsolidatedData.push({
-        Results: wp.title,
-        Type:'',
-        wp_official_code: wp.ost_wp.wp_official_code,
-        Percentage: this.sammaryTotal[wp.ost_wp.wp_official_code] + '%',
-        Budgets:this.roundNumber(
-          this.summaryBudgetsTotal[wp.ost_wp.wp_official_code]
-        )
-      });
-    });
-    ConsolidatedData.push({
-      Results: 'Total',
-      Type:'',
-      Percentage: this.roundNumber(this.wpsTotalSum) + '%',
-      total:this.roundNumber(this.summaryBudgetsAllTotal) ,
-    });
-    
-    ConsolidatedData.map((d: any) => {
+      let obj: any = {};
+      obj['Results'] = wp.title;
+      obj['Type'] = '';
+      obj['wp_official_code'] = wp.ost_wp.wp_official_code;
       period.forEach((per: any) => {
-        if (d.Results != 'Total')
-          d[per.year + '-' + per.quarter] =
-            this.perValuesSammary[d.wp_official_code][per.id] == true
-              ? 'X'
-              : '';
-        else
-          d[per.year + '-' + per.quarter] = this.finalPeriodVal(per.id)
+        obj[per.year + '-' + per.quarter] =
+          this.perValuesSammary[obj.wp_official_code][per.id] == true
             ? 'X'
             : '';
       });
+      obj['Percentage'] = this.sammaryTotal[wp.ost_wp.wp_official_code] + '%';
+      obj['Budgets'] = this.roundNumber(
+        this.summaryBudgetsTotal[wp.ost_wp.wp_official_code],
+      );
+      ConsolidatedData.push(obj);
     });
+    let obj: any = {};
+    obj['Results'] = 'Total';
+    obj['Type'] = '';
+
+    period.forEach((per: any) => {
+      obj[per.year + '-' + per.quarter] = this.finalPeriodVal(per.id)
+        ? 'X'
+        : '';
+    });
+    (obj['Percentage'] = this.roundNumber(this.wpsTotalSum) + '%'),
+      (obj['Budgets'] = this.roundNumber(this.summaryBudgetsAllTotal)),
+      ConsolidatedData.push(obj);
 
     lockupArray = ConsolidatedData.map((d: any) => {
       return d.Results;
@@ -539,57 +537,57 @@ export class SubmissionService {
 
     wps.forEach((wp: any) => {
       data = this.allData[wp.ost_wp.wp_official_code].map((d: any) => {
-        return {
-          id: d.id,
-          WP_Results: d?.meliaType?.name
-            ? d?.meliaType?.name
-            : d?.ipsr?.id
-            ? d?.ipsr.title + ' (' + d.value + ')'
-            : d.title,
-          Type: d.category,
-          BudgetPercentage: this.toggleSummaryValues[wp.ost_wp.wp_official_code]
-            ? this.sammary[wp.ost_wp.wp_official_code][d.id]
-            : this.roundNumber(this.sammary[wp.ost_wp.wp_official_code][d.id]) +
-              '%',
-          Budget_USD: this.toggleSummaryValues[wp.ost_wp.wp_official_code]
-            ? this.summaryBudgets[wp.ost_wp.wp_official_code][d.id]
-            : this.roundNumber(
-                this.summaryBudgets[wp.ost_wp.wp_official_code][d.id],
-              ),
-        };
-      });
-
-      data.push({
-        WP_Results: 'Subtotal',
-        Type: null,
-        BudgetPercentage: this.toggleSummaryValues[wp.ost_wp.wp_official_code]
-          ? this.sammaryTotal[wp.ost_wp.wp_official_code]
-          : this.roundNumber(this.sammaryTotal[wp.ost_wp.wp_official_code]) +
-            '%',
-        Budget_USD: this.toggleSummaryValues[wp.ost_wp.wp_official_code]
-          ? this.summaryBudgetsTotal[wp.ost_wp.wp_official_code]
-          : this.roundNumber(
-              this.summaryBudgetsTotal[wp.ost_wp.wp_official_code],
-            ),
-      });
-
-      data.map((d: any) => {
+        let obj: any = {};
+        obj['id'] = d.id;
+        obj['WP_Results'] = d?.meliaType?.name
+          ? d?.meliaType?.name
+          : d?.ipsr?.id
+          ? d?.ipsr.title + ' (' + d.value + ')'
+          : d.title;
+        obj['Type'] = d.category;
         period.forEach((per: any) => {
-          if (d.WP_Results != 'Subtotal')
-            d[per.year + '-' + per.quarter] =
-              this.perAllValues[wp.ost_wp.wp_official_code][d.id][per.id] ==
-              true
-                ? 'X'
-                : '';
-          else
-            d[per.year + '-' + per.quarter] = this.finalItemPeriodVal(
-              wp.ost_wp.wp_official_code,
-              per.id,
-            )
+          obj[per.year + '-' + per.quarter] =
+            this.perAllValues[wp.ost_wp.wp_official_code][obj.id][per.id] ==
+            true
               ? 'X'
               : '';
         });
+        obj['BudgetPercentage'] = this.toggleSummaryValues[
+          wp.ost_wp.wp_official_code
+        ]
+          ? this.sammary[wp.ost_wp.wp_official_code][d.id]
+          : this.roundNumber(this.sammary[wp.ost_wp.wp_official_code][d.id]) +
+            '%';
+        obj['Budget_USD'] = this.toggleSummaryValues[wp.ost_wp.wp_official_code]
+          ? this.summaryBudgets[wp.ost_wp.wp_official_code][d.id]
+          : this.roundNumber(
+              this.summaryBudgets[wp.ost_wp.wp_official_code][d.id],
+            );
+        return obj;
       });
+      let obj: any = {};
+      obj['WP_Results'] = 'Subtotal';
+      obj['Type'] = '';
+      period.forEach((per: any) => {
+        obj[per.year + '-' + per.quarter] = this.finalItemPeriodVal(
+          wp.ost_wp.wp_official_code,
+          per.id,
+        )
+          ? 'X'
+          : '';
+      });
+      obj['BudgetPercentage'] = this.toggleSummaryValues[
+        wp.ost_wp.wp_official_code
+      ]
+        ? this.sammaryTotal[wp.ost_wp.wp_official_code]
+        : this.roundNumber(this.sammaryTotal[wp.ost_wp.wp_official_code]) + '%';
+
+      obj['Budget_USD'] = this.toggleSummaryValues[wp.ost_wp.wp_official_code]
+        ? this.summaryBudgetsTotal[wp.ost_wp.wp_official_code]
+        : this.roundNumber(
+            this.summaryBudgetsTotal[wp.ost_wp.wp_official_code],
+          );
+      data.push(obj);
 
       newArray.push(data);
     });
@@ -605,64 +603,66 @@ export class SubmissionService {
       wps.forEach((wp: any) => {
         data = this.partnersData[partner.code][wp.ost_wp.wp_official_code].map(
           (d: any) => {
-            return {
-              id: d.id,
-              WP_Results: d?.meliaType?.name
-                ? d?.meliaType?.name
-                : d?.ipsr?.id
-                ? d?.ipsr.title + ' (' + d.value + ')'
-                : d.title,
-              Type: d.category,
-              Percentage: this.toggleValues[partner.code][
-                wp.ost_wp.wp_official_code
-              ]
-                ? this.values[partner.code][wp.ost_wp.wp_official_code][d.id]
-                : this.displayValues[partner.code][wp.ost_wp.wp_official_code][
-                    d.id
-                  ] + '%',
-              Budget: this.toggleValues[partner.code][
-                wp.ost_wp.wp_official_code
-              ]
-                ? this.budgetValues[partner.code][wp.ost_wp.wp_official_code][
-                    d.id
-                  ]
-                : this.displayBudgetValues[partner.code][
-                    wp.ost_wp.wp_official_code
-                  ][d.id],
-            };
-          },
-        );
-        data.push({
-          WP_Results: 'Subtotal',
-          Type: null,
-          Percentage: this.toggleValues[partner.code][
-            wp.ost_wp.wp_official_code
-          ]
-            ? this.totals[partner.code][wp.ost_wp.wp_official_code]
-            : this.roundNumber(
-                this.totals[partner.code][wp.ost_wp.wp_official_code],
-              ) + '%',
-          Budget: this.wp_budgets[partner.code][wp.ost_wp.wp_official_code],
-        });
-
-        data.map((d: any) => {
-          period.forEach((per: any) => {
-            if (d.WP_Results != 'Subtotal')
-              d[per?.year + '-' + per?.quarter] =
+            let obj: any = {};
+            obj['id'] = d.id;
+            obj['WP_Results'] = d?.meliaType?.name
+              ? d?.meliaType?.name
+              : d?.ipsr?.id
+              ? d?.ipsr.title + ' (' + d.value + ')'
+              : d.title;
+            obj['Type'] = d.category;
+            period.forEach((per: any) => {
+              obj[per?.year + '-' + per?.quarter] =
                 this.perValues[partner?.code][wp?.ost_wp?.wp_official_code][
-                  d?.id
+                  obj?.id
                 ][per?.id] == true
                   ? 'X'
                   : '';
-            else
-              d[per?.year + '-' + per?.quarter] = this.finalItemPeriodVal(
-                wp?.ost_wp.wp_official_code,
-                per?.id,
-              )
-                ? 'X'
-                : '';
-          });
+            });
+            obj['Percentage'] = this.toggleValues[partner.code][
+              wp.ost_wp.wp_official_code
+            ]
+              ? this.values[partner.code][wp.ost_wp.wp_official_code][d.id]
+              : this.displayValues[partner.code][wp.ost_wp.wp_official_code][
+                  d.id
+                ] + '%';
+
+            obj['Budget'] = this.toggleValues[partner.code][
+              wp.ost_wp.wp_official_code
+            ]
+              ? this.budgetValues[partner.code][wp.ost_wp.wp_official_code][
+                  d.id
+                ]
+              : this.displayBudgetValues[partner.code][
+                  wp.ost_wp.wp_official_code
+                ][d.id];
+
+            return obj;
+          },
+        );
+
+        let obj = {};
+
+        obj['WP_Results'] = 'Subtotal';
+        obj['Type'] = '';
+        period.forEach((per: any) => {
+          obj[per?.year + '-' + per?.quarter] = this.finalItemPeriodVal(
+            wp?.ost_wp.wp_official_code,
+            per?.id,
+          )
+            ? 'X'
+            : '';
         });
+        obj['Percentage'] = this.toggleValues[partner.code][
+          wp.ost_wp.wp_official_code
+        ]
+          ? this.totals[partner.code][wp.ost_wp.wp_official_code]
+          : this.roundNumber(
+              this.totals[partner.code][wp.ost_wp.wp_official_code],
+            ) + '%';
+
+        obj['Budget'] =
+          this.wp_budgets[partner.code][wp.ost_wp.wp_official_code];
         partnersWp.push(data);
       });
       newArray.push(partnersWp);
@@ -701,6 +701,152 @@ export class SubmissionService {
   params: any;
   initiative_data: any = {};
   ipsr_value_data: any;
+
+  getHeader(submission, title) {
+    let period_ = [];
+    this.period.forEach((period) => {
+      period_.push({
+        v: period.year + '-' + period.quarter,
+        s: {
+          alignment: {
+            horizontal: 'center',
+            vertical: 'center',
+            wrapText: true,
+          },
+        },
+      });
+    });
+
+    return [
+      [
+        {
+          v:
+            submission?.initiative.official_code +
+            ' - ' +
+            submission?.initiative.name,
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          },
+        },
+      ],
+      [
+        {
+          v: title,
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          },
+        },
+      ],
+      [
+        {
+          v: 'Work Packages (WP)/Results',
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          },
+        },
+        'Work Packages (WP)/Results',
+        ...this.period.map((d, index) => {
+          if (index == 0)
+            return {
+              v: this.period[0].year,
+              s: {
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center',
+                  wrapText: true,
+                },
+              },
+            };
+          else return 'year';
+        }),
+      ],
+      [
+        'Work Packages (WP)/Results',
+        'Work Packages (WP)/Results',
+        {
+          v: 'Type',
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          },
+        },
+        ...this.period.map((d, index) => {
+          return {
+            v: 'Implementation Timeline',
+            s: {
+              alignment: {
+                horizontal: 'center',
+                vertical: 'center',
+                wrapText: true,
+              },
+            },
+          };
+        }),
+        {
+          v: 'Budget',
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          },
+        },
+        'Budget',
+      ],
+      [
+        'Work Packages (WP)/Results',
+        'Work Packages (WP)/Results',
+        'Type',
+        ...this.period.map((d, index) => {
+          return 'Implementation Timeline';
+        }),
+        'Budget',
+        'Budget',
+      ],
+      [
+        'Work Packages (WP)/Results',
+        'Work Packages (WP)/Results',
+        'Type',
+        ...period_,
+        {
+          v: '%',
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          },
+        },
+        {
+          v: '$',
+          s: {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          },
+        },
+      ],
+    ];
+  }
   async generateExcel(submissionId: any) {
     this.perValues = {};
     this.perValuesSammary = {};
@@ -935,41 +1081,48 @@ export class SubmissionService {
     const file_name = 'All-planning-.xlsx';
     //ConsolidatedData.unshift({"Consolidated":""})
     var wb = XLSX.utils.book_new();
-    function addAfterChild(data, trigChild, newAttribute, newValue) {
-      var newObj = {};
-      Object.keys(data).some(function (k) {
-        newObj[k] = data[k];
-        if (k === trigChild) {
-          newObj[newAttribute] = newValue;
-        }
-      });
-
-      return newObj;
-    }
-
 
     ConsolidatedData.forEach((object) => {
       delete object['wp_official_code'];
     });
 
-    console.log(ConsolidatedData);
+    merges.push({
+      s: { c: 0, r: 0 },
+      e: { c: 3 + this.period.length, r: 0 },
+    });
+    merges.push({
+      s: { c: 0, r: 1 },
+      e: { c: 3 + this.period.length, r: 1 },
+    });
+    merges.push({
+      s: { c: 0, r: 2 },
+      e: { c: 1, r: 5 },
+    });
+    merges.push({
+      s: { c: 2, r: 3 },
+      e: { c: 2, r: 5 },
+    });
+    merges.push({
+      s: { c: 2, r: 2 },
+      e: { c: 4 + this.period.length, r: 2 },
+    });
+    merges.push({
+      s: { c: 3, r: 3 },
+      e: { c: 2 + this.period.length, r: 4 },
+    });
+    merges.push({
+      s: { c: 2 + this.period.length + 1, r: 3 },
+      e: { c: 2 + this.period.length + 2, r: 4 },
+    });
+
+    // const ws = XLSX.utils.aoa_to_sheet(header);
+    // ws['!merges'] = merges;
+
+    // XLSX.utils.book_append_sheet(wb, ws, 'Summary');
 
     let ArrayOfArrays = [
-      // [
-      //   {
-      //     v: 'Consolidated',
-      //     s: {
-      //       alignment: {
-      //         horizontal: 'center',
-      //         vertical: 'center',
-      //         wrapText: true,
-      //       },
-      //       fill: { fgColor: { rgb: "2a2e45"} },
-      //       font: {color: { rgb: 'ffffff' }, name: 'Courier', sz: 24 },
-      //     },
-      //   },
-      // ],
-      [
+      ...this.getHeader(submission, 'CONSOLIDATED'),
+      ...ConsolidatedData.map((d) => [
         {
           v: 'Total Initiative',
           s: {
@@ -980,20 +1133,6 @@ export class SubmissionService {
             },
           },
         },
-        ...Object.keys(ConsolidatedData[0]).map((d) => {
-          return {
-            v: d,
-            s: {
-              alignment: {
-                horizontal: 'center',
-                vertical: 'center',
-              },
-            },
-          };
-        }),
-      ],
-      ...ConsolidatedData.map((d) => [
-        '',
         ...Object.values(d).map((d, index) => {
           if (index == 0)
             return {
@@ -1021,12 +1160,12 @@ export class SubmissionService {
     ];
 
     merges.push({
-      s: { c: 0, r: 0 },
-      e: { c: 0, r: ConsolidatedData.length },
+      s: { c: 0, r: 6 },
+      e: { c: 0, r: 6 + ConsolidatedData.length - 1 },
     });
     merges.push({
-      s: { c: 1, r: ConsolidatedData.length },
-      e: { c: 2, r: ConsolidatedData.length },
+      s: { c: 1, r: 6 + ConsolidatedData.length - 1 },
+      e: { c: 2, r: 6 + ConsolidatedData.length - 1 },
     });
     for (let data of allData) {
       data.forEach((object) => {
@@ -1105,36 +1244,9 @@ export class SubmissionService {
     for (let partner of partners) {
       let mergesPartners = [];
 
-      partnersData;
-
-      let ArrayOfArrays = [];
+      let ArrayOfArrays = this.getHeader(submission, partner.acronym);
       let rowStart = ArrayOfArrays.length;
       for (let i = 0; i < lockupArray.length - 1; i++) {
-        if(i==0)
-        ArrayOfArrays.push([
-          {
-            v: String(lockupArray[i]),
-            s: {
-              alignment: {
-                horizontal: 'center',
-                vertical: 'center',
-                wrapText: true,
-              },
-            },
-          },
-          ...Object.keys(partnersData[indexPartner][i][0]).map(d=>{
-            return {
-              v: String(d),
-              s: {
-                alignment: {
-                  horizontal: 'center',
-                  vertical: 'center',
-                  wrapText: true,
-                },
-              },
-            }
-          })
-        ]);
         ArrayOfArrays.push(
           ...partnersData[indexPartner][i].map((d) => [
             {
@@ -1147,20 +1259,19 @@ export class SubmissionService {
                 },
               },
             },
-            ...Object.values(d).map((d,index)=>{
-               
-              if(index == 0)
-              return {
-                v: String(d),
-                s: {
-                  alignment: {
-                    horizontal: 'top',
-                    vertical: 'left',
-                    wrapText: true,
+            ...Object.values(d).map((d, index) => {
+              if (index == 0)
+                return {
+                  v: String(d),
+                  s: {
+                    alignment: {
+                      horizontal: 'top',
+                      vertical: 'left',
+                      wrapText: true,
+                    },
                   },
-                },
-              }
-              else{
+                };
+              else {
                 return {
                   v: String(d),
                   s: {
@@ -1169,11 +1280,12 @@ export class SubmissionService {
                       vertical: 'center',
                     },
                   },
-                }
+                };
               }
             }),
           ]),
         );
+
         mergesPartners.push({
           s: { c: 0, r: rowStart },
           e: { c: 0, r: ArrayOfArrays.length - 1 },
@@ -1182,8 +1294,39 @@ export class SubmissionService {
           s: { c: 1, r: ArrayOfArrays.length - 1 },
           e: { c: 2, r: ArrayOfArrays.length - 1 },
         });
+
         rowStart = ArrayOfArrays.length;
       }
+
+      mergesPartners.push({
+        s: { c: 0, r: 0 },
+        e: { c: 3 + this.period.length, r: 0 },
+      });
+      mergesPartners.push({
+        s: { c: 0, r: 1 },
+        e: { c: 3 + this.period.length, r: 1 },
+      });
+      mergesPartners.push({
+        s: { c: 0, r: 2 },
+        e: { c: 1, r: 5 },
+      });
+      mergesPartners.push({
+        s: { c: 2, r: 3 },
+        e: { c: 2, r: 5 },
+      });
+      mergesPartners.push({
+        s: { c: 2, r: 2 },
+        e: { c: 4 + this.period.length, r: 2 },
+      });
+      mergesPartners.push({
+        s: { c: 3, r: 3 },
+        e: { c: 2 + this.period.length, r: 4 },
+      });
+      mergesPartners.push({
+        s: { c: 2 + this.period.length + 1, r: 3 },
+        e: { c: 2 + this.period.length + 2, r: 4 },
+      });
+
       const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
 
       ws['!merges'] = mergesPartners;
@@ -1246,7 +1389,7 @@ export class SubmissionService {
       });
     });
     this.summaryBudgetsAllTotal = Object.values(
-      this.summaryBudgetsTotal
+      this.summaryBudgetsTotal,
     ).reduce((a: any, b: any) => a + b);
 
     Object.keys(this.summaryBudgets).forEach((wp_id) => {
