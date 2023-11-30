@@ -35,6 +35,13 @@ export class SubmissionService {
     saveAs(data, 'Planning.xlsx');
   }
 
+  async excelCurrent(id: any) {
+    const data = await firstValueFrom(
+      this.http.get('/api/submission/excelCurrent/' + id, { responseType: 'blob' }).pipe(map((d: Blob) => d))
+    );
+    saveAs(data, 'Planning.xlsx');
+  }
+
 
   async getToc(id: any) {
     return firstValueFrom(

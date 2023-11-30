@@ -9,5 +9,6 @@ import { ResultPeriodValues } from 'src/entities/resultPeriodValues.entity';
   imports: [TypeOrmModule.forFeature([Period, ResultPeriodValues])],
   controllers: [PeriodsController],
   providers: [PeriodsService],
+  exports: [PeriodsService]
 })
 export class PeriodsModule {}

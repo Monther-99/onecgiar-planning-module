@@ -20,6 +20,8 @@ import { MeliaModule } from 'src/melia/melia.module';
 import { CrossCuttingModule } from 'src/cross-cutting/cross-cutting.module';
 import { IpsrValueModule } from 'src/ipsr-value/ipsr-value.module';
 import { PhasesModule } from 'src/phases/phases.module';
+import { InitiativesModule } from 'src/initiatives/initiatives.module';
+import { PeriodsModule } from 'src/periods/periods.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -40,7 +42,9 @@ import { PhasesModule } from 'src/phases/phases.module';
     MeliaModule,
     CrossCuttingModule,
     IpsrValueModule,
-    PhasesModule
+    PhasesModule,
+    InitiativesModule,
+    PeriodsModule
   ],
   controllers: [SubmissionController],
   providers: [SubmissionService],

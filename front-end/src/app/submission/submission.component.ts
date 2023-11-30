@@ -504,6 +504,7 @@ export class SubmissionComponent implements OnInit {
   initiative_data: any = {};
   ipsr_value_data: any;
   phase: any;
+
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -548,7 +549,7 @@ export class SubmissionComponent implements OnInit {
     );
 
     this.wp_budgets = await this.submissionService.getWpBudgets(this.params.id);
-
+console.log(this.wp_budgets)
     // const indicators_data = this.results
     //   .filter(
     //     (d: any) =>
@@ -778,6 +779,7 @@ export class SubmissionComponent implements OnInit {
   InitiativeUsers: any;
   leaders: any[] = [];
   organizationSelected: any = "";
+
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
@@ -834,6 +836,7 @@ export class SubmissionComponent implements OnInit {
 
     this.organizationSelected = this.partners[0];
     this.InitData();
+
     this.period = await this.submissionService.getPeriods(this.phase.id);
     this.socket.connect();
     this.socket.on("setDataValues-" + this.params.id, (data: any) => {
@@ -1256,5 +1259,8 @@ export class SubmissionComponent implements OnInit {
       valid: valid,
       message: message,
     };
+  }
+  async excel() {
+     await this.submissionService.excelCurrent(this.params.id);
   }
 }

@@ -331,7 +331,6 @@ export class SubmitedVersionComponent implements OnInit {
     this.wp_budgets = {};
     this.toggleValues = {};
     this.budgetValues = {};
-    this.budgetValues = {};
     this.displayBudgetValues = {};
     this.allData = {};
     this.values = {};

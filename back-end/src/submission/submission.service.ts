@@ -26,7 +26,8 @@ import { join } from 'path';
 import { createReadStream, unlink } from 'fs';
 import { Response } from 'express';
 import { merge } from 'rxjs';
-
+import { InitiativesService } from 'src/initiatives/initiatives.service';
+import { PeriodsService } from 'src/periods/periods.service';
 @Injectable()
 export class SubmissionService {
   constructor(
@@ -52,6 +53,8 @@ export class SubmissionService {
     private CrossCuttingService: CrossCuttingService,
     private IpsrValueService: IpsrValueService,
     private PhasesService: PhasesService,
+    private initService: InitiativesService,
+    private periodService: PeriodsService
   ) {}
   sort(query) {
     if (query?.sort) {
@@ -701,7 +704,6 @@ export class SubmissionService {
   results: any;
   loading = false;
   params: any;
-  initiative_data: any = {};
   ipsr_value_data: any;
 
   getHeader(submission, title) {
@@ -869,7 +871,10 @@ export class SubmissionService {
       ],
     ];
   }
-  async generateExcel(submissionId: any) {
+  savedValues: any = null;
+  noValuesAssigned: any = {};
+
+  async generateExcel(submissionId: any, initId:any, tocData: any) {
     this.perValues = {};
     this.perValuesSammary = {};
     this.perAllValues = {};
@@ -889,6 +894,7 @@ export class SubmissionService {
     this.values = {};
     this.displayValues = {};
     this.totals = {};
+    this.noValuesAssigned = {};
 
     let submission: any = await this.findSubmissionsById(submissionId);
 
@@ -897,24 +903,59 @@ export class SubmissionService {
     //     return d.category == "WP" && !d.group
     //   }).sort((a: any, b: any) => a.title.localeCompare(b.title));
     // });
+    let melia_data;
+    let cross_data;
 
-    this.results = submission.toc_data;
+    let ipsr_value_data;
+    let partners;
 
-    this.period = submission.phase.periods;
 
-    this.wp_budgets = await this.getSubmissionBudgets(submissionId);
+    if(submissionId != null){
+      this.results = submission.toc_data;
+      this.period = submission.phase.periods;
+      this.wp_budgets = await this.getSubmissionBudgets(submissionId);
+       melia_data = await this.meliaService.findByInitiativeID(
+        submission?.initiative?.id,
+      );
+       cross_data = await this.CrossCuttingService.findByInitiativeID(
+        submission?.initiative?.id,
+      );
+      ipsr_value_data = await this.IpsrValueService.findByInitiativeID(
+        submission?.initiative?.id,
+      );
+       partners = await this.PhasesService.fetchAssignedOrganizations(
+        submission?.phase?.id,
+        submission?.initiative?.id,
+      );
+    }
+    else {
+      this.savedValues = await this.getSaved(initId)
+      this.phase = await this.PhasesService.findActivePhase();
 
-    const melia_data = await this.meliaService.findByInitiativeID(
-      submission?.initiative?.id,
-    );
+       partners = await this.PhasesService.fetchAssignedOrganizations(this.phase.id,initId);
+      if (partners.length < 1) {
+        partners = await this.organizationRepository.find();
+      }
 
-    const cross_data = await this.CrossCuttingService.findByInitiativeID(
-      submission?.initiative?.id,
-    );
+      this.initiative_data = await this.initService.findOne(initId);
 
-    const ipsr_value_data = await this.IpsrValueService.findByInitiativeID(
-      submission?.initiative?.id,
-    );
+      this.period = await this.periodService.findByPhaseId(this.phase.id);
+
+
+
+      this.results = await tocData;
+
+       melia_data = await this.meliaService.findByInitiativeID(
+        initId
+      );
+
+       ipsr_value_data = await this.IpsrValueService.findByInitiativeID(initId);
+  
+       cross_data = await this.CrossCuttingService.findByInitiativeID(initId)
+
+      this.wp_budgets = await this.getWpsBudgets(initId);
+
+    }
 
     cross_data.map((d: any) => {
       d['category'] = 'CROSS';
@@ -957,10 +998,10 @@ export class SubmissionService {
       ost_wp: { wp_official_code: 'IPSR' },
     });
 
-    let partners = await this.PhasesService.fetchAssignedOrganizations(
-      submission?.phase?.id,
-      submission?.initiative?.id,
-    );
+    // let partners = await this.PhasesService.fetchAssignedOrganizations(
+    //   submission?.phase?.id,
+    //   submission?.initiative?.id,
+    // );
     if (partners.length < 1)
       partners = await this.organizationRepository.find();
 
@@ -970,7 +1011,8 @@ export class SubmissionService {
 
       if (!this.displayBudgetValues[partner.code])
         this.displayBudgetValues[partner.code] = {};
-
+        if (!this.noValuesAssigned[partner.code])
+        this.noValuesAssigned[partner.code] = {};
       for (let wp of this.wps) {
         if (!this.wp_budgets[partner.code]) this.wp_budgets[partner.code] = {};
         if (!this.wp_budgets[partner.code][wp.ost_wp.wp_official_code])
@@ -978,6 +1020,9 @@ export class SubmissionService {
 
         if (!this.toggleValues[partner.code])
           this.toggleValues[partner.code] = {};
+
+          if (!this.noValuesAssigned[partner.code][wp.ost_wp.wp_official_code])
+          this.noValuesAssigned[partner.code][wp.ost_wp.wp_official_code] = {};
 
         if (!this.toggleValues[partner.code][wp.ost_wp.wp_official_code])
           this.toggleValues[partner.code][wp.ost_wp.wp_official_code] = false;
@@ -1036,6 +1081,9 @@ export class SubmissionService {
           this.displayBudgetValues[partner.code][wp.ost_wp.wp_official_code][
             item.id
           ] = null;
+          this.noValuesAssigned[partner.code][wp.ost_wp.wp_official_code][
+            item.id
+          ] = false;
 
           if (!this.summaryBudgets[wp.ost_wp.wp_official_code][item.id])
             this.summaryBudgets[wp.ost_wp.wp_official_code][item.id] = 0;
@@ -1084,11 +1132,21 @@ export class SubmissionService {
         wp.ost_wp.wp_official_code,
       );
     }
+    if(submissionId != null) {
+      this.setvalues(
+        submission.consolidated.values,
+        submission.consolidated.perValues,
+      );
+    } else {
+      this.setvaluesCurrent(
+        this.savedValues.values,
+        this.savedValues.perValues,
+        this.savedValues.no_budget
+      );
+    }
 
-    this.setvalues(
-      submission.consolidated.values,
-      submission.consolidated.perValues,
-    );
+
+ 
 
     const { ConsolidatedData } = this.getConsolidatedData(
       this.wps,
@@ -1750,5 +1808,79 @@ export class SubmissionService {
     );
     if (periods.length) return periods.reduce((a: any, b: any) => a || b);
     else return false;
+  }
+  phase: any;
+  initiative_data: any = {};
+
+
+  setvaluesCurrent(valuesToSet: any, perValuesToSet: any, noBudget: any) {
+    if (valuesToSet != null)
+      Object.keys(this.values).forEach((code) => {
+        Object.keys(this.values[code]).forEach((wp_id) => {
+          Object.keys(this.values[code][wp_id]).forEach((item_id) => {
+            if (
+              valuesToSet[code] &&
+              valuesToSet[code][wp_id] &&
+              valuesToSet[code][wp_id][item_id]
+            ) {
+              let percentValue = +valuesToSet[code][wp_id][item_id];
+              let budgetValue = this.budgetValue(
+                percentValue,
+                this.wp_budgets[code][wp_id]
+              );
+              this.values[code][wp_id][item_id] = percentValue;
+              this.displayValues[code][wp_id][item_id] =
+                Math.round(percentValue);
+              this.budgetValues[code][wp_id][item_id] = budgetValue;
+              this.displayBudgetValues[code][wp_id][item_id] =
+                Math.round(budgetValue);
+            } else {
+              this.values[code][wp_id][item_id] = 0;
+              this.displayValues[code][wp_id][item_id] = 0;
+              this.budgetValues[code][wp_id][item_id] = 0;
+              this.displayBudgetValues[code][wp_id][item_id] = 0;
+            }
+            // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
+          });
+        });
+      });
+    if (perValuesToSet != null)
+      Object.keys(this.perValues).forEach((code) => {
+        Object.keys(this.perValues[code]).forEach((wp_id) => {
+          Object.keys(this.perValues[code][wp_id]).forEach((item_id) => {
+            Object.keys(this.perValues[code][wp_id][item_id]).forEach(
+              (per_id) => {
+                if (
+                  perValuesToSet[code] &&
+                  perValuesToSet[code][wp_id] &&
+                  perValuesToSet[code][wp_id][item_id]
+                )
+                  this.perValues[code][wp_id][item_id][per_id] =
+                    perValuesToSet[code][wp_id][item_id][per_id];
+                // Sum(percentage from each output from each center for each WP) / Sum(total percentage for each WP for each center)
+              }
+            );
+          });
+        });
+      });
+    if (noBudget != null)
+      Object.keys(this.noValuesAssigned).forEach((code) => {
+        Object.keys(this.noValuesAssigned[code]).forEach((wp_id) => {
+          Object.keys(this.noValuesAssigned[code][wp_id]).forEach((item_id) => {
+            if (
+              noBudget[code] &&
+              noBudget[code][wp_id] &&
+              noBudget[code][wp_id][item_id]
+            ) {
+              this.noValuesAssigned[code][wp_id][item_id] =
+                noBudget[code][wp_id][item_id];
+            } else {
+              this.noValuesAssigned[code][wp_id][item_id] = false;
+            }
+          });
+        });
+      });
+    this.sammaryCalc();
+    this.allvalueChange();
   }
 }
