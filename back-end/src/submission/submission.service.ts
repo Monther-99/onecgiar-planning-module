@@ -494,15 +494,21 @@ export class SubmissionService {
     wps.forEach((wp: any) => {
       ConsolidatedData.push({
         Results: wp.title,
+        Type:'',
         wp_official_code: wp.ost_wp.wp_official_code,
-        Budget_Percentage: this.sammaryTotal[wp.ost_wp.wp_official_code] + '%',
+        Percentage: this.sammaryTotal[wp.ost_wp.wp_official_code] + '%',
+        Budgets:this.roundNumber(
+          this.summaryBudgetsTotal[wp.ost_wp.wp_official_code]
+        )
       });
     });
     ConsolidatedData.push({
       Results: 'Total',
-      total: this.wpsTotalSum + '%',
+      Type:'',
+      Percentage: this.roundNumber(this.wpsTotalSum) + '%',
+      total:this.roundNumber(this.summaryBudgetsAllTotal) ,
     });
-
+    
     ConsolidatedData.map((d: any) => {
       period.forEach((per: any) => {
         if (d.Results != 'Total')
@@ -677,6 +683,7 @@ export class SubmissionService {
   displayValues: any = {};
   summaryBudgets: any = {};
   summaryBudgetsTotal: any = {};
+  summaryBudgetsAllTotal: any = 0;
   wp_budgets: any = {};
   budgetValues: any = {};
   displayBudgetValues: any = {};
@@ -939,22 +946,13 @@ export class SubmissionService {
 
       return newObj;
     }
-    let ConsolidatedDatanew = ConsolidatedData.map((d) =>
-      addAfterChild(d, 'Results', 'Type', ''),
-    );
 
-    ConsolidatedDatanew = ConsolidatedDatanew.map((d) =>
-      addAfterChild(d, 'Budget_Percentage', 'Budget', ''),
-    );
-    ConsolidatedDatanew = ConsolidatedDatanew.map((d) =>
-      addAfterChild(d, 'total', 'Budget', ''),
-    );
 
-    ConsolidatedDatanew.forEach((object) => {
+    ConsolidatedData.forEach((object) => {
       delete object['wp_official_code'];
     });
 
-    console.log(ConsolidatedDatanew);
+    console.log(ConsolidatedData);
 
     let ArrayOfArrays = [
       // [
@@ -982,7 +980,7 @@ export class SubmissionService {
             },
           },
         },
-        ...Object.keys(ConsolidatedDatanew[0]).map((d) => {
+        ...Object.keys(ConsolidatedData[0]).map((d) => {
           return {
             v: d,
             s: {
@@ -994,7 +992,7 @@ export class SubmissionService {
           };
         }),
       ],
-      ...ConsolidatedDatanew.map((d) => [
+      ...ConsolidatedData.map((d) => [
         '',
         ...Object.values(d).map((d, index) => {
           if (index == 0)
@@ -1024,11 +1022,12 @@ export class SubmissionService {
 
     merges.push({
       s: { c: 0, r: 0 },
-      e: { c: 0, r: ConsolidatedDatanew.length },
+      e: { c: 0, r: ConsolidatedData.length },
     });
-    function EmptyCols(num) {
-      return new Array(num);
-    }
+    merges.push({
+      s: { c: 1, r: ConsolidatedData.length },
+      e: { c: 2, r: ConsolidatedData.length },
+    });
     for (let data of allData) {
       data.forEach((object) => {
         delete object['id'];
@@ -1079,8 +1078,13 @@ export class SubmissionService {
         s: { c: 0, r: rowStart },
         e: { c: 0, r: ArrayOfArrays.length - 1 },
       });
+      merges.push({
+        s: { c: 1, r: ArrayOfArrays.length - 1 },
+        e: { c: 2, r: ArrayOfArrays.length - 1 },
+      });
       rowStart = ArrayOfArrays.length;
     }
+
     const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
 
     ws['!merges'] = merges;
@@ -1106,6 +1110,7 @@ export class SubmissionService {
       let ArrayOfArrays = [];
       let rowStart = ArrayOfArrays.length;
       for (let i = 0; i < lockupArray.length - 1; i++) {
+        if(i==0)
         ArrayOfArrays.push([
           {
             v: String(lockupArray[i]),
@@ -1117,11 +1122,31 @@ export class SubmissionService {
               },
             },
           },
-          ...Object.keys(partnersData[indexPartner][i][0]),
+          ...Object.keys(partnersData[indexPartner][i][0]).map(d=>{
+            return {
+              v: String(d),
+              s: {
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center',
+                  wrapText: true,
+                },
+              },
+            }
+          })
         ]);
         ArrayOfArrays.push(
           ...partnersData[indexPartner][i].map((d) => [
-            '',
+            {
+              v: String(lockupArray[i]),
+              s: {
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center',
+                  wrapText: true,
+                },
+              },
+            },
             ...Object.values(d).map((d,index)=>{
                
               if(index == 0)
@@ -1129,8 +1154,8 @@ export class SubmissionService {
                 v: String(d),
                 s: {
                   alignment: {
-                    horizontal: 'center',
-                    vertical: 'center',
+                    horizontal: 'top',
+                    vertical: 'left',
                     wrapText: true,
                   },
                 },
@@ -1152,6 +1177,10 @@ export class SubmissionService {
         mergesPartners.push({
           s: { c: 0, r: rowStart },
           e: { c: 0, r: ArrayOfArrays.length - 1 },
+        });
+        mergesPartners.push({
+          s: { c: 1, r: ArrayOfArrays.length - 1 },
+          e: { c: 2, r: ArrayOfArrays.length - 1 },
         });
         rowStart = ArrayOfArrays.length;
       }
@@ -1216,6 +1245,9 @@ export class SubmissionService {
         );
       });
     });
+    this.summaryBudgetsAllTotal = Object.values(
+      this.summaryBudgetsTotal
+    ).reduce((a: any, b: any) => a + b);
 
     Object.keys(this.summaryBudgets).forEach((wp_id) => {
       if (this.summaryBudgetsTotal[wp_id]) {
