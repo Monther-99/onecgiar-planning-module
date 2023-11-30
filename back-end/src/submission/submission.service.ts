@@ -663,6 +663,8 @@ export class SubmissionService {
 
         obj['Budget'] =
           this.wp_budgets[partner.code][wp.ost_wp.wp_official_code];
+
+        data.push(obj);
         partnersWp.push(data);
       });
       newArray.push(partnersWp);
@@ -708,6 +710,8 @@ export class SubmissionService {
       period_.push({
         v: period.year + '-' + period.quarter,
         s: {
+          fill: { fgColor: { rgb: '3d425e' } },
+          font: { color: { rgb: 'ffffff' } },
           alignment: {
             horizontal: 'center',
             vertical: 'center',
@@ -725,6 +729,8 @@ export class SubmissionService {
             ' - ' +
             submission?.initiative.name,
           s: {
+            fill: { fgColor: { rgb: '04030f' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -737,6 +743,8 @@ export class SubmissionService {
         {
           v: title,
           s: {
+            fill: { fgColor: { rgb: '2a2e45' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -749,6 +757,8 @@ export class SubmissionService {
         {
           v: 'Work Packages (WP)/Results',
           s: {
+            fill: { fgColor: { rgb: '3d425e' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -762,6 +772,8 @@ export class SubmissionService {
             return {
               v: this.period[0].year,
               s: {
+                fill: { fgColor: { rgb: '3d425e' } },
+                font: { color: { rgb: 'ffffff' } },
                 alignment: {
                   horizontal: 'center',
                   vertical: 'center',
@@ -778,6 +790,8 @@ export class SubmissionService {
         {
           v: 'Type',
           s: {
+            fill: { fgColor: { rgb: '3d425e' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -789,6 +803,8 @@ export class SubmissionService {
           return {
             v: 'Implementation Timeline',
             s: {
+              fill: { fgColor: { rgb: '3d425e' } },
+              font: { color: { rgb: 'ffffff' } },
               alignment: {
                 horizontal: 'center',
                 vertical: 'center',
@@ -800,6 +816,8 @@ export class SubmissionService {
         {
           v: 'Budget',
           s: {
+            fill: { fgColor: { rgb: '3d425e' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -827,6 +845,8 @@ export class SubmissionService {
         {
           v: '%',
           s: {
+            fill: { fgColor: { rgb: '3d425e' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -837,6 +857,8 @@ export class SubmissionService {
         {
           v: '$',
           s: {
+            fill: { fgColor: { rgb: '3d425e' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -1088,11 +1110,11 @@ export class SubmissionService {
 
     merges.push({
       s: { c: 0, r: 0 },
-      e: { c: 3 + this.period.length, r: 0 },
+      e: { c: 3 + this.period.length + 1, r: 0 },
     });
     merges.push({
       s: { c: 0, r: 1 },
-      e: { c: 3 + this.period.length, r: 1 },
+      e: { c: 3 + this.period.length + 1, r: 1 },
     });
     merges.push({
       s: { c: 0, r: 2 },
@@ -1122,10 +1144,12 @@ export class SubmissionService {
 
     let ArrayOfArrays = [
       ...this.getHeader(submission, 'CONSOLIDATED'),
-      ...ConsolidatedData.map((d) => [
+      ...ConsolidatedData.map((d_, total_index) => [
         {
           v: 'Total Initiative',
           s: {
+            fill: { fgColor: { rgb: '454962' } },
+            font: { color: { rgb: 'ffffff' } },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -1133,8 +1157,8 @@ export class SubmissionService {
             },
           },
         },
-        ...Object.values(d).map((d, index) => {
-          if (index == 0)
+        ...Object.values(d_).map((d, index) => {
+          if (index == 0 && total_index != ConsolidatedData.length - 1)
             return {
               v: d,
               s: {
@@ -1142,6 +1166,30 @@ export class SubmissionService {
                   horizontal: 'left',
                   vertical: 'top',
                   wrapText: true,
+                },
+              },
+            };
+          else if (total_index == ConsolidatedData.length - 1)
+            return {
+              v: d,
+              s: {
+                fill: { fgColor: { rgb: '454962' } },
+                font: { color: { rgb: 'ffffff' } },
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center',
+                },
+              },
+            };
+          else if (index == Object.values(d_).length - 1)
+            return {
+              v: d,
+              s: {
+                fill: { fgColor: { rgb: '454962' } },
+                font: { color: { rgb: 'ffffff' } },
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center',
                 },
               },
             };
@@ -1175,10 +1223,12 @@ export class SubmissionService {
     let rowStart = ArrayOfArrays.length;
     for (let i = 0; i < lockupArray.length - 1; i++) {
       ArrayOfArrays.push(
-        ...allData[i].map((d) => [
+        ...allData[i].map((d_, total_index) => [
           {
             v: lockupArray[i],
             s: {
+              fill: { fgColor: { rgb: '454962' } },
+              font: { color: { rgb: 'ffffff' } },
               alignment: {
                 horizontal: 'center',
                 vertical: 'center',
@@ -1186,8 +1236,9 @@ export class SubmissionService {
               },
             },
           },
-          ...Object.values(d).map((d, index) => {
-            if (index == 0)
+          ...Object.values(d_).map((d, index) => {
+            console.log(index, Object.values(d_).length);
+            if (index == 0 && total_index != allData[i].length - 1)
               return {
                 v: String(d),
                 s: {
@@ -1195,6 +1246,30 @@ export class SubmissionService {
                     horizontal: 'left',
                     vertical: 'top',
                     wrapText: true,
+                  },
+                },
+              };
+            else if (total_index == allData[i].length - 1)
+              return {
+                v: d,
+                s: {
+                  fill: { fgColor: { rgb: '454962' } },
+                  font: { color: { rgb: 'ffffff' } },
+                  alignment: {
+                    horizontal: 'center',
+                    vertical: 'center',
+                  },
+                },
+              };
+            else if (index == Object.values(d_).length - 1)
+              return {
+                v: d,
+                s: {
+                  fill: { fgColor: { rgb: '454962' } },
+                  font: { color: { rgb: 'ffffff' } },
+                  alignment: {
+                    horizontal: 'center',
+                    vertical: 'center',
                   },
                 },
               };
@@ -1248,10 +1323,12 @@ export class SubmissionService {
       let rowStart = ArrayOfArrays.length;
       for (let i = 0; i < lockupArray.length - 1; i++) {
         ArrayOfArrays.push(
-          ...partnersData[indexPartner][i].map((d) => [
+          ...partnersData[indexPartner][i].map((d_,total_index) => [
             {
               v: String(lockupArray[i]),
               s: {
+                fill: { fgColor: { rgb: '454962' } },
+                font: { color: { rgb: 'ffffff' } },
                 alignment: {
                   horizontal: 'center',
                   vertical: 'center',
@@ -1259,8 +1336,8 @@ export class SubmissionService {
                 },
               },
             },
-            ...Object.values(d).map((d, index) => {
-              if (index == 0)
+            ...Object.values(d_).map((d, index) => {
+              if (index == 0 && total_index !=partnersData[indexPartner][i].length - 1)
                 return {
                   v: String(d),
                   s: {
@@ -1268,6 +1345,30 @@ export class SubmissionService {
                       horizontal: 'top',
                       vertical: 'left',
                       wrapText: true,
+                    },
+                  },
+                };
+                if ( total_index == partnersData[indexPartner][i].length - 1)
+                return {
+                  v: String(d),
+                  s: {
+                    fill: { fgColor: { rgb: '454962' } },
+                    font: { color: { rgb: 'ffffff' } },
+                    alignment: {
+                      horizontal: 'center',
+                      vertical: 'center',
+                    },
+                  },
+                };
+                else if (index == Object.values(d_).length - 1)
+                return {
+                  v: d,
+                  s: {
+                    fill: { fgColor: { rgb: '454962' } },
+                    font: { color: { rgb: 'ffffff' } },
+                    alignment: {
+                      horizontal: 'center',
+                      vertical: 'center',
                     },
                   },
                 };
@@ -1300,11 +1401,11 @@ export class SubmissionService {
 
       mergesPartners.push({
         s: { c: 0, r: 0 },
-        e: { c: 3 + this.period.length, r: 0 },
+        e: { c: 3 + this.period.length + 1, r: 0 },
       });
       mergesPartners.push({
         s: { c: 0, r: 1 },
-        e: { c: 3 + this.period.length, r: 1 },
+        e: { c: 3 + this.period.length + 1, r: 1 },
       });
       mergesPartners.push({
         s: { c: 0, r: 2 },
