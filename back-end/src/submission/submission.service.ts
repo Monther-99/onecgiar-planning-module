@@ -1237,7 +1237,6 @@ export class SubmissionService {
             },
           },
           ...Object.values(d_).map((d, index) => {
-            console.log(index, Object.values(d_).length);
             if (index == 0 && total_index != allData[i].length - 1)
               return {
                 v: String(d),
@@ -1576,7 +1575,6 @@ export class SubmissionService {
     this.wps.forEach((wp: any) => {
       this.period.forEach((per) => {
         this.perValuesSammary[wp.ost_wp.wp_official_code][per.id] = false;
-        // console.log(this.perValuesSammary[wp.ost_wp.wp_official_code][per.id])
       });
     });
 
