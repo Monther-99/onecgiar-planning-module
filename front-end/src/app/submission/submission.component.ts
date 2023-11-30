@@ -1127,7 +1127,7 @@ export class SubmissionComponent implements OnInit {
     let messages = "Are you sure you want to submit?";
     let incompleteCenters = this.incompleteCenters();
     if (incompleteCenters.length) {
-      messages = incompleteCenters.length > 1 ? "Centers" : "Center";
+      messages = incompleteCenters.length > 1 ? "Centers" : "Center(s)";
       messages += "  are incomplete:";
     }
     this.dialog
