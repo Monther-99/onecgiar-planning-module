@@ -16,6 +16,12 @@ import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CenterStatus } from 'src/entities/center-status.entity';
 import { WpBudget } from 'src/entities/wp-budget.entity';
+import { MeliaModule } from 'src/melia/melia.module';
+import { CrossCuttingModule } from 'src/cross-cutting/cross-cutting.module';
+import { IpsrValueModule } from 'src/ipsr-value/ipsr-value.module';
+import { PhasesModule } from 'src/phases/phases.module';
+import { InitiativesModule } from 'src/initiatives/initiatives.module';
+import { PeriodsModule } from 'src/periods/periods.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -32,7 +38,13 @@ import { WpBudget } from 'src/entities/wp-budget.entity';
       WpBudget
     ]),
     HttpModule,
-    CacheModule.register()
+    CacheModule.register(),
+    MeliaModule,
+    CrossCuttingModule,
+    IpsrValueModule,
+    PhasesModule,
+    InitiativesModule,
+    PeriodsModule
   ],
   controllers: [SubmissionController],
   providers: [SubmissionService],

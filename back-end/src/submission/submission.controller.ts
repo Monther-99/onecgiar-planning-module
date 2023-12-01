@@ -8,6 +8,7 @@ import {
   Post,
   Query,
   Request,
+  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { catchError, firstValueFrom, map } from 'rxjs';
 import { AxiosError } from 'axios';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Response } from '@nestjs/common';
 @UseGuards(JwtAuthGuard)
 @Controller('submission')
 export class SubmissionController {
@@ -132,5 +134,15 @@ export class SubmissionController {
   @Get(':id')
   getbyid(@Param('id') id) {
     return this.submissionService.findSubmissionsById(id);
+  }
+
+  @Get('excel/:id')
+  async excel(@Param('id') id) {
+    return await this.submissionService.generateExcel(id, null, null)
+  }
+  @Get('excelCurrent/:id')
+  async excelCurrent(@Param('id') initId) {
+    const toc_data = this.getTocs(initId)
+    return await this.submissionService.generateExcel(null, initId, toc_data)
   }
 }

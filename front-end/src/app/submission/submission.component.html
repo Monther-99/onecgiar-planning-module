@@ -137,6 +137,17 @@
                   *ngIf="!this.isCenter"
                   class="risk-report-button-box__btn btn--animated btn--white btn"
                   mat-raised-button
+                  (click)="excel()"
+                >
+                  Export Excel
+                </button>
+              </div>
+
+              <div class="risk-report-button-box">
+                <button
+                  *ngIf="!this.isCenter"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  mat-raised-button
                   routerLink="/initiative/{{ initiative_data.id }}/{{
                     initiative_data.official_code
                   }}/team-members"

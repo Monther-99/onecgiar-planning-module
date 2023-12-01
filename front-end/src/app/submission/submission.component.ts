@@ -504,6 +504,7 @@ export class SubmissionComponent implements OnInit {
   initiative_data: any = {};
   ipsr_value_data: any;
   phase: any;
+
   async InitData() {
     this.loading = true;
     this.wpsTotalSum = 0;
@@ -548,7 +549,7 @@ export class SubmissionComponent implements OnInit {
     );
 
     this.wp_budgets = await this.submissionService.getWpBudgets(this.params.id);
-
+console.log(this.wp_budgets)
     // const indicators_data = this.results
     //   .filter(
     //     (d: any) =>
@@ -778,6 +779,7 @@ export class SubmissionComponent implements OnInit {
   InitiativeUsers: any;
   leaders: any[] = [];
   organizationSelected: any = "";
+
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
@@ -834,6 +836,7 @@ export class SubmissionComponent implements OnInit {
 
     this.organizationSelected = this.partners[0];
     this.InitData();
+
     this.period = await this.submissionService.getPeriods(this.phase.id);
     this.socket.connect();
     this.socket.on("setDataValues-" + this.params.id, (data: any) => {
@@ -1052,8 +1055,11 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
+  
   async setIPSR(wp_official_code: any) {
     const dialogRef = this.dialog.open(IpsrComponent, {
+      height: '70%',
+   autoFocus: false,
       data: {
         wp_id: wp_official_code,
         initiative_id: this.params.id,
@@ -1074,6 +1080,8 @@ export class SubmissionComponent implements OnInit {
 
   async editMelia(id: number, wp: any) {
     const dialogRef = this.dialog.open(MeliaComponent, {
+      height: '70%',
+      autoFocus: false,
       data: {
         initiative_id: this.params.id,
         wp: wp,
@@ -1122,7 +1130,7 @@ export class SubmissionComponent implements OnInit {
     let messages = "Are you sure you want to submit?";
     let incompleteCenters = this.incompleteCenters();
     if (incompleteCenters.length) {
-      messages = incompleteCenters.length > 1 ? "Centers" : "Center";
+      messages = incompleteCenters.length > 1 ? "Centers" : "Center(s)";
       messages += "  are incomplete:";
     }
     this.dialog
@@ -1251,5 +1259,8 @@ export class SubmissionComponent implements OnInit {
       valid: valid,
       message: message,
     };
+  }
+  async excel() {
+     await this.submissionService.excelCurrent(this.params.id);
   }
 }

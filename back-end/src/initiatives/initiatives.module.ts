@@ -11,5 +11,6 @@ import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
   imports: [TypeOrmModule.forFeature([Initiative, WorkPackage,InitiativeRoles]), HttpModule],
   controllers: [InitiativesController],
   providers: [InitiativesService],
+  exports: [InitiativesService]
 })
 export class InitiativesModule {}

@@ -723,4 +723,19 @@ export class SubmitedVersionsComponent implements AfterViewInit {
       });
     }, 500);
   }
+  submition:any;
+  async generateExcel(id:number) {
+    // const downloadLink = document.createElement('a');
+    // const dataType = 'application/vnd.ms-excel';
+    // const table = document.getElementById('soso');
+    // const tableHtml = table?.outerHTML.replace(/ /g, '%20');
+    // document.body.appendChild(downloadLink);
+    // downloadLink.href = 'data:' + dataType + ' ' + tableHtml;
+    // downloadLink.download = 'httptrace.xlsx';
+    // downloadLink.click() 
+
+
+    this.submition = await this.submissionService.excel(id);
+    console.log(this.submition)
+  }
 }

@@ -22,5 +22,6 @@ import { Period } from 'src/entities/period.entity';
   ],
   controllers: [PhasesController],
   providers: [PhasesService],
+  exports: [PhasesService]
 })
 export class PhasesModule {}

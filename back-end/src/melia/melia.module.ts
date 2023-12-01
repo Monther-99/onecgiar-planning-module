@@ -13,6 +13,7 @@ import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
     TypeOrmModule.forFeature([Melia, MeliaTypes, Partner, InitiativeMelia]), HttpModule
   ],
   controllers: [MeliaController],
-  providers: [MeliaService]
+  providers: [MeliaService],
+  exports: [MeliaService]
 })
 export class MeliaModule {}
