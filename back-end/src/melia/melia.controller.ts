@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { MeliaService } from './melia.service';
@@ -47,6 +48,24 @@ export class MeliaController {
     return this.meliaService.findByInitiativeID(initiative_id);
   }
 
+  @Get('initiative-melias/:initiative_id')
+  getInitiativeMelias(@Param('initiative_id') initiative_id, @Query() query) {
+    return this.meliaService.getInitiativeMelias(initiative_id, query);
+  }
+
+  @Get('initiative-melia/:id')
+  getInitiativeMeliaById(@Param('id') id) {
+    return this.meliaService.getInitiativeMeliaById(id);
+  }
+
+  @Get('initiative-melia/:initiative_id/:type_id')
+  getInitiativeMelia(
+    @Param('initiative_id') initiative_id,
+    @Param('type_id') melia_type_id,
+  ) {
+    return this.meliaService.getInitiativeMelia(initiative_id, melia_type_id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id) {
     return this.meliaService.findOne(id);
@@ -57,13 +76,28 @@ export class MeliaController {
     return this.meliaService.update(id, body);
   }
 
+  @Patch('initiative-melia/:id')
+  updateInitiativeMelia(@Param('id') id: string, @Body() body) {
+    return this.meliaService.updateInitiativeMelia(+id, body);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.meliaService.remove(id);
   }
 
+  @Delete('initiative-melia/:id')
+  removeInitiativeMelia(@Param('id') id: string) {
+    return this.meliaService.removeInitiativeMelia(+id);
+  }
+
   @Post()
   create(@Body() body) {
     return this.meliaService.create(body);
+  }
+
+  @Post('initiative-melia')
+  createInitiativeMelia(@Body() body) {
+    return this.meliaService.createInitiativeMelia(body);
   }
 }

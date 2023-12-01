@@ -83,6 +83,8 @@ import { PopoverManagementComponent } from "./admin/popover-management/popover-m
 import { PopoverDialogComponent } from './admin/popover-management/popover-dialog/popover-dialog.component';
 import { EditorModule } from "./share/editor/editor.module";
 import { TrustHTMLModule } from "./share/trust-html/trust-html.module";
+import { InitiativeMeliaComponent } from './initiative-melia/initiative-melia.component';
+import { InitiativeMeliaDialogComponent } from './initiative-melia/initiative-melia-dialog/initiative-melia-dialog.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +133,8 @@ import { TrustHTMLModule } from "./share/trust-html/trust-html.module";
     OrderSelectPipePipe,
     PopoverManagementComponent,
     PopoverDialogComponent,
+    InitiativeMeliaComponent,
+    InitiativeMeliaDialogComponent,
   ],
   imports: [
     BrowserModule,

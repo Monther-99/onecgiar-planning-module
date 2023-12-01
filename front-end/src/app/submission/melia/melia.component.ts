@@ -14,6 +14,7 @@ import {
 import { InitiativesService } from "src/app/services/initiatives.service";
 import { SubmissionService } from "src/app/services/submission.service";
 import { AnticipatedYearService } from "src/app/services/anticipated-year.service";
+import { MeliaTypeService } from "src/app/services/melia-type.service";
 @Component({
   selector: "app-melia",
   templateUrl: "./melia.component.html",
@@ -40,7 +41,8 @@ export class MeliaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private submissionService: SubmissionService,
     private initiativesService: InitiativesService,
-    private anticipatedYearService: AnticipatedYearService
+    private anticipatedYearService: AnticipatedYearService,
+    private meliaTypeService: MeliaTypeService
   ) {
     this.savedData = data.data;
   }
@@ -217,26 +219,28 @@ export class MeliaComponent implements OnInit {
     this.meliaForm = this.fb.group({
       initiative_id: [this.data.initiative_id, Validators.required],
       wp_id: [this.data.wp.ost_wp.wp_official_code, Validators.required],
-      melia_type: [this.savedData?.melia_type],
-      methodology: [this.savedData?.methodology],
-      experimental: [this.savedData?.experimental],
-      questionnaires: [this.savedData?.questionnaires],
-      completion_year: [this.savedData?.completion_year],
-      management_decisions: [this.savedData?.management_decisions],
+      initiative_melia_id: [this.savedData?.initiative_melia_id],
+      // methodology: [this.savedData?.methodology],
+      // experimental: [this.savedData?.experimental],
+      // questionnaires: [this.savedData?.questionnaires],
+      // completion_year: [this.savedData?.completion_year],
+      // management_decisions: [this.savedData?.management_decisions],
       geo_scope: [this.savedData?.geo_scope, Validators.required],
       initiative_regions: [this.savedData?.initiative_regions],
       initiative_countries: [this.savedData?.initiative_countries],
       partners: [this.savedData?.partners, Validators.required],
-      other_initiatives: [this.savedData?.other_initiatives],
+      // other_initiatives: [this.savedData?.other_initiatives],
       co_initiative_regions: [this.savedData?.co_initiative_regions],
       co_initiative_countries: [this.savedData?.co_initiative_countries],
       contribution_results: [this.savedData?.contribution_results],
     });
     this.loadPartners();
-    this.meliaTypes = await this.submissionService.getMeliaTypes();
+    this.meliaTypes = await this.meliaTypeService.getInitiativeMelias(
+      this.data.initiative_id
+    );
     if(this.data.cross == true || this.data.wp.id == 'CROSS')
       this.meliaTypes = this.meliaTypes.filter((element: any) => {
-        if (element.HideCrossCutting == false) return element;
+        if (element.meliaType.HideCrossCutting == false) return element;
       });
     this.regions = await this.submissionService.getRegions();
     this.countries = await this.submissionService.getCountries();
@@ -254,6 +258,26 @@ export class MeliaComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(false);
   }
+
+  // async typeSelected() {
+  //   const meliaTypeId = this.meliaForm.value.melia_type;
+  //   let initiativeMelia = await this.meliaTypeService.getInitiativeMelia(
+  //     this.data.initiative_id,
+  //     meliaTypeId
+  //   );
+  //   if (initiativeMelia) {
+  //     console.log(initiativeMelia.other_initiatives);
+  //     this.meliaForm.patchValue({
+  //       methodology: initiativeMelia.methodology,
+  //       experimental: initiativeMelia.experimental,
+  //       questionnaires: initiativeMelia.questionnaires,
+  //       completion_year: initiativeMelia.completion_year,
+  //       management_decisions: initiativeMelia.management_decisions,
+  //       other_initiatives: initiativeMelia.other_initiatives,
+  //     });
+  //   }
+  //   this.fillResultsSelect();
+  // }
 
   fillResultsSelect() {
     const selectedStudy = this.meliaForm.value.melia_type;
@@ -375,7 +399,7 @@ export class MeliaComponent implements OnInit {
       this.coInitiativeRegionsValidator(),
       this.coInitiativeCountriesValidator(),
       this.contributionResultsValidator(),
-      this.otherInitiativesValidator(),
+      // this.otherInitiativesValidator(),
     ]);
   }
 

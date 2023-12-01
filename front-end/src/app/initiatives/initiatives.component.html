@@ -105,6 +105,19 @@
                   </button>
                   <button
                     class="color-icons-table-action"
+                    matTooltip="Manage Initiative MELIA"
+                    matTooltipPosition="above"
+                    *ngIf="isLeader(row.roles) || isCoordinator(row.roles)"
+                    routerLink="initiative/{{ row['id'] }}/{{
+                      row['official_code']
+                    }}/melia"
+                    mat-icon-button
+                  >
+                    <mat-icon>list</mat-icon>
+                  </button>
+                  
+                  <button
+                    class="color-icons-table-action"
                     matTooltip="Manage Initiative activities"
                     matTooltipPosition="above"
                     *ngIf="isLeader(row.roles) || isCoordinator(row.roles)"

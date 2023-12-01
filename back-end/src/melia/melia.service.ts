@@ -7,10 +7,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
+import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 import { MeliaTypes } from 'src/entities/melia-types.entity';
 import { Melia } from 'src/entities/melia.entity';
 import { Partner } from 'src/entities/partner.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class MeliaService {
@@ -21,6 +22,8 @@ export class MeliaService {
     private meliaTypesRepository: Repository<MeliaTypes>,
     @InjectRepository(Partner)
     private partnerRepository: Repository<Partner>,
+    @InjectRepository(InitiativeMelia)
+    private initiativeMeliaRepository: Repository<InitiativeMelia>,
     private readonly httpService: HttpService,
   ) {}
   api = process.env.Ost_API;
@@ -32,7 +35,7 @@ export class MeliaService {
   findByInitiativeID(id) {
     return this.meliaRepository.find({
       where: { initiative: { id: id } },
-      relations: ['meliaType'],
+      relations: ['initiativeMelia.meliaType'],
     });
   }
 
@@ -54,7 +57,6 @@ export class MeliaService {
       where: { id },
       relations: [
         'partners',
-        'other_initiatives',
         'initiative_countries',
         'initiative_regions',
         'co_initiative_countries',
@@ -127,5 +129,43 @@ export class MeliaService {
         )
         .pipe(map((d: any) => d.data.response.meliaStudiesActivities)),
     );
+  }
+
+  getInitiativeMelias(initiative_id: any, query: any) {
+    return this.initiativeMeliaRepository.find({
+      where: {
+        initiative_id: initiative_id,
+        meliaType: { name: query?.type ? ILike(`%${query?.type}%`) : null },
+      },
+      relations: ['meliaType'],
+    });
+  }
+
+  getInitiativeMeliaById(id: any) {
+    return this.initiativeMeliaRepository.findOne({
+      where: { id: id },
+      relations: ['meliaType', 'other_initiatives'],
+    });
+  }
+
+  getInitiativeMelia(initiative_id: any, melia_type_id: any) {
+    return this.initiativeMeliaRepository.findOne({
+      where: { initiative_id: initiative_id, melia_type_id: melia_type_id },
+      relations: ['meliaType', 'other_initiatives'],
+    });
+  }
+
+  async createInitiativeMelia(data: any) {
+    return this.initiativeMeliaRepository.save(
+      this.initiativeMeliaRepository.create({ ...data }),
+    );
+  }
+
+  updateInitiativeMelia(id: number, data: any) {
+    return this.initiativeMeliaRepository.save({ id, ...data });
+  }
+
+  removeInitiativeMelia(id: number) {
+    return this.initiativeMeliaRepository.delete({ id });
   }
 }

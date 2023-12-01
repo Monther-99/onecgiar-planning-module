@@ -21,6 +21,7 @@ import { ParametersSettingsComponent } from "./admin/parameters-settings/paramet
 import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
 import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
 import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
+import { InitiativeMeliaComponent } from "./initiative-melia/initiative-melia.component";
 
 const routes: Routes = [
   { path: "", component: InitiativesComponent },
@@ -67,6 +68,11 @@ const routes: Routes = [
   {
     path: "initiative/:id/:code/team-members",
     component: TeamMembersComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "initiative/:id/:code/melia",
+    component: InitiativeMeliaComponent,
     canActivate: [AuthGuard],
   },
   { path: "denied", component: AccessDeniedComponent },

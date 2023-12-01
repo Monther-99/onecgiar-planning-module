@@ -27,7 +27,6 @@ export enum ROLES {
   styleUrls: ["./new-team-member.component.scss"],
 })
 export class NewTeamMemberComponent implements OnInit {
-  selectedCity: any;
 
   constructor(
     public fb: FormBuilder,

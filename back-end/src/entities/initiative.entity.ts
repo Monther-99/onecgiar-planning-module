@@ -15,6 +15,7 @@ import { InitiativeRoles } from './initiative-roles.entity';
 import { IpsrValue } from './ipsr-value.entity';
 import { CenterStatus } from './center-status.entity';
 import { Melia } from './melia.entity';
+import { InitiativeMelia } from './initiative-melia.entity';
 
 @Entity()
 export class Initiative {
@@ -90,6 +91,9 @@ export class Initiative {
   @JoinColumn({ name: 'latest_submission_id' })
   latest_submission: Submission;
 
-  @ManyToMany(() => Melia, (melia) => melia.other_initiatives)
-  melia: Melia[];
+  // @ManyToMany(() => Melia, (melia) => melia.other_initiatives)
+  // melia: Melia[];
+
+  @ManyToMany(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.other_initiatives)
+  initiativeMelia: InitiativeMelia[];
 }

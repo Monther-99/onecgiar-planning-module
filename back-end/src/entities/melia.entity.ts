@@ -8,10 +8,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Initiative } from './initiative.entity';
-import { MeliaTypes } from './melia-types.entity';
 import { Country } from './country.entity';
 import { Partner } from './partner.entity';
 import { Region } from './region.entity';
+import { InitiativeMelia } from './initiative-melia.entity';
 
 @Entity()
 export class Melia {
@@ -28,35 +28,42 @@ export class Melia {
   @Column()
   wp_id: string;
 
-  @JoinColumn({ name: 'melia_type' })
-  @ManyToOne(() => MeliaTypes, (meliaTypes) => meliaTypes.melia)
-  meliaType: MeliaTypes;
+  @JoinColumn({ name: 'initiative_melia_id' })
+  @ManyToOne(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.melia)
+  initiativeMelia: InitiativeMelia;
 
   @Column({ nullable: true })
-  melia_type: number;
+  initiative_melia_id: number;
 
-  @Column({ type: 'text', nullable: true })
-  methodology: string;
+  // @JoinColumn({ name: 'melia_type' })
+  // @ManyToOne(() => MeliaTypes, (meliaTypes) => meliaTypes.melia)
+  // meliaType: MeliaTypes;
 
-  @Column({ nullable: true })
-  experimental: boolean;
+  // @Column({ nullable: true })
+  // melia_type: number;
 
-  @Column({ type: 'text', nullable: true })
-  questionnaires: string;
+  // @Column({ type: 'text', nullable: true })
+  // methodology: string;
 
-  @Column({ nullable: true })
-  completion_year: string;
+  // @Column({ nullable: true })
+  // experimental: boolean;
 
-  @Column({ type: 'text', nullable: true })
-  management_decisions: string;
+  // @Column({ type: 'text', nullable: true })
+  // questionnaires: string;
+
+  // @Column({ nullable: true })
+  // completion_year: string;
+
+  // @Column({ type: 'text', nullable: true })
+  // management_decisions: string;
 
   @ManyToMany(() => Partner, (partner) => partner.melia)
   @JoinTable()
   partners: Partner[];
 
-  @ManyToMany(() => Initiative, (initiative) => initiative.melia)
-  @JoinTable()
-  other_initiatives: Initiative[];
+  // @ManyToMany(() => Initiative, (initiative) => initiative.melia)
+  // @JoinTable()
+  // other_initiatives: Initiative[];
 
   @Column({ type: 'json', nullable: true })
   contribution_results: string;

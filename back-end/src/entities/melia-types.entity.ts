@@ -1,11 +1,8 @@
 import {
   Column,
   Entity,
-  JoinColumn,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Melia } from './melia.entity';
 
 @Entity()
 export class MeliaTypes {
@@ -21,9 +18,9 @@ export class MeliaTypes {
   @Column({ nullable: true })
   availability: string;
 
-  @JoinColumn()
-  @OneToMany(() => Melia, (melia) => melia.meliaType)
-  melia: Melia;
+  // @JoinColumn()
+  // @OneToMany(() => Melia, (melia) => melia.meliaType)
+  // melia: Melia;
 
   @Column({ default: false })
   HideCrossCutting: boolean;
