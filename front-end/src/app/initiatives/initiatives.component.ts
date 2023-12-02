@@ -126,6 +126,8 @@ export class InitiativesComponent implements OnInit {
   async openDialog(id: number = 0) {
     const activePhase = await this.phasesService.getActivePhase();
     this.dialog.open(AssignOrganizationsComponent, {
+           
+   autoFocus: false,
       data: { phase_id: activePhase.id, initiative_id: id },
     });
   }
