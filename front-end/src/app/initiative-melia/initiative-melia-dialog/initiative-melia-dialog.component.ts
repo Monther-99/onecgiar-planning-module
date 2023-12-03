@@ -17,6 +17,7 @@ export class InitiativeMeliaDialogComponent implements OnInit {
   confirmation: any = '';
   initiatives: any = [];
   AnticipatedYear: any;
+  initiativeMelias: any = [];
 
   constructor(
     public fb: FormBuilder,
@@ -33,7 +34,6 @@ export class InitiativeMeliaDialogComponent implements OnInit {
   }
 
   async populateMeliaForm() {
-    // const activePhase = await this.phasesService.getActivePhase();
     this.meliaForm = this.fb.group({
       initiative_id: [this.data.initiative_id, Validators.required],
       melia_type_id: [this.data?.melia_type_id],
@@ -45,6 +45,14 @@ export class InitiativeMeliaDialogComponent implements OnInit {
       other_initiatives: [this.data?.other_initiatives],
     });
     this.meliaTypes = await this.submissionService.getMeliaTypes();
+    this.initiativeMelias = await this.meliaTypeService.getInitiativeMelias(
+      this.data.initiative_id,
+      null
+    );
+    const existTypesIds = this.initiativeMelias.map((d: any) => d.meliaType.id);
+    this.meliaTypes = this.meliaTypes.filter(
+      (d: any) => !existTypesIds.includes(d.id)
+    );
     this.initiatives = await this.initiativesService.getInitiativesOnly();
     this.AnticipatedYear =
       await this.anticipatedYearService.getAnticipatedYear();
