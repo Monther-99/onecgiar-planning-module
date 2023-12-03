@@ -27,7 +27,7 @@ export class DeleteConfirmDialogComponent implements OnInit {
     // console.log(this.risks);
 
     this.kk = this.data.f;
-    console.log(this.kk);
+    // console.log(this.kk);
   }
 
   closeDialog() {
