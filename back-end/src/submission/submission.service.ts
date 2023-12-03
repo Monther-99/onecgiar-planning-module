@@ -542,8 +542,8 @@ export class SubmissionService {
       data = this.allData[wp.ost_wp.wp_official_code].map((d: any) => {
         let obj: any = {};
         obj['id'] = d.id;
-        obj['WP_Results'] = d?.meliaType?.name
-          ? d?.meliaType?.name
+        obj['WP_Results'] = d.initiativeMelia?.meliaType?.name
+          ? d.initiativeMelia?.meliaType?.name
           : d?.ipsr?.id
           ? d?.ipsr.title + ' (' + d.value + ')'
           : d.title;
@@ -597,10 +597,13 @@ export class SubmissionService {
     return newArray;
   }
 
-  getPartnersData(wps: any[], period: any[], partners: any[]) {
+  getPartnersData(wps: any[], period: any[], partners: any[], organization: any) {
     let data;
     let newArray = [];
 
+
+    if(organization) 
+      partners = partners.filter((d:any) => d.code == organization.code);
     partners.forEach((partner: any) => {
       const partnersWp = [];
       wps.forEach((wp: any) => {
@@ -608,8 +611,8 @@ export class SubmissionService {
           (d: any) => {
             let obj: any = {};
             obj['id'] = d.id;
-            obj['WP_Results'] = d?.meliaType?.name
-              ? d?.meliaType?.name
+            obj['WP_Results'] = d?.initiativeMelia?.meliaType?.name
+              ? d?.initiativeMelia?.meliaType?.name
               : d?.ipsr?.id
               ? d?.ipsr.title + ' (' + d.value + ')'
               : d.title;
@@ -874,7 +877,7 @@ export class SubmissionService {
   savedValues: any = null;
   noValuesAssigned: any = {};
 
-  async generateExcel(submissionId: any, initId:any, tocData: any) {
+  async generateExcel(submissionId: any, initId:any, tocData: any, organization: any) {
     this.perValues = {};
     this.perValuesSammary = {};
     this.perAllValues = {};
@@ -1155,8 +1158,12 @@ export class SubmissionService {
     const { lockupArray } = this.getConsolidatedData(this.wps, this.period);
 
     const allData = this.getAllData(this.wps, this.period);
+    let partnersData;
+    if(!organization)
+      partnersData = this.getPartnersData(this.wps, this.period, partners, null);
+    else
+      partnersData = this.getPartnersData(this.wps, this.period, partners, organization);
 
-    const partnersData = this.getPartnersData(this.wps, this.period, partners);
     const merges = [];
     const file_name = 'All-planning-.xlsx';
     //ConsolidatedData.unshift({"Consolidated":""})
@@ -1200,6 +1207,7 @@ export class SubmissionService {
 
     // XLSX.utils.book_append_sheet(wb, ws, 'Summary');
 
+    if(!organization){
     let ArrayOfArrays = [
       ...this.getHeader(submission, 'CONSOLIDATED'),
       ...ConsolidatedData.map((d_, total_index) => [
@@ -1363,7 +1371,7 @@ export class SubmissionService {
     //ws['!rows'] = [{ hpt: 100 }];
 
     XLSX.utils.book_append_sheet(wb, ws, 'Summary');
-
+  }
     let indexPartner = 0;
 
     for (let partner of partnersData) {
@@ -1373,6 +1381,8 @@ export class SubmissionService {
         });
       });
     }
+    if(organization) 
+      partners = partners.filter((d:any) => d.code == organization.code);
     for (let partner of partners) {
       let mergesPartners = [];
 

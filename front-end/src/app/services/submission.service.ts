@@ -42,6 +42,17 @@ export class SubmissionService {
     saveAs(data, 'Planning.xlsx');
   }
 
+  async excelCurrentForCenter(initId: any , organization:any) {
+    const data = {
+      organization: organization,
+      initId: initId
+    }
+    const result = await firstValueFrom(
+      this.http.post('/api/submission/excelCurrentCenter/' , data, {responseType: 'blob'}).pipe(map((d: Blob) => d))
+    );
+    saveAs(result, 'Planning.xlsx');
+  }
+
 
   async getToc(id: any) {
     return firstValueFrom(

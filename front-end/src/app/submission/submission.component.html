@@ -695,7 +695,20 @@
                 >
                   Refresh
                 </button> -->
+
+        
+  
             <div class="risk-report-btn-box">
+              <div class="risk-report-button-box">
+                <button
+                  *ngIf="!this.isCenter"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  mat-raised-button
+                  (click)="excelCenters()"
+                >
+                  Export Excel
+                </button>
+              </div>
               <!-- btn-1 -->
               <div class="risk-report-button-box">
                 <button

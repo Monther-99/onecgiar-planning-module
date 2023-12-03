@@ -122,6 +122,7 @@ export class TeamMembersComponent {
 
   async openNewTeamMemberDialog() {
     const dialogRef = this.dialog.open(NewTeamMemberComponent, {
+      autoFocus: false,
       data: { role: "add", member: null, initiative_id: this.initiativeId },
     });
     dialogRef.afterClosed().subscribe(async (result) => {

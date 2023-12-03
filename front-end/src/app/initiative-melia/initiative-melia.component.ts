@@ -82,6 +82,7 @@ export class InitiativeMeliaComponent implements OnInit {
   }
 
   async openDialog(id: number = 0) {
+    
     let data = {
       initiative_id: this.initiativeId,
       id: id
@@ -90,6 +91,7 @@ export class InitiativeMeliaComponent implements OnInit {
       data = await this.meliaTypeService.getInitiativeMeliaById(id);
     }
     const dialogRef = this.dialog.open(InitiativeMeliaDialogComponent, {
+      autoFocus: false,
       data: data,
     });
 
@@ -119,6 +121,7 @@ export class InitiativeMeliaComponent implements OnInit {
   delete(id: number) {
     this.dialog
       .open(DeleteConfirmDialogComponent, {
+        
         data: {
           title: 'Delete',
           message: `Are you sure you want to delete this item?`,

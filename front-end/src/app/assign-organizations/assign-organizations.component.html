@@ -20,7 +20,42 @@
   <mat-dialog-content>
     <form [formGroup]="assignOrgsForm" class="form-dialog-content">
       <!-- //Organizations  filed----- -->
+
+
+
+
+
+
+
+
+
+
+
+
       <div class="form-dialog-content__field--grid-column">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Organizations<span class="star">*</span></mat-label
+          >
+        </div>
+  
+        <ng-select
+        appendTo="body"
+          [items]="organizations"
+          bindValue="code"
+          appearance="outline"
+          bindLabel="name"
+          [multiple]="true"
+          formControlName="organizations"
+          placeholder="Organizations">
+        </ng-select>
+  
+      
+      </div>
+
+
+
+      <!-- <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
             >Organizations<span class="star">*</span></mat-label
@@ -33,7 +68,7 @@
           appearance="outline"
         >
           <mat-select formControlName="organizations" multiple>
-            <!-- //////////////////////////////////////////////// -->
+           
 
             <mat-option
               [value]="organization.code"
@@ -43,7 +78,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      </div> -->
 
       <div>
         <div class="form-dialog-conten-button-box">
