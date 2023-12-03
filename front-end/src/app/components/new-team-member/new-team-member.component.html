@@ -19,6 +19,7 @@
 </div>
 
 <div class="form-dialog-conten-box-1">
+  <mat-dialog-content>
   <form *ngIf="memberForm" [formGroup]="memberForm" class="form-dialog-content">
     <!-- //search-by-Email filed----- -->
 
@@ -75,7 +76,7 @@
         hideRequiredMarker
         appearance="outline"
       >
-        <mat-select placeholder="Role" formControlName="userRole" #userRole>
+        <mat-select class="select-text" placeholder="Role" formControlName="userRole" #userRole >
           <mat-option *ngFor="let role of Roles" [value]="role.value">
             {{ role.viewValue }}
           </mat-option>
@@ -91,24 +92,38 @@
 
 
 
-    <div class="form-dialog-content__field--grid-column" *ngIf="userRole?.value == 'Contributor'">
+    <!-- <div class="form-dialog-content__field--grid-column" *ngIf="userRole?.value == 'Contributor'">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
           >Select organizations<span class="star">*</span></mat-label
         >
       </div>
       <mat-form-field
-        class="form-dialog-content__field"
-        floatLabel="always"
-        hideRequiredMarker
-        appearance="outline"
+      class="form-dialog-content__field textarea-m-b"
+      floatLabel="always"
+      hideRequiredMarker
+      appearance="outline"
       >
         <mat-select
           formControlName="organizations"
           multiple
           [compareWith]="compareOrganization"
         >
-          <!-- //////////////////////////////////////////////// -->
+
+        <mat-select-trigger>
+          <mat-chip-listbox>
+            <mat-chip
+              *ngFor="let organization of memberForm?.value?.organizations"
+              [removable]="true"
+              (removed)="onToppingRemoved(organization)"
+            >
+              <strong class="official-color">{{ organization.name }}</strong>
+             
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-listbox>
+        </mat-select-trigger>
+          
           <mat-option
             *ngFor="let organization of organizations | orderSelectPipe"
             [value]="organization"
@@ -118,11 +133,105 @@
         </mat-select>
       </mat-form-field>
     </div>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- //Other Initiatives filed----- -->
+      <div class="form-dialog-content__field--grid-column"  *ngIf="userRole?.value == 'Contributor'">
+        <div class="form-dialog-content__title-box">
+          <mat-label class="form-dialog-content__title-box__title"
+            >Select organizations<span class="star">*</span>
+           
+          </mat-label>
+        </div>
+
+        <mat-form-field
+        class="form-dialog-content__field "
+        floatLabel="always"
+        hideRequiredMarker
+        appearance="outline"
+        >
+          <mat-select
+          formControlName="organizations"
+          multiple
+          [compareWith]="compareOrganization"
+          class="select-text"
+          required
+          >
+            <mat-select-trigger>
+              <mat-chip-listbox>
+                <mat-chip
+                *ngFor="let organization of memberForm?.value?.organizations"
+                [removable]="true"
+                (removed)="onToppingRemoved(organization)"
+                >
+                <span class="official-color">{{ organization.name }}</span>
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-listbox>
+            </mat-select-trigger>
+
+            <ng-container   *ngFor="let organization of organizations | orderSelectPipe">
+              <mat-option
+                class="w"
+                required
+               
+                [value]="organization"
+              >
+                <span class="official-color"> {{ organization.name }}</span>
+              
+              </mat-option>
+            </ng-container>
+          </mat-select>
+
+        </mat-form-field>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div>
       <div class="form-dialog-conten-button-box">
-        <div class="form-dialog-conten__button-box" align="end">
-          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+        <div class="form-dialog-conten__button-box" >
+         
           <div class="risk-report-button-box">
             <button
               class="risk-report-button-box__btn btn--animated btn--chestnut btn"
@@ -167,4 +276,5 @@
    
     </div> -->
   </form>
+  </mat-dialog-content>
 </div>

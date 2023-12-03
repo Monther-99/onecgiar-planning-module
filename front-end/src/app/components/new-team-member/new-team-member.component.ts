@@ -173,4 +173,21 @@ export class NewTeamMemberComponent implements OnInit {
   onCloseDialog() {
     this.dialogRef.close();
   }
+
+
+
+  onToppingRemoved(organization: any) {
+    const toppings = this.memberForm?.value?.organizations as any[];
+    this.removeFirst(toppings, organization);
+    this.memberForm.controls?.['organizations'].setValue(toppings); // To trigger change detection
+  }
+
+  private removeFirst<T>(array: T[], toRemove: T): void {
+    const index = array.indexOf(toRemove);
+    if (index !== -1) {
+      array.splice(index, 1);
+    }
+  }
+
+
 }
