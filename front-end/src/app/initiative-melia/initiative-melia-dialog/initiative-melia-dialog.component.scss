@@ -663,3 +663,9 @@ textarea::placeholder {
   .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
   color: #5569dd !important;
 }
+
+
+
+::ng-deep.mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full, .mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
+  background: #5569dd !important;
+}
