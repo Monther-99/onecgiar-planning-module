@@ -539,8 +539,9 @@ export class SubmitedVersionComponent implements OnInit {
     this.InitData();
     this.period = this.submission_data.phase.periods;
 
-    this.initiativeId = this.params.id;
+    this.initiativeId = this.submission_data.initiative.id;
     this.officalCode = this.params.code;
+    console.log(this.initiativeId);
 
   }
 

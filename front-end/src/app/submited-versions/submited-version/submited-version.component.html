@@ -32,7 +32,13 @@
         </li>
         <li>
           <a
-            routerLink="./"
+          [routerLink]="[
+          '/',
+          'initiative',
+          initiativeId,
+          officalCode,
+          'submited-versions'
+        ]"
             class="risk-nav-link"
             >Submitted versions</a
           >

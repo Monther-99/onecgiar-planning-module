@@ -150,6 +150,19 @@
                   mat-raised-button
                   routerLink="/initiative/{{ initiative_data.id }}/{{
                     initiative_data.official_code
+                  }}/melia"
+                >
+                Manage Initiative MELIA
+                </button>
+              </div>
+             
+              <div class="risk-report-button-box">
+                <button
+                  *ngIf="!this.isCenter"
+                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  mat-raised-button
+                  routerLink="/initiative/{{ initiative_data.id }}/{{
+                    initiative_data.official_code
                   }}/team-members"
                 >
                   Team members
