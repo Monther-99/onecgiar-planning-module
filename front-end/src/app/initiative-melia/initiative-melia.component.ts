@@ -27,6 +27,7 @@ export class InitiativeMeliaComponent implements OnInit {
   filters: any;
   initiativeId: any;
   officialCode: any;
+  
 
   constructor(
     private meliaTypeService: MeliaTypeService,
@@ -39,17 +40,18 @@ export class InitiativeMeliaComponent implements OnInit {
     private meta: Meta
   ) {
     this.headerService.background =
-      'linear-gradient(to  bottom, #04030F, #020106)';
-    this.headerService.backgroundNavMain =
-      'linear-gradient(to  top, #0F212F, #09151E)';
-    this.headerService.backgroundUserNavButton =
-      'linear-gradient(to  top, #0F212F, #09151E)';
-    this.headerService.backgroundFooter =
-      'linear-gradient(to  top, #0F212F, #09151E)';
+    "linear-gradient(to right, #04030F, #04030F)";
+  this.headerService.backgroundNavMain =
+    "linear-gradient(to right, #2A2E45, #212537)";
+  this.headerService.backgroundUserNavButton =
+    "linear-gradient(to right, #2A2E45, #212537)";
 
-    this.headerService.backgroundDeleteYes = '#FF5A54';
-    this.headerService.backgroundDeleteClose = '#04030F';
-    this.headerService.backgroundDeleteLr = '#04030F';
+  this.headerService.backgroundFooter =
+    "linear-gradient(to top right, #2A2E45, #212537)";
+
+  this.headerService.backgroundDeleteYes = "#5569dd";
+  this.headerService.backgroundDeleteClose = "#808080";
+  this.headerService.backgroundDeleteLr = "#5569dd";
   }
 
   async ngOnInit() {
@@ -118,14 +120,16 @@ export class InitiativeMeliaComponent implements OnInit {
     });
   }
 
+  
+
   delete(id: number) {
     this.dialog
-      .open(DeleteConfirmDialogComponent, {
-        
-        data: {
-          title: 'Delete',
-          message: `Are you sure you want to delete this item?`,
-        },
+    .open(DeleteConfirmDialogComponent, {
+      data: {
+        title: "Delete",
+        message: `Are you sure you want to delete user role ?`,
+        svg: `../../../../assets/shared-image/delete-user.png`,
+      },
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
