@@ -549,7 +549,6 @@ export class SubmissionComponent implements OnInit {
     );
 
     this.wp_budgets = await this.submissionService.getWpBudgets(this.params.id);
-console.log(this.wp_budgets)
     // const indicators_data = this.results
     //   .filter(
     //     (d: any) =>
@@ -1243,17 +1242,36 @@ console.log(this.wp_budgets)
     });
 
     this.errors[partner_code][wp_id] = null;
-    if (wpChecked && Math.round(this.totals[partner_code][wp_id]) != 100) {
+    if (
+      this.totals[partner_code][wp_id] == 0 &&
+      this.wp_budgets[partner_code][wp_id]
+    ) {
+      valid = false;
+      this.errors[partner_code][wp_id] =
+        'There is a work package with a budget not disaggregated';
+      message = 'There is a work package with a budget not disaggregated';
+    } else if (
+      wpChecked &&
+      Math.round(this.totals[partner_code][wp_id]) != 100
+    ) {
       valid = false;
       if (this.totals[partner_code][wp_id] > 100)
         this.toggleValues[partner_code][wp_id] = true;
       this.errors[partner_code][wp_id] =
-        "Subtotal percentage should equal 100%";
-      message = "The subtotal of all percentages should equal 100%";
+        'Subtotal percentage should equal 100%';
+      message = 'The subtotal of all percentages should equal 100%';
+    } else if (
+      this.totals[partner_code][wp_id] > 0 &&
+      !+this.wp_budgets[partner_code][wp_id]
+    ) {
+      valid = false;
+      this.errors[partner_code][wp_id] =
+        'There is a work package without a total budget assigned';
+      message = 'There is a work package without a total budget assigned';
     } else if (!valid) {
       this.errors[partner_code][wp_id] =
-        "There is a checked item(s) but not budgeted";
-      message = "There is a checked item(s) but not budgeted";
+        'There is a checked item(s) but not budgeted';
+      message = 'There is a checked item(s) but not budgeted';
     }
     return {
       valid: valid,
