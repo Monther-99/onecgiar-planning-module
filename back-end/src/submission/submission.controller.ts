@@ -147,8 +147,6 @@ export class SubmissionController {
   }
   @Post('excelCurrentCenter')
    async excelCurrentCenter(@Body() data: any) {
-    // console.log(data)
-
     const toc_data = this.getTocs(data.initId)
     return await this.submissionService.generateExcel(null, data.initId, toc_data, data.organization)
   }

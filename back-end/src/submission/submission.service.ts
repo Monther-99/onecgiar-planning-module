@@ -542,8 +542,8 @@ export class SubmissionService {
       data = this.allData[wp.ost_wp.wp_official_code].map((d: any) => {
         let obj: any = {};
         obj['id'] = d.id;
-        obj['WP_Results'] = d?.meliaType?.name
-          ? d?.meliaType?.name
+        obj['WP_Results'] = d.initiativeMelia?.meliaType?.name
+          ? d.initiativeMelia?.meliaType?.name
           : d?.ipsr?.id
           ? d?.ipsr.title + ' (' + d.value + ')'
           : d.title;
@@ -611,8 +611,8 @@ export class SubmissionService {
           (d: any) => {
             let obj: any = {};
             obj['id'] = d.id;
-            obj['WP_Results'] = d?.meliaType?.name
-              ? d?.meliaType?.name
+            obj['WP_Results'] = d?.initiativeMelia?.meliaType?.name
+              ? d?.initiativeMelia?.meliaType?.name
               : d?.ipsr?.id
               ? d?.ipsr.title + ' (' + d.value + ')'
               : d.title;
