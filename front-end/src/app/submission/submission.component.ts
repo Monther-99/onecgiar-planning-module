@@ -156,6 +156,7 @@ export class SubmissionComponent implements OnInit {
           percent_value: percentValue,
           budget_value: budgetValue,
           no_budget: this.noValuesAssigned[partner_code][wp_id][item_id],
+          phase_id: this.phase.id
         }
       );
       if (result)
@@ -182,6 +183,7 @@ export class SubmissionComponent implements OnInit {
         partner_code,
         wp_id,
         budget,
+        phaseId: this.phase.id
       });
 
       this.refreshValues(partner_code, wp_id);
@@ -548,7 +550,7 @@ export class SubmissionComponent implements OnInit {
       this.params.id
     );
 
-    this.wp_budgets = await this.submissionService.getWpBudgets(this.params.id);
+    this.wp_budgets = await this.submissionService.getWpBudgets(this.params.id,this.phase.id);
     // const indicators_data = this.results
     //   .filter(
     //     (d: any) =>
@@ -754,7 +756,8 @@ export class SubmissionComponent implements OnInit {
     }
     this.allData.IPSR = this.allData.IPSR.filter((d: any) => d.value != null);
     this.savedValues = await this.submissionService.getSavedData(
-      this.params.id
+      this.params.id,
+      this.phase.id
     );
 
     this.setvalues(
