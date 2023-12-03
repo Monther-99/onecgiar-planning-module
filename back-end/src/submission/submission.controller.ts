@@ -138,11 +138,18 @@ export class SubmissionController {
 
   @Get('excel/:id')
   async excel(@Param('id') id) {
-    return await this.submissionService.generateExcel(id, null, null)
+    return await this.submissionService.generateExcel(id, null, null, null)
   }
   @Get('excelCurrent/:id')
   async excelCurrent(@Param('id') initId) {
     const toc_data = this.getTocs(initId)
-    return await this.submissionService.generateExcel(null, initId, toc_data)
+    return await this.submissionService.generateExcel(null, initId, toc_data, null)
+  }
+  @Post('excelCurrentCenter')
+   async excelCurrentCenter(@Body() data: any) {
+    // console.log(data)
+
+    const toc_data = this.getTocs(data.initId)
+    return await this.submissionService.generateExcel(null, data.initId, toc_data, data.organization)
   }
 }

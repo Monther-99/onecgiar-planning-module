@@ -1263,4 +1263,8 @@ console.log(this.wp_budgets)
   async excel() {
      await this.submissionService.excelCurrent(this.params.id);
   }
+
+  async excelCenters() {
+    await this.submissionService.excelCurrentForCenter(this.params.id, this.organizationSelected)
+  }
 }
