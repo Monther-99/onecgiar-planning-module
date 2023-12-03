@@ -51,7 +51,8 @@ export class InitiativeMeliaDialogComponent implements OnInit {
     );
     const existTypesIds = this.initiativeMelias.map((d: any) => d.meliaType.id);
     this.meliaTypes = this.meliaTypes.filter(
-      (d: any) => !existTypesIds.includes(d.id)
+      (d: any) =>
+        !existTypesIds.includes(d.id) || d.id == this.data?.melia_type_id
     );
     this.initiatives = await this.initiativesService.getInitiativesOnly();
     this.AnticipatedYear =
