@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
 import { Ipsr } from 'src/entities/ipsr.entity';
 import { IpsrService } from 'src/ipsr/ipsr.service';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class IpsrValueService {
@@ -14,7 +14,7 @@ export class IpsrValueService {
   ) {}
 
   findByInitiativeID(id) {
-    return this.ipsrValueRepository.find({ where: { initiative: { id: id } },relations:['ipsr'] });
+    return this.ipsrValueRepository.find({ where: { initiative: { id: id },value: Not(IsNull())  },relations:['ipsr'] });
   }
   findAll() {
     return this.ipsrValueRepository.find();

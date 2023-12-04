@@ -754,7 +754,6 @@ export class SubmissionComponent implements OnInit {
         wp.ost_wp.wp_official_code
       );
     }
-    this.allData.IPSR = this.allData.IPSR.filter((d: any) => d.value != null);
     this.savedValues = await this.submissionService.getSavedData(
       this.params.id,
       this.phase.id
