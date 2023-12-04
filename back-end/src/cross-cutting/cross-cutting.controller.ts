@@ -16,6 +16,12 @@ export class CrossCuttingController {
   findInitiative_id(@Param('initiative_id') initiative_id) {
     return this.CrossCuttingService.findByInitiativeID(initiative_id);
   }
+
+  @Get('submission/:submission_id')
+  getSubmissionCross(@Param('submission_id') submission_id: string) {
+    return this.CrossCuttingService.findBySubmissionID(+submission_id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id) {
     return this.CrossCuttingService.findOne(id);

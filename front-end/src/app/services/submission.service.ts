@@ -97,6 +97,15 @@ export class SubmissionService {
       this.http.get(environment.api_url+'/melia/initiative/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async getMeliaBySubmission(id: any) {
+    return firstValueFrom(
+      this.http
+        .get(environment.api_url + '/melia/submission/' + id)
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
   async getIpsrs() {
     return firstValueFrom(
       this.http.get(environment.api_url+'/ipsr').pipe(map((d: any) => d))
@@ -107,6 +116,15 @@ export class SubmissionService {
       this.http.get(environment.api_url+'/ipsr-value/initiative/' + id).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async getIpsrBySubmission(id: any) {
+    return firstValueFrom(
+      this.http
+        .get(environment.api_url + '/ipsr-value/submission/' + id)
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
   async getCrossByInitiative(id: any) {
     return firstValueFrom(
       this.http
@@ -114,6 +132,15 @@ export class SubmissionService {
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
+
+  async getCrossBySubmission(id: any) {
+    return firstValueFrom(
+      this.http
+        .get(environment.api_url + '/cross-cutting/submission/' + id)
+        .pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
   async newMelia(data: any) {
     return firstValueFrom(
       this.http.post(environment.api_url+'/melia', data).pipe(map((d: any) => d))

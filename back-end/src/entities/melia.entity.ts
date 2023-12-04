@@ -12,6 +12,7 @@ import { Country } from './country.entity';
 import { Partner } from './partner.entity';
 import { Region } from './region.entity';
 import { InitiativeMelia } from './initiative-melia.entity';
+import { Submission } from './submission.entity';
 
 @Entity()
 export class Melia {
@@ -86,4 +87,11 @@ export class Melia {
   @ManyToMany(() => Country, (country) => country.melia_co)
   @JoinTable()
   co_initiative_countries: Country[];
+
+  @ManyToOne(() => Submission, (submission) => submission.melias)
+  @JoinColumn({ name: 'submission_id' })
+  submission: Submission;
+
+  @Column({ nullable: true })
+  submission_id: number;
 }

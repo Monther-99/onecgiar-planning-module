@@ -48,6 +48,11 @@ export class MeliaController {
     return this.meliaService.findByInitiativeID(initiative_id);
   }
 
+  @Get('submission/:submission_id')
+  getSubmissionMelia(@Param('submission_id') submission_id: string) {
+    return this.meliaService.findBySubmissionId(+submission_id);
+  }
+
   @Get('initiative-melias/:initiative_id')
   getInitiativeMelias(@Param('initiative_id') initiative_id, @Query() query) {
     return this.meliaService.getInitiativeMelias(initiative_id, query);

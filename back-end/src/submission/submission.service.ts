@@ -1,7 +1,6 @@
 import {
   Injectable,
   NotFoundException,
-  Res,
   StreamableFile,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,10 +23,11 @@ import { PhasesService } from 'src/phases/phases.service';
 import * as XLSX from 'xlsx-js-style';
 import { join } from 'path';
 import { createReadStream, unlink } from 'fs';
-import { Response } from 'express';
-import { merge } from 'rxjs';
 import { InitiativesService } from 'src/initiatives/initiatives.service';
 import { PeriodsService } from 'src/periods/periods.service';
+import { Melia } from 'src/entities/melia.entity';
+import { CrossCutting } from 'src/entities/cross-cutting.entity';
+import { IpsrValue } from 'src/entities/ipsr-value.entity';
 @Injectable()
 export class SubmissionService {
   constructor(
@@ -54,7 +54,13 @@ export class SubmissionService {
     private IpsrValueService: IpsrValueService,
     private PhasesService: PhasesService,
     private initService: InitiativesService,
-    private periodService: PeriodsService
+    private periodService: PeriodsService,
+    @InjectRepository(Melia)
+    private meliaRepository: Repository<Melia>,
+    @InjectRepository(CrossCutting)
+    private CrossCuttingRepository: Repository<CrossCutting>,
+    @InjectRepository(IpsrValue)
+    private ipsrValueRepository: Repository<IpsrValue>,
   ) {}
   sort(query) {
     if (query?.sort) {
@@ -186,6 +192,56 @@ export class SubmissionService {
       delete wpBudget.id;
       wpBudget.submission_id = submissionObject.id;
       await this.wpBudgetRepository.save(wpBudget, {
+        reload: true,
+      });
+    }
+
+    let oldMelias = await this.meliaRepository.find({
+      where: {
+        initiative_id: initiative_id,
+        submission: IsNull(),
+      },
+      relations: [
+        'partners',
+        'initiative_countries',
+        'initiative_regions',
+        'co_initiative_countries',
+        'co_initiative_regions',
+      ],
+    });
+    for (let melia of oldMelias) {
+      delete melia.id;
+      melia.submission_id = submissionObject.id;
+      await this.meliaRepository.save(melia, {
+        reload: true,
+      });
+    }
+
+    let oldCross = await this.CrossCuttingRepository.find({
+      where: {
+        initiative_id: initiative_id,
+        submission: IsNull(),
+      },
+    });
+    for (let cross of oldCross) {
+      delete cross.id;
+      cross.submission_id = submissionObject.id;
+      await this.CrossCuttingRepository.save(cross, {
+        reload: true,
+      });
+    }
+
+    let oldIpsrValues = await this.ipsrValueRepository.find({
+      where: {
+        initiative_id: initiative_id,
+        submission: IsNull(),
+      },
+      relations: ['ipsr']
+    });
+    for (let ipsrValue of oldIpsrValues) {
+      delete ipsrValue.id;
+      ipsrValue.submission_id = submissionObject.id;
+      await this.ipsrValueRepository.save(ipsrValue, {
         reload: true,
       });
     }

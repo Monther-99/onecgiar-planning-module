@@ -10,6 +10,9 @@ import { User } from './user.entity';
 import { Phase } from './phase.entity';
 import { Initiative } from './initiative.entity';
 import { Result } from './result.entity';
+import { Melia } from './melia.entity';
+import { CrossCutting } from './cross-cutting.entity';
+import { IpsrValue } from './ipsr-value.entity';
 export enum SubmissionStatus {
   APPROVED = 'Approved',
   REJECTED = 'Rejected',
@@ -50,4 +53,13 @@ export class Submission {
 
   @Column({nullable:true})
   status_reason: '';
+
+  @OneToMany(() => Melia, (melia) => melia.submission)
+  melias: Melia[];
+
+  @OneToMany(() => CrossCutting, (crossCutting) => crossCutting.submission)
+  crossCutting: CrossCutting[];
+
+  @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.submission)
+  ipsrValues: IpsrValue[];
 }

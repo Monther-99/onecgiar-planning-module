@@ -22,6 +22,9 @@ import { IpsrValueModule } from 'src/ipsr-value/ipsr-value.module';
 import { PhasesModule } from 'src/phases/phases.module';
 import { InitiativesModule } from 'src/initiatives/initiatives.module';
 import { PeriodsModule } from 'src/periods/periods.module';
+import { Melia } from 'src/entities/melia.entity';
+import { CrossCutting } from 'src/entities/cross-cutting.entity';
+import { IpsrValue } from 'src/entities/ipsr-value.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -35,7 +38,10 @@ import { PeriodsModule } from 'src/periods/periods.module';
       Period,
       ResultPeriodValues,
       CenterStatus,
-      WpBudget
+      WpBudget,
+      Melia,
+      CrossCutting,
+      IpsrValue
     ]),
     HttpModule,
     CacheModule.register(),

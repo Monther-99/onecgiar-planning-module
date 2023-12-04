@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CrossCutting } from 'src/entities/cross-cutting.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 
 @Injectable()
 export class CrossCuttingService {
@@ -16,7 +16,13 @@ export class CrossCuttingService {
   }
 
   findByInitiativeID(id) {
-    return this.CrossCuttingRepository.find({ where: { initiative: { id: id } } });
+    return this.CrossCuttingRepository.find({
+      where: { initiative: { id: id }, submission_id: IsNull() },
+    });
+  }
+
+  findBySubmissionID(id) {
+    return this.CrossCuttingRepository.find({ where: { submission_id: id } });
   }
 
   create(data: any) {

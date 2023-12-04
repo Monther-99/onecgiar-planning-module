@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
-import { Ipsr } from 'src/entities/ipsr.entity';
 import { IpsrService } from 'src/ipsr/ipsr.service';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 
 @Injectable()
 export class IpsrValueService {
@@ -14,8 +13,19 @@ export class IpsrValueService {
   ) {}
 
   findByInitiativeID(id) {
-    return this.ipsrValueRepository.find({ where: { initiative: { id: id } },relations:['ipsr'] });
+    return this.ipsrValueRepository.find({
+      where: { initiative: { id: id }, submission_id: IsNull() },
+      relations: ['ipsr'],
+    });
   }
+
+  findBySubmissionId(id) {
+    return this.ipsrValueRepository.find({
+      where: { submission_id: id },
+      relations: ['ipsr'],
+    });
+  }
+
   findAll() {
     return this.ipsrValueRepository.find();
   }

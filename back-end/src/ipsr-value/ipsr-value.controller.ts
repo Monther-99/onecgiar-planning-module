@@ -22,6 +22,12 @@ export class IpsrValueController {
   findInitiative_id(@Param('initiative_id') initiative_id) {
     return this.ipsrValueService.findByInitiativeID(initiative_id);
   }
+
+  @Get('submission/:submission_id')
+  getSubmissionIpsrValues(@Param('submission_id') submission_id: string) {
+    return this.ipsrValueService.findBySubmissionId(+submission_id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id) {
     return this.ipsrValueService.findOne(id);

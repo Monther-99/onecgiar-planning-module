@@ -365,14 +365,14 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.wp_budgets = await this.submissionService.getBudgets(lastSubmitionId);
     this.results = this.submission_data.toc_data;
-    const melia_data = await this.submissionService.getMeliaByInitiative(
-      this.initiative_data.id
+    const melia_data = await this.submissionService.getMeliaBySubmission(
+      lastSubmitionId
     );
-    const cross_data = await this.submissionService.getCrossByInitiative(
-      this.initiative_data.id
+    const cross_data = await this.submissionService.getCrossBySubmission(
+      lastSubmitionId
     );
-    this.ipsr_value_data = await this.submissionService.getIpsrByInitiative(
-      this.initiative_data.id
+    this.ipsr_value_data = await this.submissionService.getIpsrBySubmission(
+      lastSubmitionId
     );
     cross_data.map((d: any) => {
       d["category"] = "CROSS";

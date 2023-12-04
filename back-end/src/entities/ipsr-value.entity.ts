@@ -2,16 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Result } from './result.entity';
 import { Initiative } from './initiative.entity';
 import { Ipsr } from './ipsr.entity';
+import { Submission } from './submission.entity';
 
 @Entity()
 export class IpsrValue {
@@ -36,4 +32,10 @@ export class IpsrValue {
   @Column({ default: null })
   value: number;
 
+  @ManyToOne(() => Submission, (submission) => submission.ipsrValues)
+  @JoinColumn({ name: 'submission_id' })
+  submission: Submission;
+
+  @Column({ nullable: true })
+  submission_id: number;
 }

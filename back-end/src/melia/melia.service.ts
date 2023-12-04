@@ -1,6 +1,5 @@
 import { HttpService } from '@nestjs/axios';
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -11,7 +10,7 @@ import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 import { MeliaTypes } from 'src/entities/melia-types.entity';
 import { Melia } from 'src/entities/melia.entity';
 import { Partner } from 'src/entities/partner.entity';
-import { ILike, Repository } from 'typeorm';
+import { ILike, IsNull, Repository } from 'typeorm';
 
 @Injectable()
 export class MeliaService {
@@ -34,7 +33,14 @@ export class MeliaService {
 
   findByInitiativeID(id) {
     return this.meliaRepository.find({
-      where: { initiative: { id: id } },
+      where: { initiative: { id: id }, submission_id: IsNull() },
+      relations: ['initiativeMelia.meliaType'],
+    });
+  }
+
+  findBySubmissionId(id) {
+    return this.meliaRepository.find({
+      where: { submission_id: id },
       relations: ['initiativeMelia.meliaType'],
     });
   }
