@@ -89,8 +89,20 @@ export class PhasesService {
   }
 
   async activate(id: number) {
-    await this.phaseRepository.update({}, { active: false });
-    return await this.phaseRepository.update({ id }, { active: true });
+    let phase = await this.phaseRepository.findOne({
+      where: {
+        id: id
+      },
+      relations: ['periods']
+    });
+
+    if(phase.periods.length){
+      await this.phaseRepository.update({}, { active: false });
+      return await this.phaseRepository.update({ id }, { active: true });
+    }
+    else{
+      throw new BadRequestException('You should add periods to the phase you need to activate');
+    }
   }
 
   async deactivate(id: number) {
