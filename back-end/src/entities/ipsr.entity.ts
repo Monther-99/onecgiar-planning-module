@@ -9,7 +9,7 @@ export class Ipsr {
   @Column()
   title: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
   @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.ipsr)
