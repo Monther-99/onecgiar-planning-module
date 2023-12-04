@@ -24,7 +24,7 @@ import { PopoverManagementComponent } from "./admin/popover-management/popover-m
 import { InitiativeMeliaComponent } from "./initiative-melia/initiative-melia.component";
 
 const routes: Routes = [
-  { path: "", component: InitiativesComponent },
+  { path: "", component: InitiativesComponent , canActivate: [AuthGuard]},
   { path: "auth", component: AuthComponent },
   {
     path: "admin",
@@ -82,6 +82,7 @@ const routes: Routes = [
   },
 
   {
+    canActivate: [AuthGuard],
     path: "team-members",
     component: TeamMembersComponent,
   },
