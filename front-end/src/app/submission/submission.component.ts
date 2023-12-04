@@ -1013,6 +1013,7 @@ export class SubmissionComponent implements OnInit {
       if (result) {
         await this.submissionService.updateCross(id, result);
         await this.InitData();
+        this.toastrService.success("Edited successfully");
       }
     });
   }
@@ -1095,6 +1096,7 @@ export class SubmissionComponent implements OnInit {
       if (result) {
         await this.submissionService.updateMelia(id, result);
         await this.InitData();
+        this.toastrService.success("Edited successfully");
       }
     });
   }
