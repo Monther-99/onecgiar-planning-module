@@ -936,7 +936,8 @@ export class SubmissionService {
   }
   savedValues: any = null;
   noValuesAssigned: any = {};
-
+  submission_data:any;
+  InitiativeId:any;
   async generateExcel(submissionId: any, initId:any, tocData: any, organization: any) {
     this.perValues = {};
     this.perValuesSammary = {};
@@ -960,7 +961,7 @@ export class SubmissionService {
     this.noValuesAssigned = {};
 
     let submission: any = await this.findSubmissionsById(submissionId);
-
+    this.submission_data = submission;
     // submission.toc_data.map((d: any) => {
     //   submission.toc_data = submission.toc_data.filter((d:any) => {
     //     return d.category == "WP" && !d.group
@@ -972,6 +973,7 @@ export class SubmissionService {
     let ipsr_value_data;
     let partners;
 
+    this.InitiativeId = initId;
 
     if(submissionId != null){
       this.results = submission.toc_data;
@@ -1748,6 +1750,12 @@ export class SubmissionService {
       return true;
     }
   }
+  checkEOI(category: any) {
+    if(this.InitiativeId == null)
+      return this.submission_data.phase?.show_eoi ? category == "EOI" : false;
+    else
+      return this.phase?.show_eoi ? category == "EOI" : false;
+  }
 
   getDataForWp(
     id: string,
@@ -1766,7 +1774,7 @@ export class SubmissionService {
             d.category == 'MELIA') &&
           (d.group == id ||
             d.wp_id == official_code ||
-            (official_code == 'CROSS' && d.category == 'EOI'))
+            (official_code == 'CROSS' && this.checkEOI(d.category)))
         );
       else
         return (
@@ -1778,7 +1786,7 @@ export class SubmissionService {
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
             (d.group == id || d.wp_id == official_code)) ||
-          (official_code == 'CROSS' && d.category == 'EOI')
+          (official_code == 'CROSS' && this.checkEOI(d.category))
         );
     });
 

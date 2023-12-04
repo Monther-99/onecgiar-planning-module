@@ -642,6 +642,9 @@ export class SubmitedVersionComponent implements OnInit {
     this.sammaryCalc();
     this.allvalueChange();
   }
+  checkEOI(category: any) {
+    return this.submission_data.phase?.show_eoi ? category == "EOI" : false;
+  }
   async getDataForWp(
     id: string,
     partner_code: any | null = null,
@@ -659,7 +662,7 @@ export class SubmitedVersionComponent implements OnInit {
             d.category == "MELIA") &&
           (d.group == id ||
             d.wp_id == official_code ||
-            (official_code == "CROSS" && d.category == "EOI"))
+            (official_code == "CROSS" && this.checkEOI(d.category)))
         );
       else
         return (
@@ -671,7 +674,7 @@ export class SubmitedVersionComponent implements OnInit {
             // d.category == 'INDICATOR' ||
             d.category == "MELIA") &&
             (d.group == id || d.wp_id == official_code)) ||
-          (official_code == "CROSS" && d.category == "EOI")
+          (official_code == "CROSS" && this.checkEOI(d.category))
         );
     });
 
