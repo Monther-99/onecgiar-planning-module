@@ -81,11 +81,18 @@ export class PhasesService {
         }
       }
     });
-    if(phase.length != 0) {
+
+    const acctivePhase = await this.phaseRepository.findOne({
+      where: { 
+        id: id
+      }
+    });
+    if(phase.length) {
+      throw new BadRequestException('This phase cannot be deleted as it’s used.');
+    }else if(acctivePhase.active){
       throw new BadRequestException('This phase cannot be deleted as it’s active.');
-    } else{
-      return this.phaseRepository.delete({ id });
     }
+    return this.phaseRepository.delete({ id });
   }
 
   async activate(id: number) {
