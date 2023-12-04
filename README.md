@@ -5,7 +5,7 @@
 
 # CGIAR Planning 
 
-Risk is not inherently a bad thing. CGIAR recognizes that taking and managing risks is an integral part of delivering on its strategy and that effective risk management is critical to its success and key element of good governance. Managing risk is an integral part in managing any organization. Good risk management is not only about mitigating risk. Good risk management is equally about good risk taking.
+Planning is not inherently a bad thing. CGIAR recognizes that taking and managing planning is an integral part of delivering on its strategy and that effective planning is critical to its success and key element of good governance. Managing planning is an integral part in managing any organization. Good planning is not only about mitigating planning. Good planning is equally about good planning taking.
 
 ## Requirements
 
@@ -115,33 +115,33 @@ $ npm run build
 Then you can serve the dist folder by any server like nginx or apache2
 
 ## Documentations 
-We are using in the Risk management two of the most known frameworks in the nodejs community and we did all the development in a standard way to help any new contributor to contribute right away. Below is the only documentation needed to start 
+We are using in the Planning two of the most known frameworks in the nodejs community and we did all the development in a standard way to help any new contributor to contribute right away. Below is the only documentation needed to start 
 
 - Nestjs for backend  https://docs.nestjs.com/
 
 - Angular for frontend https://angular.io/docs
 
-We implemented an OpenAPI Module in Risk management to make it easy for frontend developers and other applications to understand easily how to consume the Risk management data
+We implemented an OpenAPI Module in Planning to make it easy for frontend developers and other applications to understand easily how to consume the Planning data
 
-You can visit the OpenAPI module at https://api.risk.cgiar.org/ or the root directory of your backend server 
+You can visit the OpenAPI module at https://api.planning.cgiar.org/ or the root directory of your backend server 
 
 ## Authors
-The following people have made significant contributions to the technical development of Risk Management:
+The following people have made significant contributions to the technical development of Planning:
 
 - Moayad Al-Najdawi [CodeObia](http://codeobia.com/)
 - Monther AlAzhari [CodeObia](http://codeobia.com/)
+- Haretha Alsouqi [CodeObia](http://codeobia.com/)
 - Tareq anshasi [CodeObia](http://codeobia.com/)
 - Mohammad Musa [CodeObia](http://codeobia.com/)
+- Yousef Alrahahleh [CodeObia](http://codeobia.com/)
 - Rand Awad [CodeObia](http://codeobia.com/)
 
 
-The following people have made significant contributions to the design and overall function of Risk Management:
+The following people have made significant contributions to the design and overall function of Planning:
 
-- Saakova, Svetlana (International Center for Agricultural Research in the Dry Areas)
-- Cadavid, Juan Carlos (CCAFS - Alliance Bioversity-CIAT)
-- Chaves, Laura (Alliance Bioversity-CIAT)
-- Solomos, Georgios (CGIAR System Organization)
-- Poulos, Allison (Alliance Bioversity-CIAT)
+- Adebayo, Atilade Solomon (IITA)
+- CATAÑO MORA, Mariafernanda (CIMMYT)
+- Ajima, Nancy (One CGIAR)
 
 
 ## License
