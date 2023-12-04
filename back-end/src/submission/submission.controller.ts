@@ -65,9 +65,9 @@ export class SubmissionController {
     return this.submissionService.saveWpBudget(+id, data);
   }
 
-  @Get('wp_budgets/:id')
-  getWpBudgets(@Param('id') id: string) {
-    return this.submissionService.getWpsBudgets(+id);
+  @Get('wp_budgets/:id/phase/:phaseId')
+  getWpBudgets(@Param('id') id: string, @Param('phaseId') phaseId: string) {
+    return this.submissionService.getWpsBudgets(+id,+phaseId);
   }
 
   @Get('submission_budgets/:id')
@@ -75,9 +75,9 @@ export class SubmissionController {
     return this.submissionService.getSubmissionBudgets(+id);
   }
 
-  @Get('save/:id')
-  async getSaved(@Param('id') id) {
-    return this.submissionService.getSaved(id);
+  @Get('save/:id/phaseId/:phaseId')
+  async getSaved(@Param('id') id, @Param('phaseId') phaseId) {
+    return this.submissionService.getSaved(id, phaseId);
   }
   @Get('initiative_id/:initiative_id')
   get(@Param('initiative_id') initiative_id, @Query() query) {

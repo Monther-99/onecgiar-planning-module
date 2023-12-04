@@ -335,9 +335,9 @@ export class SubmissionService {
     });
     return data;
   }
-  async getSaved(id) {
+  async getSaved(id, phaseId) {
     const saved_data = await this.resultRepository.find({
-      where: { initiative_id: id, submission_id: IsNull() },
+      where: { initiative_id: id, submission_id: IsNull() , phase_id: phaseId},
       relations: ['values', 'workPackage', 'values.period'],
     });
     return this.dataToPers(saved_data);
@@ -412,6 +412,7 @@ export class SubmissionService {
       percent_value,
       budget_value,
       no_budget,
+      phase_id
     } = data;
 
     let organizationObject = await this.organizationRepository.findOneBy({
@@ -433,6 +434,7 @@ export class SubmissionService {
       oldResult.value = percent_value;
       oldResult.budget = budget_value;
       oldResult.no_budget = no_budget;
+      oldResult.phase_id = phase_id
       await this.resultRepository.save(oldResult);
     } else throw new NotFoundException();
 
@@ -442,9 +444,9 @@ export class SubmissionService {
     return { message: 'Data saved' };
   }
 
-  async saveWpBudget(initiativeId: number, data: any) {
-    const { partner_code, wp_id, budget } = data;
 
+  async saveWpBudget(initiativeId: number, data: any) {
+    const { partner_code, wp_id, budget, phaseId } = data;
     let workPackageObject = await this.workPackageRepository.findOneBy({
       wp_official_code: wp_id,
     });
@@ -454,6 +456,7 @@ export class SubmissionService {
       organization_code: partner_code,
       wp_id: workPackageObject.wp_id,
       submission_id: IsNull(),
+      phase_id: phaseId
     });
 
     if (oldWpBudget) {
@@ -466,6 +469,7 @@ export class SubmissionService {
         wp_id: workPackageObject.wp_id,
         budget: budget,
         submission_id: null,
+        phase_id: phaseId
       };
 
       const newWpBudget = this.wpBudgetRepository.create(data);
@@ -478,9 +482,9 @@ export class SubmissionService {
     return { message: 'Data saved' };
   }
 
-  async getWpsBudgets(initiative_id: number) {
+  async getWpsBudgets(initiative_id: number, phaseId: any) {
     const wpBudgets = await this.wpBudgetRepository.find({
-      where: { initiative_id, submission_id: IsNull() },
+      where: { initiative_id, submission_id: IsNull(), phase: {id: phaseId} },
       relations: ['workPackage'],
     });
 
@@ -988,9 +992,9 @@ export class SubmissionService {
       );
     }
     else {
-      this.savedValues = await this.getSaved(initId)
+      
       this.phase = await this.PhasesService.findActivePhase();
-
+      this.savedValues = await this.getSaved(initId, this.phase.id)
        partners = await this.PhasesService.fetchAssignedOrganizations(this.phase.id,initId);
       if (partners.length < 1) {
         partners = await this.organizationRepository.find();
@@ -1012,7 +1016,7 @@ export class SubmissionService {
   
        cross_data = await this.CrossCuttingService.findByInitiativeID(initId)
 
-      this.wp_budgets = await this.getWpsBudgets(initId);
+      this.wp_budgets = await this.getWpsBudgets(initId,this.phase.id);
 
     }
 

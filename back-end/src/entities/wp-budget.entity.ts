@@ -9,6 +9,7 @@ import { WorkPackage } from './workPackage.entity';
 import { Organization } from './organization.entity';
 import { Submission } from './submission.entity';
 import { Initiative } from './initiative.entity';
+import { Phase } from './phase.entity';
 
 @Entity()
 export class WpBudget {
@@ -44,5 +45,12 @@ export class WpBudget {
   initiative: Initiative;
 
   @Column({ nullable: true })
-  initiative_id: number;
+  initiative_id: number; 
+
+  @ManyToOne(() => Phase)
+  @JoinColumn({ name: 'phase_id' })
+  phase: Phase;
+
+  @Column({ nullable: true })
+  phase_id: number;
 }

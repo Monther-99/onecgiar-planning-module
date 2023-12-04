@@ -9,7 +9,7 @@ import { environment } from "src/environments/environment";
 export class PeriodsService {
   constructor(private http: HttpClient) {}
 
-  async getPeriods(filters: any = null, page: number, limit: number) {
+  async getPeriods(filters: any = null, page: number = 0, limit: number = 0) {
     let finalFilters: any = {};
     if (filters)
       Object.keys(filters).forEach((element) => {

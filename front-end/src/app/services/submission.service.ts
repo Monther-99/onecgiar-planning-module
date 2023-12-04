@@ -216,9 +216,9 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async getSavedData(id: number) {
+  async getSavedData(id: number, phaseId: any) {
     return firstValueFrom(
-      this.http.get(environment.api_url+'/submission/save/' + id).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+'/submission/save/' + id + '/phaseId/' + phaseId).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 
@@ -253,9 +253,9 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async getWpBudgets(id: number) {
+  async getWpBudgets(id: number, phaseId: any) {
     return firstValueFrom(
-      this.http.get(environment.api_url+'/submission/wp_budgets/' + id).pipe(map((d: any) => d))
+      this.http.get(environment.api_url+'/submission/wp_budgets/' + id + '/phase/' + phaseId).pipe(map((d: any) => d))
     ).catch((e) => false);
   }
 

@@ -31,6 +31,7 @@ export class PeriodsComponent implements OnInit {
   pageSize: number = 10;
   pageIndex: number = 1;
   filters: any = null;
+  allPeriods:any[];
 
   constructor(
     private periodsService: PeriodsService,
@@ -59,6 +60,17 @@ export class PeriodsComponent implements OnInit {
     this.filterForm = this.fb.group({
       phase: [null],
     });
+    this.allPeriods = await this.periodsService.getPeriods();
+
+    this.allPeriods = this.allPeriods.filter(
+      (value, index, self) =>
+        index ===
+        self.findIndex((t) => t?.phase.id === value?.phase.id && t?.phase.name === value?.phase.name)
+    );
+    
+    this.allPeriods.forEach((per:any) => {
+      this.phases.push(per.phase)
+    });
     await this.initTable();
     this.setForm();
   }
@@ -85,14 +97,6 @@ export class PeriodsComponent implements OnInit {
     );
     this.dataSource = new MatTableDataSource(this.periods?.result);
     this.length = this.periods?.count;
-    this.periods?.result?.forEach((d: any) => {
-      this.phases.push(d.phase);
-    });
-    this.phases = this.phases.filter(
-      (value, index, self) =>
-        index ===
-        self.findIndex((t) => t?.id === value?.id && t?.name === value?.name)
-    );
     this.title.setTitle("Periods");
     this.meta.updateTag({ name: "description", content: "Periods" });
   }

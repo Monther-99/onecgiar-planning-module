@@ -20,22 +20,29 @@ export class PeriodsService {
   }
 
   async findAll(query: any) {
-    const take = query.limit || 10;
-    const skip = (Number(query.page || 1) - 1) * take;
-    const [finalResult,total] = await this.periodRepository.findAndCount({
-      where: {
-        phase: {
-          id: query.phase
-        }
-      },
-      take: take,
-      skip: skip,
-      relations: ['phase']
-    });
-    return {
-      result: finalResult,
-      count: total,
-    };
+    if(query.page == 0 && query.limit == 0){
+      return await this.periodRepository.find({
+        relations: ['phase']
+      });
+    }
+    else{
+      const take = query?.limit;
+      const skip = (Number(query.page || 1) - 1) * take;
+      const [finalResult,total] = await this.periodRepository.findAndCount({
+        where: {
+          phase: {
+            id: query.phase
+          }
+        },
+        take: take,
+        skip: skip,
+        relations: ['phase']
+      });
+      return {
+        result: finalResult,
+        count: total,
+      };
+    }
   }
 
   findOne(id: number) {

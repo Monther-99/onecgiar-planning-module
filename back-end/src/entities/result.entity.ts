@@ -12,6 +12,7 @@ import { Organization } from './organization.entity';
 import { WorkPackage } from './workPackage.entity';
 import { Submission } from './submission.entity';
 import { Initiative } from './initiative.entity';
+import { Phase } from './phase.entity';
 
 @Entity()
 export class Result {
@@ -61,5 +62,12 @@ export class Result {
   @ManyToOne(() => Initiative, (initiative) => initiative)
   @JoinColumn({ name: 'initiative_id' })
   initiative: Initiative;
+
+  @ManyToOne(() => Phase)
+  @JoinColumn({ name: 'phase_id' })
+  phase: Phase;
+
+  @Column({ nullable: true })
+  phase_id: number;
 }
 

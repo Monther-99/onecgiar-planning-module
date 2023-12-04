@@ -56,10 +56,10 @@ export class PhasesService {
     ).catch((e) => false);
   }
 
-  activatePhase(id: number) {
+  activatePhase(id: number) { 
     return firstValueFrom(
       this.http.get(environment.api_url+"/phases/activate/" + id).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 
   deactivatePhase(id: number) {

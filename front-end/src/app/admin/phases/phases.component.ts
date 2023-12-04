@@ -136,9 +136,13 @@ export class PhasesComponent implements OnInit {
       .afterClosed()
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
-          let result = await this.phasesService.activatePhase(id);
-          if (result) this.initTable();
-          this.Toastr.success("activated successfully");
+          await this.phasesService.activatePhase(id).then((res) => {
+            this.initTable();
+            this.Toastr.success("activated successfully");
+          }, (error) => {
+            this.Toastr.error(error.error.message);
+
+          })
         }
       });
   }
