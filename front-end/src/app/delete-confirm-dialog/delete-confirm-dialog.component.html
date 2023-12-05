@@ -51,9 +51,16 @@
             alt=""
           />
         </div>
-        <div *ngIf="data.svg">
-          <img class="dialog-img" src="{{ data.svg }}" alt="" />
+
+        
+        <div   *ngIf="data.svg">
+          <img [style.filter]="data.svg === '../../assets/shared-image/logout.png'? headerService.logoutSvg : '' " class="dialog-img" src="{{ data.svg }}" alt="" />
         </div>
+
+     
+
+
+       
 
         <div class="delete-text-box" *ngIf="data?.risks?.length > 0">
           <p class="delete-text-risks">

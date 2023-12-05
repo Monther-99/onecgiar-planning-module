@@ -73,6 +73,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.headerService.backgroundFooter =
       "linear-gradient(to top right, #2A2E45, #212537)";
+      
   }
   user: any;
   params: any;

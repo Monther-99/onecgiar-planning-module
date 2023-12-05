@@ -50,6 +50,7 @@ export class SubmitedVersionComponent implements OnInit {
     this.headerService.backgroundDeleteYes = "#5569dd";
     this.headerService.backgroundDeleteClose = "#808080";
     this.headerService.backgroundDeleteLr = "#5569dd";
+    this.headerService.logoutSvg="brightness(0) saturate(100%) invert(43%) sepia(18%) saturate(3699%) hue-rotate(206deg) brightness(89%) contrast(93%)";
   }
   user: any;
   data: any = [];

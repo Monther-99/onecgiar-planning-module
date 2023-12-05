@@ -50,9 +50,13 @@ export class InitiativesComponent implements OnInit {
       "linear-gradient(to right, #2A2E45, #212537)";
     this.headerService.backgroundUserNavButton =
       "linear-gradient(to right, #2A2E45, #212537)";
+      this.headerService.backgroundDeleteYes = "#5569dd";
+    this.headerService.backgroundDeleteClose = "#808080";
+    this.headerService.backgroundDeleteLr = "#5569dd";
 
     this.headerService.backgroundFooter =
       "linear-gradient(to top right, #2A2E45, #212537)";
+      this.headerService.logoutSvg="brightness(0) saturate(100%) invert(43%) sepia(18%) saturate(3699%) hue-rotate(206deg) brightness(89%) contrast(93%)";
   }
   user: any;
   length!: number;
