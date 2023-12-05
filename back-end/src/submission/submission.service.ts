@@ -769,7 +769,7 @@ export class SubmissionService {
   params: any;
   ipsr_value_data: any;
 
-  getHeader(submission, title) {
+  getHeader(submission, title, initiative) {
     let period_ = [];
     this.period.forEach((period) => {
       period_.push({
@@ -789,10 +789,12 @@ export class SubmissionService {
     return [
       [
         {
-          v:
+          v: submission != null ?
             submission?.initiative.official_code +
             ' - ' +
-            submission?.initiative.name,
+            submission?.initiative.name : 
+            initiative?.official_code + ' - ' + initiative?.name
+            ,
           s: {
             fill: { fgColor: { rgb: '04030f' } },
             font: { color: { rgb: 'ffffff' } },
@@ -960,13 +962,6 @@ export class SubmissionService {
     this.totals = {};
     this.noValuesAssigned = {};
 
-    let submission: any = await this.findSubmissionsById(submissionId);
-    this.submission_data = submission;
-    // submission.toc_data.map((d: any) => {
-    //   submission.toc_data = submission.toc_data.filter((d:any) => {
-    //     return d.category == "WP" && !d.group
-    //   }).sort((a: any, b: any) => a.title.localeCompare(b.title));
-    // });
     let melia_data;
     let cross_data;
 
@@ -974,8 +969,10 @@ export class SubmissionService {
     let partners;
 
     this.InitiativeId = initId;
-
+    let submission: any = null;
     if(submissionId != null){
+      submission = await this.findSubmissionsById(submissionId);
+      this.submission_data = submission;
       this.results = submission.toc_data;
       this.period = submission.phase.periods;
       this.wp_budgets = await this.getSubmissionBudgets(submissionId);
@@ -1271,7 +1268,7 @@ export class SubmissionService {
 
     if(!organization){
     let ArrayOfArrays = [
-      ...this.getHeader(submission, 'CONSOLIDATED'),
+      ...this.getHeader(submission, 'CONSOLIDATED',this.initiative_data),
       ...ConsolidatedData.map((d_, total_index) => [
         {
           v: 'Total Initiative',
@@ -1447,8 +1444,12 @@ export class SubmissionService {
       partners = partners.filter((d:any) => d.code == organization.code);
     for (let partner of partners) {
       let mergesPartners = [];
+      let ArrayOfArrays;
+      if(initId)
+        ArrayOfArrays = this.getHeader(null, partner.acronym, this.initiative_data);
+      else 
+        ArrayOfArrays = this.getHeader(submission, partner.acronym, null);
 
-      let ArrayOfArrays = this.getHeader(submission, partner.acronym);
       let rowStart = ArrayOfArrays.length;
       for (let i = 0; i < lockupArray.length - 1; i++) {
         ArrayOfArrays.push(
