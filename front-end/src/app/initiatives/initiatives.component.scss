@@ -1262,3 +1262,11 @@
 .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
   background: #5569dd !important;
 }
+
+
+.melia-icon{
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: contain;
+  filter: invert(23%) sepia(0%) saturate(49%) hue-rotate(148deg) brightness(93%) contrast(87%);
+}
