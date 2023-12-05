@@ -13,6 +13,7 @@ import { Result } from './result.entity';
 import { Melia } from './melia.entity';
 import { CrossCutting } from './cross-cutting.entity';
 import { IpsrValue } from './ipsr-value.entity';
+import { InitiativeMelia } from './initiative-melia.entity';
 export enum SubmissionStatus {
   APPROVED = 'Approved',
   REJECTED = 'Rejected',
@@ -62,4 +63,7 @@ export class Submission {
 
   @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.submission)
   ipsrValues: IpsrValue[];
+
+  @OneToMany(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.submission)
+  initiativeMelia: InitiativeMelia[];
 }

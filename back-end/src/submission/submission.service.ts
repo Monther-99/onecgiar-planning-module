@@ -28,6 +28,7 @@ import { PeriodsService } from 'src/periods/periods.service';
 import { Melia } from 'src/entities/melia.entity';
 import { CrossCutting } from 'src/entities/cross-cutting.entity';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
+import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 @Injectable()
 export class SubmissionService {
   constructor(
@@ -61,6 +62,8 @@ export class SubmissionService {
     private CrossCuttingRepository: Repository<CrossCutting>,
     @InjectRepository(IpsrValue)
     private ipsrValueRepository: Repository<IpsrValue>,
+    @InjectRepository(InitiativeMelia)
+    private initiativeMeliaRepository: Repository<InitiativeMelia>,
   ) {}
   sort(query) {
     if (query?.sort) {
@@ -210,8 +213,24 @@ export class SubmissionService {
       ],
     });
     for (let melia of oldMelias) {
+      let oldInitiativeMelia = await this.initiativeMeliaRepository.findOne({
+        where: {
+          id: melia.initiative_melia_id,
+        },
+        relations: ['other_initiatives'],
+      });
+      delete oldInitiativeMelia.id;
+      oldInitiativeMelia.submission_id = submissionObject.id;
+      let newInitiativeMelia = await this.initiativeMeliaRepository.save(
+        oldInitiativeMelia,
+        {
+          reload: true,
+        },
+      );
+
       delete melia.id;
       melia.submission_id = submissionObject.id;
+      melia.initiative_melia_id = newInitiativeMelia.id;
       await this.meliaRepository.save(melia, {
         reload: true,
       });

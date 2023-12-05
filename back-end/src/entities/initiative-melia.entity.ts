@@ -11,6 +11,7 @@ import {
 import { Initiative } from './initiative.entity';
 import { MeliaTypes } from './melia-types.entity';
 import { Melia } from './melia.entity';
+import { Submission } from './submission.entity';
 
 @Entity()
 export class InitiativeMelia {
@@ -53,4 +54,11 @@ export class InitiativeMelia {
   @JoinColumn()
   @OneToMany(() => Melia, (melia) => melia.initiativeMelia)
   melia: Melia;
+
+  @ManyToOne(() => Submission, (submission) => submission.initiativeMelia)
+  @JoinColumn({ name: 'submission_id' })
+  submission: Submission;
+
+  @Column({ nullable: true })
+  submission_id: number;
 }

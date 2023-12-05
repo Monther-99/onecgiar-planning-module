@@ -141,6 +141,7 @@ export class MeliaService {
     return this.initiativeMeliaRepository.find({
       where: {
         initiative_id: initiative_id,
+        submission_id: IsNull(),
         meliaType: { name: query?.type ? ILike(`%${query?.type}%`) : null },
       },
       relations: ['meliaType'],
@@ -156,7 +157,7 @@ export class MeliaService {
 
   getInitiativeMelia(initiative_id: any, melia_type_id: any) {
     return this.initiativeMeliaRepository.findOne({
-      where: { initiative_id: initiative_id, melia_type_id: melia_type_id },
+      where: { initiative_id: initiative_id, melia_type_id: melia_type_id, submission_id: IsNull() },
       relations: ['meliaType', 'other_initiatives'],
     });
   }
