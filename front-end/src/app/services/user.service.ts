@@ -23,7 +23,7 @@ export class UserService {
     else return false;
   }
 
-  async exportUsers(filters: any = null, page: number, limit: number) {
+  async exportUsers(filters: any = null) {
     let finalFilters: any = {};
     if (filters)
       Object.keys(filters).forEach((element) => {
@@ -35,7 +35,7 @@ export class UserService {
       });
     const data = await firstValueFrom(
       this.http
-        .get(environment.api_url+`/users/export/all?page=${page}&limit=${limit}`, {
+        .get(environment.api_url+`/users/export/all`, {
           responseType: "blob",
           params: finalFilters
         })

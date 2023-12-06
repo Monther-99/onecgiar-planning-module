@@ -103,8 +103,6 @@ export class UsersService {
   }
 
   async exportExcel(query: any) {
-    const take = query.limit || 10
-    const skip=(Number(query.page)-1)*take;
     const result = this.userRepository.createQueryBuilder('user');
     result.where(
       new Brackets((qb) => {
@@ -119,8 +117,6 @@ export class UsersService {
       result.andWhere('role = :role', { role: query.role })
     else
       result.andWhere('role IS NOT NULL')
-    .skip(skip || 0)
-    .take(take || 10);
 
     const finalResult = await result.getMany();
 
