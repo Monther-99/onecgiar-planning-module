@@ -386,7 +386,7 @@ export class SubmissionService {
   }
   async saveResultData(id, data: any) {
     const initiativeId = id;
-    const { partner_code, wp_id, item_id, per_id, value } = data;
+    const { partner_code, wp_id, item_id, per_id, value, phase_id } = data;
 
     const initiativeObject = await this.initiativeRepository.findOneBy({
       id: initiativeId,
@@ -404,10 +404,12 @@ export class SubmissionService {
       organization: organizationObject,
       workPackage: workPackageObject,
       submission: IsNull(),
+      phase_id: phase_id
     });
 
     let resultData = {
       result_uuid: item_id,
+      phase_id: phase_id,
       value: 0,
     };
 

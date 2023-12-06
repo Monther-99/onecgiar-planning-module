@@ -131,7 +131,10 @@ export class UsersComponent implements OnInit {
         }
       });
   }
-
+  async exportExcel() {
+    let result = await this.usersService.exportUsers(this.filters);
+    console.log(result)
+  }
   resetForm() {
     this.filterForm.reset();
     this.filterForm.markAsUntouched();
