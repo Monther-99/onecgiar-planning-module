@@ -364,7 +364,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.totals = {};
     this.errors = {};
 
-    this.wp_budgets = await this.submissionService.getBudgets(lastSubmitionId);
+    this.wp_budgets = await this.submissionService.getBudgets(lastSubmitionId,this.submission_data.phase);
     this.results = this.submission_data.toc_data;
     const melia_data = await this.submissionService.getMeliaBySubmission(
       lastSubmitionId

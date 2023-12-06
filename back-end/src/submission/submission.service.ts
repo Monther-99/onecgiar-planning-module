@@ -165,6 +165,7 @@ export class SubmissionService {
       where: {
         initiative_id: initiative_id,
         submission: IsNull(),
+        phase_id: phase_id
       },
       relations: ['values', 'workPackage', 'values.period'],
     });
@@ -189,6 +190,7 @@ export class SubmissionService {
       where: {
         initiative_id: initiative_id,
         submission: IsNull(),
+        phase_id: phase_id
       },
     });
     for (let wpBudget of oldWpBudgets) {
@@ -519,9 +521,9 @@ export class SubmissionService {
     return data;
   }
 
-  async getSubmissionBudgets(submission_id: number) {
+  async getSubmissionBudgets(submission_id: number, phaseId: any) {
     const wpBudgets = await this.wpBudgetRepository.find({
-      where: { submission_id },
+      where: { submission_id , phase_id: phaseId },
       relations: ['workPackage'],
     });
 
@@ -994,7 +996,7 @@ export class SubmissionService {
       this.submission_data = submission;
       this.results = submission.toc_data;
       this.period = submission.phase.periods;
-      this.wp_budgets = await this.getSubmissionBudgets(submissionId);
+      this.wp_budgets = await this.getSubmissionBudgets(submissionId, submission.phase.id);
        melia_data = await this.meliaService.findByInitiativeID(
         submission?.initiative?.id,
       );
