@@ -139,6 +139,7 @@ The following people have made significant contributions to the technical develo
 
 The following people have made significant contributions to the design and overall function of Planning:
 
+- Saakova, Svetlana (International Center for Agricultural Research in the Dry Areas)
 - Adebayo, Atilade Solomon (IITA)
 - CATAÑO MORA, Mariafernanda (CIMMYT)
 - Ajima, Nancy (One CGIAR)
