@@ -132,8 +132,11 @@ export class UsersComponent implements OnInit {
       });
   }
   async exportExcel() {
-    let result = await this.usersService.exportUsers(this.filters);
-    console.log(result)
+    await this.usersService.exportUsers(
+      this.filters,
+      this.pageIndex,
+      this.pageSize
+      );
   }
   resetForm() {
     this.filterForm.reset();
