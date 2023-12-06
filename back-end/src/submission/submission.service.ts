@@ -228,12 +228,23 @@ export class SubmissionService {
         },
       );
 
+      let oldMeliaId = melia.id;
       delete melia.id;
       melia.submission_id = submissionObject.id;
       melia.initiative_melia_id = newInitiativeMelia.id;
-      await this.meliaRepository.save(melia, {
+      let newMelia = await this.meliaRepository.save(melia, {
         reload: true,
       });
+
+      await this.resultRepository.update(
+        {
+          result_uuid: oldMeliaId,
+          submission_id: submissionObject.id,
+        },
+        {
+          result_uuid: newMelia.id,
+        },
+      );
     }
 
     let oldCross = await this.CrossCuttingRepository.find({
@@ -243,11 +254,21 @@ export class SubmissionService {
       },
     });
     for (let cross of oldCross) {
+      let oldCrossId = cross.id;
       delete cross.id;
       cross.submission_id = submissionObject.id;
-      await this.CrossCuttingRepository.save(cross, {
+      let newCross = await this.CrossCuttingRepository.save(cross, {
         reload: true,
       });
+      await this.resultRepository.update(
+        {
+          result_uuid: oldCrossId,
+          submission_id: submissionObject.id,
+        },
+        {
+          result_uuid: newCross.id,
+        },
+      );
     }
 
     let oldIpsrValues = await this.ipsrValueRepository.find({
