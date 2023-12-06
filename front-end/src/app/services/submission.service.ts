@@ -259,10 +259,10 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async getBudgets(id: number) {
+  async getBudgets(id: number, phase_id: any) {
     return firstValueFrom(
       this.http
-        .get(environment.api_url+'/submission/submission_budgets/' + id)
+        .get(environment.api_url+'/submission/submission_budgets/' + id + '/phase_id/' + phase_id)
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }

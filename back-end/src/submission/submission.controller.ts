@@ -70,9 +70,9 @@ export class SubmissionController {
     return this.submissionService.getWpsBudgets(+id,+phaseId);
   }
 
-  @Get('submission_budgets/:id')
-  getSubmissionBudgets(@Param('id') id: string) {
-    return this.submissionService.getSubmissionBudgets(+id);
+  @Get('submission_budgets/:id/phase_id/:phase_id')
+  getSubmissionBudgets(@Param('id') id: string, @Param('phase_id') phase_id: string) {
+    return this.submissionService.getSubmissionBudgets(+id, +phase_id);
   }
 
   @Get('save/:id/phaseId/:phaseId')
