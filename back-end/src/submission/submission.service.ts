@@ -472,6 +472,7 @@ export class SubmissionService {
       organization: organizationObject,
       workPackage: workPackageObject,
       submission: IsNull(),
+      phase_id
     });
 
     if (oldResult) {
