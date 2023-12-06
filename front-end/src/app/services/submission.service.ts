@@ -30,14 +30,14 @@ export class SubmissionService {
 
   async excel(id: any) {
     const data = await firstValueFrom(
-      this.http.get('/api/submission/excel/' + id, { responseType: 'blob' }).pipe(map((d: Blob) => d))
+      this.http.get(environment.api_url+'/submission/excel/' + id, { responseType: 'blob' }).pipe(map((d: Blob) => d))
     );
     saveAs(data, 'Planning.xlsx');
   }
 
   async excelCurrent(id: any) {
     const data = await firstValueFrom(
-      this.http.get('/api/submission/excelCurrent/' + id, { responseType: 'blob' }).pipe(map((d: Blob) => d))
+      this.http.get(environment.api_url+'/submission/excelCurrent/' + id, { responseType: 'blob' }).pipe(map((d: Blob) => d))
     );
     saveAs(data, 'Planning.xlsx');
   }
@@ -48,7 +48,7 @@ export class SubmissionService {
       initId: initId
     }
     const result = await firstValueFrom(
-      this.http.post('/api/submission/excelCurrentCenter/' , data, {responseType: 'blob'}).pipe(map((d: Blob) => d))
+      this.http.post(environment.api_url+'/submission/excelCurrentCenter/' , data, {responseType: 'blob'}).pipe(map((d: Blob) => d))
     );
     saveAs(result, 'Planning.xlsx');
   }
