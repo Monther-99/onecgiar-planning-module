@@ -231,6 +231,9 @@ export class SubmitedVersionsComponent implements AfterViewInit {
         );
       });
     });
+    this.summaryBudgetsAllTotal = Object.values(
+      this.summaryBudgetsTotal
+    ).reduce((a: any, b: any) => a + b);
 
     Object.keys(this.summaryBudgets).forEach((wp_id) => {
       if (this.summaryBudgetsTotal[wp_id]) {
@@ -541,6 +544,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   savedValues: any = null;
   submission_data: any;
 
+  summaryBudgetsAllTotal: any = 0;
   async generatePDF(lastSubmitionId: any) {
     this.toPdf = true;
     console.log(lastSubmitionId)
