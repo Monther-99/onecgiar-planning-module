@@ -281,11 +281,21 @@ export class SubmissionService {
       relations: ['ipsr']
     });
     for (let ipsrValue of oldIpsrValues) {
+      let oldIpsrValueId = ipsrValue.id;
       delete ipsrValue.id;
       ipsrValue.submission_id = submissionObject.id;
-      await this.ipsrValueRepository.save(ipsrValue, {
+      let newIpsrValue = await this.ipsrValueRepository.save(ipsrValue, {
         reload: true,
       });
+      await this.resultRepository.update(
+        {
+          result_uuid: oldIpsrValueId,
+          submission_id: submissionObject.id,
+        },
+        {
+          result_uuid: newIpsrValue.id,
+        },
+      );
     }
 
     const date = new Date();

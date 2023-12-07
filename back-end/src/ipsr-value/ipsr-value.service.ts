@@ -39,14 +39,14 @@ export class IpsrValueService {
       this.ipsrValueRepository.create({ ...data }),
     );
   }
-  findOne(id: number) {
+  findOne(id: string) {
     return this.ipsrValueRepository.findOneBy({ id });
   }
 
-  update(id: number, data: any) {
+  update(id: string, data: any) {
     return this.ipsrValueRepository.update({ id }, { ...data });
   }
-  remove(id: number) {
+  remove(id: string) {
     return this.ipsrValueRepository.delete({ id });
   }
 

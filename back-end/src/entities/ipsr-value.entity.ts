@@ -11,8 +11,8 @@ import { Submission } from './submission.entity';
 
 @Entity()
 export class IpsrValue {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @JoinColumn({ name: 'initiative_id' })
   @ManyToOne(() => Initiative, (initiative) => initiative.ipsrValues)
