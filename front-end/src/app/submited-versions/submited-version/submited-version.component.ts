@@ -340,7 +340,6 @@ export class SubmitedVersionComponent implements OnInit {
     this.errors = {};
 
     this.wp_budgets = await this.submissionService.getBudgets(this.params.id, this.submission_data.phase.id);
-    // console.log(this.wp_budgets)
 
     this.results = this.submission_data.toc_data;
     const melia_data = await this.submissionService.getMeliaBySubmission(

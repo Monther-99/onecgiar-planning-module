@@ -1021,14 +1021,14 @@ export class SubmissionService {
       this.results = submission.toc_data;
       this.period = submission.phase.periods;
       this.wp_budgets = await this.getSubmissionBudgets(submissionId, submission.phase.id);
-       melia_data = await this.meliaService.findByInitiativeID(
-        submission?.initiative?.id,
+       melia_data = await this.meliaService.findBySubmissionId(
+        submissionId
       );
-       cross_data = await this.CrossCuttingService.findByInitiativeID(
-        submission?.initiative?.id,
+       cross_data = await this.CrossCuttingService.findBySubmissionID(
+        submissionId
       );
-      ipsr_value_data = await this.IpsrValueService.findByInitiativeID(
-        submission?.initiative?.id,
+      ipsr_value_data = await this.IpsrValueService.findBySubmissionId(
+        submissionId
       );
        partners = await this.PhasesService.fetchAssignedOrganizations(
         submission?.phase?.id,
