@@ -339,6 +339,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   loading = false;
   initiative_data: any = {};
   ipsr_value_data: any;
+
   async pdfData(lastSubmitionId: any) {
     console.log(lastSubmitionId);
     this.loading = true;
@@ -364,7 +365,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.totals = {};
     this.errors = {};
 
-    this.wp_budgets = await this.submissionService.getBudgets(lastSubmitionId,this.submission_data.phase);
+    this.wp_budgets = await this.submissionService.getBudgets(lastSubmitionId,this.submission_data.phase.id);
     this.results = this.submission_data.toc_data;
     const melia_data = await this.submissionService.getMeliaBySubmission(
       lastSubmitionId
@@ -542,6 +543,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
   async generatePDF(lastSubmitionId: any) {
     this.toPdf = true;
+    console.log(lastSubmitionId)
 
     this.submission_data = await this.submissionService.getSubmissionsById(
       lastSubmitionId
