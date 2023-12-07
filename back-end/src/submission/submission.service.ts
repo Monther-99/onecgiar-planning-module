@@ -396,7 +396,7 @@ export class SubmissionService {
   }
   async saveResultData(id, data: any) {
     const initiativeId = id;
-    const { partner_code, wp_id, item_id, per_id, value } = data;
+    const { partner_code, wp_id, item_id, per_id, value, phase_id } = data;
 
     const initiativeObject = await this.initiativeRepository.findOneBy({
       id: initiativeId,
@@ -414,10 +414,12 @@ export class SubmissionService {
       organization: organizationObject,
       workPackage: workPackageObject,
       submission: IsNull(),
+      phase_id: phase_id
     });
 
     let resultData = {
       result_uuid: item_id,
+      phase_id: phase_id,
       value: 0,
     };
 
@@ -480,6 +482,7 @@ export class SubmissionService {
       organization: organizationObject,
       workPackage: workPackageObject,
       submission: IsNull(),
+      phase_id
     });
 
     if (oldResult) {
@@ -1028,14 +1031,14 @@ export class SubmissionService {
       this.results = submission.toc_data;
       this.period = submission.phase.periods;
       this.wp_budgets = await this.getSubmissionBudgets(submissionId, submission.phase.id);
-       melia_data = await this.meliaService.findByInitiativeID(
-        submission?.initiative?.id,
+       melia_data = await this.meliaService.findBySubmissionId(
+        submissionId
       );
-       cross_data = await this.CrossCuttingService.findByInitiativeID(
-        submission?.initiative?.id,
+       cross_data = await this.CrossCuttingService.findBySubmissionID(
+        submissionId
       );
-      ipsr_value_data = await this.IpsrValueService.findByInitiativeID(
-        submission?.initiative?.id,
+      ipsr_value_data = await this.IpsrValueService.findBySubmissionId(
+        submissionId
       );
        partners = await this.PhasesService.fetchAssignedOrganizations(
         submission?.phase?.id,

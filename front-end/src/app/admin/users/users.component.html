@@ -115,20 +115,13 @@
 
         <div class="risk-report-button-box">
           <div class="sec-7">
-            <!-- <button
-            class="user-management__button-box__btn btn-primary-size"
-            (click)="openDialogAddUser('Add User', null)"
-            mat-raised-button
-          >
-            Add new user
-          </button>
-
+            <div class="risk-report-button-box">
           <button
-            class="user-management__button-box__btn btn-export-size"
+          class="risk-report-button-box__btn btn--animated btn--chestnut btn"
             mat-raised-button
-            (click)="export()"
+            (click)="exportExcel()"
           >
-            <mat-icon class="risk-management-export-box-icon">
+            <mat-icon class="create-risk-1">
               <svg
                 class="risk-management-export-box-icon"
                 xmlns="http://www.w3.org/2000/svg"
@@ -143,8 +136,14 @@
                 />
               </svg>
             </mat-icon>
-            <span class="user-management__button-box__title">Export data</span>
-          </button> -->
+            <span class="user-management__button-box__title">Export Excel</span>
+          </button>
+            </div>
+
+
+
+
+
             <div class="risk-report-button-box">
               <button
                 class="risk-report-button-box__btn btn--animated btn--chestnut btn"
@@ -169,6 +168,9 @@
                 Add new
               </button>
             </div>
+
+
+
           </div>
         </div>
       </form>

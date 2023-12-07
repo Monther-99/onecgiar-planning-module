@@ -346,6 +346,7 @@ export class SubmissionComponent implements OnInit {
         item_id,
         per_id,
         value: event.checked,
+        phase_id: this.phase.id
       }
     );
     if (
