@@ -589,6 +589,14 @@ export class SubmitedVersionComponent implements OnInit {
     else return false;
   }
 
+  finalCenterItemPeriodVal(partner_code: any, wp_id: any, period_id: any) {
+    let periods = this.allData[wp_id].map(
+      (item: any) => this.perValues[partner_code][wp_id][item.id][period_id]
+    );
+    if (periods.length) return periods.reduce((a: any, b: any) => a || b);
+    else return false;
+  }
+
   setvalues(valuesToSet: any, perValuesToSet: any) {
     if (valuesToSet != null)
       Object.keys(this.values).forEach((code) => {
