@@ -745,4 +745,12 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.submition = await this.submissionService.excel(id);
     console.log(this.submition)
   }
+
+  finalCenterItemPeriodVal(partner_code: any, wp_id: any, period_id: any) {
+    let periods = this.allData[wp_id].map(
+      (item: any) => this.perValues[partner_code][wp_id][item.id][period_id]
+    );
+    if (periods.length) return periods.reduce((a: any, b: any) => a || b);
+    else return false;
+  }
 }
