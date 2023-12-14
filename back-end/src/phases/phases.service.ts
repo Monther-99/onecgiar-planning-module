@@ -1,6 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreatePhaseDto } from './dto/create-phase.dto';
-import { UpdatePhaseDto } from './dto/update-phase.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phase } from 'src/entities/phase.entity';
 import { ILike, In, Repository } from 'typeorm';
@@ -123,14 +121,15 @@ export class PhasesService {
       phase_id,
       initiative_id,
     });
-    data.organizations.forEach(async (organization_code) => {
+    for (const organization_code of data.organizations) {
       const newPhaseInitOrg = await this.phaseInitOrgRepo.create({
         phase_id,
         initiative_id,
         organization_code,
       });
       await this.phaseInitOrgRepo.save(newPhaseInitOrg);
-    });
+    }
+
     const initiativeRoles = await this.initiativeRolesRepository.find({
       where: { initiative_id },
       relations: ['organizations'],
