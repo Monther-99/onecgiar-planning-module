@@ -19,8 +19,10 @@ import { ConstantsModule } from './constants/constants.module';
 import { MeliaTypeModule } from './melia-type/melia-type.module';
 import { AnticipatedYearModule } from './anticipated-year/anticipated-year.module';
 import { PopoverModule } from './popover/popover.module';
+import { AppController } from './app.controller';
 
 @Module({
+  controllers:[AppController],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
@@ -53,6 +55,7 @@ import { PopoverModule } from './popover/popover.module';
     MeliaTypeModule,
     AnticipatedYearModule,
     PopoverModule,
+    
   ],
 })
 export class AppModule {}
