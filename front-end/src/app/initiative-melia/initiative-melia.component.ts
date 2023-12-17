@@ -127,7 +127,7 @@ export class InitiativeMeliaComponent implements OnInit {
     .open(DeleteConfirmDialogComponent, {
       data: {
         title: "Delete",
-        message: `Are you sure you want to delete user role ?`,
+        message: `Are you sure you want to delete MELIA type ?`,
         svg: `../../../../assets/shared-image/delete-user.png`,
       },
       })

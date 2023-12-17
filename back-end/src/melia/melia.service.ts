@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -172,7 +173,17 @@ export class MeliaService {
     return this.initiativeMeliaRepository.save({ id, ...data });
   }
 
-  removeInitiativeMelia(id: number) {
+  async removeInitiativeMelia(id: number) {
+    const meliaUsed = await this.meliaRepository.find({
+      where: {
+        initiativeMelia: {
+          id: id
+        }
+      }
+    });
+    
+    if(meliaUsed.length)
+      throw new BadRequestException('The MELIA type can not be deleted as it’s used in initiative.');
     return this.initiativeMeliaRepository.delete({ id });
   }
 }
