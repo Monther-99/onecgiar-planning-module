@@ -140,7 +140,12 @@ export class InitiativesService {
         new Brackets((qb) => {
           qb.where('init.name like :name', { name: `%${query.name || ''}%` })
           if(query.initiative_id != undefined){
-            qb.andWhere('init.official_code = :initiative_id', { initiative_id: this.offical(query) })
+            qb.andWhere('init.official_code IN (:...initiative_id)', { initiative_id: 
+              [`INIT-0${query.initiative_id}`,
+              `INIT-${query.initiative_id}`,
+              `PLAT-${query.initiative_id}`,
+              `PLAT-0${query.initiative_id}`]
+            })
           }
           if(query?.my_role) {
             if (Array.isArray(query?.my_role)) {
