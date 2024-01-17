@@ -36,7 +36,10 @@ export class PeriodsService {
         },
         take: take,
         skip: skip,
-        relations: ['phase']
+        relations: ['phase'],
+        order: {
+          id: 'ASC'
+        }
       });
       return {
         result: finalResult,
