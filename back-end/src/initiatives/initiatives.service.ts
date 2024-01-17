@@ -144,7 +144,10 @@ export class InitiativesService {
               [`INIT-0${query.initiative_id}`,
               `INIT-${query.initiative_id}`,
               `PLAT-${query.initiative_id}`,
-              `PLAT-0${query.initiative_id}`]
+              `PLAT-0${query.initiative_id}`,
+              `SGP-${query.initiative_id}`,
+              `SGP-0${query.initiative_id}`
+              ]
             })
           }
           if(query?.my_role) {
