@@ -80,7 +80,7 @@
         hideRequiredMarker
         appearance="outline"
       >
-        <input matInput formControlName="code" type="number"/> 
+        <input matInput formControlName="code" type="number" />
         <mat-error
           class="error"
           *ngIf="organizationForm.controls?.['code']?.errors?.['required']"
@@ -102,7 +102,7 @@
               color="primary"
               (click)="submit()"
             >
-              {{ organizationCode != "0" ? "Edit" : "Add" }}
+              {{ organizationCode != "0" ? "Save" : "Add" }}
             </button>
           </div>
         </div>

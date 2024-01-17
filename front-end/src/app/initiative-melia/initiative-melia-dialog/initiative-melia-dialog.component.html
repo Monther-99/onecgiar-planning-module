@@ -1,7 +1,7 @@
 <div class="form-dialog-header">
   <div class="form-dialog-header__text-box">
     <p class="form-dialog-header__text-box__text">
-      {{ data.id == 0 ? 'Add' : 'Edit' }} MELIA
+      {{ data.id == 0 ? "Add" : "Edit" }} MELIA
     </p>
   </div>
 
@@ -25,9 +25,7 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >MELIA study activity<span class="star"
-              >*</span
-            ></mat-label
+            >MELIA study activity<span class="star">*</span></mat-label
           >
         </div>
 
@@ -37,7 +35,11 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select class="select-text" required formControlName="melia_type_id">
+          <mat-select
+            class="select-text"
+            required
+            formControlName="melia_type_id"
+          >
             <mat-option
               *ngFor="let meliaType of meliaTypes"
               [value]="meliaType.id"
@@ -163,7 +165,7 @@
               *ngFor="let anticipatedYear of AnticipatedYear"
               [value]="anticipatedYear.month + ' - ' + anticipatedYear.year"
             >
-              {{ anticipatedYear.month + ' - ' + anticipatedYear.year }}
+              {{ anticipatedYear.month + " - " + anticipatedYear.year }}
             </mat-option>
           </mat-select>
           <mat-error
@@ -282,10 +284,7 @@
                 (click)="submit()"
                 cdkFocusInitial
               >
-                <mat-icon
-                  *ngIf="data.id == 0; else edit"
-                  class="create-risk-2"
-                >
+                <mat-icon *ngIf="data.id == 0; else edit" class="create-risk-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="13"
@@ -304,7 +303,7 @@
                     <span class="material-symbols-outlined"> edit_note </span>
                   </mat-icon>
                 </ng-template>
-                {{ data.id == 0 ? 'Add' : 'Edit' }}
+                {{ data.id == 0 ? "Add" : "Save" }}
               </button>
             </div>
           </div>
