@@ -238,7 +238,7 @@ export class MeliaComponent implements OnInit {
     this.meliaTypes = await this.meliaTypeService.getInitiativeMelias(
       this.data.initiative_id
     );
-    if(this.data.cross == true || this.data.wp.id == 'CROSS')
+    if (this.data.cross == true || this.data.wp.id == "CROSS")
       this.meliaTypes = this.meliaTypes.filter((element: any) => {
         if (element.meliaType.HideCrossCutting == false) return element;
       });
@@ -251,9 +251,9 @@ export class MeliaComponent implements OnInit {
     this.fillResultsSelect();
     this.AnticipatedYear =
       await this.anticipatedYearService.getAnticipatedYear();
-    this.AnticipatedYear = this.AnticipatedYear.filter((d:any) => {
+    this.AnticipatedYear = this.AnticipatedYear.filter((d: any) => {
       return d.phase?.active == true;
-    })
+    });
   }
   onNoClick(): void {
     this.dialogRef.close(false);
@@ -300,16 +300,22 @@ export class MeliaComponent implements OnInit {
   }
 
   async resultSelected() {
+    if (this.meliaForm.get("contribution_results")?.value.length === 0) {
+      this.meliaForm.get("partners")?.patchValue(null);
+    }
+
     const resultsIds = this.meliaForm.value.contribution_results;
     const selectedResults = this.results.filter((result: any) =>
       resultsIds.includes(result.id)
     );
+
     if (!selectedResults.length) return;
 
     let selectedPartners = this.meliaForm.value.partners;
     let partners = selectedResults
       .map((d: any) => d.partners)
       .reduce((a: any, b: any) => a.concat(b));
+
     if (selectedPartners) partners = partners.concat(selectedPartners);
     let partnersArray: any[] = [];
     partners.forEach((partner: any) => {
