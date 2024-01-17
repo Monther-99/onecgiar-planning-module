@@ -41,15 +41,17 @@
             formControlName="initiative_melia_id"
             (selectionChange)="fillResultsSelect()"
           >
-            <mat-option
-              *ngFor="let meliaType of meliaTypes"
-              [value]="meliaType.id"
-            >
-              {{ meliaType.meliaType.name }}
+          <ng-container *ngFor="let meliaType of meliaTypes">
+            <div class="content">
+              <mat-option [value]="meliaType.id">
+                {{ meliaType.meliaType.name }}
+              </mat-option>
               <app-popover>
                 {{ meliaType.meliaType.description }}
               </app-popover>
-            </mat-option>
+            </div>
+          </ng-container>
+        
           </mat-select>
 
           <mat-error

@@ -40,15 +40,17 @@
             required
             formControlName="melia_type_id"
           >
-            <mat-option
-              *ngFor="let meliaType of meliaTypes"
-              [value]="meliaType.id"
-            >
-              {{ meliaType.name }}
+          <ng-container *ngFor="let meliaType of meliaTypes">
+            <div class="content">
+              <mat-option [value]="meliaType.id" >
+                {{ meliaType.name }}
+              </mat-option>
               <app-popover>
                 {{ meliaType.description }}
               </app-popover>
-            </mat-option>
+            </div>
+          </ng-container>
+        
           </mat-select>
 
           <mat-error
