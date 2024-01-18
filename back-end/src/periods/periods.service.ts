@@ -19,10 +19,15 @@ export class PeriodsService {
     return this.periodRepository.save(newPeriod);
   }
 
+
+
+
   async findAll(query: any) {
     if(query.page == 0 && query.limit == 0){
       return await this.periodRepository.find({
         relations: ['phase']
+        
+
       });
     }
     else{
@@ -48,6 +53,12 @@ export class PeriodsService {
     }
   }
 
+
+
+
+
+
+
   findOne(id: number) {
     return this.periodRepository.findOne({
       where: { id },
@@ -57,6 +68,10 @@ export class PeriodsService {
   findByPhaseId(phase_id){
     return this.periodRepository.find({
       where: { phase:{id:phase_id} },
+      order:{
+        year:'ASC',
+        quarter:'ASC'
+      }
     });
   }
 
