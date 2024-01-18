@@ -722,7 +722,7 @@ export class SubmissionService {
     partners.forEach((partner: any) => {
       const partnersWp = [];
       wps.forEach((wp: any) => {
-        data = this.partnersData[partner.code][wp.ost_wp.wp_official_code].map(
+        data = (this.partnersData[partner.code][wp?.ost_wp?.wp_official_code] || [])?.map(
           (d: any) => {
             let obj: any = {};
             obj['id'] = d.id;
@@ -785,7 +785,7 @@ export class SubmissionService {
         obj['Budget'] =
           this.wp_budgets[partner.code][wp.ost_wp.wp_official_code];
 
-        data.push(obj);
+        data?.push(obj);
         partnersWp.push(data);
       });
       newArray.push(partnersWp);
@@ -1099,8 +1099,11 @@ export class SubmissionService {
     ];
 
     this.wps = this.results
-      .filter((d: any) => d.category == 'WP' && !d.group)
-      .sort((a: any, b: any) => a.title.localeCompare(b.title));
+    .filter((d: any) => {
+      if (d.category == "WP")
+        d.title = d.ost_wp.acronym + ": " + d.ost_wp.name;
+      return d.category == "WP" && !d.group;
+    }).sort((a: any, b: any) => a.title.localeCompare(b.title));
 
     this.wps.unshift({
       id: 'CROSS',
@@ -1490,7 +1493,7 @@ export class SubmissionService {
 
     for (let partner of partnersData) {
       partner.forEach((par) => {
-        par.forEach((object) => {
+        par?.forEach((object) => {
           delete object['id'];
         });
       });
@@ -1507,8 +1510,8 @@ export class SubmissionService {
 
       let rowStart = ArrayOfArrays.length;
       for (let i = 0; i < lockupArray.length - 1; i++) {
-        ArrayOfArrays.push(
-          ...partnersData[indexPartner][i].map((d_,total_index) => [
+        ArrayOfArrays?.push(
+          ...partnersData[indexPartner][i]?.map((d_,total_index) => [
             {
               v: String(lockupArray[i]),
               s: {
