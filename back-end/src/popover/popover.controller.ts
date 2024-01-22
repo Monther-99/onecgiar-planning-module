@@ -10,7 +10,9 @@ import {
 import { PopoverService } from './popover.service';
 import { CreatePopoverDto } from './dto/create-popover.dto';
 import { UpdatePopoverDto } from './dto/update-popover.dto';
-
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { Popover } from 'src/entities/popover.entity';
+@ApiTags('popover')
 @Controller('popover')
 export class PopoverController {
   constructor(private readonly popoverService: PopoverService) {
@@ -20,17 +22,25 @@ export class PopoverController {
   create(@Body() createPopoverDto: CreatePopoverDto) {
     return this.popoverService.create(createPopoverDto);
   }
-
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: '',
+    type: [Popover],
+  })
   @Get()
   findAll() {
     return this.popoverService.findAll();
   }
-
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: '',
+    type: Popover,
+  })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.popoverService.findOne(+id);
   }
-
+  @ApiBody({ type: Popover })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePopoverDto: UpdatePopoverDto) {
     return this.popoverService.update(+id, updatePopoverDto);

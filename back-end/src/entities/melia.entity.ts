@@ -13,9 +13,11 @@ import { Partner } from './partner.entity';
 import { Region } from './region.entity';
 import { InitiativeMelia } from './initiative-melia.entity';
 import { Submission } from './submission.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Melia {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,9 +25,11 @@ export class Melia {
   @ManyToOne(() => Initiative, (initiative) => initiative.submissions)
   initiative: Initiative;
 
+  @ApiProperty()
   @Column()
   initiative_id: number;
 
+  @ApiProperty()
   @Column()
   wp_id: string;
 
@@ -33,6 +37,7 @@ export class Melia {
   @ManyToOne(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.melia)
   initiativeMelia: InitiativeMelia;
 
+  @ApiProperty()
   @Column({ nullable: true })
   initiative_melia_id: number;
 
@@ -65,10 +70,11 @@ export class Melia {
   // @ManyToMany(() => Initiative, (initiative) => initiative.melia)
   // @JoinTable()
   // other_initiatives: Initiative[];
-
+  @ApiProperty()
   @Column({ type: 'json', nullable: true })
   contribution_results: string;
 
+  @ApiProperty()
   @Column({ nullable: true })
   geo_scope: string;
 
@@ -92,6 +98,7 @@ export class Melia {
   @JoinColumn({ name: 'submission_id' })
   submission: Submission;
 
+  @ApiProperty()
   @Column({ nullable: true })
   submission_id: number;
 }

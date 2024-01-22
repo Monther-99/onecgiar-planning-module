@@ -2,15 +2,19 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryCo
 import { Result } from './result.entity';
 import { Initiative } from './initiative.entity';
 import { Submission } from './submission.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class CrossCutting {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty()
   @Column()
   title: string;
 
+  @ApiProperty()
   @Column()
   description: string;
 
@@ -18,6 +22,7 @@ export class CrossCutting {
   @ManyToOne(() => Initiative, (initiative) => initiative.submissions)
   initiative: Initiative;
  
+  @ApiProperty()
   @Column()
   initiative_id: number;
 
@@ -25,6 +30,7 @@ export class CrossCutting {
   @JoinColumn({ name: 'submission_id' })
   submission: Submission;
 
+  @ApiProperty()
   @Column({ nullable: true })
   submission_id: number;
 }

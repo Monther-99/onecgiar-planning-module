@@ -1,5 +1,7 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
+import { createMeliaTypeReq } from 'DTO/melia-type.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 import { MeliaTypes } from 'src/entities/melia-types.entity';
@@ -10,6 +12,7 @@ import { RolesGuard } from 'src/role/roles.guard';
 import { ILike, Repository } from 'typeorm';
 
 @UseGuards(JwtAuthGuard)
+@ApiTags('melia-type')
 @Controller('melia-type')
 export class MeliaTypeController {
     constructor(
@@ -19,6 +22,11 @@ export class MeliaTypeController {
         private initiativeMeliaRepository: Repository<InitiativeMelia>,
       ) {}
 
+    @ApiBearerAuth()
+    @ApiCreatedResponse({
+      description: '',
+      type: [MeliaTypes],
+    })
     @Get('')
     getMeliaTypes(@Query() query) {
     console.log(query)
@@ -28,7 +36,11 @@ export class MeliaTypeController {
         }
       });
     }
-
+    @ApiBearerAuth()
+    @ApiCreatedResponse({
+      description: '',
+      type: MeliaTypes,
+    })
     @Get(':id')
     findOne(@Param('id') id: any) {
       return this.meliaTypesRepository.findOne({where: { id: id }});
@@ -36,6 +48,7 @@ export class MeliaTypeController {
 
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
+    @ApiBearerAuth()
     @Delete(':id')
     async remove(@Param('id') id: number) {
       const initiativeMelia = await this.initiativeMeliaRepository.find({
@@ -50,6 +63,12 @@ export class MeliaTypeController {
 
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
+    @ApiBearerAuth()
+    @ApiCreatedResponse({
+      description: '',
+      type: MeliaTypes,
+    })
+    @ApiBody({ type: createMeliaTypeReq })
     @Post()
     async create(@Body() body: any) {
       return await this.meliaTypesRepository.save(this.meliaTypesRepository.create({ ...body }));
@@ -57,6 +76,8 @@ export class MeliaTypeController {
 
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
+    @ApiBearerAuth()
+    @ApiBody({ type: createMeliaTypeReq })
     @Put(':id')
     async update(@Param('id') id: any, @Body() body) {
       return await this.meliaTypesRepository.update({ id }, { ...body });

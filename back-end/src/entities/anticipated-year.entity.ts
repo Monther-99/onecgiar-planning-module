@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Phase } from 'src/entities/phase.entity';
 import {
   Column,
@@ -8,12 +9,15 @@ import {
 
 @Entity()
 export class AnticipatedYear {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   month: string;
 
+  @ApiProperty()
   @Column()
   year: number;
 

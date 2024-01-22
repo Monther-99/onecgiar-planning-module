@@ -19,43 +19,56 @@ import { InitiativeMelia } from './initiative-melia.entity';
 
 @Entity()
 export class Initiative {
+  @ApiProperty()
   @PrimaryColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   name: string;
 
+  @ApiProperty()
   @Column()
   active: number;
 
+  @ApiProperty()
   @Column()
   status: string;
 
+  @ApiProperty()
   @Column()
   stageId: number;
 
+  @ApiProperty()
   @Column()
   short_name: string;
 
+  @ApiProperty()
   @Column()
   description: string;
 
+  @ApiProperty()
   @Column()
   official_code: string;
 
+  @ApiProperty()
   @Column()
   action_area_id: string;
 
+  @ApiProperty()
   @Column()
   action_area_description: string;
 
+  @ApiProperty()
   @ManyToMany(() => Organization, (organization) => organization.initiatives)
   @JoinTable()
   organizations: Organization[];
 
+  @ApiProperty()
   @OneToMany(() => Submission, (submission) => submission.initiative)
   submissions: Submission[];
 
+  @ApiProperty()
   @OneToMany(() => Submission, (melias) => melias.initiative)
   melias: Submission[];
 
@@ -76,17 +89,22 @@ export class Initiative {
   @JoinTable()
   center_status: Array<CenterStatus>;
 
+  @ApiProperty()
   @Column({ nullable: true })
   last_update_at: Date;
+  @ApiProperty()
   @Column({ nullable: true })
   last_submitted_at: Date;
 
+  @ApiProperty()
   @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.initiative)
   ipsrValues: IpsrValue[];
 
+  @ApiProperty()
   @Column({ nullable: true, default: null })
   latest_submission_id: number;
 
+  @ApiProperty()
   @ManyToOne(() => Submission)
   @JoinColumn({ name: 'latest_submission_id' })
   latest_submission: Submission;
@@ -94,6 +112,7 @@ export class Initiative {
   // @ManyToMany(() => Melia, (melia) => melia.other_initiatives)
   // melia: Melia[];
 
+  @ApiProperty()
   @ManyToMany(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.other_initiatives)
   initiativeMelia: InitiativeMelia[];
 }

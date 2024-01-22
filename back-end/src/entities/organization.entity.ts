@@ -7,15 +7,19 @@ import {
 } from 'typeorm';
 import { Result } from './result.entity';
 import { Initiative } from './initiative.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Organization {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   code: string;
 
+  @ApiProperty()
   @Column()
   name: string;
 
+  @ApiProperty()
   @Column()
   acronym: string;
 

@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -22,6 +23,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/role/roles.guard';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
+import { createUserReq, createUserRes, deleteUserReq, exportUsers } from 'DTO/user.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
@@ -41,6 +43,12 @@ export class UsersController {
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: '',
+    type: createUserRes,
+  })
+  @ApiBody({ type: createUserReq})
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -56,6 +64,10 @@ export class UsersController {
     return this.usersService.searchUsers(term);
   }
 
+  @ApiCreatedResponse({
+    description: '',
+    type: User,
+  })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
@@ -63,6 +75,7 @@ export class UsersController {
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
+  @ApiBody({ type: createUserReq})
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
@@ -70,6 +83,11 @@ export class UsersController {
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
+  @ApiCreatedResponse({
+    description: '',
+    type: '',
+  })
+  @ApiBody({ type: deleteUserReq})
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
@@ -77,6 +95,10 @@ export class UsersController {
 
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
+  @ApiCreatedResponse({
+    description: '',
+    type: [exportUsers],
+  })
   @Get('export/all')
   exportUsers(@Query() query) {
     return this.usersService.exportExcel(query);
