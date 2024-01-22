@@ -84,7 +84,7 @@ export class OrganizationsService {
       }
     });
     if(orgUsed.length != 0) {
-      throw new BadRequestException('Organization can not be deleted, This organization is assigned for an initiative(s)')
+      throw new BadRequestException('Organization cannot be deleted, This organization is assigned for an initiative(s)')
     } else {
       return this.organizationRepository.delete({ code });
     }    

@@ -101,8 +101,8 @@ export class PeriodsService {
 
     if(isActive || period1.length) {
       if(isActive) 
-        throw new BadRequestException('The period can not be deleted as it’s related to an active phase.');
-      throw new BadRequestException('The period can not be deleted as it’s related to submited phase.');
+        throw new BadRequestException('The period cannot be deleted as it’s related to an active phase.');
+      throw new BadRequestException('The period cannot be deleted as it’s related to submited phase.');
     } else {
       return this.periodRepository.delete({ id });
     }

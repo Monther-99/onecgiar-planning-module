@@ -57,7 +57,7 @@ export class MeliaTypeController {
         }
       });
       if(initiativeMelia.length)
-        throw new BadRequestException('MELIA type can not be deleted, This MELIA type is assigned for an initiative(s)')
+        throw new BadRequestException('MELIA type cannot be deleted, This MELIA type is assigned for an initiative(s)')
       return this.meliaTypesRepository.delete(id);
     }
 

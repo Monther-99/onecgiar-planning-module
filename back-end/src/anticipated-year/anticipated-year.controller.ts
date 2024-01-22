@@ -58,7 +58,7 @@ export class AnticipatedYearController {
         relations: ['phase']
       });
       if(AnticipatedYear.phase.active)
-        throw new BadRequestException('The Anticipated Year can not be deleted as it’s related to an active phase.');
+        throw new BadRequestException('The Anticipated Year cannot be deleted as it’s related to an active phase.');
       return this.AnticipatedYearRepository.delete(id);
     }
     @ApiBearerAuth()

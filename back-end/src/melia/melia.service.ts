@@ -183,7 +183,7 @@ export class MeliaService {
     });
     
     if(meliaUsed.length)
-      throw new BadRequestException('The MELIA type can not be deleted as it’s used in initiative.');
+      throw new BadRequestException('The MELIA type cannot be deleted as it’s used in initiative.');
     return this.initiativeMeliaRepository.delete({ id });
   }
 }
