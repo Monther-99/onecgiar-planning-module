@@ -61,7 +61,7 @@ export class InitiativeMeliaComponent implements OnInit {
     this.filterForm = this.fb.group({
       type: [null],
     });
-    await this.initTable();
+    await this.initTable(this.filters);
     this.setForm();
   }
 
@@ -109,7 +109,7 @@ export class InitiativeMeliaComponent implements OnInit {
                     id > 0 ? 'updated' : 'added'
                   }`
                 );
-                this.initTable();
+                this.initTable(this.filters);
               }
             },
             (error) => {
@@ -136,7 +136,7 @@ export class InitiativeMeliaComponent implements OnInit {
         if (dialogResult == true) {
           await this.meliaTypeService.deleteInitiativeMelia(id).then(
             (data) => {
-              this.initTable();
+              this.initTable(this.filters);
               this.toastr.success('Deleted successfully');
             },
             (error) => {

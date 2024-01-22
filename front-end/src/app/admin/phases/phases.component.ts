@@ -97,7 +97,7 @@ export class PhasesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.submitted) this.initTable();
+      if (result && result.submitted) this.initTable(this.filters);
     });
   }
 
@@ -115,7 +115,7 @@ export class PhasesComponent implements OnInit {
           await this.phasesService.deletePhase(id).then(
             (data) => {
               this.Toastr.success("Deleted successfully");
-              this.initTable();
+              this.initTable(this.filters);
             },
             (error) => {
               this.Toastr.error(error.error.message);
@@ -139,7 +139,7 @@ export class PhasesComponent implements OnInit {
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
           await this.phasesService.activatePhase(id).then((res) => {
-            this.initTable();
+            this.initTable(this.filters);
             this.Toastr.success("activated successfully");
           }, (error) => {
             this.Toastr.error(error.error.message);
@@ -162,7 +162,7 @@ export class PhasesComponent implements OnInit {
       .subscribe(async (dialogResult) => {
         if (dialogResult == true) {
           let result = await this.phasesService.deactivatePhase(id);
-          if (result) this.initTable();
+          if (result) this.initTable(this.filters);
           this.Toastr.success("deactivated successfully");
         }
       });

@@ -72,7 +72,7 @@ export class PeriodsComponent implements OnInit {
     this.allPeriods.forEach((per:any) => {
       this.phases.push(per.phase)
     });
-    await this.initTable();
+    await this.initTable(this.filters);
     this.setForm();
   }
   setForm() {
@@ -108,7 +108,7 @@ export class PeriodsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.submitted) this.initTable();
+      if (result && result.submitted) this.initTable(this.filters);
     });
   }
 
@@ -125,7 +125,7 @@ export class PeriodsComponent implements OnInit {
         if (dialogResult == true) {
           await this.periodsService.deletePeriod(id).then(
             (data) => {
-              this.initTable();
+              this.initTable(this.filters);
               this.toastr.success("Deleted successfully");
             },
             (error) => {

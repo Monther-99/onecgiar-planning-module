@@ -65,7 +65,7 @@ export class MeliaAdminComponent implements OnInit {
     this.filterForm = this.fb.group({
       name: [null],
     });
-    this.initTable();
+    this.initTable(this.filters);
     this.setForm();
   }
 
@@ -84,7 +84,7 @@ export class MeliaAdminComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.submitted) this.initTable();
+      if (result && result.submitted) this.initTable(this.filters);
     });
   }
 
@@ -101,7 +101,7 @@ export class MeliaAdminComponent implements OnInit {
         if (dialogResult == true) {
           await this.MeliaTypeServiceService.deleteMeliaType(id).then(
             (data) => {
-              this.initTable();
+              this.initTable(this.filters);
               this.toastr.success("Deleted successfully");
             },
             (error) => {

@@ -66,7 +66,7 @@ export class AdminIpsrComponent implements OnInit {
     this.filterForm = this.fb.group({
       title: [null],
     });
-    this.initTable();
+    this.initTable(this.filters);
     this.setForm();
   }
 
@@ -85,7 +85,7 @@ export class AdminIpsrComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.submitted) this.initTable();
+      if (result && result.submitted) this.initTable(this.filters);
     });
   }
 
@@ -102,7 +102,7 @@ export class AdminIpsrComponent implements OnInit {
         if (dialogResult == true) {
           await this.ipsrService.deleteIpsr(id).then(
             (data) => {
-              this.initTable();
+              this.initTable(this.filters);
               this.toastr.success("Deleted successfully");
             },
             (error) => {
