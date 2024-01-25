@@ -280,7 +280,7 @@ export class MeliaComponent implements OnInit {
   // }
 
   fillResultsSelect() {
-    const selectedStudy = this.meliaForm.value.melia_type;
+    const selectedStudy = this.meliaForm.value.initiative_melia_id;
     this.results = this.allResults.filter((result: any) => {
       if (this.data.wp.ost_wp.wp_official_code == "CROSS") {
         return (
