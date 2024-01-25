@@ -75,7 +75,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
 import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
 import { MeliaAdminDialogComponent } from "./admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component";
-import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
+// import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
 import { AnticipatedYearDialogComponent } from "./admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component";
 import { OrderSelectPipePipe } from "./components/order-select-pipe.pipe";
 import { PopoverModule } from "./share/popover/popover.module";
@@ -128,7 +128,7 @@ import { InitiativeMeliaDialogComponent } from './initiative-melia/initiative-me
     ParametersSettingsComponent,
     MeliaAdminComponent,
     MeliaAdminDialogComponent,
-    AnticipatedYearComponent,
+    // AnticipatedYearComponent,
     AnticipatedYearDialogComponent,
     OrderSelectPipePipe,
     PopoverManagementComponent,

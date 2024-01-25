@@ -13,7 +13,7 @@ import {
 } from "rxjs";
 import { InitiativesService } from "src/app/services/initiatives.service";
 import { SubmissionService } from "src/app/services/submission.service";
-import { AnticipatedYearService } from "src/app/services/anticipated-year.service";
+// import { AnticipatedYearService } from "src/app/services/anticipated-year.service";
 import { MeliaTypeService } from "src/app/services/melia-type.service";
 @Component({
   selector: "app-melia",
@@ -41,7 +41,7 @@ export class MeliaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private submissionService: SubmissionService,
     private initiativesService: InitiativesService,
-    private anticipatedYearService: AnticipatedYearService,
+    // private anticipatedYearService: AnticipatedYearService,
     private meliaTypeService: MeliaTypeService
   ) {
     this.savedData = data.data;
@@ -214,7 +214,7 @@ export class MeliaComponent implements OnInit {
   // submit() {
   //   if (this.meliaForm.valid) this.dialogRef.close(this.meliaForm.value);
   // }
-  AnticipatedYear: any;
+  // AnticipatedYear: any;
   async ngOnInit() {
     this.meliaForm = this.fb.group({
       initiative_id: [this.data.initiative_id, Validators.required],
@@ -249,11 +249,11 @@ export class MeliaComponent implements OnInit {
       this.data.initiative_id
     );
     this.fillResultsSelect();
-    this.AnticipatedYear =
-      await this.anticipatedYearService.getAnticipatedYear();
-    this.AnticipatedYear = this.AnticipatedYear.filter((d: any) => {
-      return d.phase?.active == true;
-    });
+    // this.AnticipatedYear =
+    //   await this.anticipatedYearService.getAnticipatedYear();
+    // this.AnticipatedYear = this.AnticipatedYear.filter((d: any) => {
+    //   return d.phase?.active == true;
+    // });
   }
   onNoClick(): void {
     this.dialogRef.close(false);

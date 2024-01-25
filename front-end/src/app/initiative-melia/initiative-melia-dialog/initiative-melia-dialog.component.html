@@ -20,9 +20,9 @@
 
 <div class="form-dialog-conten-box-1">
   <mat-dialog-content>
-    <form [formGroup]="meliaForm" class="form-dialog-content">
+    <form [formGroup]="meliaForm" class="form-dialog-content" *ngIf="meliaForm">
       <!-- //Type of MELIA study or activity  filed----- -->
-      <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__field--grid-column"> 
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
             >MELIA study activity<span class="star">*</span></mat-label
@@ -55,7 +55,7 @@
 
           <mat-error
             class="error"
-            *ngIf="meliaForm.controls?.['melia_type']?.errors?.['required']"
+            *ngIf="meliaForm.controls?.['melia_type_id']?.errors?.['required']"
             >This field is mandatory</mat-error
           >
         </mat-form-field>
@@ -158,25 +158,27 @@
           hideRequiredMarker
           appearance="outline"
         >
-          <mat-select
-            class="select-text"
-            required
-            formControlName="completion_year"
-          >
-            <mat-option
-              *ngFor="let anticipatedYear of AnticipatedYear"
-              [value]="anticipatedYear.month + ' - ' + anticipatedYear.year"
-            >
-              {{ anticipatedYear.month + " - " + anticipatedYear.year }}
-            </mat-option>
-          </mat-select>
-          <mat-error
-            class="error"
-            *ngIf="meliaForm.controls?.['completion_year']?.errors?.['required']"
-            >This field is mandatory</mat-error
-          >
+          <input
+          matInput
+          [matDatepicker]="startDatePicker"
+          formControlName="completion_year"
+        />
+
+        <mat-error
+        class="error"
+        *ngIf="meliaForm.controls?.['completion_year']?.errors?.['required']"
+        >This field is mandatory</mat-error>
+        <mat-hint>YYYY</mat-hint>
+
+
+        <mat-datepicker-toggle matIconSuffix [for]="startDatePicker">
+          <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker startView="multi-year" #startDatePicker (yearSelected)="chosenYearHandler($event, startDatePicker)"></mat-datepicker>
+
         </mat-form-field>
       </div>
+    
 
       <!-- //Tools and template (questionnaires) filed----- -->
 

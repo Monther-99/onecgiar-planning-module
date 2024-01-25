@@ -41,8 +41,8 @@ export class InitiativeMelia {
   @Column({ type: 'text', nullable: true })
   questionnaires: string;
 
-  @Column({ nullable: true })
-  completion_year: string;
+  @Column({ nullable: true, type: 'timestamp' })
+  completion_year: Date; 
 
   @Column({ type: 'text', nullable: true })
   management_decisions: string;

@@ -1,22 +1,41 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AnticipatedYearService } from 'src/app/services/anticipated-year.service';
+// import { AnticipatedYearService } from 'src/app/services/anticipated-year.service';
 import { InitiativesService } from 'src/app/services/initiatives.service';
 import { MeliaTypeService } from 'src/app/services/melia-type.service';
 import { SubmissionService } from 'src/app/services/submission.service';
+import * as moment from 'moment';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'YYYY',
+  },
+  display: {
+    dateInput: 'YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 
 @Component({
   selector: 'app-initiative-melia-dialog',
   templateUrl: './initiative-melia-dialog.component.html',
   styleUrls: ['./initiative-melia-dialog.component.scss'],
+  providers: [
+    provideMomentDateAdapter(MY_FORMATS),
+  ],
 })
 export class InitiativeMeliaDialogComponent implements OnInit {
   meliaForm: any;
   meliaTypes: any[] = [];
   confirmation: any = '';
   initiatives: any = [];
-  AnticipatedYear: any;
+  // AnticipatedYear: any;
   initiativeMelias: any = [];
 
   constructor(
@@ -26,7 +45,7 @@ export class InitiativeMeliaDialogComponent implements OnInit {
     private meliaTypeService: MeliaTypeService,
     private submissionService: SubmissionService,
     private initiativesService: InitiativesService,
-    private anticipatedYearService: AnticipatedYearService
+    // private anticipatedYearService: AnticipatedYearService
   ) {}
 
   async ngOnInit() {
@@ -40,7 +59,7 @@ export class InitiativeMeliaDialogComponent implements OnInit {
       methodology: [this.data?.methodology],
       experimental: [this.data?.experimental],
       questionnaires: [this.data?.questionnaires],
-      completion_year: [this.data?.completion_year],
+      completion_year: [new Date(this.data?.completion_year)],
       management_decisions: [this.data?.management_decisions],
       other_initiatives: [this.data?.other_initiatives],
     });
@@ -55,11 +74,11 @@ export class InitiativeMeliaDialogComponent implements OnInit {
         !existTypesIds.includes(d.id) || d.id == this.data?.melia_type_id
     );
     this.initiatives = await this.initiativesService.getInitiativesOnly();
-    this.AnticipatedYear =
-      await this.anticipatedYearService.getAnticipatedYear();
-    this.AnticipatedYear = this.AnticipatedYear.filter((d: any) => {
-      return d.phase?.active == true;
-    });
+    // this.AnticipatedYear =
+    //   await this.anticipatedYearService.getAnticipatedYear();
+    // this.AnticipatedYear = this.AnticipatedYear.filter((d: any) => {
+    //   return d.phase?.active == true;
+    // });
   }
 
   showerror: boolean = false;
@@ -96,5 +115,13 @@ export class InitiativeMeliaDialogComponent implements OnInit {
     if (index !== -1) {
       array.splice(index, 1);
     }
+  }
+
+  chosenYearHandler(normalizedYear: moment.Moment, dp: MatDatepicker<moment.Moment>) {
+    const controlDate = this?.meliaForm?.get('completion_year');
+    const ctrlValue = null ?? moment();
+    ctrlValue.year(normalizedYear.year());
+    controlDate.setValue(ctrlValue);
+    dp.close();    
   }
 }
