@@ -371,15 +371,15 @@ export class MeliaComponent implements OnInit {
 
     let geoScope = initRegionsArray.length ? "region" : "global";
 
-    this.meliaForm.patchValue({
-      partners: Object.values(partnersArray),
-      geo_scope: geoScope,
-      initiative_regions: initRegionsArray,
-    });
+    // this.meliaForm.patchValue({
+    //   partners: Object.values(partnersArray),
+    //   geo_scope: geoScope,
+    //   initiative_regions: initRegionsArray,
+    // });
     this.loadInitCountries();
-    this.meliaForm.patchValue({
-      initiative_countries: initCountriesArray,
-    });
+    // this.meliaForm.patchValue({
+    //   initiative_countries: initCountriesArray,
+    // });
   }
 
   private loadPartners() {
