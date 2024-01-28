@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
+import { MatRadioChange } from '@angular/material/radio';
 
 export const MY_FORMATS = {
   parse: {
@@ -49,6 +50,11 @@ export class InitiativeMeliaDialogComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    if(this.data.question)
+      this.requierdOtherInitiatives = true;
+    else
+      this.requierdOtherInitiatives = false;
+
     this.populateMeliaForm();
   }
 
@@ -59,9 +65,10 @@ export class InitiativeMeliaDialogComponent implements OnInit {
       methodology: [this.data?.methodology],
       experimental: [this.data?.experimental],
       questionnaires: [this.data?.questionnaires],
-      completion_year: [new Date(this.data?.completion_year)],
+      completion_year: [this.data?.completion_year, Validators.required],
       management_decisions: [this.data?.management_decisions],
       other_initiatives: [this.data?.other_initiatives],
+      question: [this.data?.question, Validators.required],
     });
     this.meliaTypes = await this.submissionService.getMeliaTypes();
     this.initiativeMelias = await this.meliaTypeService.getInitiativeMelias(
@@ -123,5 +130,19 @@ export class InitiativeMeliaDialogComponent implements OnInit {
     ctrlValue.year(normalizedYear.year());
     controlDate.setValue(ctrlValue);
     dp.close();    
+  }
+
+ requierdOtherInitiatives:Boolean;
+  radioChange(event: MatRadioChange) {
+    const control = this.meliaForm.get('other_initiatives');
+    if(event.value == true) {
+      this.requierdOtherInitiatives = true;
+      control.addValidators(Validators.required);
+    } else {
+      control.value = [];
+      this.requierdOtherInitiatives = false;
+      control.clearValidators();  
+      control.updateValueAndValidity();
+    }
   }
 }

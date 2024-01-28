@@ -38,6 +38,9 @@ export class InitiativeMelia {
   @Column({ nullable: true })
   experimental: boolean;
 
+  @Column({ nullable: true })
+  question: boolean;
+
   @Column({ type: 'text', nullable: true })
   questionnaires: string;
 

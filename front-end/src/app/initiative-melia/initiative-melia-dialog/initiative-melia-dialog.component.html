@@ -214,66 +214,95 @@
         </mat-form-field>
       </div>
 
-      <!-- //Other Initiatives filed----- -->
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Other Initiatives<span class="star">*</span>
-            <app-popover id="11"></app-popover>
+            >Is this MELIA study/activity conducted in collaboration with other Initiatives?<span class="star">*</span>
           </mat-label>
         </div>
-
-        <mat-form-field
-          class="form-dialog-content__field"
-          floatLabel="always"
-          hideRequiredMarker
-          appearance="outline"
-        >
-          <mat-select
-            class="select-text"
-            required
-            formControlName="other_initiatives"
-            multiple
-            [compareWith]="compareId"
+          <mat-radio-group
+            formControlName="question"
+            aria-label="Select an option"
+            color="primary"
           >
-            <mat-select-trigger>
-              <mat-chip-listbox>
-                <mat-chip
-                  *ngFor="let initiative of meliaForm?.value?.other_initiatives"
-                  [removable]="true"
-                  (removed)="onToppingRemoved(initiative)"
+            <mat-radio-button [value]="true" (change)="radioChange($event)">Yes</mat-radio-button>
+            <mat-radio-button [value]="false" (change)="radioChange($event)">No</mat-radio-button>
+          </mat-radio-group>
+
+
+          <mat-error
+          class="error"
+          *ngIf="meliaForm.controls?.['question']?.errors?.['required'] && showerror"
+          >This field is mandatory</mat-error
+        >
+      </div>
+
+
+      <ng-container *ngIf="requierdOtherInitiatives">
+        <!-- //Other Initiatives filed----- -->
+        <div class="form-dialog-content__field--grid-column">
+          <div class="form-dialog-content__title-box">
+            <mat-label class="form-dialog-content__title-box__title"
+              >Other Initiatives<span class="star">*</span>
+              <app-popover id="11"></app-popover>
+            </mat-label>
+          </div>
+
+          <mat-form-field
+            class="form-dialog-content__field"
+            floatLabel="always"
+            hideRequiredMarker
+            appearance="outline"
+          >
+            <mat-select
+              class="select-text"
+              required
+              formControlName="other_initiatives"
+              multiple
+              [compareWith]="compareId"
+            >
+              <mat-select-trigger>
+                <mat-chip-listbox>
+                  <mat-chip
+                    *ngFor="let initiative of meliaForm?.value?.other_initiatives"
+                    [removable]="true"
+                    (removed)="onToppingRemoved(initiative)"
+                  >
+                    <strong class="official-color">{{
+                      initiative.official_code
+                    }}</strong>
+                    - {{ initiative.name }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-listbox>
+              </mat-select-trigger>
+
+              <ng-container *ngFor="let initiative of initiatives">
+                <mat-option
+                  class="w"
+                  required
+                  *ngIf="initiative.id != data?.initiative_id"
+                  [value]="initiative"
                 >
                   <strong class="official-color">{{
                     initiative.official_code
                   }}</strong>
                   - {{ initiative.name }}
-                  <mat-icon matChipRemove>cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-listbox>
-            </mat-select-trigger>
+                </mat-option>
+              </ng-container>
+            </mat-select>
 
-            <ng-container *ngFor="let initiative of initiatives">
-              <mat-option
-                class="w"
-                required
-                *ngIf="initiative.id != data?.initiative_id"
-                [value]="initiative"
-              >
-                <strong class="official-color">{{
-                  initiative.official_code
-                }}</strong>
-                - {{ initiative.name }}
-              </mat-option>
-            </ng-container>
-          </mat-select>
 
-          <mat-error
-            class="error"
-            *ngIf="meliaForm?.errors?.['otherInitiativesRequired'] && showerror"
-            >This field is mandatory</mat-error
-          >
-        </mat-form-field>
-      </div>
+
+
+            <mat-error
+              class="error"
+              *ngIf="meliaForm.controls?.['other_initiatives']?.errors?.['required'] && showerror"
+              >This field is mandatory</mat-error
+            >
+          </mat-form-field>
+        </div>
+      </ng-container>
 
       <div>
         <div class="form-dialog-conten-button-box">
