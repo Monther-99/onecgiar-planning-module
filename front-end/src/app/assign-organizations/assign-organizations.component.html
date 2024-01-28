@@ -48,6 +48,12 @@
           [multiple]="true"
           formControlName="organizations"
           placeholder="Organizations">
+          <ng-template ng-label-tmp let-item="item">
+            <span>{{ item.acronym }}</span> - <span>{{ item.name }}</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-index="index">
+            <span>{{ item.acronym }}</span> - <span>{{ item.name }}</span>
+          </ng-template>
         </ng-select>
   
       

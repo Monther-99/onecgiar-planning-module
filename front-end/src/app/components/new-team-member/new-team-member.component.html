@@ -172,7 +172,7 @@
                   [removable]="true"
                   (removed)="onToppingRemoved(organization)"
                 >
-                  <span class="official-color">{{ organization.name }}</span>
+                <span class="official-color"> {{ organization.acronym }}</span>  -  <span class="official-color">{{ organization.name }}</span>
                   <mat-icon matChipRemove>cancel</mat-icon>
                 </mat-chip>
               </mat-chip-listbox>
@@ -182,7 +182,7 @@
               *ngFor="let organization of organizations | orderSelectPipe"
             >
               <mat-option class="w" required [value]="organization">
-                <span class="official-color"> {{ organization.name }}</span>
+              <span class="official-color"> {{ organization.acronym }}</span> - <span class="official-color"> {{ organization.name }}</span>
               </mat-option>
             </ng-container>
           </mat-select>
