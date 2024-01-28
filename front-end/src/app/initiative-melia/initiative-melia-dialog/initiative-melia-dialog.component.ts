@@ -55,6 +55,11 @@ export class InitiativeMeliaDialogComponent implements OnInit {
     else
       this.requierdOtherInitiatives = false;
 
+    if(this.data.description)
+      this.showDescription = true;
+    else
+      this.showDescription = false;
+
     this.populateMeliaForm();
   }
 
@@ -69,6 +74,7 @@ export class InitiativeMeliaDialogComponent implements OnInit {
       management_decisions: [this.data?.management_decisions],
       other_initiatives: [this.data?.other_initiatives],
       question: [this.data?.question, Validators.required],
+      description: [this.data?.description],
     });
     this.meliaTypes = await this.submissionService.getMeliaTypes();
     this.initiativeMelias = await this.meliaTypeService.getInitiativeMelias(
@@ -141,6 +147,23 @@ export class InitiativeMeliaDialogComponent implements OnInit {
     } else {
       control.value = [];
       this.requierdOtherInitiatives = false;
+      control.clearValidators();  
+      control.updateValueAndValidity();
+    }
+  }
+
+  showDescription:boolean;
+  getSelected(event: any) {
+    const selectedMeliaType = this.meliaTypes.filter((d) => d.id == event.value)[0];
+
+    const control = this.meliaForm.get('description');
+    if(selectedMeliaType.name === 'Other MELIA study/activity') {
+      
+      control.addValidators(Validators.required);
+      this.showDescription = true;
+    } else {
+      control.value = null;
+      this.showDescription = false;
       control.clearValidators();  
       control.updateValueAndValidity();
     }
