@@ -23,10 +23,10 @@
     <form [formGroup]="meliaForm" class="form-dialog-content" *ngIf="meliaForm">
       <!-- //Type of MELIA study or activity  filed----- -->
 
-      <div class="form-dialog-content__field--grid-column"> 
+      <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >MELIA study activity<span class="star">*</span></mat-label
+            >MELIA study<span class="star">*</span></mat-label
           >
         </div>
 
@@ -42,17 +42,16 @@
             formControlName="melia_type_id"
             (selectionChange)="getSelected($event)"
           >
-          <ng-container *ngFor="let meliaType of meliaTypes">
-            <div class="content">
-              <mat-option [value]="meliaType.id" >
-                {{ meliaType.name }}
-              </mat-option>
-              <app-popover>
-                {{ meliaType.description }}
-              </app-popover>
-            </div>
-          </ng-container>
-        
+            <ng-container *ngFor="let meliaType of meliaTypes">
+              <div class="content">
+                <mat-option [value]="meliaType.id">
+                  {{ meliaType.name }}
+                </mat-option>
+                <app-popover>
+                  {{ meliaType.description }}
+                </app-popover>
+              </div>
+            </ng-container>
           </mat-select>
 
           <mat-error
@@ -63,13 +62,14 @@
         </mat-form-field>
       </div>
 
-
       <ng-container *ngIf="showDescription">
         <div class="form-dialog-content__field--grid-column">
           <div class="form-dialog-content__title-box">
-            <mat-label class="form-dialog-content__title-box__title">Description<span class="star">*</span></mat-label>
+            <mat-label class="form-dialog-content__title-box__title"
+              >Description<span class="star">*</span></mat-label
+            >
           </div>
-  
+
           <mat-form-field
             class="form-dialog-content__field"
             floatLabel="always"
@@ -93,8 +93,6 @@
           </mat-form-field>
         </div>
       </ng-container>
-
-
 
       <!-- //Methodology applied filed----- -->
 
@@ -194,26 +192,28 @@
           appearance="outline"
         >
           <input
-          matInput
-          [matDatepicker]="startDatePicker"
-          formControlName="completion_year"
-        />
+            matInput
+            [matDatepicker]="startDatePicker"
+            formControlName="completion_year"
+          />
 
-        <mat-error
-        class="error"
-        *ngIf="meliaForm.controls?.['completion_year']?.errors?.['required']"
-        >This field is mandatory</mat-error>
-        <mat-hint>YYYY</mat-hint>
+          <mat-error
+            class="error"
+            *ngIf="meliaForm.controls?.['completion_year']?.errors?.['required']"
+            >This field is mandatory</mat-error
+          >
+          <mat-hint>YYYY</mat-hint>
 
-
-        <mat-datepicker-toggle matIconSuffix [for]="startDatePicker">
-          <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker startView="multi-year" #startDatePicker (yearSelected)="chosenYearHandler($event, startDatePicker)"></mat-datepicker>
-
+          <mat-datepicker-toggle matIconSuffix [for]="startDatePicker">
+            <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker
+            startView="multi-year"
+            #startDatePicker
+            (yearSelected)="chosenYearHandler($event, startDatePicker)"
+          ></mat-datepicker>
         </mat-form-field>
       </div>
-    
 
       <!-- //Tools and template (questionnaires) filed----- -->
 
@@ -252,26 +252,29 @@
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Is this MELIA study/activity conducted in collaboration with other Initiatives?<span class="star">*</span>
+            >Is this MELIA study/activity conducted in collaboration with other
+            Initiatives?<span class="star">*</span>
           </mat-label>
         </div>
-          <mat-radio-group
-            formControlName="question"
-            aria-label="Select an option"
-            color="primary"
+        <mat-radio-group
+          formControlName="question"
+          aria-label="Select an option"
+          color="primary"
+        >
+          <mat-radio-button [value]="true" (change)="radioChange($event)"
+            >Yes</mat-radio-button
           >
-            <mat-radio-button [value]="true" (change)="radioChange($event)">Yes</mat-radio-button>
-            <mat-radio-button [value]="false" (change)="radioChange($event)">No</mat-radio-button>
-          </mat-radio-group>
+          <mat-radio-button [value]="false" (change)="radioChange($event)"
+            >No</mat-radio-button
+          >
+        </mat-radio-group>
 
-
-          <mat-error
+        <mat-error
           class="error"
           *ngIf="meliaForm.controls?.['question']?.errors?.['required'] && showerror"
           >This field is mandatory</mat-error
         >
       </div>
-
 
       <ng-container *ngIf="requierdOtherInitiatives">
         <!-- //Other Initiatives filed----- -->
@@ -299,7 +302,9 @@
               <mat-select-trigger>
                 <mat-chip-listbox>
                   <mat-chip
-                    *ngFor="let initiative of meliaForm?.value?.other_initiatives"
+                    *ngFor="
+                      let initiative of meliaForm?.value?.other_initiatives
+                    "
                     [removable]="true"
                     (removed)="onToppingRemoved(initiative)"
                   >
@@ -326,9 +331,6 @@
                 </mat-option>
               </ng-container>
             </mat-select>
-
-
-
 
             <mat-error
               class="error"
