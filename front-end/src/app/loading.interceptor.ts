@@ -20,15 +20,13 @@ export class LoadingInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     this.totalRequests++;
     setTimeout(() => {
-      this.loaderService.setLoading(true);
+      this.loaderService.setLoading(this.totalRequests != 0);
     }, 0);
 
     return next.handle(request).pipe(
       finalize(() => {
         this.totalRequests--;
-        if (this.totalRequests == 0) {
-          this.loaderService.setLoading(false);
-        }
+          this.loaderService.setLoading(this.totalRequests != 0);
       })
     );
   }
