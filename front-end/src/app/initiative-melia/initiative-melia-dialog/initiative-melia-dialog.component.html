@@ -206,6 +206,8 @@
               matInput
               [matDatepicker]="startDatePicker"
               formControlName="completion_year"
+              readonly
+              [min]="minDate"
             />
 
             <mat-error
