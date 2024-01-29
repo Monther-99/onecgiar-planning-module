@@ -129,7 +129,7 @@ export class InitiativeMeliaDialogComponent implements OnInit {
       array.splice(index, 1);
     }
   }
-
+  minDate:Date = new Date('Sat Jan 01 2022 00:00:00 GMT+0200 (GMT+03:00)');
   chosenYearHandler(normalizedYear: moment.Moment, dp: MatDatepicker<moment.Moment>) {
     const controlDate = this?.meliaForm?.get('completion_year');
     const ctrlValue = null ?? moment();
