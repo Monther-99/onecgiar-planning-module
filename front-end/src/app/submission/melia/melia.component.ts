@@ -279,8 +279,11 @@ export class MeliaComponent implements OnInit {
   //   this.fillResultsSelect();
   // }
 
-  fillResultsSelect() {
+  async fillResultsSelect() {
     const selectedStudy = this.meliaForm.value.initiative_melia_id;
+
+    let initMeliaSelected = await this.meliaTypeService.getInitiativeMeliaById(selectedStudy);
+
     this.results = this.allResults.filter((result: any) => {
       if (this.data.wp.ost_wp.wp_official_code == "CROSS") {
         return (
@@ -290,7 +293,7 @@ export class MeliaComponent implements OnInit {
       } else {
         return (
           (result.category == "OUTCOME" ||
-            ((selectedStudy == 6 || selectedStudy == 8) &&
+            ((initMeliaSelected?.meliaType?.id == 6 || initMeliaSelected?.meliaType?.id == 8) &&
               result.category == "OUTPUT")) &&
           (result.group == this.data.wp.id ||
             result.wp_id == this.data.wp.ost_wp.wp_official_code)
