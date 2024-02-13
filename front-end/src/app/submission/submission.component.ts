@@ -768,10 +768,10 @@ export class SubmissionComponent implements OnInit {
     const tab = this.activatedRoute.snapshot.queryParamMap.get("tab");
     if (tab) this.selectedTabIndex = Number(tab);
     else this.selectedTabIndex = 0;
-    this.title2.setTitle("Manage initiative activities");
+    this.title2.setTitle("Complete the PORB");
     this.meta.updateTag({
       name: "description",
-      content: "Manage initiative activities",
+      content: "Complete the PORB",
     });
   }
   savedValues: any = null;

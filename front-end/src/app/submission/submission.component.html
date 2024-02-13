@@ -34,7 +34,7 @@
               initiative_data.official_code
             }}/submission"
             class="risk-nav-link"
-            >Manage Initiative activities</a
+            >Complete the PORB</a
           >
         </li>
       </ul>
@@ -152,10 +152,10 @@
                     initiative_data.official_code
                   }}/melia"
                 >
-                Manage Initiative MELIA
+                  Manage Initiative MELIA
                 </button>
               </div>
-             
+
               <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
@@ -518,10 +518,14 @@
                           </ng-container>
                         </td>
                         <td class="wp-title">
-                          <ng-container *ngIf="item?.initiativeMelia?.meliaType.name">
+                          <ng-container
+                            *ngIf="item?.initiativeMelia?.meliaType.name"
+                          >
                             {{ item?.initiativeMelia?.meliaType.name }}
                           </ng-container>
-                          <ng-container *ngIf="!item?.initiativeMelia?.meliaType?.name">
+                          <ng-container
+                            *ngIf="!item?.initiativeMelia?.meliaType?.name"
+                          >
                             {{
                               item?.ipsr?.id
                                 ? item?.ipsr.title + " (" + item.value + ")"
@@ -709,8 +713,6 @@
                   Refresh
                 </button> -->
 
-        
-  
             <div class="risk-report-btn-box">
               <div class="risk-report-button-box">
                 <button
@@ -850,10 +852,14 @@
                       }"
                     >
                       <td class="wp-title">
-                        <ng-container *ngIf="item?.initiativeMelia?.meliaType?.name">
+                        <ng-container
+                          *ngIf="item?.initiativeMelia?.meliaType?.name"
+                        >
                           {{ item?.initiativeMelia?.meliaType.name }}
                         </ng-container>
-                        <ng-container *ngIf="!item?.initiativeMelia?.meliaType?.name">
+                        <ng-container
+                          *ngIf="!item?.initiativeMelia?.meliaType?.name"
+                        >
                           {{
                             item?.ipsr?.id
                               ? item?.ipsr.title + " (" + item.value + ")"
