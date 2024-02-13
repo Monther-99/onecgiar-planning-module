@@ -2,7 +2,6 @@
 @import "../../sass/layout/admin-module/user-management";
 @import "../../sass/components/button";
 
-
 .form-dialog-content {
   display: flex;
   flex-direction: column;
@@ -16,6 +15,11 @@
   .error {
     float: left !important;
   }
+}
+
+.t-b {
+  display: flex;
+  gap: 0.8rem;
 }
 
 ::ng-deep.ng-select .ng-select-container.ng-appearance-outline {
@@ -96,8 +100,6 @@
   //   }
   // }
 }
-
-
 
 .ng-select-option-flex {
   display: flex;
@@ -220,8 +222,6 @@
     padding: 0 0 !important;
   }
 }
-
-
 
 ::ng-deep .mdc-text-field--invalid .mdc-notched-outline > * {
   border-color: rgba(255, 0, 0, 0) !important;
@@ -391,13 +391,11 @@
   color: #5569dd !important;
 }
 
-
 :host {
   ::ng-deep.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
     background-color: #ebf5ff !important;
   }
 }
-
 
 .select-text::-webkit-scrollbar {
   width: 0.8rem;
@@ -439,10 +437,6 @@
   }
 }
 
-
-
-
-
 :host {
   ::ng-deep.mat-mdc-chip.mdc-evolution-chip--with-trailing-action
     .mat-mdc-chip-action-label {
@@ -457,11 +451,10 @@
     font-size: 1.4rem !important;
     font-style: normal !important;
     line-height: 18.75px !important;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     white-space: normal !important;
   }
 }
-
 
 .phase-box {
   width: auto;
@@ -616,7 +609,7 @@ textarea::placeholder {
 
   color: #0f212f;
   text-align: left;
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 400;
@@ -672,7 +665,7 @@ textarea::placeholder {
   font-size: 1.4rem;
   font-style: normal;
   line-height: 18.75px;
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
   white-space: normal !important;
 }
 
@@ -693,7 +686,7 @@ textarea::placeholder {
     font-size: 1.4rem !important;
     font-style: normal !important;
     line-height: 18.75px !important;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     white-space: normal !important;
   }
 }
@@ -738,7 +731,7 @@ textarea::placeholder {
     font-size: 1.4rem !important;
     font-style: normal !important;
     line-height: 18.75px !important;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     white-space: normal !important;
     max-height: 12rem !important;
     max-width: 100% !important;
@@ -765,7 +758,7 @@ textarea::placeholder {
     font-size: 1.4rem !important;
     font-style: normal !important;
     line-height: 18.75px !important;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     white-space: normal !important;
   }
 }
@@ -810,8 +803,6 @@ textarea::placeholder {
   }
 }
 
-
-
 ::ng-deep.mat-mdc-select-value-text {
   white-space: nowrap;
   overflow: auto;
@@ -822,7 +813,7 @@ textarea::placeholder {
   font-size: 1.4rem !important;
   font-style: normal !important;
   line-height: 18.75px !important;
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
   white-space: normal !important;
 }
 
@@ -872,7 +863,6 @@ textarea::placeholder {
 
 :host {
   ::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-    
     white-space: nowrap;
     overflow: auto;
     text-overflow: ellipsis;
@@ -882,7 +872,7 @@ textarea::placeholder {
     font-size: 1.4rem !important;
     font-style: normal !important;
     line-height: 18.75px !important;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     margin-bottom: 1rem !important;
   }
 }
@@ -915,7 +905,7 @@ textarea::placeholder {
     font-size: 1.4rem !important;
     font-style: normal !important;
     line-height: 18.75px !important;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     white-space: normal !important;
   }
 }
@@ -986,14 +976,13 @@ textarea::placeholder {
   &__title {
     color: #0f212f;
     text-align: center;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     font-size: 2.2rem;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
   }
 }
-
 
 :host {
   ::ng-deep.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
@@ -1008,14 +997,12 @@ textarea::placeholder {
   color: #5569dd !important;
 }
 
-
-
-::ng-deep.mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full, .mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
+::ng-deep.mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full,
+.mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
   background: #5569dd !important;
 }
 
-
-:host{
+:host {
   ::ng-deep.mat-mdc-select-trigger {
     display: inline-flex;
     align-items: center;
@@ -1024,5 +1011,5 @@ textarea::placeholder {
     box-sizing: border-box;
     width: 100%;
     gap: 1rem !important;
-}
+  }
 }
