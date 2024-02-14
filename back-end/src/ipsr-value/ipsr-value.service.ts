@@ -58,6 +58,7 @@ export class IpsrValueService {
       ipsr_value = await this.ipsrValueRepository.findOneBy({
         initiative_id,
         ipsr_id: ipsr.id,
+        submission_id: IsNull(),
       });
       if (!ipsr_value) ipsr_value = this.ipsrValueRepository.create();
 
