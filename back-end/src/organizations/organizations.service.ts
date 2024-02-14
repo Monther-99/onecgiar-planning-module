@@ -51,7 +51,7 @@ export class OrganizationsService {
         name: query?.name ? ILike(`%${query?.name}%`) : null, 
       },
       order: {
-        name: 'ASC'
+        acronym: 'ASC'
       }
     });
   }
