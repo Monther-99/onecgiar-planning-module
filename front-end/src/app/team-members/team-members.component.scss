@@ -644,20 +644,6 @@
   animation-fill-mode: backwards;
 }
 
-::ng-deep.mdc-tooltip__surface {
-  color: #04030f !important;
-  border-radius: 16px !important;
-  background: #fafafa !important;
-  padding: 16px !important;
-  /* box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important; */
-  text-align: left !important;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3) !important;
-  position: relative !important;
-  left: 1rem !important;
-  top: -3rem !important;
-  border: 0.1rem solid #828282 !important;
-}
-
 ::ng-deep.mdc-list-item--selected .mdc-list-item__primary-text,
 .mdc-list-item--activated .mdc-list-item__primary-text {
   /* color: var(--mdc-theme-primary, #673ab7); */
