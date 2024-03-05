@@ -49,12 +49,15 @@ export class MeliaService {
   async create(data: any) {
     let { partners } = data;
     let partnersArray = [];
-    for (let partner of partners) {
-      let partnerEntity = await this.partnerRepository.findOneBy({
-        code: partner.code,
-      });
-      if (partnerEntity) partnersArray.push(partnerEntity);
+    if(partners) {
+      for (let partner of partners) {
+        let partnerEntity = await this.partnerRepository.findOneBy({
+          code: partner.code,
+        });
+        if (partnerEntity) partnersArray.push(partnerEntity);
+      }
     }
+
     data.partners = partnersArray;
     return this.meliaRepository.save(this.meliaRepository.create({ ...data }));
   }

@@ -85,13 +85,34 @@ export class MeliaComponent implements OnInit {
     };
   };
 
-  private partnersValidator = () => {
+  private partnersValidator = () => { 
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls.partners.value == "" || controls.partners.value == null) {
+        if (controls && this.meliaForm.value.have_partners != null) {
+          if (this.meliaForm.value.have_partners == 'yes') {
+            return {
+              partnersRequired: {
+                text: "This field is mandatory",
+              },
+            };
+          }
+        }
+      }
+      return null;
+    };
+  }; 
+
+  private haveParentsValidator = () => {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
       if (controls) {
-        if (controls.partners.value == "" || controls.partners.value == null) {
+        if (
+          controls.have_partners.value == "" ||
+          controls.have_partners.value == null
+        ) {
           return {
-            partnersRequired: {
+            have_partners: {
               text: "This field is mandatory",
             },
           };
@@ -185,7 +206,6 @@ export class MeliaComponent implements OnInit {
     return (controlGroup: any) => {
       let controls = controlGroup.controls;
       if (controls && this.meliaForm.value.geo_scope == "region") {
-        // console.log(controls);
         if (
           controls.co_initiative_countries.value == "" ||
           controls.co_initiative_countries.value == null
@@ -226,9 +246,10 @@ export class MeliaComponent implements OnInit {
       // completion_year: [this.savedData?.completion_year],
       // management_decisions: [this.savedData?.management_decisions],
       geo_scope: [this.savedData?.geo_scope, Validators.required],
+      have_partners: [this.savedData?.have_partners, Validators.required],
       initiative_regions: [this.savedData?.initiative_regions],
       initiative_countries: [this.savedData?.initiative_countries],
-      partners: [this.savedData?.partners, Validators.required],
+      partners: [this.savedData?.partners],
       // other_initiatives: [this.savedData?.other_initiatives],
       co_initiative_regions: [this.savedData?.co_initiative_regions],
       co_initiative_countries: [this.savedData?.co_initiative_countries],
@@ -403,6 +424,7 @@ export class MeliaComponent implements OnInit {
     this.meliaForm.setValidators([
       this.partnersValidator(),
       this.geographicScopeValidator(),
+      this.haveParentsValidator(),
       this.initiativeRegionsValidator(),
       this.initiativeCountriesValidator(),
       this.coInitiativeRegionsValidator(),

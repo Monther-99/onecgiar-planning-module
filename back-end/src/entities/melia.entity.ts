@@ -78,6 +78,10 @@ export class Melia {
   @Column({ nullable: true })
   geo_scope: string;
 
+  @ApiProperty()
+  @Column({ nullable: true })
+  have_partners: string;
+
   @ManyToMany(() => Region, (region) => region.melia)
   @JoinTable()
   initiative_regions: Region[];

@@ -303,16 +303,33 @@
         >
       </div>
 
-      <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__field--grid-column"> 
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-            >Partners<span class="star">*</span>
-            <app-popover id="13"></app-popover>
-          </mat-label>
+          >Partners<span class="star">*</span>
+          <app-popover id="13"></app-popover>
+        </mat-label>
         </div>
+        <div class="risk-report-radio-buttons-flex-box-2">
+          <mat-radio-group
+            formControlName="have_partners"
+            color="primary"
+            required
+          >
+            <mat-radio-button value="yes">Yes</mat-radio-button>
+            <mat-radio-button value="no">No</mat-radio-button>
 
+            <mat-error
+              class="error"
+              *ngIf="meliaForm?.errors?.['have_partners'] && showerror"
+              >This field is mandatory</mat-error
+            >
+          </mat-radio-group>
+        </div>
+      </div> 
+
+      <div class="form-dialog-content__field--grid-column" *ngIf="meliaForm.value.have_partners == 'yes'"> 
         <ng-select
-          required
           class="select-text"
           [items]="partners | async"
           formControlName="partners"
@@ -356,9 +373,9 @@
           *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
           >This field is mandatory</mat-error
         > -->
-      </div>
+      </div> 
 
-      <div class="form-dialog-content__field--grid-column">
+      <div class="form-dialog-content__field--grid-column"> 
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
             >Geographic scope<span class="star">*</span>
@@ -382,7 +399,7 @@
             >
           </mat-radio-group>
         </div>
-      </div>
+      </div> 
 
       <div *ngIf="meliaForm.value.geo_scope == 'region'" class="ng-select-box">
         <div class="form-dialog-content__field--grid-column">
