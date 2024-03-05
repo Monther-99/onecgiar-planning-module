@@ -110,7 +110,7 @@
         <div class="form-dialog-content__field--grid-column">
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
-              >Methodology applied<span class="star">*</span>
+              >Methodology applied
               <app-popover id="6"></app-popover
             ></mat-label>
           </div>
@@ -122,7 +122,6 @@
             appearance="outline"
           >
             <textarea
-              required
               class="texta"
               cdkAutosizeMinRows="2"
               cdkAutosizeMaxRows="10"
@@ -130,11 +129,6 @@
               formControlName="methodology"
             >
             </textarea>
-            <mat-error
-              class="error"
-              *ngIf="meliaForm.controls?.['methodology']?.errors?.['required']"
-              >This field is mandatory</mat-error
-            >
           </mat-form-field>
         </div>
 
@@ -159,7 +153,7 @@
         <div class="form-dialog-content__field--grid-column">
           <div class="form-dialog-content__title-box">
             <mat-label class="form-dialog-content__title-box__title"
-              >Tools and template (questionnaires)<span class="star">*</span>
+              >Tools and template (questionnaires)
               <app-popover id="8"></app-popover>
             </mat-label>
           </div>
@@ -171,7 +165,6 @@
             appearance="outline"
           >
             <textarea
-              required
               class="texta"
               cdkAutosizeMinRows="2"
               cdkAutosizeMaxRows="10"
@@ -179,11 +172,6 @@
               formControlName="questionnaires"
             >
             </textarea>
-            <mat-error
-              class="error"
-              *ngIf="meliaForm.controls?.['questionnaires']?.errors?.['required']"
-              >This field is mandatory</mat-error
-            >
           </mat-form-field>
         </div>
 
