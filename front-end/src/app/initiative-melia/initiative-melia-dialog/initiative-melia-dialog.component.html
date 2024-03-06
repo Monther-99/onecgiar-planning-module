@@ -50,7 +50,9 @@
               formControlName="melia_type_id"
               (selectionChange)="getSelected($event)"
             >
-              <ng-container *ngFor="let meliaType of meliaTypes">
+              <ng-container
+                *ngFor="let meliaType of meliaTypes | sort : 'asc' : 'name'"
+              >
                 <div class="content">
                   <mat-option [value]="meliaType.id">
                     {{ meliaType.name }}

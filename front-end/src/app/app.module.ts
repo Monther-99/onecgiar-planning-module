@@ -80,11 +80,12 @@ import { AnticipatedYearDialogComponent } from "./admin/anticipated-year/anticip
 import { OrderSelectPipePipe } from "./components/order-select-pipe.pipe";
 import { PopoverModule } from "./share/popover/popover.module";
 import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
-import { PopoverDialogComponent } from './admin/popover-management/popover-dialog/popover-dialog.component';
+import { PopoverDialogComponent } from "./admin/popover-management/popover-dialog/popover-dialog.component";
 import { EditorModule } from "./share/editor/editor.module";
 import { TrustHTMLModule } from "./share/trust-html/trust-html.module";
-import { InitiativeMeliaComponent } from './initiative-melia/initiative-melia.component';
-import { InitiativeMeliaDialogComponent } from './initiative-melia/initiative-melia-dialog/initiative-melia-dialog.component';
+import { InitiativeMeliaComponent } from "./initiative-melia/initiative-melia.component";
+import { InitiativeMeliaDialogComponent } from "./initiative-melia/initiative-melia-dialog/initiative-melia-dialog.component";
+import { SortPipe } from "./share/pipes/sort.pipe";
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { InitiativeMeliaDialogComponent } from './initiative-melia/initiative-me
     PopoverDialogComponent,
     InitiativeMeliaComponent,
     InitiativeMeliaDialogComponent,
+    SortPipe,
   ],
   imports: [
     BrowserModule,
@@ -175,7 +177,7 @@ import { InitiativeMeliaDialogComponent } from './initiative-melia/initiative-me
     SatPopoverModule,
     PopoverModule,
     EditorModule,
-    TrustHTMLModule
+    TrustHTMLModule,
   ],
   providers: [
     AppSocket,
@@ -189,6 +191,7 @@ import { InitiativeMeliaDialogComponent } from './initiative-melia/initiative-me
       useClass: LoadingInterceptor,
       multi: true,
     },
+    SortPipe,
   ],
   bootstrap: [AppComponent],
 })

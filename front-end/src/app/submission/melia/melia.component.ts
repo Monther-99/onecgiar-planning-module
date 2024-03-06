@@ -15,6 +15,7 @@ import { InitiativesService } from "src/app/services/initiatives.service";
 import { SubmissionService } from "src/app/services/submission.service";
 // import { AnticipatedYearService } from "src/app/services/anticipated-year.service";
 import { MeliaTypeService } from "src/app/services/melia-type.service";
+import { SortPipe } from "src/app/share/pipes/sort.pipe";
 @Component({
   selector: "app-melia",
   templateUrl: "./melia.component.html",
@@ -34,8 +35,10 @@ export class MeliaComponent implements OnInit {
   allResults: any = [];
   results: any = [];
   savedData: any = {};
+  meliaTypesHold: any = [];
 
   constructor(
+    private sortPipe: SortPipe,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -259,10 +262,32 @@ export class MeliaComponent implements OnInit {
     this.meliaTypes = await this.meliaTypeService.getInitiativeMelias(
       this.data.initiative_id
     );
-    if (this.data.cross == true || this.data.wp.id == "CROSS")
-      this.meliaTypes = this.meliaTypes.filter((element: any) => {
-        if (element.meliaType.HideCrossCutting == false) return element;
-      });
+
+    // console.log(this.meliaTypes);
+
+    for (let i = 0; i < this.meliaTypes.length; i++) {
+      if (this.meliaTypes[i]) {
+        if (this.data.cross == true || this.data.wp.id == "CROSS")
+          this.meliaTypes = this.meliaTypes.filter((element: any) => {
+            if (element.meliaType.HideCrossCutting == false) return element;
+          });
+
+        this.meliaTypesHold.push(this.meliaTypes[i].meliaType);
+
+        // const sortedArr = this.sortPipe.transform(
+        //   this.meliaTypes,
+        //   "desc",
+        //   "name"
+        // );
+
+        this.meliaTypesHold = this.sortPipe.transform(this.meliaTypesHold, "asc", "name");
+      }
+    }
+
+    console.log(this.meliaTypesHold);
+
+    // console.log(this.meliaTypes);
+
     this.regions = await this.submissionService.getRegions();
     this.countries = await this.submissionService.getCountries();
     this.initiatives = await this.initiativesService.getInitiativesOnly();
@@ -303,7 +328,9 @@ export class MeliaComponent implements OnInit {
   async fillResultsSelect() {
     const selectedStudy = this.meliaForm.value.initiative_melia_id;
 
-    let initMeliaSelected = await this.meliaTypeService.getInitiativeMeliaById(selectedStudy);
+    let initMeliaSelected = await this.meliaTypeService.getInitiativeMeliaById(
+      selectedStudy
+    );
 
     this.results = this.allResults.filter((result: any) => {
       if (this.data.wp.ost_wp.wp_official_code == "CROSS") {
@@ -314,7 +341,8 @@ export class MeliaComponent implements OnInit {
       } else {
         return (
           (result.category == "OUTCOME" ||
-            ((initMeliaSelected?.meliaType?.id == 6 || initMeliaSelected?.meliaType?.id == 8) &&
+            ((initMeliaSelected?.meliaType?.id == 6 ||
+              initMeliaSelected?.meliaType?.id == 8) &&
               result.category == "OUTPUT")) &&
           (result.group == this.data.wp.id ||
             result.wp_id == this.data.wp.ost_wp.wp_official_code)

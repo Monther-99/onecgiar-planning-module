@@ -41,13 +41,15 @@
             formControlName="initiative_melia_id"
             (selectionChange)="fillResultsSelect()"
           >
-            <ng-container *ngFor="let meliaType of meliaTypes">
+            <ng-container
+              *ngFor="let meliaType of meliaTypesHold | sort : 'asc' : 'name'"
+            >
               <div class="content">
                 <mat-option [value]="meliaType.id">
-                  {{ meliaType.meliaType.name }}
+                  {{ meliaType.name }}
                 </mat-option>
                 <app-popover>
-                  {{ meliaType.meliaType.description }}
+                  {{ meliaType.description }}
                 </app-popover>
               </div>
             </ng-container>
