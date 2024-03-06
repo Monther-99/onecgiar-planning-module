@@ -16,6 +16,10 @@ export class Ipsr {
   @Column('text')
   description: string;
 
+  @ApiProperty()
+  @Column({default: false})
+  need_in_description: boolean;
+
   @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.ipsr)
   ipsrValues: IpsrValue[];
 }

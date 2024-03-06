@@ -35,7 +35,11 @@ export class IpsrValue {
 
   @ApiProperty()
   @Column({ default: null })
-  value: number;
+  value: string;
+
+  @ApiProperty()
+  @Column({ default: null })
+  description: string;
 
   @ManyToOne(() => Submission, (submission) => submission.ipsrValues)
   @JoinColumn({ name: 'submission_id' })

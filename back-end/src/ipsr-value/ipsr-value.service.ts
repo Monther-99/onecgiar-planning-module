@@ -51,6 +51,7 @@ export class IpsrValueService {
   }
 
   async save(data: any) {
+    console.log(data)
     const { initiative_id } = data;
     const ipsrs = await this.ipsrService.findAll();
     for (let ipsr of ipsrs) {
@@ -65,6 +66,7 @@ export class IpsrValueService {
       ipsr_value.initiative_id = initiative_id;
       ipsr_value.ipsr_id = ipsr.id;
       ipsr_value.value = data['value-' + ipsr.id];
+      ipsr_value.description = data['description-' + ipsr.id];
        this.ipsrValueRepository.save(ipsr_value);
     }
     return {message:'Data Saved'}

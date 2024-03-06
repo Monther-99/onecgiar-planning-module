@@ -531,6 +531,9 @@
                                 ? item?.ipsr.title + " (" + item.value + ")"
                                 : item.title
                             }}
+                            <ng-container *ngIf="item?.ipsr?.id">
+                              <mat-icon class="ipsr-icon" *ngIf="item?.description" [matTooltip]="item?.description" matTooltipPosition="above">help</mat-icon>
+                            </ng-container>
                           </ng-container>
                         </td>
                         <td>{{ item.category }}</td>
@@ -865,6 +868,9 @@
                               ? item?.ipsr.title + " (" + item.value + ")"
                               : item.title
                           }}
+                        </ng-container>
+                        <ng-container *ngIf="item?.ipsr?.id">
+                          <mat-icon class="ipsr-icon" *ngIf="item?.description" [matTooltip]="item?.description" matTooltipPosition="above">help</mat-icon>
                         </ng-container>
                       </td>
                       <td>{{ item.category }}</td>
