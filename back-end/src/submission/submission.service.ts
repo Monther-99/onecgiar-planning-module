@@ -5,13 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResultPeriodValues } from 'src/entities/resultPeriodValues.entity';
-import { IsNull, Repository } from 'typeorm';
+import { In, IsNull, Repository } from 'typeorm';
 import { Result } from 'src/entities/result.entity';
 import { WorkPackage } from 'src/entities/workPackage.entity';
 import { Organization } from 'src/entities/organization.entity';
 import { Period } from 'src/entities/period.entity';
 import { Submission } from 'src/entities/submission.entity';
-import { User } from 'src/entities/user.entity';
+import { User, userRole } from 'src/entities/user.entity';
 import { Phase } from 'src/entities/phase.entity';
 import { Initiative } from 'src/entities/initiative.entity';
 import { CenterStatus } from 'src/entities/center-status.entity';
@@ -29,6 +29,7 @@ import { Melia } from 'src/entities/melia.entity';
 import { CrossCutting } from 'src/entities/cross-cutting.entity';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
 import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
+import { EmailService } from 'src/email/email.service';
 @Injectable()
 export class SubmissionService {
   constructor(
@@ -64,6 +65,7 @@ export class SubmissionService {
     private ipsrValueRepository: Repository<IpsrValue>,
     @InjectRepository(InitiativeMelia)
     private initiativeMeliaRepository: Repository<InitiativeMelia>,
+    private emailService: EmailService
   ) {}
   sort(query) {
     if (query?.sort) {
@@ -73,8 +75,8 @@ export class SubmissionService {
       return obj;
     } else return { id: 'DESC' };
   }
-  async updateCenterStatus(data) {
-    const { initiative_id, organization_code, phase_id, status } = data;
+  async updateCenterStatus(data, user) {
+    const { initiative_id, organization_code, phase_id, status, organization } = data;
 
     let center_status: CenterStatus;
     center_status = await this.centerStatusRepo.findOneBy({
@@ -87,12 +89,55 @@ export class SubmissionService {
     center_status.organization_code = organization_code;
     center_status.phase_id = phase_id;
     center_status.status = status;
-    await this.centerStatusRepo.save(center_status);
+    await this.centerStatusRepo.save(center_status).then(
+      async (data) => {
+        if(data.status) {
+          const init = await this.initiativeRepository.findOne({where : {
+            id : initiative_id
+          },
+          relations: ['roles', 'roles.user']
+          })
+          const users = init.roles.map(d => d.user);
+          const userRoleDoAction = init.roles.filter(d => d.user_id == user.id);
+
+          for(let user of users) {
+            this.emailService.sendEmailTobyVarabel(user, 7, init, null, null, organization, userRoleDoAction)
+          }
+        }
+      }, (error) => {
+        console.error(error)
+      }
+    );
 
     return { message: 'Data Saved' };
   }
   async updateStatusBySubmittionID(id, data) {
-    return this.submissionRepository.update(id, data);
+    return await this.submissionRepository.update(id, data).then(
+      async () => {
+        const submission = await this.submissionRepository.findOne({
+          where : {
+            id: id,
+            initiative: {
+              roles: {
+                role: In(['Leader' , 'Coordinator']) 
+              }
+            }
+          },
+          relations : ['initiative', 'initiative.roles', 'initiative.roles.user']
+        });
+        
+        for(let role of submission.initiative?.roles) {
+          if(data.status == 'Approved') {
+            this.emailService.sendEmailTobyVarabel(role.user, 5, submission.initiative, role.role, data.status_reason, null, null)
+          } else if(data.status == 'Rejected') {
+            this.emailService.sendEmailTobyVarabel(role.user, 6, submission.initiative, role.role, data.status_reason, null, null)
+          }
+        }
+        return true
+      }, (error) => {
+        console.error(error)
+      }
+    );
   }
   async findSubmissionsByInitiativeId(id, query: any) {
     if (query.withFilters == 'false') {
@@ -304,10 +349,38 @@ export class SubmissionService {
       last_submitted_at: date,
       latest_submission_id: submissionObject.id,
     });
-    return this.submissionRepository.findOne({
+    const data = await this.submissionRepository.findOne({
       where: { id: submissionObject.id },
       relations: ['user', 'phase'],
     });
+
+    if(data) {
+      const admins = await this.userRepository.find({where : {
+        role: userRole.ADMIN
+      }});
+      const init = await this.initiativeRepository.findOne({where : {
+        id : initiative_id,
+        roles: {
+          role : In(['Leader' , 'Coordinator']) 
+        }
+      },
+      relations: ['roles', 'roles.user']
+      })
+
+      // users (Leader && Coordinator)
+      const users = init.roles.map(d => d.user);
+
+      for(let admin of admins) {
+        this.emailService.sendEmailTobyVarabel(admin, 3, init, null, null, null, null)
+      }
+
+
+      for(let user of users) {
+        this.emailService.sendEmailTobyVarabel(user, 4, init, null, null, null, null)
+      }
+
+    } 
+    return data
   }
 
   dataToPers(saved_data) {

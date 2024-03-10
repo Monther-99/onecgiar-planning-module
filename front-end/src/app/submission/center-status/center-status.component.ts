@@ -75,7 +75,8 @@ export class CenterStatusComponent implements OnInit {
               this.organization_code,
               +this.initiative_id,
               this.phase_id,
-              !!this.status
+              !!this.status,
+              this.organization
             );
             if (this.status === false) {
               this.toast.success('mark as incompleted');

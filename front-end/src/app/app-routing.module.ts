@@ -22,6 +22,7 @@ import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
 // import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
 import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
 import { InitiativeMeliaComponent } from "./initiative-melia/initiative-melia.component";
+import { EmailsComponent } from "./admin/emails/emails.component";
 
 const routes: Routes = [
   { path: "", component: InitiativesComponent , canActivate: [AuthGuard]},
@@ -42,6 +43,8 @@ const routes: Routes = [
       { path: "melia", component: MeliaAdminComponent },
       // { path: "Anticipated-year", component: AnticipatedYearComponent },
       { path: "popover-management", component: PopoverManagementComponent },
+      { path: "emails", component: EmailsComponent },
+
     ],
   },
 

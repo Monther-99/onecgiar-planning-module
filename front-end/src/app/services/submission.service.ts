@@ -13,7 +13,8 @@ export class SubmissionService {
     organization_code: string,
     initiative_id: number,
     phase_id: number,
-    status: boolean
+    status: boolean,
+    organization: any
   ) {
     return firstValueFrom(
       this.http
@@ -22,6 +23,7 @@ export class SubmissionService {
           initiative_id,
           phase_id,
           status,
+          organization
         })
         .pipe(map((d: any) => d))
     ).catch((e) => false);

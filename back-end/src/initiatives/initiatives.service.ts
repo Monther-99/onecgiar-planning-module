@@ -17,6 +17,8 @@ import { WorkPackage } from 'src/entities/workPackage.entity';
 import { CreateWorkPackageDto } from './dto/create-workpackage.dto';
 import { UpdateWorkPackageDto } from './dto/update-workpackage.dto';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
+import { User } from 'DTO/submission.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class InitiativesService {
@@ -53,6 +55,9 @@ export class InitiativesService {
     private workPackageRepository: Repository<WorkPackage>,
     @InjectRepository(InitiativeRoles)
     public iniRolesRepository: Repository<InitiativeRoles>,
+    @InjectRepository(User)
+    public userRepository: Repository<User>,
+    private emailService: EmailService
   ) {}
 
   @Cron(CronExpression.EVERY_WEEK)
@@ -254,6 +259,20 @@ export class InitiativesService {
     };
     //To the user that was added by the Admin or Leader/Coordinator
 
-    return await this.iniRolesRepository.save(newRole, { reload: true });
-  }
+    return await this.iniRolesRepository.save(newRole, { reload: true }).then(
+      async (data) => {
+        const user = await this.userRepository.findOne({where : {id: data.user_id}});
+        const init = await this.initiativeRepository.findOne({where : {id: data.initiative_id}})
+
+        if(data.role == 'Coordinator' || data.role == 'Contributor') {
+          this.emailService.sendEmailTobyVarabel(user, 1, init, data.role, null, null, null)
+        } else {
+          this.emailService.sendEmailTobyVarabel(user, 2, init, data.role, null, null, null)
+        }
+      },
+      (error) => {
+        console.log('error ==>>', error)
+      }
+    );
+  } 
 }

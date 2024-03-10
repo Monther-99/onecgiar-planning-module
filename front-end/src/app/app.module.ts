@@ -86,6 +86,8 @@ import { TrustHTMLModule } from "./share/trust-html/trust-html.module";
 import { InitiativeMeliaComponent } from "./initiative-melia/initiative-melia.component";
 import { InitiativeMeliaDialogComponent } from "./initiative-melia/initiative-melia-dialog/initiative-melia-dialog.component";
 import { SortPipe } from "./share/pipes/sort.pipe";
+import { EmailsComponent } from './admin/emails/emails.component';
+import { EmailBodyComponent } from './admin/emails/email-body/email-body.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +139,8 @@ import { SortPipe } from "./share/pipes/sort.pipe";
     InitiativeMeliaComponent,
     InitiativeMeliaDialogComponent,
     SortPipe,
+    EmailsComponent,
+    EmailBodyComponent,
   ],
   imports: [
     BrowserModule,

@@ -37,15 +37,16 @@ export class SubmissionController {
     return this.submissionService.updateStatusBySubmittionID(id, data);
   }
   @Patch('center/status')
+  @ApiBearerAuth()
   @ApiBody({ type: updateCenterStatusReq })
   @ApiCreatedResponse({
     description: '',
     type: updateCenterStatusRes,
   })
   @ApiBearerAuth()
-  updateCenterStatus(@Body() data) {
-    return this.submissionService.updateCenterStatus(data);
-  }
+  updateCenterStatus(@Body() data, @Request() req) { 
+    return this.submissionService.updateCenterStatus(data, req.user);
+  } 
 
   @Post('save/:id')
   @ApiBearerAuth()

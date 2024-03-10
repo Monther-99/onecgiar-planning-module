@@ -20,6 +20,8 @@ import { MeliaTypeModule } from './melia-type/melia-type.module';
 import { AnticipatedYearModule } from './anticipated-year/anticipated-year.module';
 import { PopoverModule } from './popover/popover.module';
 import { AppController } from './app.controller';
+import { EmailModule } from './email/email.module';
+import { VariableModule } from './variable/variable.module';
 
 @Module({
   controllers:[AppController],
@@ -55,6 +57,8 @@ import { AppController } from './app.controller';
     MeliaTypeModule,
     AnticipatedYearModule,
     PopoverModule,
+    EmailModule,
+    VariableModule,
     
   ],
 })
