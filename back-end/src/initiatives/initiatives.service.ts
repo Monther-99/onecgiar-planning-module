@@ -265,9 +265,9 @@ export class InitiativesService {
         const init = await this.initiativeRepository.findOne({where : {id: data.initiative_id}})
 
         if(data.role == 'Coordinator' || data.role == 'Contributor') {
-          this.emailService.sendEmailTobyVarabel(user, 1, init, data.role, null, null, null)
+          this.emailService.sendEmailTobyVarabel(user, 1, init, data.role, null, null, null, null, null)
         } else {
-          this.emailService.sendEmailTobyVarabel(user, 2, init, data.role, null, null, null)
+          this.emailService.sendEmailTobyVarabel(user, 2, init, data.role, null, null, null, null, null)
         }
       },
       (error) => {

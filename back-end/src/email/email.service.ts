@@ -1,20 +1,75 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Email } from 'src/entities/email.entity';
 import { Variable } from 'src/entities/variable.entity';
 import { Repository } from 'typeorm';
+import * as sgMail from '@sendgrid/mail';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class EmailService {
     constructor(@InjectRepository(Email) public repo: Repository<Email>,
     @InjectRepository(Variable) public variableRepo: Repository<Variable>,
     ){}
+    private readonly logger = new Logger(EmailService.name);
+
+    private async sendMailCostume(to, html, label) {
+      const msg = {
+        to,
+        from: 'CGIAR Planning Management',
+        html: html,
+        subject: label,
+        text: html.replace(/(<([^>]+)>)/gi, ''),
+      };
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      return await sgMail.send(msg).catch((e) => false);
+    }
+
+
+    async getEmailsByStatus(status: boolean) {
+      if (status == null) {
+        var emaillogs = await this.repo.createQueryBuilder('e').getMany();
+        return emaillogs;
+      } else {
+        var emaillogs = await this.repo
+          .createQueryBuilder('e')
+          .where({ status: Boolean(status) })
+          .getMany();
+        return emaillogs;
+      }
+    }
 
 
 
 
 
+    async send(email: Email) {
+      if (Boolean(parseInt(process.env.CAN_SEND_EMAIL))) {
+        let sendGridStatus = await this.sendMailCostume(
+          email.email,
+          email.email_body,
+          email.subject,
+        );
+        if (sendGridStatus) this.repo.update(email.id, { status: true });
+      } else {
+        this.repo.update(email.id, { status: true });
+      }
+    }
 
+
+
+
+    @Cron(CronExpression.EVERY_30_SECONDS, {
+      name: 'email-notifications',
+    })
+    private async sendEmailNotifications() {
+      this.logger.log('Email Notifications Runing');
+      let emails = await this.getEmailsByStatus(false);
+      if (emails.length <= 10)
+        emails.forEach(async (email) => {
+          await this.send(email);
+        });
+    }
 
 
 
@@ -43,7 +98,7 @@ export class EmailService {
         <div style="height: 800px; background-color: #f7f7f7">
         <div style="height: 150px; background-color: rgb(67, 98, 128)">
             <img width="50" alt="CGIAR" style="margin: 30px; margin-bottom:0px" src="https://www.cgiar.org/wp/wp-content/themes/cgiar/assets/images/logo_white-9a4b0e50b1.png">
-            <h2 style="margin: 0px; height: 48px; display: inline; position: absolute;color: white;top: 46px;"><b>CGIAR</b> Planning Management</h2>
+            <h2 style="margin: 0px; height: 48px; display: inline; position: absolute;color: white;top: 46px;"><b>CGIAR</b> Planning</h2>
             <div style="height: 60px; width: 70%; margin: auto; background-color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px;">
                 <h2 style="color: rgb(67, 98, 128); letter-spacing: 2px; margin: 0 auto;text-align: center; margin-top: 15px; border-bottom: 1px solid #ebeae8; width: 70%; padding: 11px;">Notification</h2>
             </div>
@@ -70,7 +125,7 @@ export class EmailService {
 
 
 
-      async createEmailBy(user,variable, init, roleAssigned, statusReason, organization, userRoleDoAction) {
+      async createEmailBy(user,variable, init, roleAssigned, statusReason, organization, userRoleDoAction, otherInitiative, meliaStudy) {
 
         let body = `<p style="font-weight: 200"> Dear, ${user.full_name}</p>`;
         try {
@@ -103,6 +158,10 @@ export class EmailService {
               // PORB completed
               body += this.createBodyForPORBCompleted(organization, userRoleDoAction)
               break;
+            case 8:
+              // Collaborating Initiative for MELIA studies/activities
+              body += this.createBodyForPORBCollaboratingInitiativeMELIA(init, otherInitiative, meliaStudy)
+              break;
           }
     
           const emailBody = this.emailTemplate(body);
@@ -118,7 +177,7 @@ export class EmailService {
 
 
 
-    async sendEmailTobyVarabel(user, variable_id, init, roleAssigned, statusReason, organization, userRoleDoAction) {
+    async sendEmailTobyVarabel(user, variable_id, init, roleAssigned, statusReason, organization, userRoleDoAction, otherInitiative, meliaStudy) {
       const variable = await this.variableRepo.findOne({where: {id: variable_id}})
     
       return await this.createEmailBy(
@@ -128,7 +187,9 @@ export class EmailService {
         roleAssigned,
         statusReason,
         organization,
-        userRoleDoAction
+        userRoleDoAction,
+        otherInitiative,
+        meliaStudy
       );
     }
 
@@ -220,4 +281,11 @@ export class EmailService {
   }
 
 
+  createBodyForPORBCollaboratingInitiativeMELIA(init, otherInitiative, meliaStudy) {
+    return `
+    	<p style="font-weight: 200">
+        The   Initiative/Platform <span style="font-weight: bold;">${otherInitiative.official_code}</span> was added by Initiative/Platform <span style="font-weight: bold;">${init.official_code}</span> as collaborating  to conduct the MELIA studies   <span style="font-weight: bold;"> ${meliaStudy.name}  </span> 
+      </p>
+    `
+  }
 }

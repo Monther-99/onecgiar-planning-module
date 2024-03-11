@@ -7,11 +7,13 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
+import { EmailService } from 'src/email/email.service';
 import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
+import { Initiative } from 'src/entities/initiative.entity';
 import { MeliaTypes } from 'src/entities/melia-types.entity';
 import { Melia } from 'src/entities/melia.entity';
 import { Partner } from 'src/entities/partner.entity';
-import { ILike, IsNull, Repository } from 'typeorm';
+import { ILike, In, IsNull, Repository } from 'typeorm';
 
 @Injectable()
 export class MeliaService {
@@ -22,9 +24,12 @@ export class MeliaService {
     private meliaTypesRepository: Repository<MeliaTypes>,
     @InjectRepository(Partner)
     private partnerRepository: Repository<Partner>,
+    @InjectRepository(Initiative)
+    private initiativeRepository: Repository<Initiative>,
     @InjectRepository(InitiativeMelia)
     private initiativeMeliaRepository: Repository<InitiativeMelia>,
     private readonly httpService: HttpService,
+    private emailService: EmailService
   ) {}
   api = process.env.Ost_API;
 
@@ -169,6 +174,42 @@ export class MeliaService {
   async createInitiativeMelia(data: any) {
     return this.initiativeMeliaRepository.save(
       this.initiativeMeliaRepository.create({ ...data }),
+    ).then(
+      async (data: any) => {
+        if(data.other_initiatives.length) {
+          const meliaStudy = await this.meliaTypesRepository.findOne({
+            where : {
+              id: data.melia_type_id
+            }
+          });
+  
+          const mainInitiative = await this.initiativeRepository.findOne({
+            where: {
+              id: data.initiative_id
+            }
+          });
+  
+          for(let otherInitiative of data.other_initiatives) {
+            let newOtherInitiative = await this.initiativeRepository.findOne({
+              where: {
+                id: otherInitiative.id,
+                roles: {
+                  role: In(['Leader' , 'Coordinator'])
+                },
+              },
+              relations: ['roles', 'roles.user']
+            });
+  
+            let otherInitiativeUsers = newOtherInitiative.roles.map(d => d.user);
+  
+            otherInitiativeUsers.forEach(user => {
+              this.emailService.sendEmailTobyVarabel(user, 8, mainInitiative, null, null, null, null, newOtherInitiative, meliaStudy)
+            })
+          }
+        }
+      }, (error) => {
+        console.error(error)
+      }
     );
   }
 

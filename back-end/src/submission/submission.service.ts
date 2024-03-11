@@ -101,7 +101,7 @@ export class SubmissionService {
           const userRoleDoAction = init.roles.filter(d => d.user_id == user.id);
 
           for(let user of users) {
-            this.emailService.sendEmailTobyVarabel(user, 7, init, null, null, organization, userRoleDoAction)
+            this.emailService.sendEmailTobyVarabel(user, 7, init, null, null, organization, userRoleDoAction, null, null)
           }
         }
       }, (error) => {
@@ -128,9 +128,9 @@ export class SubmissionService {
         
         for(let role of submission.initiative?.roles) {
           if(data.status == 'Approved') {
-            this.emailService.sendEmailTobyVarabel(role.user, 5, submission.initiative, role.role, data.status_reason, null, null)
+            this.emailService.sendEmailTobyVarabel(role.user, 5, submission.initiative, role.role, data.status_reason, null, null, null, null)
           } else if(data.status == 'Rejected') {
-            this.emailService.sendEmailTobyVarabel(role.user, 6, submission.initiative, role.role, data.status_reason, null, null)
+            this.emailService.sendEmailTobyVarabel(role.user, 6, submission.initiative, role.role, data.status_reason, null, null, null, null)
           }
         }
         return true
@@ -371,12 +371,12 @@ export class SubmissionService {
       const users = init.roles.map(d => d.user);
 
       for(let admin of admins) {
-        this.emailService.sendEmailTobyVarabel(admin, 3, init, null, null, null, null)
+        this.emailService.sendEmailTobyVarabel(admin, 3, init, null, null, null, null, null, null)
       }
 
 
       for(let user of users) {
-        this.emailService.sendEmailTobyVarabel(user, 4, init, null, null, null, null)
+        this.emailService.sendEmailTobyVarabel(user, 4, init, null, null, null, null, null, null)
       }
 
     } 
