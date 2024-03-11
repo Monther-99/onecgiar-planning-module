@@ -141,11 +141,9 @@ export class TeamMembersComponent {
             organizations: result.formValue.organizations,
           })
           .subscribe(
-            (data) => {
-              if (data) {
+            () => {
                 this.toastrService.success(`User role has been added`);
                 this.loadInitiativeRoles();
-              }
             },
             (error) => {
               this.toastrService.error(error.error.message);

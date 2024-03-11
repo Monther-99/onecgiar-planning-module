@@ -102,15 +102,13 @@ export class InitiativeMeliaComponent implements OnInit {
         this.meliaTypeService
           .submitInitiativeMelia(id, result.formValue)
           .subscribe(
-            (data) => {
-              if (data) {
+            async () => {
                 this.toastr.success(
                   `Initiative MELIA has been ${
                     id > 0 ? 'updated' : 'added'
                   }`
                 );
-                this.initTable(this.filters);
-              }
+                await this.initTable(this.filters);
             },
             (error) => {
               this.toastr.error(error.error.message);
