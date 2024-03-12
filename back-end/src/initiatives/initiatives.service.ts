@@ -17,8 +17,9 @@ import { WorkPackage } from 'src/entities/workPackage.entity';
 import { CreateWorkPackageDto } from './dto/create-workpackage.dto';
 import { UpdateWorkPackageDto } from './dto/update-workpackage.dto';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
-import { User } from 'DTO/submission.dto';
 import { EmailService } from 'src/email/email.service';
+import { User, userRole } from 'src/entities/user.entity';
+import { ChatMessageRepositoryService } from './chat-group-repository/chat-group-repository.service';
 
 @Injectable()
 export class InitiativesService {
@@ -45,7 +46,7 @@ export class InitiativesService {
       const sorts = query.sort.split(',');
       obj['init.' + sorts[0]] = sorts[1];
       return obj;
-    } else return  { 'init.id': 'ASC' };
+    } else return { 'init.id': 'ASC' };
   }
   constructor(
     private readonly httpService: HttpService,
@@ -57,7 +58,8 @@ export class InitiativesService {
     public iniRolesRepository: Repository<InitiativeRoles>,
     @InjectRepository(User)
     public userRepository: Repository<User>,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private chatGroupRepositoryService: ChatMessageRepositoryService,
   ) {}
 
   @Cron(CronExpression.EVERY_WEEK)
@@ -136,49 +138,56 @@ export class InitiativesService {
     });
   }
 
-
   async findAllFull(query: any, req: any) {
     const take = query.limit || 10;
     const skip = (Number(query.page || 1) - 1) * take;
-    const [finalResult,total] = await this.initiativeRepository.createQueryBuilder('init')
+    const [finalResult, total] = await this.initiativeRepository
+      .createQueryBuilder('init')
       .where(
         new Brackets((qb) => {
-          qb.where('init.name like :name', { name: `%${query.name || ''}%` })
-          if(query.initiative_id != undefined){
-            qb.andWhere('init.official_code IN (:...initiative_id)', { initiative_id: 
-              [`INIT-0${query.initiative_id}`,
-              `INIT-${query.initiative_id}`,
-              `PLAT-${query.initiative_id}`,
-              `PLAT-0${query.initiative_id}`,
-              `SGP-${query.initiative_id}`,
-              `SGP-0${query.initiative_id}`
-              ]
-            })
+          qb.where('init.name like :name', { name: `%${query.name || ''}%` });
+          if (query.initiative_id != undefined) {
+            qb.andWhere('init.official_code IN (:...initiative_id)', {
+              initiative_id: [
+                `INIT-0${query.initiative_id}`,
+                `INIT-${query.initiative_id}`,
+                `PLAT-${query.initiative_id}`,
+                `PLAT-0${query.initiative_id}`,
+                `SGP-${query.initiative_id}`,
+                `SGP-0${query.initiative_id}`,
+              ],
+            });
           }
-          if(query?.my_role) {
+          if (query?.my_role) {
             if (Array.isArray(query?.my_role)) {
-              qb.andWhere('roles.role IN (:...my_role)', {my_role: query.my_role})
-              qb.andWhere(`roles.user_id = ${req.user.id}`)
+              qb.andWhere('roles.role IN (:...my_role)', {
+                my_role: query.my_role,
+              });
+              qb.andWhere(`roles.user_id = ${req.user.id}`);
             } else {
-              qb.andWhere('roles.role = :my_role', { my_role: query.my_role })
-              qb.andWhere(`roles.user_id = ${req.user.id}`)
+              qb.andWhere('roles.role = :my_role', { my_role: query.my_role });
+              qb.andWhere(`roles.user_id = ${req.user.id}`);
             }
           } else if (query?.my_ini == 'true') {
-            qb.andWhere(`roles.user_id = ${req.user.id}`)
+            qb.andWhere(`roles.user_id = ${req.user.id}`);
           }
         }),
       )
-      .andWhere(new Brackets((qb) => {
-        if(query.status) {
-          if(query.status != 'Draft'){
-            qb.andWhere('latest_submission.status = :status', { status:  query.status })
-            qb.andWhere('init.last_update_at = init.last_submitted_at')
-          } else if(query.status == 'Draft') {
-            qb.andWhere("init.last_submitted_at is null")
-            qb.orWhere('init.last_update_at != init.last_submitted_at')
+      .andWhere(
+        new Brackets((qb) => {
+          if (query.status) {
+            if (query.status != 'Draft') {
+              qb.andWhere('latest_submission.status = :status', {
+                status: query.status,
+              });
+              qb.andWhere('init.last_update_at = init.last_submitted_at');
+            } else if (query.status == 'Draft') {
+              qb.andWhere('init.last_submitted_at is null');
+              qb.orWhere('init.last_update_at != init.last_submitted_at');
+            }
           }
-        } 
-      }))
+        }),
+      )
       .orderBy(this.sort(query))
       .leftJoinAndSelect('init.roles', 'roles')
       .leftJoinAndSelect('init.latest_submission', 'latest_submission')
@@ -187,10 +196,10 @@ export class InitiativesService {
       .skip(skip)
       .getManyAndCount();
 
-      return {
-        result: finalResult,
-        count: total,
-      }; 
+    return {
+      result: finalResult,
+      count: total,
+    };
   }
 
   findOne(id: number) {
@@ -205,6 +214,7 @@ export class InitiativesService {
       order: { id: 'desc' },
     });
   }
+
   async updateRoles(initiative_id, id, initiativeRoles: InitiativeRoles) {
     const found_roles = await this.iniRolesRepository.findOne({
       where: { initiative_id, id },
@@ -227,6 +237,7 @@ export class InitiativesService {
 
     return await this.iniRolesRepository.save(initiativeRoles);
   }
+
   async deleteRole(initiative_id, id) {
     const roles = await this.iniRolesRepository.findOne({
       where: { initiative_id, id },
@@ -234,6 +245,7 @@ export class InitiativesService {
     if (roles) return await this.iniRolesRepository.remove(roles);
     else throw new NotFoundException();
   }
+
   async setRole(initiative_id, role: InitiativeRoles) {
     let init = await this.initiativeRepository.findOne({
       where: { id: initiative_id },
@@ -261,18 +273,111 @@ export class InitiativesService {
 
     return await this.iniRolesRepository.save(newRole, { reload: true }).then(
       async (data) => {
-        const user = await this.userRepository.findOne({where : {id: data.user_id}});
-        const init = await this.initiativeRepository.findOne({where : {id: data.initiative_id}})
+        const user = await this.userRepository.findOne({
+          where: { id: data.user_id },
+        });
+        const init = await this.initiativeRepository.findOne({
+          where: { id: data.initiative_id },
+        });
 
-        if(data.role == 'Coordinator' || data.role == 'Contributor') {
-          this.emailService.sendEmailTobyVarabel(user, 1, init, data.role, null, null, null, null, null)
+        if (data.role == 'Coordinator' || data.role == 'Contributor') {
+          this.emailService.sendEmailTobyVarabel(
+            user,
+            1,
+            init,
+            data.role,
+            null,
+            null,
+            null,
+            null,
+            null,
+          );
         } else {
-          this.emailService.sendEmailTobyVarabel(user, 2, init, data.role, null, null, null, null, null)
+          this.emailService.sendEmailTobyVarabel(
+            user,
+            2,
+            init,
+            data.role,
+            null,
+            null,
+            null,
+            null,
+            null,
+          );
         }
       },
       (error) => {
-        console.log('error ==>>', error)
-      }
+        console.log('error ==>>', error);
+      },
     );
-  } 
+  }
+
+  async idUserHavePermissionToJoinChatGroup(initiative_id: number, user: User) {
+    if (user.role == userRole.ADMIN) return true;
+    return this.iniRolesRepository
+      .findOne({
+        where: {
+          user_id: user.id,
+          initiative_id,
+        },
+      })
+      .then((r) => ['Contributor', 'Leader', 'Contributor'].includes(r.role))
+      .catch(() => false);
+  }
+
+  async idUserHavePermissionSeeChat(initiative_id: number, user: User) {
+    if (user.role == userRole.ADMIN) return true;
+    return this.iniRolesRepository
+      .findOne({
+        where: {
+          user_id: user.id,
+          initiative_id,
+        },
+      })
+      .then((r) => !!r)
+      .catch(() => false);
+  }
+
+  async idUserHavePermissionToAdd(initiative_id: number, user: User) {
+    if (user.role == userRole.ADMIN) return true;
+
+    const isMember = await this.iniRolesRepository
+      .findOne({
+        where: {
+          user_id: user.id,
+          initiative_id,
+        },
+      })
+      .then((r) => ['Contributor', 'Leader', 'Contributor'].includes(r.role))
+      .catch(() => false);
+
+    return isMember;
+  }
+
+  async idUserHavePermissionToEdit(message_id: number, user: User) {
+    if (user.role == userRole.ADMIN) return true;
+    const messageRecord = await this.chatGroupRepositoryService.getMessagesById(
+      message_id,
+    );
+
+    const isMember = await this.iniRolesRepository
+      .findOne({
+        where: {
+          user_id: user.id,
+          initiative_id: messageRecord.initiative_id,
+        },
+      })
+      .then((r) => ['Contributor', 'Leader'].includes(r.role))
+      .catch(() => false);
+
+    const message = await this.chatGroupRepositoryService.getMessagesById(
+      message_id,
+    );
+
+    return isMember && message.user_id === user.id;
+  }
+
+  async idUserHavePermissionToDelete(message_id: number, user: User) {
+    return this.idUserHavePermissionToEdit(message_id, user);
+  }
 }

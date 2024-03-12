@@ -23,6 +23,7 @@ import { AppSocket } from "../socket.service";
 import { jsPDF } from "jspdf";
 import { LoaderService } from "src/app/services/loader.service";
 import { PhasesService } from "src/app/services/phases.service";
+import { ChatComponent } from "../share/chat/chat/chat.component";
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -73,7 +74,6 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.headerService.backgroundFooter =
       "linear-gradient(to top right, #2A2E45, #212537)";
-      
   }
   user: any;
   params: any;
@@ -368,7 +368,10 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.totals = {};
     this.errors = {};
 
-    this.wp_budgets = await this.submissionService.getBudgets(lastSubmitionId,this.submission_data.phase.id);
+    this.wp_budgets = await this.submissionService.getBudgets(
+      lastSubmitionId,
+      this.submission_data.phase.id
+    );
     this.results = this.submission_data.toc_data;
     const melia_data = await this.submissionService.getMeliaBySubmission(
       lastSubmitionId
@@ -547,7 +550,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   summaryBudgetsAllTotal: any = 0;
   async generatePDF(lastSubmitionId: any) {
     this.toPdf = true;
-    console.log(lastSubmitionId)
+    console.log(lastSubmitionId);
 
     this.submission_data = await this.submissionService.getSubmissionsById(
       lastSubmitionId
@@ -730,8 +733,8 @@ export class SubmitedVersionsComponent implements AfterViewInit {
       });
     }, 500);
   }
-  submition:any;
-  async generateExcel(id:number) {
+  submition: any;
+  async generateExcel(id: number) {
     // const downloadLink = document.createElement('a');
     // const dataType = 'application/vnd.ms-excel';
     // const table = document.getElementById('soso');
@@ -739,11 +742,10 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     // document.body.appendChild(downloadLink);
     // downloadLink.href = 'data:' + dataType + ' ' + tableHtml;
     // downloadLink.download = 'httptrace.xlsx';
-    // downloadLink.click() 
-
+    // downloadLink.click()
 
     this.submition = await this.submissionService.excel(id);
-    console.log(this.submition)
+    console.log(this.submition);
   }
 
   finalCenterItemPeriodVal(partner_code: any, wp_id: any, period_id: any) {
@@ -752,5 +754,19 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     );
     if (periods.length) return periods.reduce((a: any, b: any) => a || b);
     else return false;
+  }
+
+  openChatDialog(initiative_id: number, version_id: number) {
+    const dialogRef = this.dialog.open(ChatComponent, {
+      data: {
+        initiative_id,
+        version_id,
+      },
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        this.toastrService.success("dialof closed");
+      }
+    });
   }
 }

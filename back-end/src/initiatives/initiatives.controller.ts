@@ -11,10 +11,23 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { InitiativesService } from './initiatives.service';
-import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { createRoleReq, createRoleResponse, getInitiatives, importInitiatives, importInitiativeswp, updateRoleReq, updateRoleResponse } from 'DTO/initiatives.dto';
+import {
+  createRoleReq,
+  createRoleResponse,
+  getInitiatives,
+  importInitiatives,
+  importInitiativeswp,
+  updateRoleReq,
+  updateRoleResponse,
+} from 'DTO/initiatives.dto';
 import { Initiative } from 'src/entities/initiative.entity';
 
 @UseGuards(JwtAuthGuard)
@@ -82,7 +95,7 @@ export class InitiativesController {
   getRoles(@Param('id') id: number): Promise<InitiativeRoles[]> {
     return this.initiativesService.iniRolesRepository.find({
       where: { initiative_id: id },
-      relations: ['user','organizations'],
+      relations: ['user', 'organizations'],
     });
   }
 
@@ -92,7 +105,7 @@ export class InitiativesController {
     description: '',
     type: [createRoleResponse],
   })
-  @ApiBody({ type: createRoleReq})
+  @ApiBody({ type: createRoleReq })
   setRoles(
     @Param('initiative_id') initiative_id: number,
     @Body() initiativeRoles: InitiativeRoles,
@@ -106,7 +119,7 @@ export class InitiativesController {
     description: '',
     type: [updateRoleResponse],
   })
-  @ApiBody({ type: updateRoleReq})
+  @ApiBody({ type: updateRoleReq })
   updateMitigation(
     @Body() roles: InitiativeRoles,
     @Param('initiative_id') initiative_id: number,
@@ -118,7 +131,7 @@ export class InitiativesController {
       roles,
     );
   }
-  
+
   @Delete(':initiative_id/roles/:initiative_roles_id')
   @ApiBearerAuth()
   deleteRoles(
@@ -130,5 +143,4 @@ export class InitiativesController {
       initiative_roles_id,
     );
   }
-  
 }

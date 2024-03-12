@@ -22,6 +22,7 @@ import { PopoverModule } from './popover/popover.module';
 import { AppController } from './app.controller';
 import { EmailModule } from './email/email.module';
 import { VariableModule } from './variable/variable.module';
+import { WsGuard } from './ws.guard';
 
 @Module({
   controllers:[AppController],
