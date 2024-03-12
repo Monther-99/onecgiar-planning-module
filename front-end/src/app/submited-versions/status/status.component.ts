@@ -22,6 +22,10 @@ export class StatusComponent implements OnInit {
       status: ["Pending", Validators.required],
       status_reason: [null],
     });
+
+    this.statusForm.setValidators([
+      this.reasonsValidator()
+    ]);
   }
 
   async submit() {
@@ -38,6 +42,29 @@ export class StatusComponent implements OnInit {
       if (submittion) this.dialogRef.close(submittion);
     }
   }
+
+
+  public reasonsValidator = () => {
+    return (controlGroup: any) => {
+      let controls = controlGroup.controls;
+      if (controls) {
+        if (
+          controls.status.value == "Rejected"
+        ) {
+          if(
+          controls.status_reason.value == "" ||
+          controls.status_reason.value == null
+          )
+          return {
+            reasonsRequired: {
+              text: "This field is mandatory",
+            },
+          };
+        }
+      }
+      return null;
+    };
+  };
 
   // close() {
   //   this.dialogRef.close(false);

@@ -201,7 +201,7 @@ export class EmailService {
     createBodyForCoordinatorAndContributorAssigned(init, roleAssigned) {
     return `
     	<p style="font-weight: 200">
-        You have been assigned the ${roleAssigned} role for Initiative/Platform ${init.name}/${init.official_code}
+        You have been assigned the ${roleAssigned} role for Initiative/Platform <span style="font-weight: bold;">${init.official_code}</span>
       </p>
     `
   }
@@ -209,7 +209,7 @@ export class EmailService {
   createBodyForLeaderAssigned(init, roleAssigned) {
     return `
     	<p style="font-weight: 200">
-        You have been assigned by the admin as the ${roleAssigned} role for Intiative/Platform ${init.name}/${init.official_code}
+        You have been assigned by the admin as the ${roleAssigned} role for Intiative/Platform <span style="font-weight: bold;">${init.official_code}</span>
       </p>
     `
   }
@@ -245,7 +245,7 @@ export class EmailService {
     if(statusReason)
       emailBody += `
       <p style="font-weight: 200">
-        <span style="font-weight: bold;">Reason for approval: </span>
+        <span style="font-weight: bold; display: block;">Reason for approval: </span>
         ${statusReason}
       </p>
       `
@@ -262,7 +262,7 @@ export class EmailService {
     if(statusReason)
       emailBody += `
       <p style="font-weight: 200">
-        <span style="font-weight: bold;">Reason for rejected: </span>
+        <span style="font-weight: bold; display: block;">Reason for rejected: </span>
         ${statusReason}
       </p>
       `
@@ -273,11 +273,19 @@ export class EmailService {
 
 
   createBodyForPORBCompleted(organization, userRoleDoAction) {
-    return `
+    if(userRoleDoAction[0].user) {
+      return `
     	<p style="font-weight: 200">
         PORB ${organization.acronym} was completed by <span style="font-weight: bold;"> ${userRoleDoAction[0].role}</span> ${userRoleDoAction[0].user.full_name}
       </p>
     `
+    } else {
+      return `
+    	<p style="font-weight: 200">
+        PORB ${organization.acronym} was completed by <span style="font-weight: bold;"> ${userRoleDoAction[0].role}</span> ${userRoleDoAction[0].full_name}
+      </p>
+    `
+    } 
   }
 
 

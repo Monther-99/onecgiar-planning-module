@@ -75,7 +75,7 @@ export class SubmissionService {
       return obj;
     } else return { id: 'DESC' };
   }
-  async updateCenterStatus(data, user) {
+  async updateCenterStatus(data, reqUser) { 
     const { initiative_id, organization_code, phase_id, status, organization } = data;
 
     let center_status: CenterStatus;
@@ -98,10 +98,16 @@ export class SubmissionService {
           relations: ['roles', 'roles.user']
           })
           const users = init.roles.map(d => d.user);
-          const userRoleDoAction = init.roles.filter(d => d.user_id == user.id);
+          // when user is in team member
+          const userRoleDoAction = init.roles.filter(d => d.user_id == reqUser.id);
 
           for(let user of users) {
-            this.emailService.sendEmailTobyVarabel(user, 7, init, null, null, organization, userRoleDoAction, null, null)
+            if(userRoleDoAction.length) {
+              this.emailService.sendEmailTobyVarabel(user, 7, init, null, null, organization, userRoleDoAction, null, null)
+            } else {
+              // when admin mark as complete
+              this.emailService.sendEmailTobyVarabel(user, 7, init, null, null, organization, [reqUser], null, null)
+            }
           }
         }
       }, (error) => {
@@ -110,7 +116,7 @@ export class SubmissionService {
     );
 
     return { message: 'Data Saved' };
-  }
+  } 
   async updateStatusBySubmittionID(id, data) {
     return await this.submissionRepository.update(id, data).then(
       async () => {

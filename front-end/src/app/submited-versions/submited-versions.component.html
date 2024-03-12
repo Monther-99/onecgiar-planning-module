@@ -90,7 +90,7 @@
           <!-- status_reason -->
           <ng-container matColumnDef="status_reason">
             <th mat-header-cell *matHeaderCellDef>Status Reason</th>
-            <td mat-cell *matCellDef="let row">{{ row.status_reason }}</td>
+            <td mat-cell *matCellDef="let row" [innerHTML]="row.status_reason"></td>
           </ng-container>
 
           <!-- actions -->
