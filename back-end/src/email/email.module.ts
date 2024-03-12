@@ -14,6 +14,7 @@ import { VariableService } from 'src/variable/variable.service';
     ]),
   ],
   controllers: [EmailController],
-  providers: [EmailService, VariableService]
+  providers: [EmailService, VariableService],
+  exports: [EmailService, VariableService]
 })
 export class EmailModule {}

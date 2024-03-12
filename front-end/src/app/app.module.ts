@@ -88,6 +88,8 @@ import { InitiativeMeliaDialogComponent } from "./initiative-melia/initiative-me
 import { SortPipe } from "./share/pipes/sort.pipe";
 import { EmailsComponent } from './admin/emails/emails.component';
 import { EmailBodyComponent } from './admin/emails/email-body/email-body.component';
+import { ChatModule } from "./share/chat/chat.module";
+import { TimeagoModule } from "ngx-timeago";
 
 @NgModule({
   declarations: [
@@ -182,6 +184,8 @@ import { EmailBodyComponent } from './admin/emails/email-body/email-body.compone
     PopoverModule,
     EditorModule,
     TrustHTMLModule,
+    ChatModule,
+    TimeagoModule.forRoot(),
   ],
   providers: [
     AppSocket,

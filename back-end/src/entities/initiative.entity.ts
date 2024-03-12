@@ -14,7 +14,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { InitiativeRoles } from './initiative-roles.entity';
 import { IpsrValue } from './ipsr-value.entity';
 import { CenterStatus } from './center-status.entity';
-import { Melia } from './melia.entity';
 import { InitiativeMelia } from './initiative-melia.entity';
 
 @Entity()

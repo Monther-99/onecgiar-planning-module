@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -33,7 +34,11 @@ export class Submission {
   @ManyToOne(() => Phase, (phase) => phase.submissions)
   phase: Phase;
 
+  @Column()
+  initiative_id: number;
+
   @ManyToOne(() => Initiative, (initiative) => initiative.submissions)
+  @JoinColumn({ name: 'initiative_id' })
   initiative: Initiative;
 
   @OneToMany(() => Result, (result) => result.submission)
@@ -52,7 +57,7 @@ export class Submission {
   })
   status: SubmissionStatus;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   status_reason: '';
 
   @OneToMany(() => Melia, (melia) => melia.submission)
@@ -64,6 +69,9 @@ export class Submission {
   @OneToMany(() => IpsrValue, (ipsrValue) => ipsrValue.submission)
   ipsrValues: IpsrValue[];
 
-  @OneToMany(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.submission)
+  @OneToMany(
+    () => InitiativeMelia,
+    (initiativeMelia) => initiativeMelia.submission,
+  )
   initiativeMelia: InitiativeMelia[];
 }

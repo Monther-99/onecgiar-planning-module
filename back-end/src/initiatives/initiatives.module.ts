@@ -10,13 +10,37 @@ import { User } from 'src/entities/user.entity';
 import { EmailService } from 'src/email/email.service';
 import { Email } from 'src/entities/email.entity';
 import { Variable } from 'src/entities/variable.entity';
-
+import { ChatMessageRepositoryService } from './chat-group-repository/chat-group-repository.service';
+import { ChatMessage } from 'src/entities/chat-message.entity';
+import { UsersModule } from 'src/users/users.module';
+import { WsGuard } from 'src/ws.guard';
+import { ChatGateway } from './gateway';
+import { Submission } from 'src/entities/submission.entity';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([
-    Initiative, WorkPackage,InitiativeRoles, User, Variable, Email]), HttpModule],
+  imports: [
+    TypeOrmModule.forFeature([
+      Initiative,
+      WorkPackage,
+      InitiativeRoles,
+      ChatMessage,
+      Submission,
+      User,
+      Variable,
+      Email,
+    ]),
+    HttpModule,
+    UsersModule,
+    EmailModule
+  ],
   controllers: [InitiativesController],
-  providers: [InitiativesService, EmailService],
-  exports: [InitiativesService]
+  providers: [
+    InitiativesService,
+    ChatMessageRepositoryService,
+    WsGuard,
+    ChatGateway,
+  ],
+  exports: [InitiativesService],
 })
 export class InitiativesModule {}
