@@ -28,8 +28,11 @@ export class IpsrComponent implements OnInit {
     this.ipsrForm.updateValueAndValidity();
     if (this.ipsrForm.valid && !this.haveError) {
       this.dialogRef.close(this.ipsrForm.value);
-    } else {
+    } else if(this.haveError) {
       this.toast.error('You can insert the numbers and range (X-Y) only.');
+    }
+    else if(!this.ipsrForm.valid) {
+      this.toast.error('There Is Mandatory Field');
     }
   }
   ngOnInit() {

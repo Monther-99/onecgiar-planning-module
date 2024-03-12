@@ -744,7 +744,7 @@ export class SubmissionComponent implements OnInit {
       }
       this.partnersData[partner.code].IPSR = this.partnersData[
         partner.code
-      ]?.IPSR?.filter((d: any) => d.value != null);
+      ]?.IPSR?.filter((d: any) => d.value != null && d.value != '');
       this.loading = false;
     }
 
@@ -773,7 +773,10 @@ export class SubmissionComponent implements OnInit {
       name: "description",
       content: "Complete the PORB",
     });
-  }
+
+    const newIPSR = this.allData['IPSR'].filter((d:any) => d.value != '');
+    this.allData['IPSR'] = newIPSR;
+  } 
   savedValues: any = null;
   isCenter: boolean = false;
   selectedTabIndex: number = 0;
