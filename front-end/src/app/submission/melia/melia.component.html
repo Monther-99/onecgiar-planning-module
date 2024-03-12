@@ -42,11 +42,11 @@
             (selectionChange)="fillResultsSelect()"
           >
             <ng-container
-              *ngFor="let meliaType of meliaTypesHold | sort : 'asc' : 'name'"
+              *ngFor="let meliaType of meliaTypes"
             >
               <div class="content">
                 <mat-option [value]="meliaType.id">
-                  {{ meliaType.name }}
+                  {{ meliaType.meliaType.name }}
                 </mat-option>
                 <app-popover>
                   {{ meliaType.description }}

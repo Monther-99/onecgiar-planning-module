@@ -153,6 +153,11 @@ export class MeliaService {
         submission_id: IsNull(),
         meliaType: { name: query?.type ? ILike(`%${query?.type}%`) : null },
       },
+      order: {
+        meliaType: {
+          name: 'ASC'
+        }
+      },
       relations: ['meliaType'],
     });
   }

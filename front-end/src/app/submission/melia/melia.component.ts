@@ -263,30 +263,14 @@ export class MeliaComponent implements OnInit {
       this.data.initiative_id
     );
 
-    // console.log(this.meliaTypes);
 
-    for (let i = 0; i < this.meliaTypes.length; i++) {
-      if (this.meliaTypes[i]) {
-        if (this.data.cross == true || this.data.wp.id == "CROSS")
-          this.meliaTypes = this.meliaTypes.filter((element: any) => {
-            if (element.meliaType.HideCrossCutting == false) return element;
-          });
+    if (this.data.cross == true || this.data.wp.id == "CROSS")
+      this.meliaTypes = this.meliaTypes.filter((element: any) => {
+        if (element.meliaType.HideCrossCutting == false) return element;
+      });
 
-        this.meliaTypesHold.push(this.meliaTypes[i].meliaType);
 
-        // const sortedArr = this.sortPipe.transform(
-        //   this.meliaTypes,
-        //   "desc",
-        //   "name"
-        // );
 
-        this.meliaTypesHold = this.sortPipe.transform(this.meliaTypesHold, "asc", "name");
-      }
-    }
-
-    console.log(this.meliaTypesHold);
-
-    // console.log(this.meliaTypes);
 
     this.regions = await this.submissionService.getRegions();
     this.countries = await this.submissionService.getCountries();
