@@ -64,9 +64,18 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
     });
 
     this.socket.messageHasBeenAdded$.subscribe((message: any) => {
-      console.log(message);
       this.chatMessages.push(message);
       if (this.chatBoxComponent) this.chatBoxComponent.scrollToBottom();
+    });
+
+    this.socket.messageHasBeenUpdated$.subscribe((message: any) => {
+      const index = this.chatMessages.findIndex((m) => m.id === message.id);
+      if (index) this.chatMessages[index] = message;
+    });
+
+    this.socket.messageHasBeenDeleted$.subscribe((message: any) => {
+      const index = this.chatMessages.findIndex((m) => m.id === message.id);
+      if (index) this.chatMessages.splice(index, 1);
     });
   }
 
