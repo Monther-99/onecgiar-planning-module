@@ -56,11 +56,15 @@
                 matInput
                 type="text"
                 placeholder="Number"
-                (ngModelChange)="change($event,item)"
+                (ngModelChange)="change(item)"
                 [formControlName]="'value-' + item.id"
               />
             </mat-form-field>
-
+            <mat-error
+            class="error"
+            *ngIf="ipsrForm?.errors?.['value'+ item.id]"
+            >You can insert the numbers and range (X-Y) only.</mat-error
+          >
 
 
 
@@ -73,6 +77,7 @@
               appearance="outline"
           >
             <input
+              [required]="ipsrForm.controls['value-' + item.id].value != '' || ipsrForm.controls['value-' + item.id].value != null"
               matInput
               type="text"
               [formControlName]="'description-' + item.id"
@@ -82,7 +87,7 @@
           </mat-form-field>
           <mat-error
           class="error"
-          *ngIf="ipsrForm?.errors?.['descriptionRequired'+ item.id] && item.need_in_description"
+          *ngIf="ipsrForm?.errors?.['descriptionRequired'+ item.id]"
           >This field is mandatory</mat-error
         >
           </div>

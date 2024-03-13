@@ -26,12 +26,10 @@ export class IpsrComponent implements OnInit {
   submit() {
     this.ipsrForm.markAllAsTouched();
     this.ipsrForm.updateValueAndValidity();
-    if (this.ipsrForm.valid && !this.haveError) {
+    if (this.ipsrForm.valid) {
       this.dialogRef.close(this.ipsrForm.value);
-    } else if(this.haveError) {
-      this.toast.error('You can insert the numbers and range (X-Y) only.');
     }
-    else if(!this.ipsrForm.valid) {
+    else {
       this.toast.error('There Is Mandatory Field');
     }
   }
@@ -60,49 +58,80 @@ export class IpsrComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(false);
   }
-  haveError: boolean = false;
-  change(event: any, item:any) {
-    console.log('item', item)
-    const array: any[] = event.split("")
-    const arrError = [];
- 
-    for(let char of array) {
-      if(Number(+char) || char == '-' || char == '0') {
-        arrError.push('yes')
-      } else {
-        arrError.push('no')
+  ids: any[] = [];
+  arrError: any[] = [];
+  change(item:any) {
+    if(!this.arrError.includes(item.id)) {
+      this.arrError.push(item.id)
+    }
+
+    if(item.need_in_description) {
+      if(!this.ids.includes(item.id)) {
+        this.ids.push(item.id)
       }
     }
-    if(arrError.includes('no')) {
-      this.haveError = true
-    } else {
-      this.haveError = false;
-    }
 
-    if(item.need_in_description && array.length > 0) {
-      this.ipsrForm.setValidators([
-        this.otherDescriptionValidator(item.id)
-      ])
-    } else {
-      this.ipsrForm.clearValidators();
-      this.ipsrForm.updateValueAndValidity()
-    }
+    this.ipsrForm.setValidators([
+      this.otherDescriptionValidator(this.ids),
+      this.customValueValidator(this.arrError),
+    ])
+
   }
 
-
-  private otherDescriptionValidator = (id:any) => {
+  private customValueValidator = (ids:any[]) => {
     return (controlGroup: any) => {
-      let controls = controlGroup.controls;
-      if (controls) {
-        if (
-          controls['description-' + id].value == "" ||
-          controls['description-' + id].value == null
-        ) {
-          return {
-            ['descriptionRequired' + id]: {
-              text: "This field is mandatory",
-            },
-          };
+      for(const id of ids){
+        let controls = controlGroup.controls;
+        if (controls) {
+          let arrError: any[] = [];
+          let controlsValue: any[] = controls['value-' + id].value.split("")
+          for(let char of controlsValue) {
+            if (
+              Number(+char) || char == '-' || char == '0'
+            ) {
+              arrError.push('yes')
+            } else {
+              arrError.push('no')
+            }
+          }
+          if(arrError.includes('no')) {
+            return {
+              ['value' + id]: {
+                text: "You can insert the numbers and range (X-Y) only.",
+              },
+            };
+          }
+        }
+      }
+      return null;
+    };
+  };
+
+
+
+
+
+
+  private otherDescriptionValidator = (ids:any[]) => {
+    return (controlGroup: any) => {
+      for(const id of ids){
+        let controls = controlGroup.controls;
+        if (controls) {
+          if (
+            controls['value-' + id].value != "" &&
+            controls['value-' + id].value != null
+          ) {
+            if (
+              controls['description-' + id].value == "" ||
+              controls['description-' + id].value == null
+            ) {
+              return {
+                ['descriptionRequired' + id]: {
+                  text: "This field is mandatory",
+                },
+              };
+            }
+          }
         }
       }
       return null;
