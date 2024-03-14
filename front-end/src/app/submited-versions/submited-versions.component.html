@@ -175,6 +175,7 @@
                   </mat-icon>
                 </button>
                 <mat-icon
+                  *ngIf="isAllowedToAccessChat"
                   class="user-management-table__icon"
                   style="color: #403f3f"
                   (click)="openChatDialog(row.initiative_id, row.id)"

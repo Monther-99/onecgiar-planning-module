@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginateQuery, Paginated, paginate } from 'nestjs-paginate';
+import {
+  FilterOperator,
+  PaginateQuery,
+  Paginated,
+  paginate,
+} from 'nestjs-paginate';
 import { ChatMessage } from 'src/entities/chat-message.entity';
 import { Repository } from 'typeorm';
 
@@ -47,7 +52,10 @@ export class ChatMessageRepositoryService {
         sortableColumns: ['create_date', 'id'],
         relations: ['user', 'replied_message', 'replied_message.user'],
         select: [],
-        filterableColumns: {},
+        filterableColumns: {
+          initiative_id: [FilterOperator.EQ],
+          version_id: [FilterOperator.EQ],
+        },
       },
     );
   }

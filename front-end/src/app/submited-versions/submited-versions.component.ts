@@ -9,9 +9,7 @@ import {
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { InitiativesService } from "../services/initiatives.service";
 import { AuthService } from "../services/auth.service";
-import { ROLES } from "../components/new-team-member/new-team-member.component";
 import { SubmissionService } from "../services/submission.service";
 import { ActivatedRoute } from "@angular/router";
 import { StatusComponent } from "./status/status.component";
@@ -19,11 +17,11 @@ import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { HeaderService } from "../header.service";
 import { Meta, Title } from "@angular/platform-browser";
-import { AppSocket } from "../socket.service";
 import { jsPDF } from "jspdf";
 import { LoaderService } from "src/app/services/loader.service";
 import { PhasesService } from "src/app/services/phases.service";
 import { ChatComponent } from "../share/chat/chat/chat.component";
+import { InitiativesService } from "../services/initiatives.service";
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -45,6 +43,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   ];
   dataSource: MatTableDataSource<any>;
   submissions: any = [];
+  isAllowedToAccessChat: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild("pdfcontent", { static: false }) pdfcontent: ElementRef;
@@ -63,7 +62,8 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     private title: Title,
     private meta: Meta,
     public loader: LoaderService,
-    private phasesService: PhasesService
+    private phasesService: PhasesService,
+    private initiativesService: InitiativesService
   ) {
     this.headerService.background =
       "linear-gradient(to right, #04030F, #04030F)";
@@ -89,6 +89,11 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     await this.initData();
 
     this.user = this.authService.getLoggedInUser();
+
+    this.isAllowedToAccessChat =
+      (await this.initiativesService
+        .isAllowedToAccessChat(this.params.id)
+        .toPromise()) ?? false;
   }
   async initData(filters = null) {
     this.initiativeId = this.params.id;

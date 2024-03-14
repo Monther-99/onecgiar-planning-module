@@ -5,7 +5,6 @@ import { createMeliaTypeReq } from 'DTO/melia-type.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 import { MeliaTypes } from 'src/entities/melia-types.entity';
-import { Melia } from 'src/entities/melia.entity';
 import { Role } from 'src/role/role.enum';
 import { Roles } from 'src/role/roles.decorator';
 import { RolesGuard } from 'src/role/roles.guard';
@@ -29,7 +28,6 @@ export class MeliaTypeController {
     })
     @Get('')
     getMeliaTypes(@Query() query) {
-    console.log(query)
     return this.meliaTypesRepository.find({
         where: {
             name:  query?.name ? ILike(`%${query?.name}%`) : null, 

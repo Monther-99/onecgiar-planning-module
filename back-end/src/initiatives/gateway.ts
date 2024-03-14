@@ -34,7 +34,6 @@ import {
   FindChatMessagesDTO,
   UpdateMessagesDTO,
 } from './dto/gateway.dto';
-import { Paginate, PaginateQuery } from 'nestjs-paginate';
 
 const logger = new Logger('Node Error');
 
@@ -109,31 +108,34 @@ export class ChatGateway
       data.initiative_id,
       user,
     );
-    if (!isAllowed) new WsException('Unauthorized');
+
+    if (!isAllowed) throw new WsException('Unauthorized');
 
     const sub = await this.submissionRepo.findOne({
       where: {
-        initiative_id: 1,
+        initiative_id: data.initiative_id,
       },
       order: { created_at: 'DESC' },
       select: ['id', 'initiative_id'],
     });
 
+    console.log(sub);
+
     const m = new ChatMessage();
     m.initiative_id = data.initiative_id;
-    m.version_id = sub.id
+    m.version_id = sub.id;
     m.message = data.message;
     m.replied_message = data.replied_message;
     m.user_id = user.id;
 
     const message = await this.chatGroupRepositoryService.addChatMessage(m);
 
-
     client.broadcast
       .to(this.getChatRoomId(m.initiative_id))
       .emit('message-has-been-added', message);
 
     return message;
+
   }
 
   @UseGuards(WsGuard)
@@ -147,7 +149,7 @@ export class ChatGateway
       data.id,
       user,
     );
-    if (!isAllowed) new WsException('Unauthorized');
+    if (!isAllowed) throw new WsException('Unauthorized');
 
     const message = await this.chatGroupRepositoryService.updateChatMessage(
       data.id,
@@ -167,18 +169,17 @@ export class ChatGateway
     @ConnectedSocket() client: Socket,
     @SignedInUser() user: User,
   ) {
-    console.log(data);
     const isAllowed = await this.initiativesService.idUserHavePermissionSeeChat(
       data.initiative_id,
       user,
     );
-    if (!isAllowed) new WsException('Unauthorized');
+    if (!isAllowed) throw new WsException('Unauthorized');
 
     const message =
       await this.chatGroupRepositoryService.getMessagesForInitiative(
         data.initiative_id,
         data.version_id,
-        data.page
+        data.page,
       );
     return message;
   }
@@ -195,12 +196,11 @@ export class ChatGateway
         data.message_id,
         user,
       );
-    if (!isAllowed) new WsException('Unauthorized');
+    if (!isAllowed) throw new WsException('Unauthorized');
 
     const message = await this.chatGroupRepositoryService.deleteChatMessage(
       data.message_id,
     );
-    console.log(message);
     client.broadcast
       .to(this.getChatRoomId(message.initiative_id))
       .emit('message-has-been-deleted', message);
@@ -220,6 +220,7 @@ export class ChatGateway
         data.initiative_id,
         user,
       );
+
     if (isAllowedToJoin) {
       await client.join(this.getChatRoomId(data.initiative_id));
       return true;

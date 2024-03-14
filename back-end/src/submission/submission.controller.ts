@@ -8,7 +8,6 @@ import {
   Post,
   Query,
   Request,
-  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -18,9 +17,26 @@ import { catchError, firstValueFrom, map } from 'rxjs';
 import { AxiosError } from 'axios';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { Response } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { TocData, getAll, getSaved, getTocs, getWpBudgets, getbyid, saveReq, saveResponse, saveWpBudgetReq, save_result_values_req, updateCenterStatusReq, updateCenterStatusRes, updateStatus } from 'DTO/submission.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  getAll,
+  getSaved,
+  getTocs,
+  getWpBudgets,
+  getbyid,
+  saveReq,
+  saveResponse,
+  saveWpBudgetReq,
+  save_result_values_req,
+  updateCenterStatusReq,
+  updateCenterStatusRes,
+  updateStatus,
+} from 'DTO/submission.dto';
 @UseGuards(JwtAuthGuard)
 @ApiTags('submission')
 @Controller('submission')
@@ -44,9 +60,9 @@ export class SubmissionController {
     type: updateCenterStatusRes,
   })
   @ApiBearerAuth()
-  updateCenterStatus(@Body() data, @Request() req) { 
+  updateCenterStatus(@Body() data, @Request() req) {
     return this.submissionService.updateCenterStatus(data, req.user);
-  } 
+  }
 
   @Post('save/:id')
   @ApiBearerAuth()
@@ -96,7 +112,7 @@ export class SubmissionController {
     type: getWpBudgets,
   })
   getWpBudgets(@Param('id') id: string, @Param('phaseId') phaseId: string) {
-    return this.submissionService.getWpsBudgets(+id,+phaseId);
+    return this.submissionService.getWpsBudgets(+id, +phaseId);
   }
 
   @Get('submission_budgets/:id/phase_id/:phase_id')
@@ -105,7 +121,10 @@ export class SubmissionController {
     description: '',
     type: getWpBudgets,
   })
-  getSubmissionBudgets(@Param('id') id: string, @Param('phase_id') phase_id: string) {
+  getSubmissionBudgets(
+    @Param('id') id: string,
+    @Param('phase_id') phase_id: string,
+  ) {
     return this.submissionService.getSubmissionBudgets(+id, +phase_id);
   }
 
@@ -118,7 +137,6 @@ export class SubmissionController {
   async getSaved(@Param('id') id, @Param('phaseId') phaseId) {
     return this.submissionService.getSaved(id, phaseId);
   }
-
 
   @Get('initiative_id/:initiative_id')
   @ApiBearerAuth()
@@ -195,18 +213,28 @@ export class SubmissionController {
   @Get('excel/:id')
   @ApiBearerAuth()
   async excel(@Param('id') id) {
-    return await this.submissionService.generateExcel(id, null, null, null)
+    return await this.submissionService.generateExcel(id, null, null, null);
   }
   @Get('excelCurrent/:id')
   @ApiBearerAuth()
   async excelCurrent(@Param('id') initId) {
-    const toc_data = this.getTocs(initId)
-    return await this.submissionService.generateExcel(null, initId, toc_data, null)
+    const toc_data = this.getTocs(initId);
+    return await this.submissionService.generateExcel(
+      null,
+      initId,
+      toc_data,
+      null,
+    );
   }
   @Post('excelCurrentCenter')
   @ApiBearerAuth()
-   async excelCurrentCenter(@Body() data: any) {
-    const toc_data = this.getTocs(data.initId)
-    return await this.submissionService.generateExcel(null, data.initId, toc_data, data.organization)
+  async excelCurrentCenter(@Body() data: any) {
+    const toc_data = this.getTocs(data.initId);
+    return await this.submissionService.generateExcel(
+      null,
+      data.initId,
+      toc_data,
+      data.organization,
+    );
   }
 }

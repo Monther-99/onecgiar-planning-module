@@ -307,35 +307,40 @@ export class InitiativesService {
         }
       },
       (error) => {
-        console.log('error ==>>', error);
+        console.error('error ==>>', error);
       },
     );
   }
 
   async idUserHavePermissionToJoinChatGroup(initiative_id: number, user: User) {
-    if (user.role == userRole.ADMIN) return true;
-    return this.iniRolesRepository
-      .findOne({
+    try {
+      if (user.role === userRole.ADMIN) return true;
+      const result = await this.iniRolesRepository.findOne({
         where: {
           user_id: user.id,
           initiative_id,
         },
-      })
-      .then((r) => ['Contributor', 'Leader', 'Contributor'].includes(r.role))
-      .catch(() => false);
+      });
+      return ['Contributor', 'Leader', 'Contributor'].includes(result?.role);
+    } catch (error) {
+      return false;
+    }
   }
 
   async idUserHavePermissionSeeChat(initiative_id: number, user: User) {
-    if (user.role == userRole.ADMIN) return true;
-    return this.iniRolesRepository
-      .findOne({
+    try {
+
+      if (user.role === userRole.ADMIN) return true;
+      const result = await this.iniRolesRepository.findOne({
         where: {
           user_id: user.id,
           initiative_id,
         },
-      })
-      .then((r) => !!r)
-      .catch(() => false);
+      });
+      return ['Contributor', 'Leader', 'Contributor'].includes(result?.role);
+    } catch (error) {
+      return false;
+    }
   }
 
   async idUserHavePermissionToAdd(initiative_id: number, user: User) {

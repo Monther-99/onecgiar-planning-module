@@ -29,6 +29,8 @@ import {
   updateRoleResponse,
 } from 'DTO/initiatives.dto';
 import { Initiative } from 'src/entities/initiative.entity';
+import { User } from 'src/entities/user.entity';
+import { SignedInUser } from 'src/user.decorator';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Initiatives')
@@ -141,6 +143,18 @@ export class InitiativesController {
     return this.initiativesService.deleteRole(
       initiative_id,
       initiative_roles_id,
+    );
+  }
+
+  @Get(':initiative_id/is-allowed-to-access-chat')
+  @ApiBearerAuth()
+  isAllowedToAccessChat(
+    @Param('initiative_id') initiative_id: number,
+    @SignedInUser() user: User,
+  ) {
+    return this.initiativesService.idUserHavePermissionSeeChat(
+      initiative_id,
+      user,
     );
   }
 }

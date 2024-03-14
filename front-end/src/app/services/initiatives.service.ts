@@ -99,4 +99,10 @@ export class InitiativesService {
       )
       .toPromise();
   }
+
+  isAllowedToAccessChat(id: number) {
+    return this.http.get<boolean>(
+      environment.api_url + "/initiatives/" + id + "/is-allowed-to-access-chat"
+    );
+  }
 }

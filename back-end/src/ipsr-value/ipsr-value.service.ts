@@ -51,7 +51,6 @@ export class IpsrValueService {
   }
 
   async save(data: any) {
-    console.log(data)
     const { initiative_id } = data;
     const ipsrs = await this.ipsrService.findAll();
     for (let ipsr of ipsrs) {
