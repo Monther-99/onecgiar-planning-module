@@ -178,7 +178,7 @@ export class ChatGateway
     const message =
       await this.chatGroupRepositoryService.getMessagesForInitiative(
         data.initiative_id,
-        data.version_id,
+        // data.version_id,
         data.page,
       );
     return message;

@@ -42,7 +42,7 @@ export class ChatMessageRepositoryService {
         page,
         filter: {
           initiative_id: initiative_id.toString(),
-          version_id: version_id.toString(),
+          // version_id: version_id.toString(),
         },
         path: '',
         sortBy: [['id', 'DESC']],
@@ -54,7 +54,7 @@ export class ChatMessageRepositoryService {
         select: [],
         filterableColumns: {
           initiative_id: [FilterOperator.EQ],
-          version_id: [FilterOperator.EQ],
+          // version_id: [FilterOperator.EQ],
         },
       },
     );
