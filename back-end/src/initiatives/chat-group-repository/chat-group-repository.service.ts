@@ -33,7 +33,7 @@ export class ChatMessageRepositoryService {
 
   async getMessagesForInitiative(
     initiative_id: number,
-    version_id: number,
+    // version_id: number,
     page: number,
   ): Promise<Paginated<ChatMessage>> {
     return paginate(
