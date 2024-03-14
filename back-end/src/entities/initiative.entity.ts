@@ -14,7 +14,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { InitiativeRoles } from './initiative-roles.entity';
 import { IpsrValue } from './ipsr-value.entity';
 import { CenterStatus } from './center-status.entity';
-import { InitiativeMelia } from './initiative-melia.entity';
+// import { InitiativeMelia } from './initiative-melia.entity';
 
 @Entity()
 export class Initiative {
@@ -111,7 +111,7 @@ export class Initiative {
   // @ManyToMany(() => Melia, (melia) => melia.other_initiatives)
   // melia: Melia[];
 
-  @ApiProperty()
-  @ManyToMany(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.other_initiatives)
-  initiativeMelia: InitiativeMelia[];
+  // @ApiProperty()
+  // @ManyToMany(() => InitiativeMelia, (initiativeMelia) => initiativeMelia.other_initiatives)
+  // initiativeMelia: InitiativeMelia[];
 }

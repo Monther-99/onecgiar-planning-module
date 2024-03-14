@@ -537,9 +537,18 @@ export class SubmissionComponent implements OnInit {
     this.itemHasError = {};
 
     this.results = await this.submissionService.getToc(this.params.id);
-    const melia_data = await this.submissionService.getMeliaByInitiative(
-      this.params.id
-    );
+
+
+
+    //(all melia)
+    // const melia_data = await this.submissionService.getMeliaByInitiative(
+    //   this.params.id
+    // );
+
+
+
+
+
     this.ipsrs_data = await this.submissionService.getIpsrs();
     this.ipsr_value_data = await this.submissionService.getIpsrByInitiative(
       this.initiative_data.id
@@ -574,10 +583,10 @@ export class SubmissionComponent implements OnInit {
       d["wp_id"] = "CROSS";
       return d;
     });
-    melia_data.map((d: any) => {
-      d["category"] = "MELIA";
-      return d;
-    });
+    // melia_data.map((d: any) => {
+    //   d["category"] = "MELIA";
+    //   return d;
+    // });
     this.ipsr_value_data.map((d: any) => {
       d["category"] = "IPSR";
       d["wp_id"] = "IPSR";
@@ -585,7 +594,7 @@ export class SubmissionComponent implements OnInit {
     });
     this.results = [
       ...cross_data,
-      ...melia_data,
+      // ...melia_data,
       ...this.ipsr_value_data,
       ...this.results,
       // ...indicators_data,
@@ -965,8 +974,7 @@ export class SubmissionComponent implements OnInit {
             d.category == "OUTCOME" ||
             this.checkEOI(d.category) ||
             d.category == "CROSS" ||
-            d.category == "IPSR" ||
-            d.category == "MELIA") &&
+            d.category == "IPSR") &&
           (d.group == id ||
             d.wp_id == official_code ||
             (official_code == "CROSS" && this.checkEOI(d.category)))
@@ -977,8 +985,7 @@ export class SubmissionComponent implements OnInit {
             d.category == "OUTCOME" ||
             this.checkEOI(d.category) ||
             d.category == "CROSS" ||
-            d.category == "IPSR" ||
-            d.category == "MELIA") &&
+            d.category == "IPSR") &&
             (d.group == id || d.wp_id == official_code)) ||
           (official_code == "CROSS" && this.checkEOI(d.category))
         );
@@ -1040,26 +1047,26 @@ export class SubmissionComponent implements OnInit {
       });
   }
 
-  addMelia(wp: any, cross: boolean) {
-    const dialogRef = this.dialog.open(MeliaComponent, {
-      autoFocus: false,
-      data: {
-        id: "add",
-        wp: wp,
-        initiative_id: this.params.id,
-        show_eoi: this.phase?.show_eoi,
-        cross: cross,
-      },
-    });
+  // addMelia(wp: any, cross: boolean) { 
+  //   const dialogRef = this.dialog.open(MeliaComponent, {
+  //     autoFocus: false,
+  //     data: {
+  //       id: "add",
+  //       wp: wp,
+  //       initiative_id: this.params.id,
+  //       show_eoi: this.phase?.show_eoi,
+  //       cross: cross,
+  //     },
+  //   });
 
-    dialogRef.afterClosed().subscribe(async (result) => {
-      if (result) {
-        await this.submissionService.newMelia(result);
-        await this.InitData();
-        this.toastrService.success("Added successfully");
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(async (result) => {
+  //     if (result) {
+  //       await this.submissionService.newMelia(result);
+  //       await this.InitData();
+  //       this.toastrService.success("Added successfully");
+  //     }
+  //   });
+  // } 
 
   
   async setIPSR(wp_official_code: any) {
@@ -1084,46 +1091,46 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-  async editMelia(id: number, wp: any) {
-    const dialogRef = this.dialog.open(MeliaComponent, {
-      height: '70%',
-      autoFocus: false,
-      data: {
-        initiative_id: this.params.id,
-        wp: wp,
-        show_eoi: this.phase?.show_eoi,
-        data: await this.submissionService.getMeliaById(id),
-      },
-    });
+  // async editMelia(id: number, wp: any) { 
+  //   const dialogRef = this.dialog.open(MeliaComponent, {
+  //     height: '70%',
+  //     autoFocus: false,
+  //     data: {
+  //       initiative_id: this.params.id,
+  //       wp: wp,
+  //       show_eoi: this.phase?.show_eoi,
+  //       data: await this.submissionService.getMeliaById(id),
+  //     },
+  //   });
 
-    dialogRef.afterClosed().subscribe(async (result) => {
-      if (result) {
-        await this.submissionService.updateMelia(id, result);
-        await this.InitData();
-        this.toastrService.success("Edited successfully");
-      }
-    });
-  }
-  async deleteMelia(id: number) {
-    this.dialog
-      .open(DeleteConfirmDialogComponent, {
-        data: {
-          title: "Delete",
-          message: `Are you sure you want to delete this MELIA?`,
-          svg: `../../../../assets/shared-image/delete-user.png`,
-        },
-      })
-      .afterClosed()
-      .subscribe(async (dialogResult) => {
-        if (dialogResult == true) {
-          let result = await this.submissionService.deleteMelia(id);
-          if (result) await this.InitData();
-          this.toastrService.success("Deleted successfully");
-        }
-      });
-  }
+  //   dialogRef.afterClosed().subscribe(async (result) => {
+  //     if (result) {
+  //       await this.submissionService.updateMelia(id, result);
+  //       await this.InitData();
+  //       this.toastrService.success("Edited successfully");
+  //     }
+  //   });
+  // } 
+  // async deleteMelia(id: number) { 
+  //   this.dialog
+  //     .open(DeleteConfirmDialogComponent, {
+  //       data: {
+  //         title: "Delete",
+  //         message: `Are you sure you want to delete this MELIA?`,
+  //         svg: `../../../../assets/shared-image/delete-user.png`,
+  //       },
+  //     })
+  //     .afterClosed()
+  //     .subscribe(async (dialogResult) => {
+  //       if (dialogResult == true) {
+  //         let result = await this.submissionService.deleteMelia(id);
+  //         if (result) await this.InitData();
+  //         this.toastrService.success("Deleted successfully");
+  //       }
+  //     });
+  // } 
 
-  viewData(data: any) {
+  viewData(data: any) { 
     this.dialog
       .open(ViewDataComponent, {
         maxWidth: "800px",
@@ -1131,7 +1138,7 @@ export class SubmissionComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {});
-  }
+  } 
 
   async submit() {
     let messages = "Are you sure you want to submit?";

@@ -40,7 +40,7 @@ const routes: Routes = [
       { path: "ipsr", component: AdminIpsrComponent },
       { path: "phases/:id/initiatives", component: PhaseInitiativesComponent },
       { path: "parameters-settings", component: ParametersSettingsComponent },
-      { path: "melia", component: MeliaAdminComponent },
+      // { path: "melia", component: MeliaAdminComponent },
       // { path: "Anticipated-year", component: AnticipatedYearComponent },
       { path: "popover-management", component: PopoverManagementComponent },
       { path: "emails", component: EmailsComponent },
@@ -73,11 +73,11 @@ const routes: Routes = [
     component: TeamMembersComponent,
     canActivate: [AuthGuard],
   },
-  {
-    path: "initiative/:id/:code/melia",
-    component: InitiativeMeliaComponent,
-    canActivate: [AuthGuard],
-  },
+  // {
+  //   path: "initiative/:id/:code/melia",
+  //   component: InitiativeMeliaComponent,
+  //   canActivate: [AuthGuard],
+  // },
   { path: "denied", component: AccessDeniedComponent },
   {
     path: "license",

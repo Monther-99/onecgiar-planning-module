@@ -25,10 +25,10 @@ import { join } from 'path';
 import { createReadStream, unlink } from 'fs';
 import { InitiativesService } from 'src/initiatives/initiatives.service';
 import { PeriodsService } from 'src/periods/periods.service';
-import { Melia } from 'src/entities/melia.entity';
+// import { Melia } from 'src/entities/melia.entity';
 import { CrossCutting } from 'src/entities/cross-cutting.entity';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
-import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
+// import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 import { EmailService } from 'src/email/email.service';
 @Injectable()
 export class SubmissionService {
@@ -57,14 +57,14 @@ export class SubmissionService {
     private PhasesService: PhasesService,
     private initService: InitiativesService,
     private periodService: PeriodsService,
-    @InjectRepository(Melia)
-    private meliaRepository: Repository<Melia>,
+    // @InjectRepository(Melia)
+    // private meliaRepository: Repository<Melia>,
     @InjectRepository(CrossCutting)
     private CrossCuttingRepository: Repository<CrossCutting>,
     @InjectRepository(IpsrValue)
     private ipsrValueRepository: Repository<IpsrValue>,
-    @InjectRepository(InitiativeMelia)
-    private initiativeMeliaRepository: Repository<InitiativeMelia>,
+    // @InjectRepository(InitiativeMelia)
+    // private initiativeMeliaRepository: Repository<InitiativeMelia>,
     private emailService: EmailService
   ) {}
   sort(query) {
@@ -252,53 +252,53 @@ export class SubmissionService {
       });
     }
 
-    let oldMelias = await this.meliaRepository.find({
-      where: {
-        initiative_id: initiative_id,
-        submission: IsNull(),
-      },
-      relations: [
-        'partners',
-        'initiative_countries',
-        'initiative_regions',
-        'co_initiative_countries',
-        'co_initiative_regions',
-      ],
-    });
-    for (let melia of oldMelias) {
-      let oldInitiativeMelia = await this.initiativeMeliaRepository.findOne({
-        where: {
-          id: melia.initiative_melia_id,
-        },
-        relations: ['other_initiatives'],
-      });
-      delete oldInitiativeMelia.id;
-      oldInitiativeMelia.submission_id = submissionObject.id;
-      let newInitiativeMelia = await this.initiativeMeliaRepository.save(
-        oldInitiativeMelia,
-        {
-          reload: true,
-        },
-      );
+    // let oldMelias = await this.meliaRepository.find({
+    //   where: {
+    //     initiative_id: initiative_id,
+    //     submission: IsNull(),
+    //   },
+    //   relations: [
+    //     'partners',
+    //     'initiative_countries',
+    //     'initiative_regions',
+    //     'co_initiative_countries',
+    //     'co_initiative_regions',
+    //   ],
+    // });
+    // for (let melia of oldMelias) {
+    //   let oldInitiativeMelia = await this.initiativeMeliaRepository.findOne({
+    //     where: {
+    //       id: melia.initiative_melia_id,
+    //     },
+    //     relations: ['other_initiatives'],
+    //   });
+    //   delete oldInitiativeMelia.id;
+    //   oldInitiativeMelia.submission_id = submissionObject.id;
+    //   let newInitiativeMelia = await this.initiativeMeliaRepository.save(
+    //     oldInitiativeMelia,
+    //     {
+    //       reload: true,
+    //     },
+    //   );
 
-      let oldMeliaId = melia.id;
-      delete melia.id;
-      melia.submission_id = submissionObject.id;
-      melia.initiative_melia_id = newInitiativeMelia.id;
-      let newMelia = await this.meliaRepository.save(melia, {
-        reload: true,
-      });
+    //   let oldMeliaId = melia.id;
+    //   delete melia.id;
+    //   melia.submission_id = submissionObject.id;
+    //   melia.initiative_melia_id = newInitiativeMelia.id;
+    //   let newMelia = await this.meliaRepository.save(melia, {
+    //     reload: true,
+    //   });
 
-      await this.resultRepository.update(
-        {
-          result_uuid: oldMeliaId,
-          submission_id: submissionObject.id,
-        },
-        {
-          result_uuid: newMelia.id,
-        },
-      );
-    }
+    //   await this.resultRepository.update(
+    //     {
+    //       result_uuid: oldMeliaId,
+    //       submission_id: submissionObject.id,
+    //     },
+    //     {
+    //       result_uuid: newMelia.id,
+    //     },
+    //   );
+    // }
 
     let oldCross = await this.CrossCuttingRepository.find({
       where: {
@@ -1096,7 +1096,7 @@ export class SubmissionService {
     this.totals = {};
     this.noValuesAssigned = {};
 
-    let melia_data;
+    // let melia_data;
     let cross_data;
 
     let ipsr_value_data;
@@ -1110,9 +1110,9 @@ export class SubmissionService {
       this.results = submission.toc_data;
       this.period = submission.phase.periods;
       this.wp_budgets = await this.getSubmissionBudgets(submissionId, submission.phase.id);
-       melia_data = await this.meliaService.findBySubmissionId(
-        submissionId
-      );
+      //  melia_data = await this.meliaService.findBySubmissionId(
+      //   submissionId
+      // );
        cross_data = await this.CrossCuttingService.findBySubmissionID(
         submissionId
       );
@@ -1141,9 +1141,9 @@ export class SubmissionService {
 
       this.results = await tocData;
 
-       melia_data = await this.meliaService.findByInitiativeID(
-        initId
-      );
+      //  melia_data = await this.meliaService.findByInitiativeID(
+      //   initId
+      // );
 
        ipsr_value_data = await this.IpsrValueService.findByInitiativeID(initId);
   
@@ -1159,10 +1159,10 @@ export class SubmissionService {
       return d;
     });
 
-    melia_data.map((d: any) => {
-      d['category'] = 'MELIA';
-      return d;
-    });
+    // melia_data.map((d: any) => {
+    //   d['category'] = 'MELIA';
+    //   return d;
+    // });
 
     ipsr_value_data.map((d: any) => {
       d['category'] = 'IPSR';
@@ -1172,7 +1172,7 @@ export class SubmissionService {
 
     this.results = [
       ...cross_data,
-      ...melia_data,
+      // ...melia_data,
       ...ipsr_value_data,
       ...this.results,
     ];

@@ -342,9 +342,9 @@ export class SubmitedVersionComponent implements OnInit {
     this.wp_budgets = await this.submissionService.getBudgets(this.params.id, this.submission_data.phase.id);
 
     this.results = this.submission_data.toc_data;
-    const melia_data = await this.submissionService.getMeliaBySubmission(
-      this.params.id
-    );
+    // const melia_data = await this.submissionService.getMeliaBySubmission(
+    //   this.params.id
+    // );
     const cross_data = await this.submissionService.getCrossBySubmission(
       this.params.id
     );
@@ -356,10 +356,10 @@ export class SubmitedVersionComponent implements OnInit {
       d["wp_id"] = "CROSS";
       return d;
     });
-    melia_data.map((d: any) => {
-      d["category"] = "MELIA";
-      return d;
-    });
+    // melia_data.map((d: any) => {
+    //   d["category"] = "MELIA";
+    //   return d;
+    // });
     this.ipsr_value_data.map((d: any) => {
       d["category"] = "IPSR";
       d["wp_id"] = "IPSR";
@@ -367,7 +367,7 @@ export class SubmitedVersionComponent implements OnInit {
     });
     this.results = [
       ...cross_data,
-      ...melia_data,
+      // ...melia_data,
       ...this.ipsr_value_data,
       ...this.results,
       // ...indicators_data,
@@ -666,9 +666,11 @@ export class SubmitedVersionComponent implements OnInit {
             d.category == "OUTCOME" ||
             d.category == "EOI" ||
             d.category == "CROSS" ||
-            d.category == "IPSR" ||
+            d.category == "IPSR" 
+            // ||
             // d.category == 'INDICATOR' ||
-            d.category == "MELIA") &&
+            // d.category == "MELIA"
+            ) &&
           (d.group == id ||
             d.wp_id == official_code ||
             (official_code == "CROSS" && this.checkEOI(d.category)))
@@ -679,9 +681,11 @@ export class SubmitedVersionComponent implements OnInit {
             d.category == "OUTCOME" ||
             d.category == "EOI" ||
             d.category == "IPSR" ||
-            d.category == "CROSS" ||
+            d.category == "CROSS" 
+            // ||
             // d.category == 'INDICATOR' ||
-            d.category == "MELIA") &&
+            // d.category == "MELIA"
+            ) &&
             (d.group == id || d.wp_id == official_code)) ||
           (official_code == "CROSS" && this.checkEOI(d.category))
         );

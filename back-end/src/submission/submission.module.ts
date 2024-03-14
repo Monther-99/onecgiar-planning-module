@@ -22,10 +22,10 @@ import { IpsrValueModule } from 'src/ipsr-value/ipsr-value.module';
 import { PhasesModule } from 'src/phases/phases.module';
 import { InitiativesModule } from 'src/initiatives/initiatives.module';
 import { PeriodsModule } from 'src/periods/periods.module';
-import { Melia } from 'src/entities/melia.entity';
+// import { Melia } from 'src/entities/melia.entity';
 import { CrossCutting } from 'src/entities/cross-cutting.entity';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
-import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
+// import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 import { EmailModule } from 'src/email/email.module';
 import { Email } from 'src/entities/email.entity';
 import { Variable } from 'src/entities/variable.entity';
@@ -44,10 +44,10 @@ import { EmailService } from 'src/email/email.service';
       ResultPeriodValues,
       CenterStatus,
       WpBudget,
-      Melia,
+      // Melia,
       CrossCutting,
       IpsrValue,
-      InitiativeMelia,
+      // InitiativeMelia,
       Email,
       Variable
     ]),

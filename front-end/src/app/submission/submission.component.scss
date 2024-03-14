@@ -908,6 +908,10 @@ mat-tab-group {
 //   white-space: normal !important;
 //   /* padding: 0 0rem; */
 // }
+.mat-mdc-card-content:last-child {
+  padding-bottom: 16px;
+  margin-top: 15px;
+}
 
 .card-title-table {
   text-align: left;
@@ -951,8 +955,8 @@ mat-tab-group {
   letter-spacing: 0.2rem;
   transition: all 0.2s;
   position: relative;
-  top: 8.9rem;
-  left: -12rem;
+  top: 6.9rem;
+  // left: -12rem;
 }
 
 .show-d-1 {
@@ -980,7 +984,7 @@ mat-tab-group {
   transition: all 0.2s;
   position: relative;
   top: 8.9rem;
-  left: -30rem;
+  left: -19rem;
 }
 
 .show-d-3 {

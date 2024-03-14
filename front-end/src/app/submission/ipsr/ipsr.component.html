@@ -68,28 +68,29 @@
 
 
 
-
-            <mat-form-field
-            *ngIf="item.need_in_description"
-              class="form-dialog-content__field"
-              floatLabel="always"
-              hideRequiredMarker
-              appearance="outline"
+            <ng-container *ngIf="item.need_in_description">
+              <mat-form-field
+              
+                class="form-dialog-content__field"
+                floatLabel="always"
+                hideRequiredMarker
+                appearance="outline"
+            >
+              <input
+                [required]="ipsrForm.controls['value-' + item.id].value != '' && ipsrForm.controls['value-' + item.id].value != null"
+                matInput
+                type="text"
+                [formControlName]="'description-' + item.id"
+                placeholder="Description"
+              />
+   
+            </mat-form-field>
+            <mat-error
+            class="error"
+            *ngIf="ipsrForm?.errors?.['descriptionRequired'+ item.id]"
+            >This field is mandatory</mat-error
           >
-            <input
-              [required]="ipsrForm.controls['value-' + item.id].value != '' || ipsrForm.controls['value-' + item.id].value != null"
-              matInput
-              type="text"
-              [formControlName]="'description-' + item.id"
-              placeholder="Description"
-            />
- 
-          </mat-form-field>
-          <mat-error
-          class="error"
-          *ngIf="ipsrForm?.errors?.['descriptionRequired'+ item.id]"
-          >This field is mandatory</mat-error
-        >
+            </ng-container>
           </div>
         </div>
         <div>
