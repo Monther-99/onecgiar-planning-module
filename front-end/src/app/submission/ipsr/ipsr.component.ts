@@ -3,6 +3,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
@@ -30,7 +31,7 @@ export class IpsrComponent implements OnInit {
       this.dialogRef.close(this.ipsrForm.value);
     }
     else {
-      this.toast.error('There Is Mandatory Field');
+      this.toast.error(this.getFormValidationErrors(this.ipsrForm)[0].value);
     }
   }
   ngOnInit() {
@@ -75,7 +76,7 @@ export class IpsrComponent implements OnInit {
       this.otherDescriptionValidator(this.ids),
       this.customValueValidator(this.arrError),
     ])
-
+    this.getFormValidationErrors(this.ipsrForm);
   }
 
   private customValueValidator = (ids:any[]) => {
@@ -95,6 +96,7 @@ export class IpsrComponent implements OnInit {
             }
           }
           if(arrError.includes('no')) {
+            controls['value-' + id].setErrors({'text': "You can insert the numbers and range (X-Y) only."});
             return {
               ['value' + id]: {
                 text: "You can insert the numbers and range (X-Y) only.",
@@ -125,6 +127,7 @@ export class IpsrComponent implements OnInit {
               controls['description-' + id].value == "" ||
               controls['description-' + id].value == null
             ) {
+              controls['description-' + id].setErrors({'text': "This field is mandatory"});
               return {
                 ['descriptionRequired' + id]: {
                   text: "This field is mandatory",
@@ -141,6 +144,22 @@ export class IpsrComponent implements OnInit {
 
 
 
+  getFormValidationErrors(form: FormGroup) {
+    const result:any[] = [];
+    Object.keys(form.controls).forEach(key => {
+      const controlErrors: ValidationErrors | null = this.ipsrForm.controls[key].errors;
+      if (controlErrors) {
+        Object.keys(controlErrors).forEach(keyError => {
+          result.push({
+            'control': key,
+            'error': keyError,
+            'value': controlErrors[keyError]
+          });
+        });
+      }
+    });
+    return result;
+  }
   //Close-Dialog
   onCloseDialog() {
     this.dialogRef.close();
