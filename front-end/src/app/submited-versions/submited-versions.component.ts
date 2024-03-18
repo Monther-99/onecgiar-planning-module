@@ -192,7 +192,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
   perValuesSammary: any = {};
   perAllValues: any = {};
   sammaryTotal: any = {};
-
+  sammaryTotalConsolidated: any = {}; 
   async changes(
     partner_code: any,
     wp_id: any,
@@ -294,17 +294,21 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
     this.sammaryTotal["CROSS"] = 0;
     this.sammaryTotal["IPSR"] = 0;
+    this.sammaryTotalConsolidated["CROSS"] = 0;
+    this.sammaryTotalConsolidated["IPSR"] = 0;
     Object.keys(this.sammary).forEach((wp_id) => {
       this.sammaryTotal[wp_id] = 0;
+      this.sammaryTotalConsolidated[wp_id] = 0;
       Object.keys(this.sammary[wp_id]).forEach((item_id) => {
         this.sammaryTotal[wp_id] += totalWp[wp_id][item_id];
+        this.sammaryTotalConsolidated[wp_id] = this.summaryBudgetsAllTotal ? this.roundNumber(this.summaryBudgetsTotal[wp_id] / this.summaryBudgetsAllTotal * 100) : 0;
       });
     });
     this.wpsTotalSum = 0;
     Object.keys(this.sammaryTotal).forEach((wp_id) => {
-      this.wpsTotalSum += this.sammaryTotal[wp_id];
+      this.wpsTotalSum += this.sammaryTotalConsolidated[wp_id];
     });
-    this.wpsTotalSum = this.wpsTotalSum / Object.keys(this.sammaryTotal).length;
+    // this.wpsTotalSum = this.wpsTotalSum / Object.keys(this.sammaryTotal).length;
   }
   allvalueChange() {
     for (let wp of this.wps) {
@@ -356,6 +360,7 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.perValuesSammary = {};
     this.perAllValues = {};
     this.sammaryTotal = {};
+    this.sammaryTotalConsolidated = {};
     this.data = [];
     this.wps = [];
     this.partnersData = {};
@@ -524,6 +529,9 @@ export class SubmitedVersionsComponent implements AfterViewInit {
 
             if (!this.sammaryTotal[wp.ost_wp.wp_official_code])
               this.sammaryTotal[wp.ost_wp.wp_official_code] = 0;
+              
+            if (!this.sammaryTotalConsolidated[wp.ost_wp.wp_official_code])
+              this.sammaryTotalConsolidated[wp.ost_wp.wp_official_code] = 0;
           });
         });
       }
