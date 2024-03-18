@@ -1826,7 +1826,7 @@ export class SubmissionService {
       this.sammaryTotalConsolidated[wp_id] = 0;
       Object.keys(this.sammary[wp_id]).forEach((item_id) => {
         this.sammaryTotal[wp_id] += totalWp[wp_id][item_id];
-        this.sammaryTotalConsolidated[wp_id] = this.summaryBudgetsAllTotal ? this.roundNumber(this.summaryBudgetsTotal[wp_id] / this.summaryBudgetsAllTotal * 100) : 0;
+        this.sammaryTotalConsolidated[wp_id] = this.summaryBudgetsAllTotal ? this.summaryBudgetsTotal[wp_id] / this.summaryBudgetsAllTotal * 100 : 0;
       });
     });
     this.wpsTotalSum = 0;
