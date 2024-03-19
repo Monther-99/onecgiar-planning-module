@@ -30,10 +30,10 @@ export class EmailController {
         result
           .andWhere(
             new Brackets((qb) => {
-              qb.where('email LIKE :email', {
-                email: `%${query?.search || ''}%`,
-              }).orWhere('name LIKE :name', { name: `%${query?.search || ''}%` });
-            }),
+              qb.where('email LIKE :email', {email: `%${query?.search || ''}%`,})
+              .orWhere('name LIKE :name', { name: `%${query?.search || ''}%` })
+              .orWhere('subject LIKE :subject', { subject: `%${query?.search || ''}%` })
+            })
           )
           .orderBy(this.sort(query))
           .skip(skip || 0)
