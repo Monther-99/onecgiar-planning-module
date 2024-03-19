@@ -55,6 +55,11 @@ export class IpsrComponent implements OnInit {
       ...obj2
       
     });
+    const ipsrIds = this.ipsrs.map((item: any) => item.id);
+
+    this.ipsrForm.setValidators([
+      this.customValueValidator(ipsrIds),
+    ])
   }
   onNoClick(): void {
     this.dialogRef.close(false);
