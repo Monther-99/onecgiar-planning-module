@@ -127,7 +127,7 @@ export class EmailService {
 
       async createEmailBy(user,variable, init, roleAssigned, statusReason, organization, userRoleDoAction, otherInitiative, meliaStudy) {
 
-        let body = `<p style="font-weight: 200"> Dear, ${user.full_name}</p>`;
+        let body = `<p style="font-weight: 200"> Dear ${user.full_name}</p>`;
         try {
           switch(variable.id) {
             case 1:
