@@ -150,11 +150,20 @@ export class IpsrComponent implements OnInit {
       const controlErrors: ValidationErrors | null = this.ipsrForm.controls[key].errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
-          result.push({
-            'control': key,
-            'error': keyError,
-            'value': controlErrors[keyError]
-          });
+          if(controlErrors[keyError] == true){
+            controlErrors[keyError] = 'This field is mandatory'
+            result.push({
+              'control': key,
+              'error': keyError,
+              'value': controlErrors[keyError]
+            });
+          } else {
+            result.push({
+              'control': key,
+              'error': keyError,
+              'value': controlErrors[keyError]
+            });
+          }
         });
       }
     });
