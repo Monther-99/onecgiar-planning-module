@@ -16,7 +16,7 @@ import { EmailBodyComponent } from './email-body/email-body.component';
 export class EmailsComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columnsToDisplay: string[] = ["id", "name", "email", "subject", "status", "actions"];
+  columnsToDisplay: string[] = ["id", "name", "email", "subject", "status", "created At", "actions"];
   dataSource: MatTableDataSource<any>;
   emails: any = [];
   length!: number;
