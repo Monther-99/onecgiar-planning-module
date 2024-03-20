@@ -29,21 +29,23 @@
             class="form-dialog-content__title-box"
             *ngFor="let item of ipsrs"
           >
-            <mat-label class="form-dialog-content__title-box__title"
+            <mat-label
+              class="form-dialog-content__title-box__title"
               *ngIf="!item.need_in_description"
-              >{{ item.title }} - Number
+              >{{ item.title }} - Add value
               <app-popover>
-                {{item.description}}
+                {{ item.description }}
               </app-popover>
             </mat-label>
 
-          <mat-label class="form-dialog-content__title-box__title"
+            <mat-label
+              class="form-dialog-content__title-box__title"
               *ngIf="item.need_in_description"
-            >{{ item.title }} - Description and number
-            <app-popover>
-              {{item.description}}
-            </app-popover>
-          </mat-label>
+              >{{ item.title }} - Description and value
+              <app-popover>
+                {{ item.description }}
+              </app-popover>
+            </mat-label>
 
             <mat-form-field
               class="form-dialog-content__field"
@@ -55,41 +57,40 @@
               <input
                 matInput
                 type="text"
-                placeholder="Number"
+                placeholder="value"
                 (ngModelChange)="change(item)"
                 [formControlName]="'value-' + item.id"
               />
             </mat-form-field>
             <mat-error
-            class="error"
-            *ngIf="ipsrForm?.errors?.['value'+ item.id]"
-            >You can insert the numbers and range (X-Y) only.</mat-error
-          >
-
-
+              class="error"
+              *ngIf="ipsrForm?.errors?.['value'+ item.id]"
+              >You can insert the values and range (X-Y) only.</mat-error
+            >
 
             <ng-container *ngIf="item.need_in_description">
               <mat-form-field
-              
                 class="form-dialog-content__field"
                 floatLabel="always"
                 hideRequiredMarker
                 appearance="outline"
-            >
-              <input
-                [required]="ipsrForm.controls['value-' + item.id].value != '' && ipsrForm.controls['value-' + item.id].value != null"
-                matInput
-                type="text"
-                [formControlName]="'description-' + item.id"
-                placeholder="Description"
-              />
-   
-            </mat-form-field>
-            <mat-error
-            class="error"
-            *ngIf="ipsrForm?.errors?.['descriptionRequired'+ item.id]"
-            >This field is mandatory</mat-error
-          >
+              >
+                <input
+                  [required]="
+                    ipsrForm.controls['value-' + item.id].value != '' &&
+                    ipsrForm.controls['value-' + item.id].value != null
+                  "
+                  matInput
+                  type="text"
+                  [formControlName]="'description-' + item.id"
+                  placeholder="Description"
+                />
+              </mat-form-field>
+              <mat-error
+                class="error"
+                *ngIf="ipsrForm?.errors?.['descriptionRequired'+ item.id]"
+                >This field is mandatory</mat-error
+              >
             </ng-container>
           </div>
         </div>
