@@ -95,9 +95,24 @@ export class SubmissionService {
           const init = await this.initiativeRepository.findOne({where : {
             id : initiative_id
           },
-          relations: ['roles', 'roles.user']
-          })
-          const users = init.roles.map(d => d.user);
+          relations: ['roles', 'roles.user', 'roles.organizations']
+          });
+
+          const usersRole = [];
+          init.roles.filter(d => {
+            if(d.role == 'Leader' || d.role == 'Coordinator') {
+              usersRole.push(d);
+            } else if(d.role == 'Contributor'){
+              d.organizations.filter(x => {
+                if(x.code == data.organization_code) {
+                  usersRole.push(d)
+                }
+              });
+              
+            }
+          });
+          const users = usersRole.map(d => d.user);
+
           // when user is in team member
           const userRoleDoAction = init.roles.filter(d => d.user_id == reqUser.id);
 
