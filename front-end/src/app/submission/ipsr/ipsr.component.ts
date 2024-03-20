@@ -90,14 +90,16 @@ export class IpsrComponent implements OnInit {
         let controls = controlGroup.controls;
         if (controls) {
           let arrError: any[] = [];
-          let controlsValue: any[] = controls['value-' + id].value.split("")
-          for(let char of controlsValue) {
-            if (
-              Number(+char) || char == '-' || char == '0'
-            ) {
-              arrError.push('yes')
-            } else {
-              arrError.push('no')
+          let controlsValue: any[] = controls['value-' + id]?.value?.split("")
+          if(controlsValue?.length){
+            for(let char of controlsValue) {
+              if (
+                Number(+char) || char == '-' || char == '0'
+              ) {
+                arrError.push('yes')
+              } else {
+                arrError.push('no')
+              }
             }
           }
           if(arrError.includes('no')) {

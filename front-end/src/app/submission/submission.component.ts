@@ -792,7 +792,7 @@ export class SubmissionComponent implements OnInit {
       content: "Complete the PORB",
     });
 
-    const newIPSR = this.allData['IPSR'].filter((d:any) => d.value != '');
+    const newIPSR = this.allData['IPSR'].filter((d:any) => d.value != '').sort((a:any,b:any) => + (a.ipsr.id - b.ipsr.id));
     this.allData['IPSR'] = newIPSR;
   } 
   savedValues: any = null;
