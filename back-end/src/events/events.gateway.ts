@@ -40,7 +40,7 @@ export class EventsGateway implements OnModuleInit {
   }
 
   onModuleInit() {
-    this.server.on('connect', (socket) => {
+    this.server?.on('connect', (socket) => {
       socket.on('disconnect', (data) => {
         console.log('disconnect');
       });
