@@ -57,7 +57,7 @@ export class Submission {
   })
   status: SubmissionStatus;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 2000 })
   status_reason: '';
 
   // @OneToMany(() => Melia, (melia) => melia.submission)
