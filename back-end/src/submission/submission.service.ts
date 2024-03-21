@@ -1171,7 +1171,7 @@ export class SubmissionService {
     }
 
     cross_data.map((d: any) => {
-      d['category'] = 'CROSS';
+      d['category'] = 'Cross Cutting';
       d['wp_id'] = 'CROSS';
       return d;
     });
@@ -1204,7 +1204,7 @@ export class SubmissionService {
     this.wps.unshift({
       id: 'CROSS',
       title: 'Cross Cutting',
-      category: 'CROSS',
+      category: 'Cross Cutting',
       ost_wp: { wp_official_code: 'CROSS' },
     });
     this.wps.push({
@@ -1930,7 +1930,7 @@ export class SubmissionService {
           (d.category == 'OUTPUT' ||
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
-            d.category == 'CROSS' ||
+            d.category == 'Cross Cutting' ||
             d.category == 'IPSR' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
@@ -1944,7 +1944,7 @@ export class SubmissionService {
             d.category == 'OUTCOME' ||
             d.category == 'EOI' ||
             d.category == 'IPSR' ||
-            d.category == 'CROSS' ||
+            d.category == 'Cross Cutting' ||
             // d.category == 'INDICATOR' ||
             d.category == 'MELIA') &&
             (d.group == id || d.wp_id == official_code)) ||

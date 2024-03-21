@@ -585,7 +585,7 @@ export class SubmissionComponent implements OnInit {
     //   })
     //   .flat(1);
     cross_data.map((d: any) => {
-      d["category"] = "CROSS";
+      d["category"] = "Cross Cutting";
       d["wp_id"] = "CROSS";
       return d;
     });
@@ -615,7 +615,7 @@ export class SubmissionComponent implements OnInit {
     this.wps.unshift({
       id: "CROSS",
       title: "Cross Cutting",
-      category: "CROSS",
+      category: "Cross Cutting",
       ost_wp: { wp_official_code: "CROSS" },
     });
 
@@ -984,7 +984,7 @@ export class SubmissionComponent implements OnInit {
           (d.category == "OUTPUT" ||
             d.category == "OUTCOME" ||
             this.checkEOI(d.category) ||
-            d.category == "CROSS" ||
+            d.category == "Cross Cutting" ||
             d.category == "IPSR") &&
           (d.group == id ||
             d.wp_id == official_code ||
@@ -995,7 +995,7 @@ export class SubmissionComponent implements OnInit {
           ((d.category == "OUTPUT" ||
             d.category == "OUTCOME" ||
             this.checkEOI(d.category) ||
-            d.category == "CROSS" ||
+            d.category == "Cross Cutting" ||
             d.category == "IPSR") &&
             (d.group == id || d.wp_id == official_code)) ||
           (official_code == "CROSS" && this.checkEOI(d.category))
