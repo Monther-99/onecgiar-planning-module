@@ -87,7 +87,11 @@
           <!-- status_reason -->
           <ng-container matColumnDef="status_reason">
             <th mat-header-cell *matHeaderCellDef>Status Reason</th>
-            <td mat-cell *matCellDef="let row" [innerHTML]="row.status_reason"></td>
+            <td
+              mat-cell
+              *matCellDef="let row"
+              [innerHTML]="row.status_reason"
+            ></td>
           </ng-container>
 
           <!-- actions -->
@@ -515,7 +519,9 @@
         </ng-container>
 
         <!-- </mat-tab> -->
-        <ng-container *ngFor="let partner of partners">
+        <ng-container
+          *ngFor="let partner of partners | sort : 'asc' : 'acronym'"
+        >
           <mat-card-subtitle class="acronymtext m-b-t"
             >{{ partner?.name }} <span>-</span>
             {{ partner?.acronym }}</mat-card-subtitle

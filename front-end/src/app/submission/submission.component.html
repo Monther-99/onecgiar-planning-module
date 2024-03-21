@@ -532,7 +532,13 @@
                                 : item.title
                             }}
                             <ng-container *ngIf="item?.ipsr?.id">
-                              <mat-icon class="ipsr-icon" *ngIf="item?.description" [matTooltip]="item?.description" matTooltipPosition="above">help</mat-icon>
+                              <mat-icon
+                                class="ipsr-icon"
+                                *ngIf="item?.description"
+                                [matTooltip]="item?.description"
+                                matTooltipPosition="above"
+                                >help</mat-icon
+                              >
                             </ng-container>
                           </ng-container>
                         </td>
@@ -624,7 +630,10 @@
 
       <!-- fgfgdd -->
 
-      <mat-tab *ngFor="let partner of partners" label="{{ partner.name }}">
+      <mat-tab
+        *ngFor="let partner of partners | sort : 'asc' : 'acronym'"
+        label="{{ partner.name }}"
+      >
         <ng-template mat-tab-label>
           <span style="margin-right: 10px">{{
             partner?.acronym ? partner?.acronym : partner?.name
@@ -870,7 +879,13 @@
                           }}
                         </ng-container>
                         <ng-container *ngIf="item?.ipsr?.id">
-                          <mat-icon class="ipsr-icon" *ngIf="item?.description" [matTooltip]="item?.description" matTooltipPosition="above">help</mat-icon>
+                          <mat-icon
+                            class="ipsr-icon"
+                            *ngIf="item?.description"
+                            [matTooltip]="item?.description"
+                            matTooltipPosition="above"
+                            >help</mat-icon
+                          >
                         </ng-container>
                       </td>
                       <td>{{ item.category }}</td>

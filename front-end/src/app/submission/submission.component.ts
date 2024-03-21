@@ -156,7 +156,7 @@ export class SubmissionComponent implements OnInit {
           percent_value: percentValue,
           budget_value: budgetValue,
           no_budget: this.noValuesAssigned[partner_code][wp_id][item_id],
-          phase_id: this.phase.id
+          phase_id: this.phase.id,
         }
       );
       if (result)
@@ -183,7 +183,7 @@ export class SubmissionComponent implements OnInit {
         partner_code,
         wp_id,
         budget,
-        phaseId: this.phase.id
+        phaseId: this.phase.id,
       });
 
       this.refreshValues(partner_code, wp_id);
@@ -260,8 +260,8 @@ export class SubmissionComponent implements OnInit {
   perValues: any = {};
   perValuesSammary: any = {};
   perAllValues: any = {};
-  sammaryTotal: any = {}; 
-  sammaryTotalConsolidated: any = {}; 
+  sammaryTotal: any = {};
+  sammaryTotalConsolidated: any = {};
   checkComplete(organization_code: number) {
     if (this.initiative_data.center_status) {
       return (
@@ -347,7 +347,7 @@ export class SubmissionComponent implements OnInit {
         item_id,
         per_id,
         value: event.checked,
-        phase_id: this.phase.id
+        phase_id: this.phase.id,
       }
     );
     if (
@@ -455,7 +455,10 @@ export class SubmissionComponent implements OnInit {
       Object.keys(this.sammary[wp_id]).forEach((item_id) => {
         if (totalWp[wp_id][item_id])
           this.sammaryTotal[wp_id] += totalWp[wp_id][item_id];
-          this.sammaryTotalConsolidated[wp_id] = this.summaryBudgetsAllTotal ? this.summaryBudgetsTotal[wp_id] / this.summaryBudgetsAllTotal * 100 : 0;
+        this.sammaryTotalConsolidated[wp_id] = this.summaryBudgetsAllTotal
+          ? (this.summaryBudgetsTotal[wp_id] / this.summaryBudgetsAllTotal) *
+            100
+          : 0;
       });
     });
     this.wpsTotalSum = 0;
@@ -544,16 +547,10 @@ export class SubmissionComponent implements OnInit {
 
     this.results = await this.submissionService.getToc(this.params.id);
 
-
-
     //(all melia)
     // const melia_data = await this.submissionService.getMeliaByInitiative(
     //   this.params.id
     // );
-
-
-
-
 
     this.ipsrs_data = await this.submissionService.getIpsrs();
     this.ipsr_value_data = await this.submissionService.getIpsrByInitiative(
@@ -566,7 +563,10 @@ export class SubmissionComponent implements OnInit {
       this.params.id
     );
 
-    this.wp_budgets = await this.submissionService.getWpBudgets(this.params.id,this.phase.id);
+    this.wp_budgets = await this.submissionService.getWpBudgets(
+      this.params.id,
+      this.phase.id
+    );
     // const indicators_data = this.results
     //   .filter(
     //     (d: any) =>
@@ -762,7 +762,7 @@ export class SubmissionComponent implements OnInit {
       }
       this.partnersData[partner.code].IPSR = this.partnersData[
         partner.code
-      ]?.IPSR?.filter((d: any) => d.value != null && d.value != '');
+      ]?.IPSR?.filter((d: any) => d.value != null && d.value != "");
       this.loading = false;
     }
 
@@ -792,9 +792,11 @@ export class SubmissionComponent implements OnInit {
       content: "Complete the PORB",
     });
 
-    const newIPSR = this.allData['IPSR'].filter((d:any) => d.value != '').sort((a:any,b:any) => + (a.ipsr.id - b.ipsr.id));
-    this.allData['IPSR'] = newIPSR;
-  } 
+    const newIPSR = this.allData["IPSR"]
+      .filter((d: any) => d.value != "")
+      .sort((a: any, b: any) => +(a.ipsr.id - b.ipsr.id));
+    this.allData["IPSR"] = newIPSR;
+  }
   savedValues: any = null;
   isCenter: boolean = false;
   selectedTabIndex: number = 0;
@@ -1056,7 +1058,7 @@ export class SubmissionComponent implements OnInit {
       });
   }
 
-  // addMelia(wp: any, cross: boolean) { 
+  // addMelia(wp: any, cross: boolean) {
   //   const dialogRef = this.dialog.open(MeliaComponent, {
   //     autoFocus: false,
   //     data: {
@@ -1075,13 +1077,12 @@ export class SubmissionComponent implements OnInit {
   //       this.toastrService.success("Added successfully");
   //     }
   //   });
-  // } 
+  // }
 
-  
   async setIPSR(wp_official_code: any) {
     const dialogRef = this.dialog.open(IpsrComponent, {
-      height: '70%',
-   autoFocus: false,
+      height: "70%",
+      autoFocus: false,
       data: {
         wp_id: wp_official_code,
         initiative_id: this.params.id,
@@ -1100,7 +1101,7 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-  // async editMelia(id: number, wp: any) { 
+  // async editMelia(id: number, wp: any) {
   //   const dialogRef = this.dialog.open(MeliaComponent, {
   //     height: '70%',
   //     autoFocus: false,
@@ -1119,8 +1120,8 @@ export class SubmissionComponent implements OnInit {
   //       this.toastrService.success("Edited successfully");
   //     }
   //   });
-  // } 
-  // async deleteMelia(id: number) { 
+  // }
+  // async deleteMelia(id: number) {
   //   this.dialog
   //     .open(DeleteConfirmDialogComponent, {
   //       data: {
@@ -1137,9 +1138,9 @@ export class SubmissionComponent implements OnInit {
   //         this.toastrService.success("Deleted successfully");
   //       }
   //     });
-  // } 
+  // }
 
-  viewData(data: any) { 
+  viewData(data: any) {
     this.dialog
       .open(ViewDataComponent, {
         maxWidth: "800px",
@@ -1147,7 +1148,7 @@ export class SubmissionComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {});
-  } 
+  }
 
   async submit() {
     let messages = "Are you sure you want to submit?";
@@ -1272,8 +1273,8 @@ export class SubmissionComponent implements OnInit {
     ) {
       valid = false;
       this.errors[partner_code][wp_id] =
-        'There is a work package with a budget not disaggregated';
-      message = 'There is a work package with a budget not disaggregated';
+        "There is a work package with a budget not disaggregated";
+      message = "There is a work package with a budget not disaggregated";
     } else if (
       wpChecked &&
       Math.round(this.totals[partner_code][wp_id]) != 100
@@ -1282,20 +1283,20 @@ export class SubmissionComponent implements OnInit {
       if (this.totals[partner_code][wp_id] > 100)
         this.toggleValues[partner_code][wp_id] = true;
       this.errors[partner_code][wp_id] =
-        'Subtotal percentage should equal 100%';
-      message = 'The subtotal of all percentages should equal 100%';
+        "Subtotal percentage should equal 100%";
+      message = "The subtotal of all percentages should equal 100%";
     } else if (
       this.totals[partner_code][wp_id] > 0 &&
       !+this.wp_budgets[partner_code][wp_id]
     ) {
       valid = false;
       this.errors[partner_code][wp_id] =
-        'There is a work package without a total budget assigned';
-      message = 'There is a work package without a total budget assigned';
+        "There is a work package without a total budget assigned";
+      message = "There is a work package without a total budget assigned";
     } else if (!valid) {
       this.errors[partner_code][wp_id] =
-        'There is a checked item(s) but not budgeted';
-      message = 'There is a checked item(s) but not budgeted';
+        "There is a checked item(s) but not budgeted";
+      message = "There is a checked item(s) but not budgeted";
     }
     return {
       valid: valid,
@@ -1303,10 +1304,13 @@ export class SubmissionComponent implements OnInit {
     };
   }
   async excel() {
-     await this.submissionService.excelCurrent(this.params.id);
+    await this.submissionService.excelCurrent(this.params.id);
   }
 
   async excelCenters() {
-    await this.submissionService.excelCurrentForCenter(this.params.id, this.organizationSelected)
+    await this.submissionService.excelCurrentForCenter(
+      this.params.id,
+      this.organizationSelected
+    );
   }
 }

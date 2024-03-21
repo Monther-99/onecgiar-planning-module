@@ -32,13 +32,13 @@
         </li>
         <li>
           <a
-          [routerLink]="[
-          '/',
-          'initiative',
-          initiativeId,
-          officalCode,
-          'submited-versions'
-        ]"
+            [routerLink]="[
+              '/',
+              'initiative',
+              initiativeId,
+              officalCode,
+              'submited-versions'
+            ]"
             class="risk-nav-link"
             >Submitted versions</a
           >
@@ -103,7 +103,6 @@
                         <mat-icon
                           class="icon-sub-table"
                           *ngIf="
-                          
                             perValuesSammary[wp.ost_wp.wp_official_code][
                               item.id
                             ] == true
@@ -181,10 +180,14 @@
                     >
                       <tr>
                         <td class="wp-title">
-                          <ng-container *ngIf="item?.initiativeMelia?.meliaType?.name">
+                          <ng-container
+                            *ngIf="item?.initiativeMelia?.meliaType?.name"
+                          >
                             {{ item?.initiativeMelia?.meliaType.name }}
                           </ng-container>
-                          <ng-container *ngIf="!item?.initiativeMelia?.meliaType?.name">
+                          <ng-container
+                            *ngIf="!item?.initiativeMelia?.meliaType?.name"
+                          >
                             {{
                               item?.ipsr?.id
                                 ? item?.ipsr.title + " (" + item.value + ")"
@@ -279,7 +282,7 @@
         </ng-container>
       </mat-tab>
       <mat-tab
-        *ngFor="let partner of partners"
+        *ngFor="let partner of partners | sort : 'asc' : 'acronym'"
         [label]="partner?.acronym ? partner?.acronym : partner?.name"
       >
         <ng-container *ngFor="let wp of wps">
@@ -332,10 +335,14 @@
                   >
                     <tr>
                       <td class="wp-title">
-                        <ng-container *ngIf="item?.initiativeMelia?.meliaType?.name">
+                        <ng-container
+                          *ngIf="item?.initiativeMelia?.meliaType?.name"
+                        >
                           {{ item?.initiativeMelia?.meliaType.name }}
                         </ng-container>
-                        <ng-container *ngIf="!item?.initiativeMelia?.meliaType?.name">
+                        <ng-container
+                          *ngIf="!item?.initiativeMelia?.meliaType?.name"
+                        >
                           {{
                             item?.ipsr?.id
                               ? item?.ipsr.title + " (" + item.value + ")"
