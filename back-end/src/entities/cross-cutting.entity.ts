@@ -1,4 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Result } from './result.entity';
 import { Initiative } from './initiative.entity';
 import { Submission } from './submission.entity';
@@ -15,13 +24,13 @@ export class CrossCutting {
   title: string;
 
   @ApiProperty()
-  @Column()
+  @Column('text', { nullable: true })
   description: string;
 
   @JoinColumn({ name: 'initiative_id' })
   @ManyToOne(() => Initiative, (initiative) => initiative.submissions)
   initiative: Initiative;
- 
+
   @ApiProperty()
   @Column()
   initiative_id: number;

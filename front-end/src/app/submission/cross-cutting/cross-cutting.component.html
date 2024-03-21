@@ -50,18 +50,16 @@
     <div class="form-dialog-content__field--grid-column">
       <div class="form-dialog-content__title-box">
         <mat-label class="form-dialog-content__title-box__title"
-          >Description<span class="star">*</span>
+          >Description
           <app-popover id="5"></app-popover>
         </mat-label>
       </div>
       <mat-form-field
         class="form-dialog-content__field"
         floatLabel="always"
-        hideRequiredMarker
         appearance="outline"
       >
         <textarea
-          required
           class="texta"
           cdkAutosizeMinRows="2"
           cdkAutosizeMaxRows="10"
@@ -69,11 +67,11 @@
           formControlName="description"
         >
         </textarea>
-        <mat-error
+        <!-- <mat-error
           class="error"
           *ngIf="crossForm.controls?.['description']?.errors?.['required']"
           >This field is mandatory</mat-error
-        >
+        > -->
       </mat-form-field>
     </div>
 
