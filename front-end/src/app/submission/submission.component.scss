@@ -6,6 +6,11 @@
   position: relative;
     bottom: -6px;
 }
+
+.init-status {
+  font-weight: bold;
+  color: #5569dd;
+}
 // td {
 //   text-align: center;
 // }
@@ -2813,7 +2818,7 @@ pre {
 
   color: #b9b9b9;
   text-decoration: none;
-  border-bottom: 1px solid currentColor;
+  border-bottom: 0px solid currentColor !important;
   padding-bottom: 15px;
   transition: all 0.3s;
 }

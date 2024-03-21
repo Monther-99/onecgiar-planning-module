@@ -202,7 +202,7 @@ export class InitiativesService {
     };
   }
 
-  findOne(id: number) {
+  findOne(id: number) { 
     return this.initiativeRepository.findOne({
       where: { id },
       relations: [
@@ -210,10 +210,11 @@ export class InitiativesService {
         'roles',
         'roles.organizations',
         'center_status',
+        'latest_submission',
       ],
       order: { id: 'desc' },
     });
-  }
+  } 
 
   async updateRoles(initiative_id, id, initiativeRoles: InitiativeRoles) {
     const found_roles = await this.iniRolesRepository.findOne({

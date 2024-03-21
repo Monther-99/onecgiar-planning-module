@@ -220,6 +220,14 @@
               </div>
 
               <div class="card-title-3 m-b-t">{{ this.phase.name }}</div>
+              <div class="init-status" *ngIf="initiative_data?.latest_submission?.status != 'Rejected'">
+                <span> PORB is</span>
+                <span class="text-s-c-linear">
+                  {{
+                    initiative_data.last_submitted_at != null && initiative_data.last_update_at == initiative_data.last_submitted_at ? initiative_data?.latest_submission ? initiative_data?.latest_submission?.status : "Draft" : "Draft"
+                  }}
+                </span>
+              </div>
             </form>
           </div>
         </mat-card>
@@ -802,6 +810,14 @@
               </div>
 
               <div class="card-title-3">{{ this.phase.name }}</div>
+              <div class="init-status" *ngIf="initiative_data?.latest_submission?.status != 'Rejected'">
+                <span> PORB is</span>
+                <span class="text-s-c-linear">
+                  {{
+                    initiative_data.last_submitted_at != null && initiative_data.last_update_at == initiative_data.last_submitted_at ? initiative_data?.latest_submission ? initiative_data?.latest_submission?.status : "Draft" : "Draft"
+                  }}
+                </span>
+              </div>
             </form>
           </div>
         </mat-card>
