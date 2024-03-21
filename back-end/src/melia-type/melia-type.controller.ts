@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createMeliaTypeReq } from 'DTO/melia-type.dto';
+import { createMeliaTypeReq } from 'src/DTO/melia-type.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 // import { InitiativeMelia } from 'src/entities/initiative-melia.entity';
 import { MeliaTypes } from 'src/entities/melia-types.entity';

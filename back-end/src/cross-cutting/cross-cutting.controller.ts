@@ -4,7 +4,7 @@ import { CrossCuttingService } from './cross-cutting.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CrossCutting } from 'src/entities/cross-cutting.entity';
-import { updateCrossCuttingReq } from 'DTO/cross-cutting.dto';
+import { updateCrossCuttingReq } from 'src/DTO/cross-cutting.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('cross-cutting')

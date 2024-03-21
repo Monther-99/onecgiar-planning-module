@@ -18,7 +18,7 @@ import { RolesGuard } from 'src/role/roles.guard';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
 import { Organization } from 'src/entities/organization.entity';
-import { getCountries, getCountriesRegions, getPartners, getPartnersreq, getRegions } from 'DTO/organizations.dto';
+import { getCountries, getCountriesRegions, getPartners, getPartnersreq, getRegions } from 'src/DTO/organizations.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('Organizations')

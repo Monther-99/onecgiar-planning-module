@@ -16,7 +16,7 @@ import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 // import { Melia } from 'src/entities/melia.entity';
-import { createInitiativeMeliaRes, createMeliaReq, createMeliaRes, findInitiative_id, findOne, getImportMeliaTypes, getInitiativeMeliaById, getInitiativeMelias, getMeliaTypes, updateInitiativeMeliaReq, updateInitiativeMeliaRes, updateMeliaReq, updateMeliaRes } from 'DTO/melia.dto';
+import { createInitiativeMeliaRes, createMeliaReq, createMeliaRes, findInitiative_id, findOne, getImportMeliaTypes, getInitiativeMeliaById, getInitiativeMelias, getMeliaTypes, updateInitiativeMeliaReq, updateInitiativeMeliaRes, updateMeliaReq, updateMeliaRes } from 'src/DTO/melia.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('melia')

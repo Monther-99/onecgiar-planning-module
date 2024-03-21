@@ -6,7 +6,7 @@ import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { Ipsr } from 'src/entities/ipsr.entity';
-import { updateIpsrReq } from 'DTO/ipsr.dto';
+import { updateIpsrReq } from 'src/DTO/ipsr.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('ipsr')

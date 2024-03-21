@@ -10,7 +10,7 @@ import { IpsrValueService } from './ipsr-value.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { IpsrValue } from 'src/entities/ipsr-value.entity';
-import { createIpsrValue, findInitiative_id } from 'DTO/ipsr-value.dto';
+import { createIpsrValue, findInitiative_id } from 'src/DTO/ipsr-value.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('ipsr-value')

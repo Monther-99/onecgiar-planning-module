@@ -23,7 +23,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/role/roles.guard';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
-import { createUserReq, createUserRes, deleteUserReq, exportUsers } from 'DTO/user.dto';
+import { createUserReq, createUserRes, deleteUserReq, exportUsers } from 'src/DTO/user.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()

@@ -36,7 +36,7 @@ import {
   updateCenterStatusReq,
   updateCenterStatusRes,
   updateStatus,
-} from 'DTO/submission.dto';
+} from 'src/DTO/submission.dto';
 @UseGuards(JwtAuthGuard)
 @ApiTags('submission')
 @Controller('submission')

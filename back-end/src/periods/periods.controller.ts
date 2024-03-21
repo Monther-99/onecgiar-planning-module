@@ -17,7 +17,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/role/roles.guard';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
-import { createPeriodReq, createPeriodRes, deletePeriodReq, findAll, findByPhaseId } from 'DTO/period.dto';
+import { createPeriodReq, createPeriodRes, deletePeriodReq, findAll, findByPhaseId } from 'src/DTO/period.dto';
 import { Period } from 'src/entities/period.entity';
 
 @UseGuards(JwtAuthGuard)

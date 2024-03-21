@@ -27,7 +27,7 @@ import {
   importInitiativeswp,
   updateRoleReq,
   updateRoleResponse,
-} from 'DTO/initiatives.dto';
+} from 'src/DTO/initiatives.dto';
 import { Initiative } from 'src/entities/initiative.entity';
 import { User } from 'src/entities/user.entity';
 import { SignedInUser } from 'src/user.decorator';
