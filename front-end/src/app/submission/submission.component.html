@@ -224,7 +224,7 @@
                 <span> PORB is</span>
                 <span class="text-s-c-linear">
                   {{
-                    initiative_data.last_submitted_at != null && initiative_data.last_update_at == initiative_data.last_submitted_at ? initiative_data?.latest_submission ? initiative_data?.latest_submission?.status : "Draft" : "Draft"
+                    initiative_data.last_submitted_at != null && initiative_data.last_update_at == initiative_data.last_submitted_at ? initiative_data?.latest_submission ? initiative_data?.latest_submission?.status == 'Pending' ? 'Submitted' :  initiative_data?.latest_submission?.status : "Draft" : "Draft"
                   }}
                 </span>
               </div>
