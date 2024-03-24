@@ -21,33 +21,24 @@
     <form [formGroup]="assignOrgsForm" class="form-dialog-content">
       <!-- //Organizations  filed----- -->
 
-
-
-
-
-
-
-
-
-
-
-
       <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
             >Organizations<span class="star">*</span></mat-label
           >
         </div>
-  
+
         <ng-select
-        appendTo="body"
+          appendTo="body"
           [items]="organizations"
           bindValue="code"
           appearance="outline"
           bindLabel="name"
           [multiple]="true"
+          [closeOnSelect]="false"
           formControlName="organizations"
-          placeholder="Organizations">
+          placeholder="Organizations"
+        >
           <ng-template ng-label-tmp let-item="item">
             <span>{{ item.acronym }}</span> - <span>{{ item.name }}</span>
           </ng-template>
@@ -55,11 +46,7 @@
             <span>{{ item.acronym }}</span> - <span>{{ item.name }}</span>
           </ng-template>
         </ng-select>
-  
-      
       </div>
-
-
 
       <!-- <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
