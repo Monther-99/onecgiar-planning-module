@@ -156,7 +156,7 @@ export class EmailService {
               break;
             case 7:
               // PORB completed
-              body += this.createBodyForPORBCompleted(organization, userRoleDoAction)
+              body += this.createBodyForPORBCompleted(init, organization, userRoleDoAction)
               break;
             case 8:
               // Collaborating Initiative for MELIA studies/activities
@@ -219,7 +219,7 @@ export class EmailService {
   createBodyForAdminsToBeValidated(init) {
     return `
     	<p style="font-weight: 200">
-        The PORB for Initiative ${init.official_code} is waiting for your approval.
+        The PORB for Initiative <span style="font-weight: bold;">${init.official_code}</span> is waiting for your approval.
       </p>
     `
   }
@@ -229,7 +229,7 @@ export class EmailService {
   createBodyForLeaderAndCoordinatorToBeValidated(init) {
     return `
     	<p style="font-weight: 200">
-        Initiative/Platform ${init.official_code} was submitted for approval
+        Initiative/Platform <span style="font-weight: bold;">${init.official_code}</span> was submitted for approval
       </p>
     `
   }
@@ -239,7 +239,7 @@ export class EmailService {
 
     let emailBody = `
     <p style="font-weight: 200">
-      The PORB for your Initiative ${init.official_code} of which you are ${roleAssigned} has been approved
+      The PORB for your Initiative <span style="font-weight: bold;">${init.official_code}</span> of which you are ${roleAssigned} has been approved
     </p>
     `
     if(statusReason)
@@ -256,7 +256,7 @@ export class EmailService {
   createBodyForRejectedSubmission(init, roleAssigned, statusReason) {
     let emailBody = `
     <p style="font-weight: 200">
-      The PORB for your Initiative ${init.official_code} of which you are ${roleAssigned} has been rejected
+      The PORB for your Initiative <span style="font-weight: bold;">${init.official_code}</span> of which you are ${roleAssigned} has been rejected
     </p>
     `
     if(statusReason)
@@ -272,17 +272,17 @@ export class EmailService {
 
 
 
-  createBodyForPORBCompleted(organization, userRoleDoAction) {
+  createBodyForPORBCompleted(init, organization, userRoleDoAction) {
     if(userRoleDoAction[0].user) {
       return `
     	<p style="font-weight: 200">
-        PORB ${organization.acronym} was completed by <span style="font-weight: bold;"> ${userRoleDoAction[0].role}</span> ${userRoleDoAction[0].user.full_name}
+        PORB ${organization.acronym} was <span style="font-weight: bold;">completed</span> by ${userRoleDoAction[0].role} ${userRoleDoAction[0].user.full_name} <span style="font-weight: bold;">${init.official_code}</span>
       </p>
     `
     } else {
       return `
     	<p style="font-weight: 200">
-        PORB ${organization.acronym} was completed by <span style="font-weight: bold;"> ${userRoleDoAction[0].role}</span> ${userRoleDoAction[0].full_name}
+        PORB ${organization.acronym} was <span style="font-weight: bold;">completed</span> by ${userRoleDoAction[0].role} ${userRoleDoAction[0].full_name} <span style="font-weight: bold;">${init.official_code}</span>
       </p>
     `
     } 
