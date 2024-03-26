@@ -46,6 +46,18 @@ export class PhasesController {
     return this.phasesService.assignOrganizations(data);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
+  @ApiBearerAuth()
+  @Get('toc-phases')
+  getTocPhases() {
+    try {
+      return this.phasesService.getTocPhases();
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
   @ApiBearerAuth()
   @ApiCreatedResponse({
     description: '',

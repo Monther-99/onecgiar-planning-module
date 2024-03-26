@@ -51,7 +51,7 @@ export class PhasesService {
   getTocPhases() {
     return firstValueFrom(
       this.http
-        .get("https://toc.loc.codeobia.com/api/phases")
+        .get(environment.api_url+"/phases/toc-phases")
         .pipe(map((d: any) => d.data))
     ).catch((e) => false);
   }

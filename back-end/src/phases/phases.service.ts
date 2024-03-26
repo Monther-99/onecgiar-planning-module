@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phase } from 'src/entities/phase.entity';
 import { ILike, In, Repository } from 'typeorm';
@@ -7,10 +7,14 @@ import { Initiative } from 'src/entities/initiative.entity';
 import { Organization } from 'src/entities/organization.entity';
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
 import { Period } from 'src/entities/period.entity';
+import { catchError, firstValueFrom, map } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
+import { AxiosError } from 'axios';
 
 @Injectable()
 export class PhasesService {
   constructor(
+    private readonly httpService: HttpService,
     @InjectRepository(Phase) private phaseRepository: Repository<Phase>,
     @InjectRepository(PhaseInitiativeOrganization)
     private phaseInitOrgRepo: Repository<PhaseInitiativeOrganization>,
@@ -190,5 +194,19 @@ export class PhasesService {
       newDate.getHours(),
       newDate.getMinutes() - newDate.getTimezoneOffset(),
     ).toISOString();
+  }
+
+  async getTocPhases() {
+    const tocPhases = await firstValueFrom(
+      this.httpService
+        .get(process.env.TOC_API + '/phases')
+        .pipe(
+          map((d: any) => d.data),
+          catchError((error: AxiosError) => {
+            throw new InternalServerErrorException();
+          }),
+        ),
+    );
+    return tocPhases
   }
 }
