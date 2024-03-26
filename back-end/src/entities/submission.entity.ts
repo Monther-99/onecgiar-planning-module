@@ -19,6 +19,7 @@ export enum SubmissionStatus {
   APPROVED = 'Approved',
   REJECTED = 'Rejected',
   PENDING = 'Pending',
+  DRAFT = 'Draft'
 }
 @Entity()
 export class Submission {

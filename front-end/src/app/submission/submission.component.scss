@@ -3010,3 +3010,34 @@ pre {
   justify-content: center;
   align-items: center;
 }
+
+
+
+
+
+.pendding-status-msg {
+  padding: 8px 0;
+  margin: auto;
+  color: #04030f;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 114.5%;
+}
+
+.approved-status-msg {
+  padding: 8px 0;
+  margin: auto;
+  color: #04030f;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 114.5%;
+
+  a {
+    text-decoration: none;
+    color: #5569dd;
+  }
+}

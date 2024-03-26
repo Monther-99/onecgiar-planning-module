@@ -10,7 +10,7 @@ import { Result } from 'src/entities/result.entity';
 import { WorkPackage } from 'src/entities/workPackage.entity';
 import { Organization } from 'src/entities/organization.entity';
 import { Period } from 'src/entities/period.entity';
-import { Submission } from 'src/entities/submission.entity';
+import { Submission, SubmissionStatus } from 'src/entities/submission.entity';
 import { User, userRole } from 'src/entities/user.entity';
 import { Phase } from 'src/entities/phase.entity';
 import { Initiative } from 'src/entities/initiative.entity';
@@ -2122,5 +2122,16 @@ export class SubmissionService {
       });
     this.sammaryCalc();
     this.allvalueChange();
+  }
+
+  async updateLatestSubmitionStatus(id, data) {
+    const submission = await this.submissionRepository.findOne({
+      where: {
+        id: id
+      }
+    });
+
+    submission.status = SubmissionStatus.DRAFT;
+    await this.submissionRepository.save(submission);
   }
 }

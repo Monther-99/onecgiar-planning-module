@@ -21,6 +21,8 @@
       mat-raised-button
       (click)="complete()"
       type="button"
+      [disabled]="isDisabled"
+      [ngClass]="isDisabled ? 'disabled' : 'btn'"
     >
       Mark as {{ status ? "" : "In" }}complete
     </button>

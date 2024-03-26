@@ -222,7 +222,7 @@ export class SubmissionComponent implements OnInit {
       !this.toggleSummaryValues[wp_official_code];
   }
 
-  toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
+  toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) { 
     this.values[partner_code][wp_official_code][item_id] = 0;
     this.displayValues[partner_code][wp_official_code][item_id] = 0;
     this.changeCalc(partner_code, wp_official_code, item_id, "percent");
@@ -804,7 +804,7 @@ export class SubmissionComponent implements OnInit {
   InitiativeUsers: any;
   leaders: any[] = [];
   organizationSelected: any = "";
-
+  initUser: any;
   async ngOnInit() {
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
@@ -825,6 +825,8 @@ export class SubmissionComponent implements OnInit {
     this.initiative_data = await this.submissionService.getInitiative(
       this.params.id
     );
+    this.initUser = this.InitiativeUsers.filter((d: any) => d?.user_id == this?.user?.id)[0];
+    this.getInitStatus(this.initiative_data)
     const roles = this.initiative_data.roles.filter(
       (d: any) => d.user_id == this.user.id
     );
@@ -893,6 +895,42 @@ export class SubmissionComponent implements OnInit {
       }
     });
     this.canSubmit = await this.constantsService.getSubmitStatus();
+  }
+
+  cancelLastSubmission() {
+    this.dialog
+      .open(DeleteConfirmDialogComponent, {
+        data: {
+          title: "Cancel submission",
+          message: `Are you sure you want to Cancel submission ?`,
+        },
+      })
+      .afterClosed()
+      .subscribe(async (dialogResult) => {
+        console.log(this.initiative_data)
+        if (dialogResult == true) {
+           await this.submissionService.cancelSubmission(this.initiative_data.latest_submission.id, {status: this.initiative_data.latest_submission.status})
+           await this.InitData();
+          this.toastrService.success("Cancel submission successfully");
+          this.router.navigate([
+            "initiative",
+            this.initiative_data.id,
+            this.initiative_data.official_code,
+            "submited-versions",
+          ]);
+        }
+      });
+  }
+
+  initStatus: string;
+  getInitStatus(init: any) {
+    this.initStatus = init.last_submitted_at != null &&
+    init.last_update_at == init.last_submitted_at
+      ? init?.latest_submission
+        ? init?.latest_submission?.status
+        : "Draft"
+      : "Draft"
+    console.log('soso',this.initStatus)
   }
 
   ngOnDestroy(): void {

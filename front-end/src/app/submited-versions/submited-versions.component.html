@@ -97,7 +97,7 @@
           <!-- actions -->
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
-            <td mat-cell *matCellDef="let row">
+            <td mat-cell *matCellDef="let row; first as isFirst">
               <div class="m">
                 <button
                   class="team-members-icon-table"
@@ -121,10 +121,10 @@
 
                 <button
                   class="team-members-icon-table"
-                  *ngIf="row.status == 'Pending' && user.role == 'admin'"
+                  *ngIf="(row.status == 'Pending' && user.role == 'admin') || (row.status == 'Approved' && user.role == 'admin' && isFirst)"
                   matTooltip="Change Status"
                   matTooltipPosition="above"
-                  (click)="changeStatus(row.id)"
+                  (click)="changeStatus(row)"
                 >
                   <mat-icon class="user-management-table__icon"
                     ><svg

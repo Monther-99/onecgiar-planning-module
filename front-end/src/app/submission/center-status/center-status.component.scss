@@ -414,6 +414,9 @@ mat-slide-toggle {
   animation-fill-mode: backwards;
 }
 
+.disabled {
+  opacity: 0.5;
+}
 // .popover {
 //   padding: 1rem 1rem 0rem 1rem;
 //   position: absolute !important;

@@ -19,9 +19,11 @@ export class StatusComponent implements OnInit {
   statuses = ["Pending", "Approved", "Rejected"];
   ngOnInit() {
     this.statusForm = this.fb.group({
-      status: ["Pending", Validators.required],
+      status: [this.data.status, Validators.required],
       status_reason: [null],
     });
+    if(this.data.status == 'Approved')
+      this.statuses = ["Approved", "Rejected"]
 
     this.statusForm.setValidators([
       this.reasonsValidator()

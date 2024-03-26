@@ -19,6 +19,7 @@ export class CenterStatusComponent implements OnInit {
   @Input('phase_id') phase_id: number;
   @Input('status') status: boolean;
   @Input('organization') organization: any;
+  @Input('isDisabled') isDisabled: any;
   @Output() change = new EventEmitter<any>();
   @Output() clicked = new EventEmitter<any>();
   @Input('socket') socket: AppSocket;

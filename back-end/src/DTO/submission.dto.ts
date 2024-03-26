@@ -289,6 +289,12 @@ export class updateCenterStatusRes {
 }
 
 
+export class updateLatestSubmitionStatus {
+  @ApiProperty()
+  status: string;
+}
+
+
 
 export class  save_result_values_req {
     @ApiProperty()

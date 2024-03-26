@@ -55,6 +55,12 @@ export class SubmissionService {
     saveAs(result, 'Planning.xlsx');
   }
 
+  async cancelSubmission(id: number, data: any) {
+    return firstValueFrom(
+      this.http.patch(environment.api_url+'/submission/cancellastsubmission/' + id, data).pipe(map((d: any) => d))
+    ).catch((e) => false);
+  }
+
 
   async getToc(id: any) {
     return firstValueFrom(

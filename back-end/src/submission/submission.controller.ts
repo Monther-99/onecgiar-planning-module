@@ -35,6 +35,7 @@ import {
   save_result_values_req,
   updateCenterStatusReq,
   updateCenterStatusRes,
+  updateLatestSubmitionStatus,
   updateStatus,
 } from 'src/DTO/submission.dto';
 @UseGuards(JwtAuthGuard)
@@ -62,6 +63,14 @@ export class SubmissionController {
   @ApiBearerAuth()
   updateCenterStatus(@Body() data, @Request() req) {
     return this.submissionService.updateCenterStatus(data, req.user);
+  }
+
+  @Patch('cancellastsubmission/:id')
+  @ApiBearerAuth()
+  @ApiBody({ type: updateLatestSubmitionStatus })
+  @ApiBearerAuth()
+  updateLatestSubmitionStatus(@Param('id') id, @Body() data) {
+    return this.submissionService.updateLatestSubmitionStatus(id, data)
   }
 
   @Post('save/:id')

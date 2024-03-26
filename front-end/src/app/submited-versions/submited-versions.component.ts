@@ -129,9 +129,9 @@ export class SubmitedVersionsComponent implements AfterViewInit {
     this.initData(this.allfilters);
   }
 
-  changeStatus(id: number) {
+  changeStatus(element: number) {
     const dialogRef = this.dialog.open(StatusComponent, {
-      data: { id },
+      data: element,
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
