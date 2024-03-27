@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   StreamableFile,
@@ -405,88 +406,97 @@ export class SubmissionService {
   }
 
   dataToPers(saved_data) {
-    let data = { perValues: {}, values: {}, no_budget: {} };
-    saved_data.forEach((result: Result) => {
-      if (!data.perValues[result.organization_code])
-        data.perValues[result.organization_code] = {};
-      if (
-        !data.perValues[result.organization_code][
-          result.workPackage.wp_official_code
-        ]
-      )
-        data.perValues[result.organization_code][
-          result.workPackage.wp_official_code
-        ] = {};
-
-      if (
-        !data.perValues[result.organization_code][
-          result.workPackage.wp_official_code
-        ][result.result_uuid]
-      )
-        data.perValues[result.organization_code][
-          result.workPackage.wp_official_code
-        ][result.result_uuid] = {};
-      result.values.forEach((d) => {
+    try {
+      let data = { perValues: {}, values: {}, no_budget: {} };
+      saved_data.forEach((result: Result) => {
+        if (!data.perValues[result?.organization_code])
+          data.perValues[result?.organization_code] = {};
         if (
-          data.perValues[result.organization_code][
-            result.workPackage.wp_official_code
-          ][result.result_uuid][d.period.id]
+          !data.perValues[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ]
         )
-          data.perValues[result.organization_code][
-            result.workPackage.wp_official_code
-          ][result.result_uuid][d.period.id] = {};
-        data.perValues[result.organization_code][
-          result.workPackage.wp_official_code
-        ][result.result_uuid][d.period.id] = d.value;
+          data.perValues[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ] = {};
+  
+        if (
+          !data.perValues[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ][result?.result_uuid]
+        )
+          data.perValues[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ][result?.result_uuid] = {};
+        result?.values.forEach((d) => {
+          if (
+            data.perValues[result?.organization_code][
+              result?.workPackage?.wp_official_code
+            ][result?.result_uuid][d.period.id]
+          )
+            data.perValues[result?.organization_code][
+              result?.workPackage?.wp_official_code
+            ][result?.result_uuid][d.period.id] = {};
+          data.perValues[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ][result?.result_uuid][d.period.id] = d.value;
+        });
+  
+        if (!data.values[result?.organization_code])
+          data.values[result?.organization_code] = {};
+        if (
+          !data.values[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ]
+        )
+          data.values[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ] = {};
+  
+        if (
+          !data.values[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ][result?.result_uuid]
+        )
+          data.values[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ][result?.result_uuid] = result?.value;
+  
+        if (!data.no_budget[result?.organization_code])
+          data.no_budget[result?.organization_code] = {};
+        if (
+          !data.no_budget[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ]
+        )
+          data.no_budget[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ] = {};
+        if (
+          !data.no_budget[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ][result?.result_uuid]
+        )
+          data.no_budget[result?.organization_code][
+            result?.workPackage?.wp_official_code
+          ][result?.result_uuid] = result?.no_budget;
       });
-
-      if (!data.values[result.organization_code])
-        data.values[result.organization_code] = {};
-      if (
-        !data.values[result.organization_code][
-          result.workPackage.wp_official_code
-        ]
-      )
-        data.values[result.organization_code][
-          result.workPackage.wp_official_code
-        ] = {};
-
-      if (
-        !data.values[result.organization_code][
-          result.workPackage.wp_official_code
-        ][result.result_uuid]
-      )
-        data.values[result.organization_code][
-          result.workPackage.wp_official_code
-        ][result.result_uuid] = result.value;
-
-      if (!data.no_budget[result.organization_code])
-        data.no_budget[result.organization_code] = {};
-      if (
-        !data.no_budget[result.organization_code][
-          result.workPackage.wp_official_code
-        ]
-      )
-        data.no_budget[result.organization_code][
-          result.workPackage.wp_official_code
-        ] = {};
-      if (
-        !data.no_budget[result.organization_code][
-          result.workPackage.wp_official_code
-        ][result.result_uuid]
-      )
-        data.no_budget[result.organization_code][
-          result.workPackage.wp_official_code
-        ][result.result_uuid] = result.no_budget;
-    });
-    return data;
+      return data;
+    } catch (error) {
+      console.error('error dataToPers', error);
+    }
   }
   async getSaved(id, phaseId) {
-    const saved_data = await this.resultRepository.find({
-      where: { initiative_id: id, submission_id: IsNull() , phase_id: phaseId},
-      relations: ['values', 'workPackage', 'values.period'],
-    });
-    return this.dataToPers(saved_data);
+    try {
+      const saved_data = await this.resultRepository.find({
+        where: { initiative_id: id, submission_id: IsNull() , phase_id: phaseId},
+        relations: ['values', 'workPackage', 'values.period'],
+      });
+      return this.dataToPers(saved_data);
+    } catch (error) {
+      console.error('error getSaved Data', error);
+      throw new BadRequestException('getSaved error');
+    }
   }
   async saveResultData(id, data: any) {
     const initiativeId = id;
