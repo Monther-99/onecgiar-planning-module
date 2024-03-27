@@ -202,7 +202,7 @@ export class InitiativesService {
     };
   }
 
-  findOne(id: number) { 
+  findOne(id: number) {
     return this.initiativeRepository.findOne({
       where: { id },
       relations: [
@@ -214,7 +214,7 @@ export class InitiativesService {
       ],
       order: { id: 'desc' },
     });
-  } 
+  }
 
   async updateRoles(initiative_id, id, initiativeRoles: InitiativeRoles) {
     const found_roles = await this.iniRolesRepository.findOne({
@@ -231,7 +231,7 @@ export class InitiativesService {
       });
       if (userRole) {
         throw new BadRequestException(
-          'User already exist as a team member for this initiative.',
+          'User already exists as a team member for this initiative.',
         );
       }
     }
@@ -258,7 +258,7 @@ export class InitiativesService {
     });
     if (userRole) {
       throw new BadRequestException(
-        'User already exist as a team member for this initiative.',
+        'User already exists as a team member for this initiative.',
       );
     }
 
@@ -330,7 +330,6 @@ export class InitiativesService {
 
   async idUserHavePermissionSeeChat(initiative_id: number, user: User) {
     try {
-
       if (user.role === userRole.ADMIN) return true;
       const result = await this.iniRolesRepository.findOne({
         where: {

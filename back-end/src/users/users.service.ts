@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, StreamableFile } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  StreamableFile,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Brackets, Not, Repository } from 'typeorm';
@@ -22,31 +26,33 @@ export class UsersService {
     } else return { id: 'ASC' };
   }
   async getUsers(query: any) {
-    const take = query.limit || 10
-    const skip=(Number(query.page)-1)*take;
+    const take = query.limit || 10;
+    const skip = (Number(query.page) - 1) * take;
     const result = this.userRepository.createQueryBuilder('user');
-    result.where(
-      new Brackets((qb) => {
-        qb.where('email LIKE :email', {
-          email: `%${query?.email || ''}%`,
-        })
-        .orWhere('full_name LIKE :full_name', { full_name: `%${query?.email || ''}%` })
-      }),
-    )
-    .orderBy(this.sort(query))
-    if(query.role) 
-      result.andWhere('role = :role', { role: query.role })
+    result
+      .where(
+        new Brackets((qb) => {
+          qb.where('email LIKE :email', {
+            email: `%${query?.email || ''}%`,
+          }).orWhere('full_name LIKE :full_name', {
+            full_name: `%${query?.email || ''}%`,
+          });
+        }),
+      )
+      .orderBy(this.sort(query));
+    if (query.role) result.andWhere('role = :role', { role: query.role });
     else
-      result.andWhere('role IS NOT NULL')
-    .skip(skip || 0)
-    .take(take || 10);
+      result
+        .andWhere('role IS NOT NULL')
+        .skip(skip || 0)
+        .take(take || 10);
 
     const finalResult = await result.getManyAndCount();
 
     return {
       result: finalResult[0],
-      count: finalResult[1]
-    }
+      count: finalResult[1],
+    };
   }
 
   findOneByEmail(email: string) {
@@ -56,14 +62,14 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const userExist = await this.userRepository.findOne({
       where: {
-        email: createUserDto.email
-      }
+        email: createUserDto.email,
+      },
     });
-    if(!userExist) {
+    if (!userExist) {
       const newUser = this.userRepository.create({ ...createUserDto });
       return this.userRepository.save(newUser);
     } else {
-      throw new BadRequestException('User already exist');
+      throw new BadRequestException('User already exists');
     }
   }
 
@@ -79,13 +85,13 @@ export class UsersService {
     const userExist = await this.userRepository.findOne({
       where: {
         id: Not(id),
-        email: updateUserDto.email
-      }
+        email: updateUserDto.email,
+      },
     });
-    if(!userExist) {
+    if (!userExist) {
       return this.userRepository.update({ id }, { ...updateUserDto });
     } else {
-      throw new BadRequestException('User already exist');
+      throw new BadRequestException('User already exists');
     }
   }
 
@@ -104,19 +110,19 @@ export class UsersService {
 
   async exportExcel(query: any) {
     const result = this.userRepository.createQueryBuilder('user');
-    result.where(
-      new Brackets((qb) => {
-        qb.where('email LIKE :email', {
-          email: `%${query?.email || ''}%`,
-        })
-        .orWhere('full_name LIKE :full_name', { full_name: `%${query?.email || ''}%` })
-      }),
-    )
-    .orderBy(this.sort(query))
-    if(query.role) 
-      result.andWhere('role = :role', { role: query.role })
-    else
-      result.andWhere('role IS NOT NULL')
+    result
+      .where(
+        new Brackets((qb) => {
+          qb.where('email LIKE :email', {
+            email: `%${query?.email || ''}%`,
+          }).orWhere('full_name LIKE :full_name', {
+            full_name: `%${query?.email || ''}%`,
+          });
+        }),
+      )
+      .orderBy(this.sort(query));
+    if (query.role) result.andWhere('role = :role', { role: query.role });
+    else result.andWhere('role IS NOT NULL');
 
     const finalResult = await result.getMany();
 
@@ -146,7 +152,6 @@ export class UsersService {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       disposition: `attachment; filename="${file_name}"`,
     });
-
   }
 
   getTemplateUser() {
@@ -159,7 +164,7 @@ export class UsersService {
   }
 
   userTemplate(template, element) {
-    template.ID = element?.id
+    template.ID = element?.id;
     template.Name = element?.full_name;
     template.Email = element?.email;
     template.Role = element?.role;
@@ -171,9 +176,8 @@ export class UsersService {
     users.forEach((element: any) => {
       const template = this.getTemplateUser();
       this.userTemplate(template, element);
-      finaldata.push(template)
+      finaldata.push(template);
     });
-    return  finaldata;
+    return finaldata;
   }
-
 }
