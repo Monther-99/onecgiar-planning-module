@@ -760,9 +760,10 @@ export class SubmissionComponent implements OnInit {
           });
         });
       }
-      this.partnersData[partner.code].IPSR = this.partnersData[
-        partner.code
-      ]?.IPSR?.filter((d: any) => d.value != null && d.value != "");
+      if(this.partnersData[partner.code]?.IPSR)
+        this.partnersData[partner.code].IPSR = this.partnersData[ 
+          partner.code
+        ]?.IPSR?.filter((d: any) => d.value != null && d.value != "");
       this.loading = false;
     }
 
