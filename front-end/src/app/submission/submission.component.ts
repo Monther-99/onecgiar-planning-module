@@ -222,7 +222,7 @@ export class SubmissionComponent implements OnInit {
       !this.toggleSummaryValues[wp_official_code];
   }
 
-  toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) { 
+  toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
     this.values[partner_code][wp_official_code][item_id] = 0;
     this.displayValues[partner_code][wp_official_code][item_id] = 0;
     this.changeCalc(partner_code, wp_official_code, item_id, "percent");
@@ -760,8 +760,8 @@ export class SubmissionComponent implements OnInit {
           });
         });
       }
-      if(this.partnersData[partner.code]?.IPSR)
-        this.partnersData[partner.code].IPSR = this.partnersData[ 
+      if (this.partnersData[partner.code]?.IPSR)
+        this.partnersData[partner.code].IPSR = this.partnersData[
           partner.code
         ]?.IPSR?.filter((d: any) => d.value != null && d.value != "");
       this.loading = false;
@@ -826,8 +826,10 @@ export class SubmissionComponent implements OnInit {
     this.initiative_data = await this.submissionService.getInitiative(
       this.params.id
     );
-    this.initUser = this.InitiativeUsers.filter((d: any) => d?.user_id == this?.user?.id)[0];
-    this.getInitStatus(this.initiative_data)
+    this.initUser = this.InitiativeUsers.filter(
+      (d: any) => d?.user_id == this?.user?.id
+    )[0];
+    this.getInitStatus(this.initiative_data);
     const roles = this.initiative_data.roles.filter(
       (d: any) => d.user_id == this.user.id
     );
@@ -908,11 +910,14 @@ export class SubmissionComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(async (dialogResult) => {
-        console.log(this.initiative_data)
+        console.log(this.initiative_data);
         if (dialogResult == true) {
-           await this.submissionService.cancelSubmission(this.initiative_data.latest_submission.id, {status: this.initiative_data.latest_submission.status})
-           await this.InitData();
-          this.toastrService.success("Cancel submission successfully");
+          await this.submissionService.cancelSubmission(
+            this.initiative_data.latest_submission.id,
+            { status: this.initiative_data.latest_submission.status }
+          );
+          await this.InitData();
+          this.toastrService.success("Submission is canceled");
           this.router.navigate([
             "initiative",
             this.initiative_data.id,
@@ -925,12 +930,13 @@ export class SubmissionComponent implements OnInit {
 
   initStatus: string;
   getInitStatus(init: any) {
-    this.initStatus = init.last_submitted_at != null &&
-    init.last_update_at == init.last_submitted_at
-      ? init?.latest_submission
-        ? init?.latest_submission?.status
-        : "Draft"
-      : "Draft"
+    this.initStatus =
+      init.last_submitted_at != null &&
+      init.last_update_at == init.last_submitted_at
+        ? init?.latest_submission
+          ? init?.latest_submission?.status
+          : "Draft"
+        : "Draft";
   }
 
   ngOnDestroy(): void {
