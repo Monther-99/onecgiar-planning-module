@@ -930,7 +930,6 @@ export class SubmissionComponent implements OnInit {
         ? init?.latest_submission?.status
         : "Draft"
       : "Draft"
-    console.log('soso',this.initStatus)
   }
 
   ngOnDestroy(): void {

@@ -432,14 +432,14 @@ export class SubmissionService {
           if (
             data.perValues[result?.organization_code][
               result?.workPackage?.wp_official_code
-            ][result?.result_uuid][d.period.id]
+            ][result?.result_uuid][d?.period?.id]
           )
             data.perValues[result?.organization_code][
               result?.workPackage?.wp_official_code
-            ][result?.result_uuid][d.period.id] = {};
+            ][result?.result_uuid][d.period?.id] = {};
           data.perValues[result?.organization_code][
             result?.workPackage?.wp_official_code
-          ][result?.result_uuid][d.period.id] = d.value;
+          ][result?.result_uuid][d.period?.id] = d.value;
         });
   
         if (!data.values[result?.organization_code])
