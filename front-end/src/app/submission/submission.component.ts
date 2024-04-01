@@ -545,7 +545,7 @@ export class SubmissionComponent implements OnInit {
     this.centerHasError = {};
     this.itemHasError = {};
 
-    this.results = await this.submissionService.getToc(this.params.id);
+
 
     //(all melia)
     // const melia_data = await this.submissionService.getMeliaByInitiative(
@@ -556,8 +556,40 @@ export class SubmissionComponent implements OnInit {
     this.ipsr_value_data = await this.submissionService.getIpsrByInitiative(
       this.initiative_data.id
     );
+    this.ipsr_value_data.map((d: any) => {
+      d["category"] = "IPSR";
+      d["wp_id"] = "IPSR";
+      return d;
+    });
     const cross_data = await this.submissionService.getCrossByInitiative(
       this.params.id
+    );
+    cross_data.map((d: any) => {
+      d["category"] = "Cross Cutting";
+      d["wp_id"] = "CROSS";
+      return d;
+    });
+
+    await this.submissionService.getToc(this.params.id).then(
+      (data) => {
+        this.results = data;
+        this.results = [
+          ...cross_data,
+          // ...melia_data,
+          ...this.ipsr_value_data,
+          ...this.results,
+          // ...indicators_data,
+        ];
+      },
+      (error) => {
+        this.results = [
+          ...cross_data,
+          // ...melia_data,
+          ...this.ipsr_value_data,
+          // ...this.results,
+          // ...indicators_data,
+        ];
+      }
     );
     this.initiative_data = await this.submissionService.getInitiative(
       this.params.id
@@ -584,27 +616,12 @@ export class SubmissionComponent implements OnInit {
     //     });
     //   })
     //   .flat(1);
-    cross_data.map((d: any) => {
-      d["category"] = "Cross Cutting";
-      d["wp_id"] = "CROSS";
-      return d;
-    });
+   
     // melia_data.map((d: any) => {
     //   d["category"] = "MELIA";
     //   return d;
     // });
-    this.ipsr_value_data.map((d: any) => {
-      d["category"] = "IPSR";
-      d["wp_id"] = "IPSR";
-      return d;
-    });
-    this.results = [
-      ...cross_data,
-      // ...melia_data,
-      ...this.ipsr_value_data,
-      ...this.results,
-      // ...indicators_data,
-    ];
+
     this.wps = this.results
       .filter((d: any) => {
         if (d.category == "WP")

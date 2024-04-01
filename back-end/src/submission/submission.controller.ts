@@ -188,7 +188,7 @@ export class SubmissionController {
 
     return await firstValueFrom(
       this.httpService
-        .get(process.env.TOC_API + '/toc/' + tocs[0].related_flow_id)
+        .get(process.env.TOC_API + '/toc/' + tocs[0]?.related_flow_id)
         .pipe(
           map((d: any) =>
             d.data.data.filter(
@@ -197,7 +197,7 @@ export class SubmissionController {
                   d.category == 'OUTPUT' ||
                   d.category == 'EOI' ||
                   d.category == 'OUTCOME') &&
-                  d.flow_id == tocs[0].related_flow_id,
+                  d.flow_id == tocs[0]?.related_flow_id,
             ),
           ),
           catchError((error: AxiosError) => {

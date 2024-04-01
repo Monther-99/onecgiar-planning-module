@@ -65,7 +65,7 @@ export class SubmissionService {
   async getToc(id: any) {
     return firstValueFrom(
       this.http.get(environment.api_url+'/submission/toc/' + id).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 
   async getSubmissionsByInitiativeId(id: number, filters: any = null, page: any = null, limit: any = null, withFilters: boolean) {
