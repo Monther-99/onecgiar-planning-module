@@ -116,7 +116,7 @@ export class SubmissionComponent implements OnInit {
       return this.totals[code][id];
   }
   timeCalc: any;
-  async changeCalc(partner_code: any, wp_id: any, item_id: any, type: string) {
+  async changeCalc(partner_code: any, wp_id: any, item_id: any, type: string) { 
     if (this.timeCalc) clearTimeout(this.timeCalc);
     this.timeCalc = setTimeout(async () => {
       let percentValue;
@@ -171,7 +171,10 @@ export class SubmissionComponent implements OnInit {
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
     }, 1000);
-
+    this.initiative_data = await this.submissionService.getInitiative(
+      this.params.id
+    );
+    this.getInitStatus(this.initiative_data);
     // localStorage.setItem('initiatives', JSON.stringify(this.values));
   }
 
@@ -197,6 +200,10 @@ export class SubmissionComponent implements OnInit {
         });
       this.sammaryCalc();
       this.validateCenter(partner_code, false);
+      this.initiative_data = await this.submissionService.getInitiative(
+        this.params.id
+      );
+      this.getInitStatus(this.initiative_data);
     }, 1000);
   }
 
@@ -222,10 +229,14 @@ export class SubmissionComponent implements OnInit {
       !this.toggleSummaryValues[wp_official_code];
   }
 
-  toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
+  async toggleNoValues(partner_code: any, wp_official_code: any, item_id: any) {
     this.values[partner_code][wp_official_code][item_id] = 0;
     this.displayValues[partner_code][wp_official_code][item_id] = 0;
     this.changeCalc(partner_code, wp_official_code, item_id, "percent");
+    this.initiative_data = await this.submissionService.getInitiative(
+      this.params.id
+    );
+    this.getInitStatus(this.initiative_data);
   }
 
   refreshValues(partner_code: any, wp_id: any) {
@@ -368,6 +379,10 @@ export class SubmissionComponent implements OnInit {
         per_id,
         value: event.checked,
       });
+      this.initiative_data = await this.submissionService.getInitiative(
+        this.params.id
+      );
+      this.getInitStatus(this.initiative_data);
   }
   wpsTotalSum = 0;
   sammaryCalc() {
