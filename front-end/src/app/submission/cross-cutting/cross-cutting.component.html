@@ -36,7 +36,7 @@
         hideRequiredMarker
         appearance="outline"
       >
-        <input matInput formControlName="title" />
+        <textarea matInput formControlName="title" class="texta"></textarea>
         <mat-error
           class="error"
           *ngIf="crossForm.controls?.['title']?.errors?.['required']"
