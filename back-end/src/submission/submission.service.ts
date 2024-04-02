@@ -147,14 +147,14 @@ export class SubmissionService {
           },
           relations : ['initiative', 'initiative.roles', 'initiative.roles.user']
         });
-        
-        for(let role of submission.initiative?.roles) {
-          if(data.status == 'Approved') {
-            this.emailService.sendEmailTobyVarabel(role.user, 5, submission.initiative, role.role, data.status_reason, null, null, null, null)
-          } else if(data.status == 'Rejected') {
-            this.emailService.sendEmailTobyVarabel(role.user, 6, submission.initiative, role.role, data.status_reason, null, null, null, null)
+        if(submission)
+          for(let role of submission.initiative?.roles) {
+            if(data.status == 'Approved') {
+              this.emailService.sendEmailTobyVarabel(role.user, 5, submission.initiative, role.role, data.status_reason, null, null, null, null)
+            } else if(data.status == 'Rejected') {
+              this.emailService.sendEmailTobyVarabel(role.user, 6, submission.initiative, role.role, data.status_reason, null, null, null, null)
+            }
           }
-        }
         return true
       }, (error) => {
         console.error(error)
@@ -389,17 +389,23 @@ export class SubmissionService {
       relations: ['roles', 'roles.user']
       })
 
+      //if (Leader && Coordinator) not exist
+      const initAdmin = await this.initiativeRepository.findOne({where : {
+        id : initiative_id,
+      },
+      })
+
       // users (Leader && Coordinator)
-      const users = init.roles.map(d => d.user);
+      const users = init?.roles.map(d => d.user);
 
       for(let admin of admins) {
-        this.emailService.sendEmailTobyVarabel(admin, 3, init, null, null, null, null, null, null)
+        this.emailService.sendEmailTobyVarabel(admin, 3, initAdmin, null, null, null, null, null, null)
       }
 
-
-      for(let user of users) {
-        this.emailService.sendEmailTobyVarabel(user, 4, init, null, null, null, null, null, null)
-      }
+      if(users)
+        for(let user of users) {
+          this.emailService.sendEmailTobyVarabel(user, 4, init, null, null, null, null, null, null)
+        }
 
     } 
     return data
