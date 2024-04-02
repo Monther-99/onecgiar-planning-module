@@ -161,7 +161,7 @@ export class SubmissionController {
   }
 
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(1.8e+6)
+  @CacheTTL(2000000)
   @ApiBearerAuth()
   @ApiCreatedResponse({
     description: '',
