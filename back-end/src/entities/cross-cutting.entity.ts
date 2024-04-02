@@ -20,11 +20,11 @@ export class CrossCutting {
   id: string;
 
   @ApiProperty()
-  @Column('longtext')
+  @Column('longtext', { nullable: true })
   title: string;
 
   @ApiProperty()
-  @Column('longtext')
+  @Column('longtext', { nullable: true })
   description: string;
 
   @JoinColumn({ name: 'initiative_id' })
