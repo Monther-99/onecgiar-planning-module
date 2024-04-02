@@ -832,7 +832,7 @@ export class SubmissionComponent implements OnInit {
 
 
     //sort (Cross Cutting)
-    const newCROSS = this.allData["CROSS"].filter((d: any) => d.category == "Cross Cutting").sort((a: any, b: any) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
+    const newCROSS = this.allData["CROSS"].filter((d: any) => d.category == "Cross Cutting").sort((a: any, b: any) => b?.title?.toLowerCase().localeCompare(a?.title?.toLowerCase()));
 
     this.allData["CROSS"] = this.allData["CROSS"].filter((d: any) => d.category != "Cross Cutting")
 
@@ -1237,7 +1237,7 @@ export class SubmissionComponent implements OnInit {
 
   async submit() {
     let messages = "Are you sure you want to submit?";
-    let incompleteCenters = this.incompleteCenters();
+    let incompleteCenters = this.incompleteCenters().sort();
     if (incompleteCenters.length) {
       messages = incompleteCenters.length > 1 ? "Centers" : "Center(s)";
       messages += "  are incomplete:";
