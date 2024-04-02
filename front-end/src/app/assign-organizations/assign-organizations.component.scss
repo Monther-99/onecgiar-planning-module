@@ -214,8 +214,8 @@
   flex-shrink: 0;
   display: inline-block;
   position: relative;
-  top: -0.1rem;
-  left: 0.5rem;
+  top: -0.001rem;
+  left: 0.2rem;
 }
 
 .create-risk-2 {
@@ -323,8 +323,6 @@
   animation: moveInBottom 0.5s ease-out 0.85s;
   animation-fill-mode: backwards;
 }
-
-
 
 .ng-select-option-flex {
   display: flex;
@@ -509,9 +507,6 @@
   }
 }
 
-
-
-
 .select-text::-webkit-scrollbar {
   width: 0.8rem;
   padding: 0.5rem !important;
@@ -555,9 +550,6 @@
   }
 }
 
-
-
-
 .ng-select-option-flex {
   display: flex;
   justify-content: space-between;
@@ -572,12 +564,7 @@
   line-height: 114.5%; /* 1.374rem */
 }
 
-
-
-
-
-
-:host{
+:host {
   ::ng-deep.ng-select .ng-select-container {
     cursor: default;
     display: flex;
@@ -586,33 +573,28 @@
     position: relative;
     width: 100%;
     gap: 1.1rem !important;
-}
-}
-
-
-
-  ::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-    box-sizing: border-box;
-    cursor: pointer;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 0.5rem !important;
+  }
 }
 
+::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.5rem !important;
+}
 
-
-:host{
+:host {
   ::ng-deep.ng-select .ng-select-container.ng-appearance-outline {
     padding: 1rem 0.5em;
-   
+
     width: 57.8rem;
-   
+
     position: relative !important;
     background-color: none !important;
-   
-  
+
     border: 2px solid #8080804c !important;
     border-radius: 1rem !important;
   }

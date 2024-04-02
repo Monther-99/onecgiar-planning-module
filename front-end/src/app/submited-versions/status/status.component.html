@@ -68,17 +68,15 @@
         >
       </div>
       <app-editor
-      [form]="statusForm"
-      [controller]="'status_reason'"
-      [showToolbar]="true"
-      [withoutUpload]="true"
-      [placeholder]="'Ex. It should have...'"
-    ></app-editor>
-    <mat-error
-    class="error"
-    *ngIf="statusForm?.errors?.['reasonsRequired']"
-    >This field is mandatory</mat-error
-  >
+        [form]="statusForm"
+        [controller]="'status_reason'"
+        [showToolbar]="true"
+        [withoutUpload]="true"
+        [placeholder]="'Ex. It should have...'"
+      ></app-editor>
+      <mat-error class="error" *ngIf="statusForm?.errors?.['reasonsRequired']"
+        >This field is mandatory</mat-error
+      >
       <!-- <mat-form-field
         class="form-dialog-content__field"
         floatLabel="always"
@@ -110,7 +108,7 @@
         <div class="form-dialog-conten__button-box m-t" align="end">
           <div class="risk-report-button-box">
             <button
-              class="risk-report-button-box__btn btn--animated btn--chestnut btn"
+              class="risk-report-button-box__btn btn--chestnut"
               type="submit"
               mat-raised-button
               mat-button

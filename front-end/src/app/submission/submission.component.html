@@ -135,7 +135,7 @@
               <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  class="risk-report-button-box__btn btn--white"
                   mat-raised-button
                   (click)="excel()"
                 >
@@ -159,7 +159,7 @@
               <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  class="risk-report-button-box__btn btn--white"
                   mat-raised-button
                   routerLink="/initiative/{{ initiative_data.id }}/{{
                     initiative_data.official_code
@@ -173,7 +173,7 @@
               <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  class="risk-report-button-box__btn btn--white"
                   mat-raised-button
                   routerLink="/initiative/{{ initiative_data.id }}/{{
                     initiative_data.official_code
@@ -197,8 +197,12 @@
               <!-- btn-4 -->
               <div class="risk-report-button-box">
                 <button
-                  *ngIf="!this.isCenter && (initStatus != 'Pending' && initStatus != 'Approved')"
-                  class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
+                  *ngIf="
+                    !this.isCenter &&
+                    initStatus != 'Pending' &&
+                    initStatus != 'Approved'
+                  "
+                  class="risk-report-button-box__btn--4 btn--white-2"
                   mat-raised-button
                   (click)="submit()"
                   [disabled]="canSubmit.value == 0"
@@ -208,13 +212,18 @@
                 </button>
 
                 <button
-                    *ngIf="!this.isCenter && initStatus == 'Pending'"
-                    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
-                    mat-raised-button
-                    (click)="cancelLastSubmission()"
-                    [disabled]="initUser?.role == 'Contributor' && user?.role == 'user'"
-                    [ngClass]="{ disabled: initUser?.role == 'Contributor' && user?.role == 'user' }"
-                  >
+                  *ngIf="!this.isCenter && initStatus == 'Pending'"
+                  class="risk-report-button-box__btn--4 btn--white-2"
+                  mat-raised-button
+                  (click)="cancelLastSubmission()"
+                  [disabled]="
+                    initUser?.role == 'Contributor' && user?.role == 'user'
+                  "
+                  [ngClass]="{
+                    disabled:
+                      initUser?.role == 'Contributor' && user?.role == 'user'
+                  }"
+                >
                   Cancel Submission
                 </button>
               </div>
@@ -231,9 +240,7 @@
               </div>
 
               <div class="card-title-3 m-b-t">{{ this.phase.name }}</div>
-              <div
-                class="init-status"
-              >
+              <div class="init-status">
                 <span> PORB is</span>
                 <span class="text-s-c-linear">
                   {{
@@ -252,9 +259,18 @@
               </div>
             </form>
           </div>
-          <div class="approved-status-msg" *ngIf="initStatus == 'Approved' && (initUser?.role == 'Coordinator' || initUser?.role == 'Leader')">
-            Please contact admin (PCU) if you would like to make any changes to the approved PORB 
-            <a href="mailto:projectcoordinationunit@cgiar.org">projectcoordinationunit@cgiar.org</a>
+          <div
+            class="approved-status-msg"
+            *ngIf="
+              initStatus == 'Approved' &&
+              (initUser?.role == 'Coordinator' || initUser?.role == 'Leader')
+            "
+          >
+            Please contact admin (PCU) if you would like to make any changes to
+            the approved PORB
+            <a href="mailto:projectcoordinationunit@cgiar.org"
+              >projectcoordinationunit@cgiar.org</a
+            >
           </div>
         </mat-card>
 
@@ -380,13 +396,18 @@
                 <!-- btn-2 -->
                 <div class="risk-report-button-box">
                   <button
-                    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
+                    class="risk-report-button-box__btn--4 btn--white-2"
                     mat-raised-button
                     *ngIf="wp.id == 'IPSR'"
                     type="button"
                     (click)="setIPSR(wp.ost_wp.wp_official_code)"
-                    [disabled]="initStatus == 'Pending' || initStatus == 'Approved'"
-                    [ngClass]="{ disabled: initStatus == 'Pending' || initStatus == 'Approved' }"
+                    [disabled]="
+                      initStatus == 'Pending' || initStatus == 'Approved'
+                    "
+                    [ngClass]="{
+                      disabled:
+                        initStatus == 'Pending' || initStatus == 'Approved'
+                    }"
                   >
                     <mat-icon class="create-risk">settings</mat-icon> IPSR
                   </button>
@@ -421,13 +442,18 @@
                 <!-- btn-3 -->
                 <div class="risk-report-button-box">
                   <button
-                    class="risk-report-button-box__btn--4 btn--animated btn--white-2 btn"
+                    class="risk-report-button-box__btn--4 btn--white-2"
                     mat-raised-button
                     *ngIf="wp.id == 'CROSS'"
                     type="button"
                     (click)="addCross()"
-                    [disabled]="initStatus == 'Pending' || initStatus == 'Approved'"
-                    [ngClass]="{ disabled: initStatus == 'Pending' || initStatus == 'Approved'}"
+                    [disabled]="
+                      initStatus == 'Pending' || initStatus == 'Approved'
+                    "
+                    [ngClass]="{
+                      disabled:
+                        initStatus == 'Pending' || initStatus == 'Approved'
+                    }"
                   >
                     <mat-icon class="create-risk">
                       <svg
@@ -499,10 +525,21 @@
                               </button>
                             </mat-menu>
                           </ng-container> -->
-                          <ng-container *ngIf="item.category == 'Cross Cutting'">
-                            <button mat-icon-button [matMenuTriggerFor]="menu"
-                              [disabled]="initStatus == 'Pending' || initStatus == 'Approved'"
-                              [ngClass]="{ disabled: initStatus == 'Pending' || initStatus == 'Approved' }"
+                          <ng-container
+                            *ngIf="item.category == 'Cross Cutting'"
+                          >
+                            <button
+                              mat-icon-button
+                              [matMenuTriggerFor]="menu"
+                              [disabled]="
+                                initStatus == 'Pending' ||
+                                initStatus == 'Approved'
+                              "
+                              [ngClass]="{
+                                disabled:
+                                  initStatus == 'Pending' ||
+                                  initStatus == 'Approved'
+                              }"
                             >
                               <mat-icon class="icon-sub-table-2"
                                 >more_vert</mat-icon
@@ -770,7 +807,7 @@
               <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  class="risk-report-button-box__btn btn--white"
                   mat-raised-button
                   (click)="excelCenters()"
                 >
@@ -781,7 +818,7 @@
               <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  class="risk-report-button-box__btn btn--white"
                   mat-raised-button
                   routerLink="/initiative/{{ initiative_data.id }}/{{
                     initiative_data.official_code
@@ -795,7 +832,7 @@
               <div class="risk-report-button-box">
                 <button
                   *ngIf="!this.isCenter"
-                  class="risk-report-button-box__btn btn--animated btn--white btn"
+                  class="risk-report-button-box__btn btn--white"
                   mat-raised-button
                   routerLink="/initiative/{{ initiative_data.id }}/{{
                     initiative_data.official_code
@@ -845,26 +882,48 @@
               </div>
 
               <div class="card-title-3">{{ this.phase.name }}</div>
-              <div
-                class="init-status"
-              >
+              <div class="init-status">
                 <span> PORB is</span>
                 <span class="text-s-c-linear">
                   {{
-                    initiative_data.last_submitted_at != null && initiative_data.last_update_at == initiative_data.last_submitted_at ? initiative_data?.latest_submission ? initiative_data?.latest_submission?.status == 'Pending' ? 'Submitted' :  initiative_data?.latest_submission?.status : "Draft" : "Draft"
+                    initiative_data.last_submitted_at != null &&
+                    initiative_data.last_update_at ==
+                      initiative_data.last_submitted_at
+                      ? initiative_data?.latest_submission
+                        ? initiative_data?.latest_submission?.status ==
+                          "Pending"
+                          ? "Submitted"
+                          : initiative_data?.latest_submission?.status
+                        : "Draft"
+                      : "Draft"
                   }}
                 </span>
               </div>
             </form>
           </div>
-          <div class="pendding-status-msg" *ngIf="(initStatus == 'Pending' || initStatus == 'Approved') && initUser?.role == 'Contributor'">
-            Please contact Initiative lead or coordinator if you would like to make any changes to the submitted PORB
+          <div
+            class="pendding-status-msg"
+            *ngIf="
+              (initStatus == 'Pending' || initStatus == 'Approved') &&
+              initUser?.role == 'Contributor'
+            "
+          >
+            Please contact Initiative lead or coordinator if you would like to
+            make any changes to the submitted PORB
           </div>
-          <div class="approved-status-msg" *ngIf="initStatus == 'Approved' && (initUser?.role == 'Coordinator' || initUser?.role == 'Leader')">
-            Please contact admin (PCU) if you would like to make any changes to the approved PORB 
-            <a href="mailto:projectcoordinationunit@cgiar.org">projectcoordinationunit@cgiar.org</a>
+          <div
+            class="approved-status-msg"
+            *ngIf="
+              initStatus == 'Approved' &&
+              (initUser?.role == 'Coordinator' || initUser?.role == 'Leader')
+            "
+          >
+            Please contact admin (PCU) if you would like to make any changes to
+            the approved PORB
+            <a href="mailto:projectcoordinationunit@cgiar.org"
+              >projectcoordinationunit@cgiar.org</a
+            >
           </div>
-
         </mat-card>
 
         <ng-container *ngFor="let wp of wps; first as isFirst; last as isLast">
@@ -953,7 +1012,11 @@
                       <ng-container *ngFor="let per of period">
                         <td>
                           <mat-checkbox
-                            [disabled]="partnersStatus[partner.code] || initStatus == 'Pending' || initStatus == 'Approved'"
+                            [disabled]="
+                              partnersStatus[partner.code] ||
+                              initStatus == 'Pending' ||
+                              initStatus == 'Approved'
+                            "
                             [(ngModel)]="
                               perValues[partner.code][
                                 wp.ost_wp.wp_official_code
@@ -999,8 +1062,8 @@
                                   wp.ost_wp.wp_official_code
                                 ][item.id] ||
                                 partnersStatus[partner.code] ||
-                                  initStatus == 'Pending' ||
-                                  initStatus == 'Approved'
+                                initStatus == 'Pending' ||
+                                initStatus == 'Approved'
                               "
                               (keyup)="
                                 changeCalc(
@@ -1031,8 +1094,8 @@
                                   wp.ost_wp.wp_official_code
                                 ][item.id] ||
                                 partnersStatus[partner.code] ||
-                                  initStatus == 'Pending' ||
-                                  initStatus == 'Approved'
+                                initStatus == 'Pending' ||
+                                initStatus == 'Approved'
                               "
                               (keyup)="
                                 changeCalc(
@@ -1135,7 +1198,11 @@
                               You can mark this result as no budget assigned
                               <span>
                                 <mat-checkbox
-                                  [disabled]="partnersStatus[partner.code] || initStatus == 'Pending' || initStatus == 'Approved'"
+                                  [disabled]="
+                                    partnersStatus[partner.code] ||
+                                    initStatus == 'Pending' ||
+                                    initStatus == 'Approved'
+                                  "
                                   [(ngModel)]="
                                     noValuesAssigned[partner.code][
                                       wp.ost_wp.wp_official_code
@@ -1183,9 +1250,9 @@
                               noValuesAssigned[partner.code][
                                 wp.ost_wp.wp_official_code
                               ][item.id] ||
-                              partnersStatus[partner.code] || 
-                                  initStatus == 'Pending' ||
-                                  initStatus == 'Approved'
+                              partnersStatus[partner.code] ||
+                              initStatus == 'Pending' ||
+                              initStatus == 'Approved'
                             "
                             (keyup)="
                               changeCalc(
@@ -1219,8 +1286,8 @@
                                 wp.ost_wp.wp_official_code
                               ][item.id] ||
                               partnersStatus[partner.code] ||
-                                initStatus == 'Pending' ||
-                                initStatus == 'Approved'
+                              initStatus == 'Pending' ||
+                              initStatus == 'Approved'
                             "
                             (keyup)="
                               changeCalc(
@@ -1267,7 +1334,11 @@
                           <!-- <mat-label>Total Budget</mat-label> -->
                           <input
                             placeholder="Total Budget"
-                            [disabled]="partnersStatus[partner.code] || initStatus == 'Pending' || initStatus == 'Approved'"
+                            [disabled]="
+                              partnersStatus[partner.code] ||
+                              initStatus == 'Pending' ||
+                              initStatus == 'Approved'
+                            "
                             matInput
                             [(ngModel)]="
                               wp_budgets[partner.code][

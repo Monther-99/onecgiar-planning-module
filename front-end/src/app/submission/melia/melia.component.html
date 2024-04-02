@@ -41,9 +41,7 @@
             formControlName="initiative_melia_id"
             (selectionChange)="fillResultsSelect()"
           >
-            <ng-container
-              *ngFor="let meliaType of meliaTypes"
-            >
+            <ng-container *ngFor="let meliaType of meliaTypes">
               <div class="content">
                 <mat-option [value]="meliaType.id">
                   {{ meliaType.meliaType.name }}
@@ -305,12 +303,12 @@
         >
       </div>
 
-      <div class="form-dialog-content__field--grid-column"> 
+      <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
-          >Partners<span class="star">*</span>
-          <app-popover id="13"></app-popover>
-        </mat-label>
+            >Partners<span class="star">*</span>
+            <app-popover id="13"></app-popover>
+          </mat-label>
         </div>
         <div class="risk-report-radio-buttons-flex-box-2">
           <mat-radio-group
@@ -328,9 +326,12 @@
             >
           </mat-radio-group>
         </div>
-      </div> 
+      </div>
 
-      <div class="form-dialog-content__field--grid-column" *ngIf="meliaForm.value.have_partners == 'yes'"> 
+      <div
+        class="form-dialog-content__field--grid-column"
+        *ngIf="meliaForm.value.have_partners == 'yes'"
+      >
         <ng-select
           class="select-text"
           [items]="partners | async"
@@ -375,9 +376,9 @@
           *ngIf="meliaForm.controls?.['partners']?.errors?.['required']"
           >This field is mandatory</mat-error
         > -->
-      </div> 
+      </div>
 
-      <div class="form-dialog-content__field--grid-column"> 
+      <div class="form-dialog-content__field--grid-column">
         <div class="form-dialog-content__title-box">
           <mat-label class="form-dialog-content__title-box__title"
             >Geographic scope<span class="star">*</span>
@@ -401,7 +402,7 @@
             >
           </mat-radio-group>
         </div>
-      </div> 
+      </div>
 
       <div *ngIf="meliaForm.value.geo_scope == 'region'" class="ng-select-box">
         <div class="form-dialog-content__field--grid-column">
@@ -529,7 +530,7 @@
             <!-- <button mat-button mat-dialog-close>Cancel</button> -->
             <div class="risk-report-button-box">
               <button
-                class="risk-report-button-box__btn btn--animated btn--chestnut btn"
+                class="risk-report-button-box__btn btn--chestnut"
                 type="submit"
                 mat-raised-button
                 mat-button
