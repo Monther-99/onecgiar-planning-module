@@ -829,6 +829,15 @@ export class SubmissionComponent implements OnInit {
       .filter((d: any) => d.value != "")
       .sort((a: any, b: any) => +(a.ipsr.id - b.ipsr.id));
     this.allData["IPSR"] = newIPSR;
+
+
+    //sort (Cross Cutting)
+    const newCROSS = this.allData["CROSS"].filter((d: any) => d.category == "Cross Cutting").sort((a: any, b: any) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
+
+    this.allData["CROSS"] = this.allData["CROSS"].filter((d: any) => d.category != "Cross Cutting")
+
+    newCROSS.forEach((d: any) => this.allData["CROSS"].unshift(d))
+
   }
   savedValues: any = null;
   isCenter: boolean = false;
