@@ -102,6 +102,10 @@ export class InitiativesService {
       const entity = await this.workPackageRepository.findOneBy({
         wp_id: element.wp_id,
       });
+      delete element.is_global; 
+      delete element.status; 
+      delete element.countries;
+      delete element.regions
       if (entity != null) {
         this.updateWorkPackage(element.wp_id, { ...element });
       } else {
