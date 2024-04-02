@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { SubmissionService } from "src/app/services/submission.service";
+import { AppSocket } from "src/app/socket.service";
 
 @Component({
   selector: "app-status",
@@ -11,6 +12,7 @@ import { SubmissionService } from "src/app/services/submission.service";
 export class StatusComponent implements OnInit {
   constructor(
     public fb: FormBuilder,
+    public socket: AppSocket,
     private dialogRef: MatDialogRef<StatusComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any = {},
     private submissionService: SubmissionService
@@ -41,6 +43,10 @@ export class StatusComponent implements OnInit {
         this.data.id,
         this.statusForm.value
       );
+      this.socket.connect();
+      this.socket.emit('changeSubmissionStatus', {
+        newSubmittionStatus : this.statusForm.value,
+      });
       if (submittion) this.dialogRef.close(submittion);
     }
   }

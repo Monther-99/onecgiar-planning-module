@@ -39,6 +39,16 @@ export class EventsGateway implements OnModuleInit {
     this.server.emit('setDataBudget-' + data.id, data);
   }
 
+  @SubscribeMessage('submissionStatus')
+  submissionStatus(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+    this.server.emit('submissionStatus', data);
+  }
+
+  @SubscribeMessage('changeSubmissionStatus')
+  changeSubmissionStatus(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+    this.server.emit('changeSubmissionStatus', data);
+  }
+
   onModuleInit() {
     this.server?.on('connect', (socket) => {
       socket.on('disconnect', (data) => {

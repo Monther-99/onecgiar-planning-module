@@ -938,6 +938,18 @@ export class SubmissionComponent implements OnInit {
         this.partnersStatus[data.organization_code] = !data.status;
       }
     });
+
+    this.socket.on("submissionStatus", (data: any) => {
+      this.initStatus = data.initStatus
+      this.initiative_data = data.initiative_data;
+    });
+
+    this.socket.on("changeSubmissionStatus", async (data: any) => {
+      this.initStatus = data.newSubmittionStatus.status
+      this.initiative_data = await this.submissionService.getInitiative(
+        this.params.id
+      );
+    });
     this.canSubmit = await this.constantsService.getSubmitStatus();
   }
 
@@ -957,6 +969,13 @@ export class SubmissionComponent implements OnInit {
             this.initiative_data.latest_submission.id,
             { status: this.initiative_data.latest_submission.status }
           );
+          this.initiative_data = await this.submissionService.getInitiative(
+            this.params.id
+          );
+          this.socket.emit('submissionStatus', {
+            initStatus : "Draft",
+            initiative_data: this.initiative_data
+          });
           await this.InitData();
           this.toastrService.success("Submission is canceled");
           this.router.navigate([
@@ -1261,6 +1280,14 @@ export class SubmissionComponent implements OnInit {
               phase_id: this.phase.id,
             });
             if (result) {
+              this.initiative_data = await this.submissionService.getInitiative(
+                this.params.id
+              );
+              this.socket.emit('submissionStatus', {
+                initStatus : "Pending",
+                initiative_data: this.initiative_data
+              });
+
               this.toastrService.success("Data Submitted successfully");
               this.router.navigate([
                 "initiative",
