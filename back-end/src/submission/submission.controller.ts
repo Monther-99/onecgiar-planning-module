@@ -173,7 +173,7 @@ export class SubmissionController {
       this.httpService
         .get(
           process.env.TOC_API +
-            '/flow/search?creation_start=&creation_end=&type=initiative&status=publish&order=creation_date&sort_by=DESC&title=&limit=50&page=1&latest=true',
+            '/flow/search?creation_start=&creation_end=&type=initiative&status=publish&order=creation_date&sort_by=DESC&title=&limit=100&page=1&latest=true',
         )
         .pipe(
           map((d: any) =>
