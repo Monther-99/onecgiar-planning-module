@@ -36,6 +36,7 @@ export class AuthService {
     if (access_token) {
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('access_expires_in', expires_in);
+      this.removePopoversLocalStorage('popovers_\\d+');
       if (redirect_url) this.router.navigateByUrl(redirect_url);
       else this.router.navigateByUrl('/');
     }
@@ -59,5 +60,16 @@ export class AuthService {
   isAdmin() {
     const loggedUser = this.getLoggedInUser();
     return loggedUser.role == 'admin';
+  }
+
+  removePopoversLocalStorage(pattern: string) {
+    const regex = new RegExp(pattern, 'i');
+    for (const key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        if (regex.exec(key)) {
+          localStorage.removeItem(key)
+        }
+      }
+    }
   }
 }
