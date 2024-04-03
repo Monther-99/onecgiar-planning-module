@@ -30,7 +30,7 @@
 
         <ng-select
           appendTo="body"
-          [items]="organizations"
+          [items]="organizations | sort : 'asc' : 'acronym'"
           bindValue="code"
           appearance="outline"
           bindLabel="name"

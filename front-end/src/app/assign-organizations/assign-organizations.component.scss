@@ -599,3 +599,25 @@
     border-radius: 1rem !important;
   }
 }
+
+::ng-deep.ng-select.ng-select-multiple
+  .ng-select-container
+  .ng-value-container
+  .ng-value {
+  margin-bottom: 5px !important;
+  background-color: #ebf5ff !important;
+  border-radius: 2px !important;
+  margin-right: 5px !important;
+  text-align: left !important;
+  color: #04030f !important;
+  font-size: 1.4rem !important;
+  font-style: normal !important;
+  line-height: 18.75px !important;
+  font-family: "Poppins", sans-serif !important;
+  /* font-weight: 500; */
+  /* margin: 16px 0 12px 0; */
+  /* display: block; */
+  /* max-width: 450px; */
+  /* min-width: 250px; */
+  white-space: normal !important;
+}

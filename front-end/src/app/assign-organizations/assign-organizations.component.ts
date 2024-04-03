@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { OrganizationsService } from "src/app/services/organizations.service";
 import { PhasesService } from "src/app/services/phases.service";
+import { SortPipe } from "src/app/share/pipes/sort.pipe";
 
 export interface DialogData {
   phase_id: number;
@@ -22,6 +23,7 @@ export class AssignOrganizationsComponent implements OnInit {
   organizations: any = [];
 
   constructor(
+    private sortPipe: SortPipe,
     private dialogRef: MatDialogRef<AssignOrganizationsComponent>,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
     private organizationsService: OrganizationsService,
@@ -42,10 +44,12 @@ export class AssignOrganizationsComponent implements OnInit {
       organizations: [null, Validators.required],
     });
     this.organizations = await this.organizationsService.getOrganizations();
+
     let AssignedOrganizations: any = await this.phasesService.getAssignedOrgs(
       this.phaseId,
       this.initiativeId
     );
+
     let OrganizationsCodes: string[] = [];
     if (AssignedOrganizations.length > 0) {
       AssignedOrganizations.forEach((organization: any) => {
@@ -57,7 +61,13 @@ export class AssignOrganizationsComponent implements OnInit {
       });
     }
 
-    console.log(this.organizations);
+    const sortedArr = this.sortPipe.transform(
+      this.organizations,
+      "asc",
+      "acronym"
+    );
+
+    console.log(sortedArr);
   }
 
   async submit() {
