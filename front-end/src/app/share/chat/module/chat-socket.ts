@@ -56,17 +56,6 @@ export class ChatSocket {
       console.error("connect_error", r);
       this.socket.connect();
     });
-    1;
-
-    this.socket.fromEvent("error").subscribe((r) => console.error("error", r));
-    this.socket
-      .fromEvent("connect")
-      .subscribe(() => console.info("socket connect successfully"));
-
-    this.socket.fromEvent("connect_error").subscribe((r) => {
-      console.error("connect_error", r);
-      this.socket.connect();
-    });
 
     this.socket.fromEvent("error").subscribe((r) => console.error("error", r));
   }

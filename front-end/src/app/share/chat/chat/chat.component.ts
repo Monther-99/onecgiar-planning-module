@@ -53,8 +53,7 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
     this.socket.initSocket();
     this.socket.onConnect$
       .pipe(
-        switchMap(() => this.socket.joinChat(1)),
-        switchMap(() => this.socket.joinChat(1))
+        switchMap(() => this.socket.joinChat(this.data.initiative_id))
       )
       .subscribe(() => this.getMessages());
 
