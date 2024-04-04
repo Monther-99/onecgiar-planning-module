@@ -564,12 +564,12 @@
                                 >
                                 Delete
                               </button>
-                              <button mat-menu-item (click)="viewData(item)">
+                              <!-- <button mat-menu-item (click)="viewData(item)">
                                 <mat-icon class="icon-sub-table-2"
                                   >visibility</mat-icon
                                 >
                                 View Data
-                              </button>
+                              </button> -->
                             </mat-menu>
                           </ng-container>
                           <ng-container
@@ -610,6 +610,16 @@
                                 : item.title
                             }}
                             <ng-container *ngIf="item?.ipsr?.id">
+                              <mat-icon
+                                class="ipsr-icon"
+                                *ngIf="item?.description"
+                                [matTooltip]="item?.description"
+                                matTooltipPosition="above"
+                                >help</mat-icon
+                              >
+                            </ng-container>
+
+                            <ng-container *ngIf="item?.category == 'Cross Cutting'">
                               <mat-icon
                                 class="ipsr-icon"
                                 *ngIf="item?.description"
@@ -1006,6 +1016,16 @@
                             matTooltipPosition="above"
                             >help</mat-icon
                           >
+                        </ng-container>
+
+                        <ng-container *ngIf="item?.category == 'Cross Cutting'">
+                          <mat-icon 
+                            class="ipsr-icon"
+                            *ngIf="item?.description"
+                            [matTooltip]="item?.description"
+                            matTooltipPosition="above"
+                            >help</mat-icon
+                          > 
                         </ng-container>
                       </td>
                       <td>{{ item.category }}</td>

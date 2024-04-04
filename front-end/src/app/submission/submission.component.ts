@@ -845,6 +845,8 @@ export class SubmissionComponent implements OnInit {
 
     newCROSS.forEach((d: any) => this.allData["CROSS"].unshift(d))
 
+
+    console.log('all =>', this.allData)
   }
   savedValues: any = null;
   isCenter: boolean = false;
@@ -1251,15 +1253,15 @@ export class SubmissionComponent implements OnInit {
   //     });
   // }
 
-  viewData(data: any) {
-    this.dialog
-      .open(ViewDataComponent, {
-        maxWidth: "800px",
-        data: { data, title: "View" },
-      })
-      .afterClosed()
-      .subscribe(async (dialogResult) => {});
-  }
+  // viewData(data: any) {
+  //   this.dialog
+  //     .open(ViewDataComponent, {
+  //       maxWidth: "800px",
+  //       data: { data, title: "View" },
+  //     })
+  //     .afterClosed()
+  //     .subscribe(async (dialogResult) => {});
+  // }
 
   async submit() {
     let messages = "Are you sure you want to submit?";
