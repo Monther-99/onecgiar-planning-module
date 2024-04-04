@@ -75,7 +75,7 @@
                 hideRequiredMarker
                 appearance="outline"
               >
-                <input
+                <textarea
                   [required]="
                     ipsrForm.controls['value-' + item.id].value != '' &&
                     ipsrForm.controls['value-' + item.id].value != null
@@ -84,7 +84,8 @@
                   type="text"
                   [formControlName]="'description-' + item.id"
                   placeholder="Description"
-                />
+                  >
+                </textarea>
               </mat-form-field>
               <mat-error
                 class="error"

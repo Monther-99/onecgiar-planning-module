@@ -38,7 +38,7 @@ export class IpsrValue {
   value: string;
 
   @ApiProperty()
-  @Column({ default: null })
+  @Column({ default: null , type: 'longtext'})
   description: string;
 
   @ManyToOne(() => Submission, (submission) => submission.ipsrValues)
