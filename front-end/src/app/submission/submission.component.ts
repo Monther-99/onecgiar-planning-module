@@ -796,6 +796,13 @@ export class SubmissionComponent implements OnInit {
         this.partnersData[partner.code].IPSR = this.partnersData[
           partner.code
         ]?.IPSR?.filter((d: any) => d.value != null && d.value != "");
+
+        let newCrossCenters = this.partnersData[partner.code].CROSS.filter((d: any) => d.category == "Cross Cutting").sort((a: any, b: any) => b?.title?.toLowerCase().localeCompare(a?.title?.toLowerCase()));
+
+        this.partnersData[partner.code].CROSS = this.partnersData[partner.code].CROSS.filter((d: any) => d.category != "Cross Cutting")
+
+        newCrossCenters.forEach((d: any) => this.partnersData[partner.code].CROSS.unshift(d))
+
       this.loading = false;
     }
 
