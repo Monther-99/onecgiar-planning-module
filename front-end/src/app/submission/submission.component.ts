@@ -124,9 +124,11 @@ export class SubmissionComponent implements OnInit {
       let isActualValues = this.toggleValues[partner_code][wp_id];
 
       if (type == "percent") {
-        percentValue = isActualValues
-          ? this.values[partner_code][wp_id][item_id]
-          : this.displayValues[partner_code][wp_id][item_id];
+        if(isActualValues) {
+          percentValue = Number(this.values[partner_code][wp_id][item_id]);
+        } else {
+          percentValue = Number(this.displayValues[partner_code][wp_id][item_id]);
+        }
         budgetValue = this.budgetValue(
           percentValue,
           this.wp_budgets[partner_code][wp_id]
@@ -846,7 +848,6 @@ export class SubmissionComponent implements OnInit {
     newCROSS.forEach((d: any) => this.allData["CROSS"].unshift(d))
 
 
-    console.log('all =>', this.allData)
   }
   savedValues: any = null;
   isCenter: boolean = false;
