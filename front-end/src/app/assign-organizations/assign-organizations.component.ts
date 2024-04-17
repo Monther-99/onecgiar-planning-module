@@ -43,6 +43,7 @@ export class AssignOrganizationsComponent implements OnInit {
     this.assignOrgsForm = this.fb.group({
       organizations: [null, Validators.required],
     });
+
     this.organizations = await this.organizationsService.getOrganizations();
 
     let AssignedOrganizations: any = await this.phasesService.getAssignedOrgs(
@@ -62,22 +63,62 @@ export class AssignOrganizationsComponent implements OnInit {
     }
 
     const sortedArr = this.sortPipe.transform(
-      this.organizations,
+      AssignedOrganizations,
       "asc",
       "acronym"
     );
 
     console.log(sortedArr);
+
+    // console.log(AssignedOrganizations);
+    // for (let i = 0; i < AssignedOrganizations.length; i++) {
+    //   console.log(AssignedOrganizations[i].acronym.sort());
+    // }
   }
+
+  // compareFn() {
+  //   return item.value === selected.value;
+  // }
+
+  // onChange($event: any) {
+  //   console.log($event);
+  //   this.assignOrgsForm.setValue({ organizations: "" });
+
+  //   console.log($event);
+  //   return this.assignOrgsForm.patchValue({
+  //     organizations: $event.sort((a: any, b: any) =>
+  //       a.acronym.localeCompare(b.acronym)
+  //     ),
+  //   });
+
+  // }
+
+  // onChange($event: any) {
+  //   // for (let i = 0; i < $event.length; i++) {
+  //   //   console.log($event[i].acronym);
+  //   //   const sortedArr = this.sortPipe.transform($event, "asc", "acronym");
+  //   //   console.log(sortedArr);
+  //   //   return sortedArr;
+  //   //   // $event.sort((a, b) => {
+  //   //   //   a = $event[i].acronym;
+  //   //   //   b = $event[i].name;
+  //   //   //   if (a > b) return 1;
+  //   //   //   if (a < b) return -1;
+  //   //   // });
+  //   // }
+  //   // $event.selected.sort((a: any, b: any) => a.name.localeCompare(b.acronym));
+  // }
 
   async submit() {
     if (this.assignOrgsForm.valid) {
       const organizations = this.assignOrgsForm.value.organizations;
+
       const data = {
         phase_id: this.phaseId,
         initiative_id: this.initiativeId,
         organizations: organizations,
       };
+
       await this.phasesService.assignPhaseInitOrgs(data);
       this.toast.success("Organizations assigned successfully");
       this.dialogRef.close({ submitted: true });
