@@ -16,13 +16,13 @@ export class EmailService {
     private async sendMailCostume(to, html, label) {
       const msg = {
         to,
-        from: 'CGIAR Planning Management',
+        from: { name: 'CGIAR Planning', email: 'noreply@planning.cgiar.org' },
         html: html,
         subject: label,
         text: html.replace(/(<([^>]+)>)/gi, ''),
       };
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      return await sgMail.send(msg).catch((e) => false);
+      return await sgMail.send(msg).catch((e) => { console.log(e); return  false});
     }
 
 
