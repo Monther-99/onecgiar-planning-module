@@ -21,6 +21,7 @@ export class AssignOrganizationsComponent implements OnInit {
   initiativeId: number;
   assignOrgsForm: FormGroup;
   organizations: any = [];
+  a: any = [];
 
   constructor(
     private sortPipe: SortPipe,
@@ -86,11 +87,8 @@ export class AssignOrganizationsComponent implements OnInit {
 
   //   console.log($event);
   //   return this.assignOrgsForm.patchValue({
-  //     organizations: $event.sort((a: any, b: any) =>
-  //       a.acronym.localeCompare(b.acronym)
-  //     ),
+  //     organizations: this.sortPipe.transform($event, "asc", "acronym"),
   //   });
-
   // }
 
   // onChange($event: any) {

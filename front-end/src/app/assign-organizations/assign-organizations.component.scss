@@ -54,7 +54,7 @@
 // }
 .form-dialog-content {
   max-width: 57.8rem;
-  margin: 2rem auto 2rem;
+  margin: -2rem auto 2.5rem;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -620,4 +620,24 @@
   /* max-width: 450px; */
   /* min-width: 250px; */
   white-space: normal !important;
+}
+
+.risk-report-button-box {
+  &__btn {
+    color: #ffffff !important;
+    text-align: center;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    position: relative !important;
+    top: 2.8rem !important;
+  }
+}
+
+.form-dialog-content__title-box {
+  margin-bottom: 1.8rem !important;
+  margin-left: -1rem !important;
 }
