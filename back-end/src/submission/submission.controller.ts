@@ -161,7 +161,7 @@ export class SubmissionController {
   }
 
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(2000000)
+  @CacheTTL(1800)
   @ApiBearerAuth()
   @ApiCreatedResponse({
     description: '',
@@ -169,35 +169,18 @@ export class SubmissionController {
   })
   @Get('toc/:id')
   async getTocs(@Param('id') id) {
-    const tocs = await firstValueFrom(
-      this.httpService
-        .get(
-          process.env.TOC_API +
-            '/flow/search?creation_start=&creation_end=&status=publish&order=creation_date&sort_by=DESC&title=&limit=100&page=1&latest=true',
-        )
-        .pipe(
-          map((d: any) =>
-            d.data.data.filter((d: any) => d.initiative_id == id),
-          ),
-          catchError((error: AxiosError) => {
-            console.error(error);
-            throw new InternalServerErrorException();
-          }),
-        ),
-    );
-
     return await firstValueFrom(
       this.httpService
-        .get(process.env.TOC_API + '/toc/' + tocs[0]?.related_flow_id)
+        .get(process.env.TOC_API + '/toc/' + id)
         .pipe(
-          map((d: any) =>
-            d.data.data.filter(
+          map((dd: any) =>
+          dd.data.data.filter(
               (d) =>
                 ((d.category == 'WP' && !d.group) ||
                   d.category == 'OUTPUT' ||
                   d.category == 'EOI' ||
                   d.category == 'OUTCOME') &&
-                  d.flow_id == tocs[0]?.related_flow_id,
+                  d?.flow_id == dd?.data?.version_id,
             ),
           ),
           catchError((error: AxiosError) => {
