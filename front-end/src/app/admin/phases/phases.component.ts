@@ -31,7 +31,6 @@ export class PhasesComponent implements OnInit {
     "status",
     "active",
     "show_eoi",
-    // "show_melia",
     "actions",
   ];
 

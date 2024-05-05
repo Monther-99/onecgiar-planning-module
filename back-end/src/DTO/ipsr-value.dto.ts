@@ -25,6 +25,8 @@ export class findInitiative_id {
     submission_id?: number;
     @ApiProperty()
     ipsr: Ipsr;
+    @ApiProperty()
+    description: string;
 }
 
 

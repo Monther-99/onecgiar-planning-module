@@ -26,6 +26,7 @@ import {
 import {
   getAll,
   getSaved,
+  getTocData,
   getTocs,
   getWpBudgets,
   getbyid,
@@ -165,7 +166,7 @@ export class SubmissionController {
   @ApiBearerAuth()
   @ApiCreatedResponse({
     description: '',
-    type: getTocs,
+    type: getTocData,
   })
   @Get('toc/:id')
   async getTocs(@Param('id') id) {

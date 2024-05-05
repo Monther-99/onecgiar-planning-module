@@ -20,6 +20,7 @@ import {
 import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import {
+  initiativeFull,
   createRoleReq,
   createRoleResponse,
   getInitiatives,
@@ -27,6 +28,7 @@ import {
   importInitiativeswp,
   updateRoleReq,
   updateRoleResponse,
+  allowedToAccessChat,
 } from 'src/DTO/initiatives.dto';
 import { Initiative } from 'src/entities/initiative.entity';
 import { User } from 'src/entities/user.entity';
@@ -72,7 +74,7 @@ export class InitiativesController {
   @ApiBearerAuth()
   @ApiCreatedResponse({
     description: '',
-    type: [Initiative],
+    type: [initiativeFull],
   })
   async findAllFull(@Query() query: any, @Req() req) {
     return this.initiativesService.findAllFull(query, req);
@@ -82,7 +84,7 @@ export class InitiativesController {
   @ApiBearerAuth()
   @ApiCreatedResponse({
     description: '',
-    type: Initiative,
+    type: initiativeFull,
   })
   findOne(@Param('id') id: string) {
     return this.initiativesService.findOne(+id);
@@ -148,6 +150,10 @@ export class InitiativesController {
 
   @Get(':initiative_id/is-allowed-to-access-chat')
   @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: '',
+    type: allowedToAccessChat,
+  })
   isAllowedToAccessChat(
     @Param('initiative_id') initiative_id: number,
     @SignedInUser() user: User,

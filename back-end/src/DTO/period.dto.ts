@@ -14,8 +14,6 @@ export class Phases {
     @ApiProperty()
     show_eoi: boolean;
     @ApiProperty()
-    show_melia: boolean;
-    @ApiProperty()
     startDate: Date;
     @ApiProperty()
     status: string;

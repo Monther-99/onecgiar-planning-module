@@ -23,8 +23,6 @@ export class Phase2 {
     active: boolean;
     @ApiProperty()
     show_eoi: boolean;
-    @ApiProperty()
-    show_melia: boolean;
   }
 export class getAnticipatedYear {
     @ApiProperty()

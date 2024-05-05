@@ -17,7 +17,7 @@ import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/role/role.enum';
 import { RolesGuard } from 'src/role/roles.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { activateAndDeactivateAndDeleteReq, assignOrganizationsReq, createPhaseReq, createPhaseRes, getAssignedOrganizations, getInitiatives, getPhases, updatePhaseReq } from 'src/DTO/phase.dto';
+import { activateAndDeactivateAndDeleteReq, assignOrganizationsReq, createPhaseReq, createPhaseRes, getAssignedOrganizations, getInitiativesPhase, getPhases, getTocPhases, updatePhaseReq } from 'src/DTO/phase.dto';
 import { Phase } from 'src/entities/phase.entity';
 
 @UseGuards(JwtAuthGuard)
@@ -49,6 +49,10 @@ export class PhasesController {
   @UseGuards(RolesGuard)
   @Roles(Role.Admin)
   @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: '',
+    type: [getTocPhases],
+  })
   @Get('toc-phases')
   getTocPhases() {
     try {
@@ -109,7 +113,7 @@ export class PhasesController {
   @ApiBearerAuth()
   @ApiCreatedResponse({
     description: '',
-    type: [getInitiatives],
+    type: [getInitiativesPhase],
   })
   @Get(':id/initiatives')
   getInitiatives(@Param('id') id: string) {

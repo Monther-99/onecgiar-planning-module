@@ -281,35 +281,7 @@ export class SubmissionService {
     ).catch((e) => false);
   }
 
-  async getRegions() {
-    return firstValueFrom(
-      this.http.get(environment.api_url+'/organizations/regions').pipe(map((d: any) => d))
-    ).catch((e) => false);
-  }
 
-  async getCountriesRegions(codes: number[]) {
-    return firstValueFrom(
-      this.http
-        .post(environment.api_url+'/organizations/countries-regions/', codes)
-        .pipe(map((d: any) => d))
-    ).catch((e) => false);
-  }
 
-  async getCountries() {
-    return firstValueFrom(
-      this.http.get(environment.api_url+'/organizations/countries').pipe(map((d: any) => d))
-    ).catch((e) => false);
-  }
 
-  async getPartners() {
-    return firstValueFrom(
-      this.http.get(environment.api_url+'/organizations/partners').pipe(map((d: any) => d))
-    ).catch((e) => false);
-  }
-
-  searchPartners(term: string): Observable<any[]> {
-    return this.http
-      .get(environment.api_url+'/organizations/partners/' + term)
-      .pipe(map((d: any) => d));
-  }
 }

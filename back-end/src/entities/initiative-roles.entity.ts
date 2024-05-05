@@ -18,7 +18,7 @@ import { Organization } from './organization.entity';
 export class InitiativeRoles {
   @ApiProperty()
   @PrimaryGeneratedColumn()
-  id;
+  id: number;
 
   @ApiProperty()
   @Column({ nullable: true })
@@ -28,6 +28,7 @@ export class InitiativeRoles {
   @Column({ nullable: true })
   user_id: number;
 
+  @ApiProperty()
   @ManyToOne(() => User, (user) => user)
   @JoinColumn({ name: 'user_id' })
   user: User;
@@ -55,6 +56,7 @@ export class InitiativeRoles {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
+  @ApiProperty()
   @ManyToMany(() => Organization, (organization) => organization.initiatives)
   @JoinTable()
   organizations: Organization[];

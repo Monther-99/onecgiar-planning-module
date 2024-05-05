@@ -9,10 +9,6 @@ import {
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { ToastrService } from "ngx-toastr";
-import { ROLES } from "../../components/new-team-member/new-team-member.component";
-import { CrossCuttingComponent } from "src/app/submission/cross-cutting/cross-cutting.component";
-import { MeliaComponent } from "src/app/submission/melia/melia.component";
-import { ViewDataComponent } from "src/app/submission/view-data/view-data.component";
 import { PhasesService } from "src/app/services/phases.service";
 import { HeaderService } from "src/app/header.service";
 import { Meta, Title } from "@angular/platform-browser";

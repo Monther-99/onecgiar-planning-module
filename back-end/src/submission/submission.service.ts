@@ -17,7 +17,6 @@ import { Phase } from 'src/entities/phase.entity';
 import { Initiative } from 'src/entities/initiative.entity';
 import { CenterStatus } from 'src/entities/center-status.entity';
 import { WpBudget } from 'src/entities/wp-budget.entity';
-import { MeliaService } from 'src/melia/melia.service';
 import { CrossCuttingService } from 'src/cross-cutting/cross-cutting.service';
 import { IpsrValueService } from 'src/ipsr-value/ipsr-value.service';
 import { PhasesService } from 'src/phases/phases.service';
@@ -52,7 +51,6 @@ export class SubmissionService {
     private centerStatusRepo: Repository<CenterStatus>,
     @InjectRepository(WpBudget)
     private wpBudgetRepository: Repository<WpBudget>,
-    private meliaService: MeliaService,
     private CrossCuttingService: CrossCuttingService,
     private IpsrValueService: IpsrValueService,
     private PhasesService: PhasesService,
@@ -1143,9 +1141,7 @@ export class SubmissionService {
       this.results = submission.toc_data;
       this.period = submission.phase.periods;
       this.wp_budgets = await this.getSubmissionBudgets(submissionId, submission.phase.id);
-      //  melia_data = await this.meliaService.findBySubmissionId(
-      //   submissionId
-      // );
+
        cross_data = await this.CrossCuttingService.findBySubmissionID(
         submissionId
       );
@@ -1174,9 +1170,7 @@ export class SubmissionService {
 
       this.results = await tocData;
 
-      //  melia_data = await this.meliaService.findByInitiativeID(
-      //   initId
-      // );
+ 
 
        ipsr_value_data = await this.IpsrValueService.findByInitiativeID(initId);
   

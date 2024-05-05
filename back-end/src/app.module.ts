@@ -9,7 +9,6 @@ import { PeriodsModule } from './periods/periods.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SubmissionModule } from './submission/submission.module';
-import { MeliaModule } from './melia/melia.module';
 import { CrossCuttingModule } from './cross-cutting/cross-cutting.module';
 import { ConfigModule } from '@nestjs/config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -51,7 +50,6 @@ import { WsGuard } from './ws.guard';
     UsersModule,
     SubmissionModule,
     EventsModule,
-    MeliaModule,
     CrossCuttingModule,
     IpsrValueModule,
     ConstantsModule,

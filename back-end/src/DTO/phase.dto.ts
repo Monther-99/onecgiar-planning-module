@@ -16,8 +16,6 @@ export class createPhaseReq {
     @ApiProperty()
     show_eoi: boolean;
     @ApiProperty()
-    show_melia: boolean;
-    @ApiProperty()
     startDate: Date;
     @ApiProperty()
     status: string;
@@ -54,8 +52,6 @@ export class getPhases {
     @ApiProperty()
     show_eoi: boolean;
     @ApiProperty()
-    show_melia: boolean;
-    @ApiProperty()
     startDate: Date;
     @ApiProperty()
     status: string;
@@ -72,7 +68,7 @@ export class activateAndDeactivateAndDeleteReq {
 }
 
 
-export class getInitiatives {
+export class getInitiativesPhase {
     @ApiProperty()
     initiative_id: number;
     @ApiProperty()
@@ -128,8 +124,6 @@ export class updatePhaseReq {
     @ApiProperty()
     show_eoi: boolean;
     @ApiProperty()
-    show_melia: boolean;
-    @ApiProperty()
     startDate: Date;
     @ApiProperty()
     status: string;
@@ -138,4 +132,23 @@ export class updatePhaseReq {
 }
 
 
-
+export class getTocPhases {
+    @ApiProperty()
+    end_date: string;
+    @ApiProperty()
+    reporting_year: number;
+    @ApiProperty()
+    name: string;
+    @ApiProperty()
+    active: boolean;
+    @ApiProperty()
+    creation_date: string;
+    @ApiProperty()
+    id: string;
+    @ApiProperty()
+    updating_date: string;
+    @ApiProperty()
+    status: string;
+    @ApiProperty()
+    start_date: string;
+}

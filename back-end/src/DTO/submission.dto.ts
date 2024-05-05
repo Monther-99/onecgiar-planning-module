@@ -689,8 +689,6 @@ export class Phase {
     @ApiProperty()
     show_eoi: boolean;
     @ApiProperty()
-    show_melia: boolean;
-    @ApiProperty()
     periods: Period;
   }
 
@@ -938,3 +936,158 @@ export class getbyid {
 
 
 
+
+  export class  Typeofoutput1 {
+    @ApiProperty()
+    name: string;
+    @ApiProperty()
+    id: string;
+    @ApiProperty()
+    value: string;
+  }
+  export class  Responsibleorganization1 {
+    @ApiProperty()
+    code: number;
+    @ApiProperty()
+    websiteLink: string;
+    @ApiProperty()
+    acronym: string;
+    @ApiProperty()
+    name: string;
+    @ApiProperty()
+    toc_id: string;
+  }
+  export class  Scientificmethod1 {
+    @ApiProperty()
+    main: boolean;
+    @ApiProperty()
+    creation_date: string;
+    @ApiProperty()
+    id: string;
+    @ApiProperty()
+    related_node_id: string;
+    @ApiProperty()
+    value: string;
+  }
+  export class  Partner1 {
+    @ApiProperty()
+    code?: number;
+    @ApiProperty()
+    websiteLink: string;
+    @ApiProperty()
+    acronym: string;
+    @ApiProperty()
+    name: string;
+    @ApiProperty()
+    toc_id: string;
+    @ApiProperty()
+    creation_date?: string;
+    @ApiProperty()
+    add_source?: string;
+  }
+  export class  Type1 {
+    @ApiProperty()
+    value: string;
+    @ApiProperty()
+    name: string;
+  }
+  export class  Baseline1 {
+    @ApiProperty()
+    value: string;
+    @ApiProperty()
+    date: string;
+  }
+  export class  Indicator1 {
+    @ApiProperty()
+    country: any[];
+    @ApiProperty()
+    description: string;
+    @ApiProperty()
+    main: boolean;
+    @ApiProperty()
+    baseline: Baseline1;
+    @ApiProperty()
+    creation_date: string;
+    @ApiProperty()
+    type: Type1;
+    @ApiProperty()
+    target: Baseline1[];
+    @ApiProperty()
+    unit_of_measurement: string;
+    @ApiProperty()
+    location: string;
+    @ApiProperty()
+    data_collection_source: string;
+    @ApiProperty()
+    id: string;
+    @ApiProperty()
+    data_collection_frequency: string;
+    @ApiProperty()
+    region: any[];
+    @ApiProperty()
+    related_node_id: string;
+    @ApiProperty()
+    data_collection_method: string;
+  }
+  export class  Pathway1 {
+    @ApiProperty()
+    main: boolean;
+    @ApiProperty()
+    image: string;
+    @ApiProperty()
+    color: string;
+    @ApiProperty()
+    specification: string;
+    @ApiProperty()
+    description: string;
+    @ApiProperty()
+    creation_date: string;
+    @ApiProperty()
+    id: string;
+    @ApiProperty()
+    updating_date: string;
+    @ApiProperty()
+    title: string;
+    @ApiProperty()
+    related_node_id: string;
+    @ApiProperty()
+    example: string;
+  }
+
+  export class  getTocData {
+    @ApiProperty()
+    isInternalFlow: boolean;
+    @ApiProperty()
+    description: string;
+    @ApiProperty()
+    main: boolean;
+    @ApiProperty()
+    title: string;
+    @ApiProperty()
+    flow_id: string;
+    @ApiProperty()
+    id: string;
+    @ApiProperty()
+    group: string;
+    @ApiProperty()
+    type_of_output: Typeofoutput1;
+    @ApiProperty()
+    pathways: Pathway1[];
+    @ApiProperty()
+    indicators: Indicator1[];
+    @ApiProperty()
+    partners: Partner1[];
+    @ApiProperty()
+    responsible_organization: Responsibleorganization1;
+    @ApiProperty()
+    scientific_methods: Scientificmethod1[];
+    @ApiProperty()
+    category: string;
+    @ApiProperty()
+    research_questions: Scientificmethod1[];
+  }
+
+
+ 
+
+ 

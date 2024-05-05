@@ -21,7 +21,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatMenuModule } from "@angular/material/menu";
-import { MeliaComponent } from "./submission/melia/melia.component";
 import { ConfirmComponent } from "./confirm/confirm.component";
 import { CrossCuttingComponent } from "./submission/cross-cutting/cross-cutting.component";
 import { ViewDataComponent } from "./submission/view-data/view-data.component";
@@ -73,8 +72,6 @@ import { SearchInitComponent } from "./search-init/search-init.component";
 import { FilterVersionComponent } from "./submited-versions/filter-version/filter-version.component";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
-import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
-import { MeliaAdminDialogComponent } from "./admin/melia-admin/melia-admin-dialog/melia-admin-dialog.component";
 // import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
 import { AnticipatedYearDialogComponent } from "./admin/anticipated-year/anticipated-year-dialog/anticipated-year-dialog.component";
 import { OrderSelectPipePipe } from "./components/order-select-pipe.pipe";
@@ -83,8 +80,6 @@ import { PopoverManagementComponent } from "./admin/popover-management/popover-m
 import { PopoverDialogComponent } from "./admin/popover-management/popover-dialog/popover-dialog.component";
 import { EditorModule } from "./share/editor/editor.module";
 import { TrustHTMLModule } from "./share/trust-html/trust-html.module";
-import { InitiativeMeliaComponent } from "./initiative-melia/initiative-melia.component";
-import { InitiativeMeliaDialogComponent } from "./initiative-melia/initiative-melia-dialog/initiative-melia-dialog.component";
 import { SortPipe } from "./share/pipes/sort.pipe";
 import { EmailsComponent } from './admin/emails/emails.component';
 import { EmailBodyComponent } from './admin/emails/email-body/email-body.component';
@@ -96,7 +91,6 @@ import { TimeagoModule } from "ngx-timeago";
     AppComponent,
     InQuePipe,
     SubmissionComponent,
-    MeliaComponent,
     ConfirmComponent,
     CrossCuttingComponent,
     ViewDataComponent,
@@ -131,15 +125,11 @@ import { TimeagoModule } from "ngx-timeago";
     SearchInitComponent,
     FilterVersionComponent,
     ParametersSettingsComponent,
-    MeliaAdminComponent,
-    MeliaAdminDialogComponent,
     // AnticipatedYearComponent,
     AnticipatedYearDialogComponent,
     OrderSelectPipePipe,
     PopoverManagementComponent,
     PopoverDialogComponent,
-    InitiativeMeliaComponent,
-    InitiativeMeliaDialogComponent,
     SortPipe,
     EmailsComponent,
     EmailBodyComponent,

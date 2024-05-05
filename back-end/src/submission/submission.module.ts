@@ -16,7 +16,6 @@ import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CenterStatus } from 'src/entities/center-status.entity';
 import { WpBudget } from 'src/entities/wp-budget.entity';
-import { MeliaModule } from 'src/melia/melia.module';
 import { CrossCuttingModule } from 'src/cross-cutting/cross-cutting.module';
 import { IpsrValueModule } from 'src/ipsr-value/ipsr-value.module';
 import { PhasesModule } from 'src/phases/phases.module';
@@ -53,7 +52,6 @@ import { EmailService } from 'src/email/email.service';
     ]),
     HttpModule,
     CacheModule.register(),
-    MeliaModule,
     CrossCuttingModule,
     IpsrValueModule,
     PhasesModule,

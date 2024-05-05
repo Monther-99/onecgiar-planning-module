@@ -212,17 +212,4 @@ export class OrganizationsService {
       }
     });
   }
-
-  getPartners() {
-    return this.partnerRepository.find({ order: { name: 'ASC' } });
-  }
-
-  searchPartners(term: string) {
-    return this.partnerRepository
-      .createQueryBuilder('partner')
-      .where('partner.acronym like :acronym', { acronym: `%${term}%` })
-      .orWhere('partner.name like :name', { name: `%${term}%` })
-      .orderBy('partner.name')
-      .getMany();
-  }
 }

@@ -3,7 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { SubmissionService } from "../services/submission.service";
 import { AppSocket } from "../socket.service";
 import { MatDialog } from "@angular/material/dialog";
-import { MeliaComponent } from "./melia/melia.component";
 import {
   ConfirmComponent,
   ConfirmDialogModel,

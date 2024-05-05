@@ -18,10 +18,8 @@ import { AuthGuard } from "./guards/auth.guard";
 import { AccessDeniedComponent } from "./access-denied/access-denied.component";
 import { LicenseComponent } from "./footer/license/license.component";
 import { ParametersSettingsComponent } from "./admin/parameters-settings/parameters-settings.component";
-import { MeliaAdminComponent } from "./admin/melia-admin/melia-admin.component";
 // import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
 import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
-import { InitiativeMeliaComponent } from "./initiative-melia/initiative-melia.component";
 import { EmailsComponent } from "./admin/emails/emails.component";
 
 const routes: Routes = [
@@ -40,7 +38,6 @@ const routes: Routes = [
       { path: "ipsr", component: AdminIpsrComponent },
       { path: "phases/:id/initiatives", component: PhaseInitiativesComponent },
       { path: "parameters-settings", component: ParametersSettingsComponent },
-      // { path: "melia", component: MeliaAdminComponent },
       // { path: "Anticipated-year", component: AnticipatedYearComponent },
       { path: "popover-management", component: PopoverManagementComponent },
       { path: "emails", component: EmailsComponent },
@@ -73,11 +70,6 @@ const routes: Routes = [
     component: TeamMembersComponent,
     canActivate: [AuthGuard],
   },
-  // {
-  //   path: "initiative/:id/:code/melia",
-  //   component: InitiativeMeliaComponent,
-  //   canActivate: [AuthGuard],
-  // },
   { path: "denied", component: AccessDeniedComponent },
   {
     path: "license",
