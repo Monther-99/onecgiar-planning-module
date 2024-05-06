@@ -84,6 +84,7 @@
                   type="text"
                   [formControlName]="'description-' + item.id"
                   placeholder="Description"
+                  (ngModelChange)="change(item)"
                   >
                 </textarea>
               </mat-form-field>
