@@ -28,8 +28,7 @@ export class InitiativeRoles {
   @Column({ nullable: true })
   user_id: number;
 
-  @ApiProperty()
-  @ManyToOne(() => User, (user) => user)
+  @ManyToOne(() => User, (user) => user.user_init_roles)
   @JoinColumn({ name: 'user_id' })
   user: User;
 

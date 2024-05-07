@@ -23,7 +23,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columnsToDisplay: string[] = ["id", "name", "email", "role", "actions"];
+  columnsToDisplay: string[] = ["id", "name", "email", "role", "Initiatives and Roles", "actions"];
   dataSource: MatTableDataSource<any>;
   users: any = [];
   length!: number;
@@ -131,6 +131,16 @@ export class UsersComponent implements OnInit {
         }
       });
   }
+    
+  getInitRoles(initRoles: any[]) {
+    let str = "<div style ='display: flex; flex-direction: column; align-items: center;'>";
+    initRoles.forEach(d => 
+      str += "<div style='padding-bottom: 3px; padding-top: 3px;'><span>" + d.initiative.official_code + "</span> / <span>" +d.role + "</span> </div>"
+    );
+    str += "</div>"
+    return str
+  }
+
   async exportExcel() {
     await this.usersService.exportUsers(this.filters);
   }

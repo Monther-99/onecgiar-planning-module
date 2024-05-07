@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Submission } from './submission.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { InitiativeRoles } from './initiative-roles.entity';
 
 export enum userRole {
   USER = 'user',
@@ -39,4 +40,9 @@ export class User {
       asExpression: `Concat(first_name,' ' ,last_name)`
     })
     full_name: string;
+
+
+
+  @OneToMany(() => InitiativeRoles, (initiativeRoles) => initiativeRoles.user)
+  user_init_roles: InitiativeRoles[];
 }

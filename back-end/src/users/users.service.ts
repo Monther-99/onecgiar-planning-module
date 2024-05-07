@@ -23,16 +23,18 @@ export class UsersService {
       const sorts = query.sort.split(',');
       obj[sorts[0]] = sorts[1];
       return obj;
-    } else return { id: 'ASC' };
+    } else return { 'user.id': 'ASC' };
   }
   async getUsers(query: any) {
     const take = query.limit || 10;
     const skip = (Number(query.page) - 1) * take;
-    const result = this.userRepository.createQueryBuilder('user');
+    const result = this.userRepository.createQueryBuilder('user')
+    .leftJoinAndSelect('user.user_init_roles', 'user_init_roles')
+    .leftJoinAndSelect('user_init_roles.initiative', 'initiative');
     result
       .where(
         new Brackets((qb) => {
-          qb.where('email LIKE :email', {
+          qb.where('user.email LIKE :email', {
             email: `%${query?.email || ''}%`,
           }).orWhere('full_name LIKE :full_name', {
             full_name: `%${query?.email || ''}%`,
@@ -40,10 +42,10 @@ export class UsersService {
         }),
       )
       .orderBy(this.sort(query));
-    if (query.role) result.andWhere('role = :role', { role: query.role });
+    if (query.role) result.andWhere('user.role = :role', { role: query.role });
     else
       result
-        .andWhere('role IS NOT NULL')
+        .andWhere('user.role IS NOT NULL')
         .skip(skip || 0)
         .take(take || 10);
 
@@ -109,11 +111,13 @@ export class UsersService {
   }
 
   async exportExcel(query: any) {
-    const result = this.userRepository.createQueryBuilder('user');
+    const result = this.userRepository.createQueryBuilder('user')
+    .leftJoinAndSelect('user.user_init_roles', 'user_init_roles')
+    .leftJoinAndSelect('user_init_roles.initiative', 'initiative');
     result
       .where(
         new Brackets((qb) => {
-          qb.where('email LIKE :email', {
+          qb.where('user.email LIKE :email', {
             email: `%${query?.email || ''}%`,
           }).orWhere('full_name LIKE :full_name', {
             full_name: `%${query?.email || ''}%`,
@@ -121,17 +125,19 @@ export class UsersService {
         }),
       )
       .orderBy(this.sort(query));
-    if (query.role) result.andWhere('role = :role', { role: query.role });
-    else result.andWhere('role IS NOT NULL');
+    if (query.role) result.andWhere('user.role = :role', { role: query.role });
+    else result.andWhere('user.role IS NOT NULL');
 
     const finalResult = await result.getMany();
 
-    const finaldata = this.prepareUserTemplate(finalResult);
+    const { finaldata, merges } = this.prepareUserTemplate(finalResult);
 
     const file_name = 'Users.xlsx';
     var wb = XLSX.utils.book_new();
 
     const ws = XLSX.utils.json_to_sheet(finaldata);
+    ws['!merges'] = merges;
+    this.appendStyleForXlsx(ws);
 
     XLSX.utils.book_append_sheet(wb, ws, 'Users');
     await XLSX.writeFile(
@@ -154,12 +160,14 @@ export class UsersService {
     });
   }
 
-  getTemplateUser() {
+  getTemplateUser(width = false) {
     return {
       ID: null,
       Name: null,
       Email: null,
       Role: null,
+      'Initiatives and Roles': width ? 'Initiatives' : null,
+      init_roles: width ? 'Roles' : null,
     };
   }
 
@@ -171,13 +179,76 @@ export class UsersService {
   }
 
   prepareUserTemplate(users) {
-    let finaldata = [];
+    let finaldata = [this.getTemplateUser(true)];
 
-    users.forEach((element: any) => {
+    let merges = [
+      {
+        s: { c: 4, r: 0 },
+        e: { c: 5, r: 0 },
+      },
+    ];
+
+    for (let index = 0; index < 4; index++) {
+      merges.push({
+        s: { c: index, r: 0 },
+        e: { c: index, r: 1 },
+      });
+    }
+
+    let base = 2;
+
+    users.forEach((element: any, indexbase) => {
       const template = this.getTemplateUser();
       this.userTemplate(template, element);
-      finaldata.push(template);
+      if(element.user_init_roles.length){
+        for (let index = 0; index < 4; index++) {
+          merges.push({
+            s: { c: index, r: base },
+            e: { c: index, r: base + element.user_init_roles.length - 1 },
+          });
+        }
+        base += element.user_init_roles.length;
+      } else {
+        finaldata.push(template);
+        base += 1;
+      }
+
+      element.user_init_roles.forEach((d, index) => {
+        if (index == 0) {
+          template['Initiatives and Roles'] = d.initiative.official_code;
+          template.init_roles = d.role;
+          finaldata.push(template);
+        } else {
+          const template2 = this.getTemplateUser();
+          template2['Initiatives and Roles'] = d.initiative.official_code;
+          template2.init_roles = d.role;
+          finaldata.push(template2);
+        }
+      });
+      
     });
-    return finaldata;
+    return { finaldata, merges };
+  }
+
+  appendStyleForXlsx(ws: XLSX.WorkSheet) {
+    const range = XLSX.utils.decode_range(ws["!ref"] ?? "");
+    const rowCount = range.e.r;
+    const columnCount = range.e.c;
+
+    for (let row = 0; row <= rowCount; row++) {
+      for (let col = 0; col <= columnCount; col++) {
+        const cellRef = XLSX.utils.encode_cell({ r: row, c: col });
+        if (row === 0 || row === 1) {
+          // Format headers and names
+          ws[cellRef].s = {
+            alignment: {
+              horizontal: 'center',
+              vertical: 'center',
+              wrapText: true,
+            },
+          };
+        }
+      }
+    }
   }
 }
