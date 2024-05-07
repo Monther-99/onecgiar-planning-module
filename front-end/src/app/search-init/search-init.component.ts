@@ -1,11 +1,6 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-
-export enum ROLES {
-  LEAD = "Leader",
-  COORDINATOR = "Coordinator",
-  CONTRIBUTOR = "Contributor",
-}
+import { ROLES } from "../components/new-team-member/new-team-member.component";
 
 @Component({
   selector: "app-search-init",
@@ -18,7 +13,7 @@ export class SearchInitComponent {
 
   @Output() filters: EventEmitter<any> = new EventEmitter<any>();
 
-  roles = [ROLES.COORDINATOR, ROLES.LEAD, ROLES.CONTRIBUTOR];
+  roles = [ROLES.COORDINATOR, ROLES.LEAD,  ROLES.CoLeader, ROLES.CONTRIBUTOR]; 
 
   sort = [
     { name: "Initiative ID (lowest first)", value: "id,ASC" },

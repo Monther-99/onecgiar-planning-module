@@ -220,7 +220,8 @@ export class InitiativesService {
     });
   }
 
-  async updateRoles(initiative_id, id, initiativeRoles: InitiativeRoles) {
+  async updateRoles(initiative_id, id, initiativeRoles: InitiativeRoles, user) {
+    let errorMsg = null;
     const found_roles = await this.iniRolesRepository.findOne({
       where: { initiative_id, id },
     });
@@ -239,8 +240,13 @@ export class InitiativesService {
         );
       }
     }
+    if(user.role != 'admin' && initiativeRoles.role == 'Leader') errorMsg = 'Only Admin Can Add Leader';
 
-    return await this.iniRolesRepository.save(initiativeRoles);
+    if(!errorMsg) {
+      return await this.iniRolesRepository.save(initiativeRoles);
+    } else {
+      throw new BadRequestException(errorMsg);
+    }
   }
 
   async deleteRole(initiative_id, id) {
@@ -251,7 +257,8 @@ export class InitiativesService {
     else throw new NotFoundException();
   }
 
-  async setRole(initiative_id, role: InitiativeRoles) {
+  async setRole(initiative_id, role: InitiativeRoles, user) { 
+    let errorMsg = null;
     let init = await this.initiativeRepository.findOne({
       where: { id: initiative_id },
       relations: ['roles'],
@@ -276,7 +283,10 @@ export class InitiativesService {
     };
     //To the user that was added by the Admin or Leader/Coordinator
 
-    return await this.iniRolesRepository.save(newRole, { reload: true }).then(
+    if(user.role != 'admin' && role.role == 'Leader') errorMsg = 'Only Admin Can Add Leader';
+
+    if(!errorMsg) {
+          return await this.iniRolesRepository.save(newRole, { reload: true }).then(
       async (data) => {
         const user = await this.userRepository.findOne({
           where: { id: data.user_id },
@@ -285,7 +295,7 @@ export class InitiativesService {
           where: { id: data.initiative_id },
         });
 
-        if (data.role == 'Coordinator' || data.role == 'Contributor') {
+        if (data.role == 'Coordinator' || data.role == 'Contributor' || data.role == 'Co-leader') {
           this.emailService.sendEmailTobyVarabel(
             user,
             1,
@@ -315,7 +325,10 @@ export class InitiativesService {
         console.error('error ==>>', error);
       },
     );
-  }
+    } else {
+      throw new BadRequestException(errorMsg);
+    }
+  } 
 
   async idUserHavePermissionToJoinChatGroup(initiative_id: number, user: User) {
     try {

@@ -9,6 +9,7 @@ import {
   Query,
   Req,
   UseGuards,
+  Request
 } from '@nestjs/common';
 import { InitiativesService } from './initiatives.service';
 import {
@@ -113,9 +114,10 @@ export class InitiativesController {
   setRoles(
     @Param('initiative_id') initiative_id: number,
     @Body() initiativeRoles: InitiativeRoles,
-  ) {
-    return this.initiativesService.setRole(initiative_id, initiativeRoles);
-  }
+    @Request() req
+  ) { 
+    return this.initiativesService.setRole(initiative_id, initiativeRoles, req.user);
+  } 
 
   @Put(':initiative_id/roles/:initiative_roles_id')
   @ApiBearerAuth()
@@ -124,15 +126,17 @@ export class InitiativesController {
     type: [updateRoleResponse],
   })
   @ApiBody({ type: updateRoleReq })
-  updateMitigation(
+  updateRoles(
     @Body() roles: InitiativeRoles,
     @Param('initiative_id') initiative_id: number,
     @Param('initiative_roles_id') initiative_roles_id: number,
+    @Request() req
   ) {
     return this.initiativesService.updateRoles(
       initiative_id,
       initiative_roles_id,
       roles,
+      req.user
     );
   }
 

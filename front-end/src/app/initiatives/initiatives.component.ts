@@ -121,6 +121,13 @@ export class InitiativesComponent implements OnInit {
     else return false;
   }
 
+  isCoLeader(roles: any) {
+    const roles_ = roles.filter((d: any) => d.user_id == this.user.id);
+    if (roles_.length)
+      return roles_.map((d: any) => d.role)[0] == ROLES.CoLeader || false;
+    else return false;
+  }
+
   isContributor(roles: any) {
     const roles_ = roles.filter((d: any) => d.user_id == this.user.id);
     if (roles_.length)
