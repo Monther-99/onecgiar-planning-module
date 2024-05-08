@@ -637,7 +637,10 @@
                           </button> -->
                           </ng-container>
                         </td>
-                        <td class="wp-title">
+                        <td
+                          class="wp-title"
+                          (click)="item.isExpand = !item.isExpand"
+                        >
                           <ng-container
                             *ngIf="item?.initiativeMelia?.meliaType.name"
                           >
@@ -674,9 +677,11 @@
                             </ng-container>
                           </ng-container>
                         </td>
-                        <td>{{ item.category }}</td>
+                        <td (click)="item.isExpand = !item.isExpand">
+                          {{ item.category }}
+                        </td>
                         <ng-container *ngFor="let per of period">
-                          <td>
+                          <td (click)="item.isExpand = !item.isExpand">
                             <!-- to be checked -->
                             <mat-icon
                               class="icon-sub-table-2"
@@ -690,7 +695,7 @@
                             >
                           </td>
                         </ng-container>
-                        <td>
+                        <td (click)="item.isExpand = !item.isExpand">
                           {{
                             toggleSummaryValues[wp.ost_wp.wp_official_code]
                               ? sammary[wp.ost_wp.wp_official_code][item.id]
@@ -699,7 +704,7 @@
                                 )
                           }}%
                         </td>
-                        <td>
+                        <td (click)="item.isExpand = !item.isExpand">
                           {{
                             toggleSummaryValues[wp.ost_wp.wp_official_code]
                               ? summaryBudgets[wp.ost_wp.wp_official_code][
