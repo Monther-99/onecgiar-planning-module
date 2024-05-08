@@ -110,7 +110,7 @@ export class UsersService {
       .getMany();
   }
 
-  async exportExcel(query: any) {
+  async exportExcel(query: any) { 
     const result = this.userRepository.createQueryBuilder('user')
     .leftJoinAndSelect('user.user_init_roles', 'user_init_roles')
     .leftJoinAndSelect('user_init_roles.initiative', 'initiative');
@@ -137,7 +137,11 @@ export class UsersService {
 
     const ws = XLSX.utils.json_to_sheet(finaldata);
     ws['!merges'] = merges;
+
+
     this.appendStyleForXlsx(ws);
+
+    this.autofitColumnsXlsx(finaldata,ws);
 
     XLSX.utils.book_append_sheet(wb, ws, 'Users');
     await XLSX.writeFile(
@@ -158,7 +162,7 @@ export class UsersService {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       disposition: `attachment; filename="${file_name}"`,
     });
-  }
+  } 
 
   getTemplateUser(width = false) {
     return {
@@ -238,9 +242,22 @@ export class UsersService {
     for (let row = 0; row <= rowCount; row++) {
       for (let col = 0; col <= columnCount; col++) {
         const cellRef = XLSX.utils.encode_cell({ r: row, c: col });
+
+        ws[cellRef].s = {
+          alignment: {
+            horizontal: 'center',
+            vertical: 'center',
+            wrapText: true,
+          },
+        };
+
+
         if (row === 0 || row === 1) {
-          // Format headers and names
+           // Format headers and names
           ws[cellRef].s = {
+            ...ws[cellRef].s,
+            fill: { fgColor: { rgb: '436280' } },
+            font: { color: { rgb: 'ffffff' } ,  bold: true },
             alignment: {
               horizontal: 'center',
               vertical: 'center',
@@ -250,5 +267,45 @@ export class UsersService {
         }
       }
     }
+  }
+
+  autofitColumnsXlsx(json: any[], worksheet: XLSX.WorkSheet, header?: string[]) {
+
+    const jsonKeys = header ? header : Object.keys(json[0]);
+
+    let objectMaxLength = []; 
+    for (let i = 0; i < json.length; i++) {
+      let objValue = json[i];
+      for (let j = 0; j < jsonKeys.length; j++) {
+        if (typeof objValue[jsonKeys[j]] == "number") {
+          objectMaxLength[j] = 10;
+        } else {
+          const l = objValue[jsonKeys[j]] ? objValue[jsonKeys[j]].length + 5 : 0;
+
+          objectMaxLength[j] = objectMaxLength[j] >= l ? objectMaxLength[j]: l;
+        }
+      }
+
+      let key = jsonKeys;
+      for (let j = 0; j < key.length; j++) {
+        objectMaxLength[j] =
+          objectMaxLength[j] >= key[j].length
+            ? objectMaxLength[j]
+            : key[j].length + 1; //for Flagged column
+      }
+    }
+
+    const wscols = objectMaxLength.map(w => { return { width: w} });
+
+    //row height
+    worksheet['!rows'] = [];
+    worksheet['!rows'].push({ //for header
+      hpt: 20
+     })
+     worksheet['!rows'].push({ //for header
+      hpt: 20
+     })
+
+    worksheet["!cols"] = wscols;
   }
 }

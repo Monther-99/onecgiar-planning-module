@@ -1491,7 +1491,7 @@ export class SubmissionService {
               v: d,
               s: {
                 alignment: {
-                  horizontal: 'left',
+                  horizontal: 'center',
                   vertical: 'top',
                   wrapText: true,
                 },
@@ -1570,7 +1570,7 @@ export class SubmissionService {
                 v: String(d),
                 s: {
                   alignment: {
-                    horizontal: 'left',
+                    horizontal: 'center',
                     vertical: 'top',
                     wrapText: true,
                   },
@@ -1629,8 +1629,15 @@ export class SubmissionService {
     const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
 
     ws['!merges'] = merges;
-    ws['!cols'] = [{ wpx: 120 }, { wpx: 320 }];
-    //ws['!rows'] = [{ hpt: 100 }];
+    ws['!cols'] = [{ wpx: 120 }, { wpx: 320 }, { wpx: 80 }];
+    ws['!rows'] = [];
+    ws['!rows'] = [{ hpt: 20 }, { hpt: 20 },{ hpt: 20 },{ hpt: 20 },{ hpt: 20 },{ hpt: 20 }];
+     
+    for(let i = 6 ; i < ArrayOfArrays.length; i++) {
+      ws['!rows'].push({
+        hpt: 75
+      })
+    }
 
     XLSX.utils.book_append_sheet(wb, ws, 'Summary');
   }
@@ -1675,8 +1682,8 @@ export class SubmissionService {
                   v: String(d),
                   s: {
                     alignment: {
-                      horizontal: 'top',
-                      vertical: 'left',
+                      horizontal: 'center',
+                      vertical: 'top',
                       wrapText: true,
                     },
                   },
@@ -1764,7 +1771,15 @@ export class SubmissionService {
       const ws = XLSX.utils.aoa_to_sheet(ArrayOfArrays);
 
       ws['!merges'] = mergesPartners;
-      ws['!cols'] = [{ wpx: 120 }, { wpx: 320 }];
+      ws['!cols'] = [{ wpx: 120 }, { wpx: 320 }, { wpx: 80 }];
+      ws['!rows'] = [];
+      ws['!rows'] = [{ hpt: 20 }, { hpt: 20 },{ hpt: 20 },{ hpt: 20 },{ hpt: 20 },{ hpt: 20 }];
+       
+      for(let i = 6 ; i < ArrayOfArrays.length; i++) {
+        ws['!rows'].push({
+          hpt: 75
+        })
+      }
       XLSX.utils.book_append_sheet(wb, ws, partner.acronym);
 
       indexPartner++;
