@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 
 import { SubmissionService } from "../services/submission.service";
 import { AppSocket } from "../socket.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import {
   ConfirmComponent,
   ConfirmDialogModel,
@@ -23,6 +23,7 @@ import { ConstantService } from "../services/constant.service";
 import { InitiativesService } from "../services/initiatives.service";
 import { filter, from, iif, of, switchMap, tap } from "rxjs";
 import { RESOURCE_CACHE_PROVIDER } from "@angular/platform-browser-dynamic";
+import { CustomMessageComponent } from "../custom-message/custom-message.component";
 
 @Component({
   selector: "app-submission",
@@ -598,6 +599,10 @@ export class SubmissionComponent implements OnInit {
         ];
       },
       (error) => {
+        this.dialog
+        .open(CustomMessageComponent, {
+          disableClose: true,
+        })
         this.results = [
           ...cross_data,
           // ...melia_data,
@@ -880,6 +885,16 @@ export class SubmissionComponent implements OnInit {
   organizationSelected: any = "";
   initUser: any;
   async ngOnInit() {
+    this.socket.on('disconnect', () => {
+      this.dialog
+      .open(CustomMessageComponent, {
+        disableClose: true,
+      })
+    });
+
+    this.socket.on('connect', () => {
+      this.dialog.closeAll()
+    });
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
     this.phase = await this.phasesService.getActivePhase();

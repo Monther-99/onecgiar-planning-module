@@ -85,6 +85,7 @@ import { EmailsComponent } from './admin/emails/emails.component';
 import { EmailBodyComponent } from './admin/emails/email-body/email-body.component';
 import { ChatModule } from "./share/chat/chat.module";
 import { TimeagoModule } from "ngx-timeago";
+import { CustomMessageComponent } from './custom-message/custom-message.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +134,7 @@ import { TimeagoModule } from "ngx-timeago";
     SortPipe,
     EmailsComponent,
     EmailBodyComponent,
+    CustomMessageComponent,
   ],
   imports: [
     BrowserModule,
