@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 
 import { SubmissionService } from "../services/submission.service";
 import { AppSocket } from "../socket.service";
@@ -30,7 +30,7 @@ import { CustomMessageComponent } from "../custom-message/custom-message.compone
   templateUrl: "./submission.component.html",
   styleUrls: ["./submission.component.scss"],
 })
-export class SubmissionComponent implements OnInit {
+export class SubmissionComponent implements OnInit, OnDestroy {
   title = "planning";
 
   columnsToDisplay: string[] = ["name", "email"];
@@ -63,6 +63,8 @@ export class SubmissionComponent implements OnInit {
     this.headerService.backgroundDeleteClose = "#808080";
     this.headerService.backgroundDeleteLr = "#5569dd";
   }
+
+
   user: any;
   data: any = [];
   wps: any = [];
@@ -893,7 +895,8 @@ export class SubmissionComponent implements OnInit {
     });
 
     this.socket.on('connect', () => {
-      this.dialog.closeAll()
+      this.dialog.closeAll();
+      this.InitData();
     });
     this.user = this.AuthService.getLoggedInUser();
     this.params = this.activatedRoute?.snapshot.params;
@@ -1048,7 +1051,8 @@ export class SubmissionComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.socket.disconnect();
+    this.socket.disconnect(); 
+    this.dialog.closeAll();
   }
 
   setvalues(valuesToSet: any, perValuesToSet: any, noBudget: any) {
