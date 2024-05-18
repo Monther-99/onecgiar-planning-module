@@ -143,68 +143,72 @@ export class InitiativesService {
   }
 
   async findAllFull(query: any, req: any) {
-    const take = query.limit || 10;
-    const skip = (Number(query.page || 1) - 1) * take;
-    const [finalResult, total] = await this.initiativeRepository
-      .createQueryBuilder('init')
-      .where(
-        new Brackets((qb) => {
-          qb.where('init.name like :name', { name: `%${query.name || ''}%` });
-          if (query.initiative_id != undefined) {
-            qb.andWhere('init.official_code IN (:...initiative_id)', {
-              initiative_id: [
-                `INIT-0${query.initiative_id}`,
-                `INIT-${query.initiative_id}`,
-                `PLAT-${query.initiative_id}`,
-                `PLAT-0${query.initiative_id}`,
-                `SGP-${query.initiative_id}`,
-                `SGP-0${query.initiative_id}`,
-              ],
-            });
-          }
-          if (query?.my_role) {
-            if (Array.isArray(query?.my_role)) {
-              qb.andWhere('roles.role IN (:...my_role)', {
-                my_role: query.my_role,
+    try {
+      const take = query.limit || 10;
+      const skip = (Number(query.page || 1) - 1) * take;
+      const [finalResult, total] = await this.initiativeRepository
+        .createQueryBuilder('init')
+        .where(
+          new Brackets((qb) => {
+            qb.where('init.name like :name', { name: `%${query.name || ''}%` });
+            if (query.initiative_id != undefined) {
+              qb.andWhere('init.official_code IN (:...initiative_id)', {
+                initiative_id: [
+                  `INIT-0${query.initiative_id}`,
+                  `INIT-${query.initiative_id}`,
+                  `PLAT-${query.initiative_id}`,
+                  `PLAT-0${query.initiative_id}`,
+                  `SGP-${query.initiative_id}`,
+                  `SGP-0${query.initiative_id}`,
+                ],
               });
-              qb.andWhere(`roles.user_id = ${req.user.id}`);
-            } else {
-              qb.andWhere('roles.role = :my_role', { my_role: query.my_role });
+            }
+            if (query?.my_role) {
+              if (Array.isArray(query?.my_role)) {
+                qb.andWhere('roles.role IN (:...my_role)', {
+                  my_role: query.my_role,
+                });
+                qb.andWhere(`roles.user_id = ${req.user.id}`);
+              } else {
+                qb.andWhere('roles.role = :my_role', { my_role: query.my_role });
+                qb.andWhere(`roles.user_id = ${req.user.id}`);
+              }
+            } else if (query?.my_ini == 'true') {
               qb.andWhere(`roles.user_id = ${req.user.id}`);
             }
-          } else if (query?.my_ini == 'true') {
-            qb.andWhere(`roles.user_id = ${req.user.id}`);
-          }
-        }),
-      )
-      .andWhere(
-        new Brackets((qb) => {
-          if (query.status) {
-            if (query.status != 'Draft') {
-              qb.andWhere('latest_submission.status = :status', {
-                status: query.status,
-              });
-              qb.andWhere('init.last_update_at = init.last_submitted_at');
-            } else if (query.status == 'Draft') {
-              qb.andWhere('init.last_submitted_at is null');
-              qb.orWhere('init.last_update_at != init.last_submitted_at');
+          }),
+        )
+        .andWhere(
+          new Brackets((qb) => {
+            if (query.status) {
+              if (query.status != 'Draft') {
+                qb.andWhere('latest_submission.status = :status', {
+                  status: query.status,
+                });
+                qb.andWhere('init.last_update_at = init.last_submitted_at');
+              } else if (query.status == 'Draft') {
+                qb.andWhere('init.last_submitted_at is null');
+                qb.orWhere('init.last_update_at != init.last_submitted_at');
+              }
             }
-          }
-        }),
-      )
-      .orderBy(this.sort(query))
-      .leftJoinAndSelect('init.roles', 'roles')
-      .leftJoinAndSelect('init.latest_submission', 'latest_submission')
-      .leftJoinAndSelect('init.center_status', 'center_status')
-      .take(take)
-      .skip(skip)
-      .getManyAndCount();
+          }),
+        )
+        .orderBy(this.sort(query))
+        .leftJoinAndSelect('init.roles', 'roles')
+        .leftJoinAndSelect('init.latest_submission', 'latest_submission')
+        .leftJoinAndSelect('init.center_status', 'center_status')
+        .take(take)
+        .skip(skip)
+        .getManyAndCount();
 
-    return {
-      result: finalResult,
-      count: total,
-    };
-  }
+      return {
+        result: finalResult,
+        count: total,
+      };
+    } catch (error) {
+        throw new BadRequestException('Connection Error');
+    }
+  } 
 
   findOne(id: number) {
     return this.initiativeRepository.findOne({

@@ -58,7 +58,7 @@ export class SubmissionService {
   async cancelSubmission(id: number, data: any) {
     return firstValueFrom(
       this.http.patch(environment.api_url+'/submission/cancellastsubmission/' + id, data).pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 
 
@@ -221,7 +221,7 @@ export class SubmissionService {
       this.http
         .post(environment.api_url+'/submission/save/' + id, data)
         .pipe(map((d: any) => d))
-    ).catch((e) => false);
+    );
   }
 
   async getSavedData(id: number, phaseId: any) {

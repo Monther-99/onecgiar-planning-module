@@ -210,203 +210,160 @@ export class SubmissionService {
     return { ...sub_data, consolidated: this.dataToPers(sub_data.results) };
   }
   async createNew(user_id, initiative_id, phase_id, json) {
-    const submissionData = {
-      toc_data: json,
-    };
-    const userObject = await this.userRepository.findOneBy({ id: user_id });
-    const phaseObject = await this.phaseRepository.findOneBy({ id: phase_id });
-    const initiativeObject = await this.initiativeRepository.findOneBy({
-      id: initiative_id,
-    });
-    const newSubmission = this.submissionRepository.create(submissionData);
-    newSubmission.user = userObject;
-    newSubmission.phase = phaseObject;
-    newSubmission.initiative = initiativeObject;
-    const submissionObject = await this.submissionRepository.save(
-      newSubmission,
-      { reload: true },
-    );
-    let oldResults = await this.resultRepository.find({
-      where: {
-        initiative_id: initiative_id,
-        submission: IsNull(),
-        phase_id: phase_id
-      },
-      relations: ['values', 'workPackage', 'values.period'],
-    });
-    oldResults;
-    for (let result of oldResults) {
-      delete result.id;
-      result.submission = submissionObject;
-      const values = result.values.map((d) => {
-        delete d.id;
-        return d;
+    try {
+      const submissionData = {
+        toc_data: json,
+      };
+      const userObject = await this.userRepository.findOneBy({ id: user_id });
+      const phaseObject = await this.phaseRepository.findOneBy({ id: phase_id });
+      const initiativeObject = await this.initiativeRepository.findOneBy({
+        id: initiative_id,
       });
-      const new_result = await this.resultRepository.save(result, {
-        reload: true,
-      });
-      for (let value of values) {
-        value.result = new_result;
-        await this.resultValuesRepository.save(value);
-      }
-    }
-
-    let oldWpBudgets = await this.wpBudgetRepository.find({
-      where: {
-        initiative_id: initiative_id,
-        submission: IsNull(),
-        phase_id: phase_id
-      },
-    });
-    for (let wpBudget of oldWpBudgets) {
-      delete wpBudget.id;
-      wpBudget.submission_id = submissionObject.id;
-      await this.wpBudgetRepository.save(wpBudget, {
-        reload: true,
-      });
-    }
-
-    // let oldMelias = await this.meliaRepository.find({
-    //   where: {
-    //     initiative_id: initiative_id,
-    //     submission: IsNull(),
-    //   },
-    //   relations: [
-    //     'partners',
-    //     'initiative_countries',
-    //     'initiative_regions',
-    //     'co_initiative_countries',
-    //     'co_initiative_regions',
-    //   ],
-    // });
-    // for (let melia of oldMelias) {
-    //   let oldInitiativeMelia = await this.initiativeMeliaRepository.findOne({
-    //     where: {
-    //       id: melia.initiative_melia_id,
-    //     },
-    //     relations: ['other_initiatives'],
-    //   });
-    //   delete oldInitiativeMelia.id;
-    //   oldInitiativeMelia.submission_id = submissionObject.id;
-    //   let newInitiativeMelia = await this.initiativeMeliaRepository.save(
-    //     oldInitiativeMelia,
-    //     {
-    //       reload: true,
-    //     },
-    //   );
-
-    //   let oldMeliaId = melia.id;
-    //   delete melia.id;
-    //   melia.submission_id = submissionObject.id;
-    //   melia.initiative_melia_id = newInitiativeMelia.id;
-    //   let newMelia = await this.meliaRepository.save(melia, {
-    //     reload: true,
-    //   });
-
-    //   await this.resultRepository.update(
-    //     {
-    //       result_uuid: oldMeliaId,
-    //       submission_id: submissionObject.id,
-    //     },
-    //     {
-    //       result_uuid: newMelia.id,
-    //     },
-    //   );
-    // }
-
-    let oldCross = await this.CrossCuttingRepository.find({
-      where: {
-        initiative_id: initiative_id,
-        submission: IsNull(),
-      },
-    });
-    for (let cross of oldCross) {
-      let oldCrossId = cross.id;
-      delete cross.id;
-      cross.submission_id = submissionObject.id;
-      let newCross = await this.CrossCuttingRepository.save(cross, {
-        reload: true,
-      });
-      await this.resultRepository.update(
-        {
-          result_uuid: oldCrossId,
-          submission_id: submissionObject.id,
-        },
-        {
-          result_uuid: newCross.id,
-        },
+      const newSubmission = this.submissionRepository.create(submissionData);
+      newSubmission.user = userObject;
+      newSubmission.phase = phaseObject;
+      newSubmission.initiative = initiativeObject;
+      const submissionObject = await this.submissionRepository.save(
+        newSubmission,
+        { reload: true },
       );
-    }
-
-    let oldIpsrValues = await this.ipsrValueRepository.find({
-      where: {
-        initiative_id: initiative_id,
-        submission: IsNull(),
-      },
-      relations: ['ipsr']
-    });
-    for (let ipsrValue of oldIpsrValues) {
-      let oldIpsrValueId = ipsrValue.id;
-      delete ipsrValue.id;
-      ipsrValue.submission_id = submissionObject.id;
-      let newIpsrValue = await this.ipsrValueRepository.save(ipsrValue, {
-        reload: true,
+      let oldResults = await this.resultRepository.find({
+        where: {
+          initiative_id: initiative_id,
+          submission: IsNull(),
+          phase_id: phase_id
+        },
+        relations: ['values', 'workPackage', 'values.period'],
       });
-      await this.resultRepository.update(
-        {
-          result_uuid: oldIpsrValueId,
-          submission_id: submissionObject.id,
-        },
-        {
-          result_uuid: newIpsrValue.id,
-        },
-      );
-    }
-
-    const date = new Date();
-    await this.initiativeRepository.update(initiative_id, {
-      last_update_at: date,
-      last_submitted_at: date,
-      latest_submission_id: submissionObject.id,
-    });
-    const data = await this.submissionRepository.findOne({
-      where: { id: submissionObject.id },
-      relations: ['user', 'phase'],
-    });
-
-    if(data) {
-      const admins = await this.userRepository.find({where : {
-        role: userRole.ADMIN
-      }});
-      const init = await this.initiativeRepository.findOne({where : {
-        id : initiative_id,
-        roles: {
-          role : In(['Leader' , 'Coordinator']) 
+      oldResults;
+      for (let result of oldResults) {
+        delete result.id;
+        result.submission = submissionObject;
+        const values = result.values.map((d) => {
+          delete d.id;
+          return d;
+        });
+        const new_result = await this.resultRepository.save(result, {
+          reload: true,
+        });
+        for (let value of values) {
+          value.result = new_result;
+          await this.resultValuesRepository.save(value);
         }
-      },
-      relations: ['roles', 'roles.user']
-      })
-
-      //if (Leader && Coordinator) not exist
-      const initAdmin = await this.initiativeRepository.findOne({where : {
-        id : initiative_id,
-      },
-      })
-
-      // users (Leader && Coordinator)
-      const users = init?.roles.map(d => d.user);
-
-      for(let admin of admins) {
-        this.emailService.sendEmailTobyVarabel(admin, 3, initAdmin, null, null, null, null, null, null)
       }
-
-      if(users)
-        for(let user of users) {
-          this.emailService.sendEmailTobyVarabel(user, 4, init, null, null, null, null, null, null)
+  
+      let oldWpBudgets = await this.wpBudgetRepository.find({
+        where: {
+          initiative_id: initiative_id,
+          submission: IsNull(),
+          phase_id: phase_id
+        },
+      });
+      for (let wpBudget of oldWpBudgets) {
+        delete wpBudget.id;
+        wpBudget.submission_id = submissionObject.id;
+        await this.wpBudgetRepository.save(wpBudget, {
+          reload: true,
+        });
+      }
+  
+  
+      let oldCross = await this.CrossCuttingRepository.find({
+        where: {
+          initiative_id: initiative_id,
+          submission: IsNull(),
+        },
+      });
+      for (let cross of oldCross) {
+        let oldCrossId = cross.id;
+        delete cross.id;
+        cross.submission_id = submissionObject.id;
+        let newCross = await this.CrossCuttingRepository.save(cross, {
+          reload: true,
+        });
+        await this.resultRepository.update(
+          {
+            result_uuid: oldCrossId,
+            submission_id: submissionObject.id,
+          },
+          {
+            result_uuid: newCross.id,
+          },
+        );
+      }
+  
+      let oldIpsrValues = await this.ipsrValueRepository.find({
+        where: {
+          initiative_id: initiative_id,
+          submission: IsNull(),
+        },
+        relations: ['ipsr']
+      });
+      for (let ipsrValue of oldIpsrValues) {
+        let oldIpsrValueId = ipsrValue.id;
+        delete ipsrValue.id;
+        ipsrValue.submission_id = submissionObject.id;
+        let newIpsrValue = await this.ipsrValueRepository.save(ipsrValue, {
+          reload: true,
+        });
+        await this.resultRepository.update(
+          {
+            result_uuid: oldIpsrValueId,
+            submission_id: submissionObject.id,
+          },
+          {
+            result_uuid: newIpsrValue.id,
+          },
+        );
+      }
+  
+      const date = new Date();
+      await this.initiativeRepository.update(initiative_id, {
+        last_update_at: date,
+        last_submitted_at: date,
+        latest_submission_id: submissionObject.id,
+      });
+      const data = await this.submissionRepository.findOne({
+        where: { id: submissionObject.id },
+        relations: ['user', 'phase'],
+      });
+  
+      if(data) {
+        const admins = await this.userRepository.find({where : {
+          role: userRole.ADMIN
+        }});
+        const init = await this.initiativeRepository.findOne({where : {
+          id : initiative_id,
+          roles: {
+            role : In(['Leader' , 'Coordinator']) 
+          }
+        },
+        relations: ['roles', 'roles.user']
+        })
+  
+        //if (Leader && Coordinator) not exist
+        const initAdmin = await this.initiativeRepository.findOne({where : {
+          id : initiative_id,
+        },
+        })
+  
+        // users (Leader && Coordinator)
+        const users = init?.roles.map(d => d.user);
+  
+        for(let admin of admins) {
+          this.emailService.sendEmailTobyVarabel(admin, 3, initAdmin, null, null, null, null, null, null)
         }
-
-    } 
-    return data
+  
+        if(users)
+          for(let user of users) {
+            this.emailService.sendEmailTobyVarabel(user, 4, init, null, null, null, null, null, null)
+          }
+  
+      } 
+      return data
+    } catch (error) {
+      throw new BadRequestException('Connection Error')
+    }
   }
 
   dataToPers(saved_data) {
@@ -2186,13 +2143,18 @@ export class SubmissionService {
   }
 
   async updateLatestSubmitionStatus(id, data) {
-    const submission = await this.submissionRepository.findOne({
-      where: {
-        id: id
-      }
-    });
+    try {
+      const submission = await this.submissionRepository.findOne({
+        where: {
+          id: id
+        }
+      });
+  
+      submission.status = SubmissionStatus.DRAFT;
+      await this.submissionRepository.save(submission);
+    } catch (error) {
+      throw new BadRequestException('Connection Error')
+    }
 
-    submission.status = SubmissionStatus.DRAFT;
-    await this.submissionRepository.save(submission);
   }
 }

@@ -35,7 +35,7 @@ export class InitiativesService {
             { params: finalFilters }
           )
           .pipe(map((d: any) => d))
-      ).catch((e) => false);
+      );
     } else {
       return firstValueFrom(
         this.http
@@ -44,7 +44,7 @@ export class InitiativesService {
               `/initiatives/full?page=${page}&limit=${limit}`
           )
           .pipe(map((d: any) => d))
-      ).catch((e) => false);
+      );
     }
   }
 

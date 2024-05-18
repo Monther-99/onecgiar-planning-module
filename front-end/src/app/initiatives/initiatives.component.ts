@@ -10,6 +10,7 @@ import { PhasesService } from "../services/phases.service";
 import { MatDialog } from "@angular/material/dialog";
 import { HeaderService } from "../header.service";
 import { Meta, Title } from "@angular/platform-browser";
+import { ToastrService } from "ngx-toastr";
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -31,7 +32,6 @@ export class InitiativesComponent implements OnInit {
     "actions",
   ];
   dataSource: MatTableDataSource<any>;
-  initiatives: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -42,7 +42,8 @@ export class InitiativesComponent implements OnInit {
     private phasesService: PhasesService,
     private dialog: MatDialog,
     private title: Title,
-    private meta: Meta
+    private meta: Meta,
+    private toster: ToastrService,
   ) {
     this.headerService.background =
       "linear-gradient(to right, #04030F, #04030F)";
@@ -74,13 +75,19 @@ export class InitiativesComponent implements OnInit {
 
   async getInitiatives(filters = null) {
     if (this.authService.getLoggedInUser())
-      this.initiatives = await this.initiativesService.getInitiatives(
+      await this.initiativesService.getInitiatives(
         filters,
         this.pageIndex,
         this.pageSize
+      ).then(
+        (data) => {
+          this.dataSource = new MatTableDataSource(data?.result);
+          this.length = data.count;
+        }, (error) => {
+          this.toster.error('Connection Error', undefined, { disableTimeOut: true })
+        }
       );
-    this.dataSource = new MatTableDataSource(this.initiatives?.result);
-    this.length = this.initiatives.count;
+
   }
 
   filter(filters: any) {

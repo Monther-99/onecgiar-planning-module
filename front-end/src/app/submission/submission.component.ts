@@ -48,7 +48,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     private title2: Title,
     private meta: Meta,
     private constantsService: ConstantService,
-    private initiativeService: InitiativesService
+    private initiativeService: InitiativesService,
+    private toster: ToastrService,
   ) {
     this.headerService.background =
       "linear-gradient(to right, #04030F, #04030F)";
@@ -1019,22 +1020,27 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           await this.submissionService.cancelSubmission(
             this.initiative_data.latest_submission.id,
             { status: this.initiative_data.latest_submission.status }
+          ).then(
+            async () => {
+              this.initiative_data = await this.submissionService.getInitiative(
+                this.params.id
+              );
+              this.socket.emit('submissionStatus', {
+                initStatus : "Draft",
+                initiative_data: this.initiative_data
+              });
+              await this.InitData();
+              this.toastrService.success("Submission is canceled");
+              this.router.navigate([
+                "initiative",
+                this.initiative_data.id,
+                this.initiative_data.official_code,
+                "submited-versions",
+              ]);
+            }, (error) => {
+              this.toster.error('Connection Error', undefined, { disableTimeOut: true });
+            }
           );
-          this.initiative_data = await this.submissionService.getInitiative(
-            this.params.id
-          );
-          this.socket.emit('submissionStatus', {
-            initStatus : "Draft",
-            initiative_data: this.initiative_data
-          });
-          await this.InitData();
-          this.toastrService.success("Submission is canceled");
-          this.router.navigate([
-            "initiative",
-            this.initiative_data.id,
-            this.initiative_data.official_code,
-            "submited-versions",
-          ]);
         }
       });
   }
@@ -1328,26 +1334,29 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         if (dialogResult == true) {
           if (this.validate()) {
             this.loading = true;
-            let result = await this.submissionService.submit(this.params.id, {
+            await this.submissionService.submit(this.params.id, {
               phase_id: this.phase.id,
-            });
-            if (result) {
-              this.initiative_data = await this.submissionService.getInitiative(
-                this.params.id
-              );
-              this.socket.emit('submissionStatus', {
-                initStatus : "Pending",
-                initiative_data: this.initiative_data
-              });
+            }).then(
+              async (data) => {
+                this.initiative_data = await this.submissionService.getInitiative(
+                    this.params.id
+                  );
+                  this.socket.emit('submissionStatus', {
+                    initStatus : "Pending",
+                    initiative_data: this.initiative_data
+                  });
 
-              this.toastrService.success("Data Submitted successfully");
-              this.router.navigate([
-                "initiative",
-                this.initiative_data.id,
-                this.initiative_data.official_code,
-                "submited-versions",
-              ]);
-            }
+                  this.toastrService.success("Data Submitted successfully");
+                  this.router.navigate([
+                    "initiative",
+                    this.initiative_data.id,
+                    this.initiative_data.official_code,
+                    "submited-versions",
+                  ]);
+              }, (error) => {
+                  this.toster.error('Connection Error', undefined, { disableTimeOut: true });
+              }
+            );
             this.loading = false;
           }
         }
