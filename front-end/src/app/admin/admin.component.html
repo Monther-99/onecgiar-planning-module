@@ -262,7 +262,12 @@
           [routerLinkActiveOptions]="{ exact: true }"
           class="side-nav__item side-nav__link side-nav__items"
         >
-          <mat-icon class="side-nav-icon-box__icon size-icon" style="color: white "> help </mat-icon>
+          <mat-icon
+            class="side-nav-icon-box__icon size-icon"
+            style="color: white"
+          >
+            help
+          </mat-icon>
           <span class="side-nav-icon-box__title--2">Popover management</span>
         </a>
       </li>
@@ -273,8 +278,30 @@
           [routerLinkActiveOptions]="{ exact: true }"
           class="side-nav__item side-nav__link side-nav__items"
         >
-          <mat-icon class="side-nav-icon-box__icon size-icon" style="color: white "> email </mat-icon>
+          <mat-icon
+            class="side-nav-icon-box__icon size-icon"
+            style="color: white"
+          >
+            email
+          </mat-icon>
           <span class="side-nav-icon-box__title--2">Emails management</span>
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/admin/track-porbs"
+          routerLinkActive="side-nav__active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="side-nav__item side-nav__link side-nav__items"
+        >
+          <mat-icon
+            class="side-nav-icon-box__icon size-icon"
+            style="color: white"
+          >
+            <span class="material-symbols-outlined"> track_changes </span>
+          </mat-icon>
+          <span class="side-nav-icon-box__title--2">Track PORBs</span>
         </a>
       </li>
     </ul>

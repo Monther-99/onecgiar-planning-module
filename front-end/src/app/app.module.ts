@@ -81,11 +81,13 @@ import { PopoverDialogComponent } from "./admin/popover-management/popover-dialo
 import { EditorModule } from "./share/editor/editor.module";
 import { TrustHTMLModule } from "./share/trust-html/trust-html.module";
 import { SortPipe } from "./share/pipes/sort.pipe";
-import { EmailsComponent } from './admin/emails/emails.component';
-import { EmailBodyComponent } from './admin/emails/email-body/email-body.component';
+import { EmailsComponent } from "./admin/emails/emails.component";
+import { EmailBodyComponent } from "./admin/emails/email-body/email-body.component";
 import { ChatModule } from "./share/chat/chat.module";
 import { TimeagoModule } from "ngx-timeago";
-import { CustomMessageComponent } from './custom-message/custom-message.component';
+import { CustomMessageComponent } from "./custom-message/custom-message.component";
+import { TrackPORBsComponent } from "./admin/track-porbs/track-porbs.component";
+import { HighchartsChartModule } from "highcharts-angular";
 
 @NgModule({
   declarations: [
@@ -135,6 +137,7 @@ import { CustomMessageComponent } from './custom-message/custom-message.componen
     EmailsComponent,
     EmailBodyComponent,
     CustomMessageComponent,
+    TrackPORBsComponent,
   ],
   imports: [
     BrowserModule,
@@ -154,6 +157,7 @@ import { CustomMessageComponent } from './custom-message/custom-message.componen
     MatButtonModule,
     ReactiveFormsModule,
     MatMenuModule,
+
     NgxJsonViewerModule,
     MatFormFieldModule,
     MatInputModule,
@@ -177,6 +181,7 @@ import { CustomMessageComponent } from './custom-message/custom-message.componen
     EditorModule,
     TrustHTMLModule,
     ChatModule,
+    HighchartsChartModule,
     TimeagoModule.forRoot(),
   ],
   providers: [

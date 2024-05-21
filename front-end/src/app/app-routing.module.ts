@@ -21,9 +21,10 @@ import { ParametersSettingsComponent } from "./admin/parameters-settings/paramet
 // import { AnticipatedYearComponent } from "./admin/anticipated-year/anticipated-year.component";
 import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
 import { EmailsComponent } from "./admin/emails/emails.component";
+import { TrackPORBsComponent } from "./admin/track-porbs/track-porbs.component";
 
 const routes: Routes = [
-  { path: "", component: InitiativesComponent , canActivate: [AuthGuard]},
+  { path: "", component: InitiativesComponent, canActivate: [AuthGuard] },
   { path: "auth", component: AuthComponent },
   {
     path: "admin",
@@ -41,7 +42,7 @@ const routes: Routes = [
       // { path: "Anticipated-year", component: AnticipatedYearComponent },
       { path: "popover-management", component: PopoverManagementComponent },
       { path: "emails", component: EmailsComponent },
-
+      { path: "track-porbs", component: TrackPORBsComponent },
     ],
   },
 

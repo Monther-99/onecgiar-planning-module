@@ -9,7 +9,7 @@ import {
   Query,
   Req,
   UseGuards,
-  Request
+  Request,
 } from '@nestjs/common';
 import { InitiativesService } from './initiatives.service';
 import {
@@ -81,6 +81,17 @@ export class InitiativesController {
     return this.initiativesService.findAllFull(query, req);
   }
 
+  ///edit by me
+  @Get('getAll')
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: '',
+    type: [initiativeFull],
+  })
+  async getAllFull(@Query() query: any, @Req() req) {
+    return this.initiativesService.getAllFull(query, req);
+  }
+
   @Get(':id')
   @ApiBearerAuth()
   @ApiCreatedResponse({
@@ -114,10 +125,14 @@ export class InitiativesController {
   setRoles(
     @Param('initiative_id') initiative_id: number,
     @Body() initiativeRoles: InitiativeRoles,
-    @Request() req
-  ) { 
-    return this.initiativesService.setRole(initiative_id, initiativeRoles, req.user);
-  } 
+    @Request() req,
+  ) {
+    return this.initiativesService.setRole(
+      initiative_id,
+      initiativeRoles,
+      req.user,
+    );
+  }
 
   @Put(':initiative_id/roles/:initiative_roles_id')
   @ApiBearerAuth()
@@ -130,13 +145,13 @@ export class InitiativesController {
     @Body() roles: InitiativeRoles,
     @Param('initiative_id') initiative_id: number,
     @Param('initiative_roles_id') initiative_roles_id: number,
-    @Request() req
+    @Request() req,
   ) {
     return this.initiativesService.updateRoles(
       initiative_id,
       initiative_roles_id,
       roles,
-      req.user
+      req.user,
     );
   }
 

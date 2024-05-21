@@ -102,10 +102,10 @@ export class InitiativesService {
       const entity = await this.workPackageRepository.findOneBy({
         wp_id: element.wp_id,
       });
-      delete element.is_global; 
-      delete element.status; 
+      delete element.is_global;
+      delete element.status;
       delete element.countries;
-      delete element.regions
+      delete element.regions;
       if (entity != null) {
         this.updateWorkPackage(element.wp_id, { ...element });
       } else {
@@ -210,6 +210,69 @@ export class InitiativesService {
     }
   } 
 
+  async getAllFull(query: any, req: any) {
+    // const take = query.limit || 10;
+    // const skip = (Number(query.page || 1) - 1) * take;
+    const [finalResult, total] = await this.initiativeRepository
+      .createQueryBuilder('init')
+      .where(
+        new Brackets((qb) => {
+          qb.where('init.name like :name', { name: `%${query.name || ''}%` });
+          if (query.initiative_id != undefined) {
+            qb.andWhere('init.official_code IN (:...initiative_id)', {
+              initiative_id: [
+                `INIT-0${query.initiative_id}`,
+                `INIT-${query.initiative_id}`,
+                `PLAT-${query.initiative_id}`,
+                `PLAT-0${query.initiative_id}`,
+                `SGP-${query.initiative_id}`,
+                `SGP-0${query.initiative_id}`,
+              ],
+            });
+          }
+          if (query?.my_role) {
+            if (Array.isArray(query?.my_role)) {
+              qb.andWhere('roles.role IN (:...my_role)', {
+                my_role: query.my_role,
+              });
+              qb.andWhere(`roles.user_id = ${req.user.id}`);
+            } else {
+              qb.andWhere('roles.role = :my_role', { my_role: query.my_role });
+              qb.andWhere(`roles.user_id = ${req.user.id}`);
+            }
+          } else if (query?.my_ini == 'true') {
+            qb.andWhere(`roles.user_id = ${req.user.id}`);
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((qb) => {
+          if (query.status) {
+            if (query.status != 'Draft') {
+              qb.andWhere('latest_submission.status = :status', {
+                status: query.status,
+              });
+              qb.andWhere('init.last_update_at = init.last_submitted_at');
+            } else if (query.status == 'Draft') {
+              qb.andWhere('init.last_submitted_at is null');
+              qb.orWhere('init.last_update_at != init.last_submitted_at');
+            }
+          }
+        }),
+      )
+      .orderBy(this.sort(query))
+      .leftJoinAndSelect('init.roles', 'roles')
+      .leftJoinAndSelect('init.latest_submission', 'latest_submission')
+      .leftJoinAndSelect('init.center_status', 'center_status')
+
+      .getManyAndCount();
+
+    return {
+      result: finalResult,
+      count: total,
+    };
+  }
+
   findOne(id: number) {
     return this.initiativeRepository.findOne({
       where: { id },
@@ -244,9 +307,10 @@ export class InitiativesService {
         );
       }
     }
-    if(user.role != 'admin' && initiativeRoles.role == 'Leader') errorMsg = 'Only Admin Can Add Leader';
+    if (user.role != 'admin' && initiativeRoles.role == 'Leader')
+      errorMsg = 'Only Admin Can Add Leader';
 
-    if(!errorMsg) {
+    if (!errorMsg) {
       return await this.iniRolesRepository.save(initiativeRoles);
     } else {
       throw new BadRequestException(errorMsg);
@@ -261,7 +325,7 @@ export class InitiativesService {
     else throw new NotFoundException();
   }
 
-  async setRole(initiative_id, role: InitiativeRoles, user) { 
+  async setRole(initiative_id, role: InitiativeRoles, user) {
     let errorMsg = null;
     let init = await this.initiativeRepository.findOne({
       where: { id: initiative_id },
@@ -287,52 +351,57 @@ export class InitiativesService {
     };
     //To the user that was added by the Admin or Leader/Coordinator
 
-    if(user.role != 'admin' && role.role == 'Leader') errorMsg = 'Only Admin Can Add Leader';
+    if (user.role != 'admin' && role.role == 'Leader')
+      errorMsg = 'Only Admin Can Add Leader';
 
-    if(!errorMsg) {
-          return await this.iniRolesRepository.save(newRole, { reload: true }).then(
-      async (data) => {
-        const user = await this.userRepository.findOne({
-          where: { id: data.user_id },
-        });
-        const init = await this.initiativeRepository.findOne({
-          where: { id: data.initiative_id },
-        });
+    if (!errorMsg) {
+      return await this.iniRolesRepository.save(newRole, { reload: true }).then(
+        async (data) => {
+          const user = await this.userRepository.findOne({
+            where: { id: data.user_id },
+          });
+          const init = await this.initiativeRepository.findOne({
+            where: { id: data.initiative_id },
+          });
 
-        if (data.role == 'Coordinator' || data.role == 'Contributor' || data.role == 'Co-leader') {
-          this.emailService.sendEmailTobyVarabel(
-            user,
-            1,
-            init,
-            data.role,
-            null,
-            null,
-            null,
-            null,
-            null,
-          );
-        } else {
-          this.emailService.sendEmailTobyVarabel(
-            user,
-            2,
-            init,
-            data.role,
-            null,
-            null,
-            null,
-            null,
-            null,
-          );
-        }
-      },
-      (error) => {
-        console.error('error ==>>', error);
-      },
-    );
+          if (
+            data.role == 'Coordinator' ||
+            data.role == 'Contributor' ||
+            data.role == 'Co-leader'
+          ) {
+            this.emailService.sendEmailTobyVarabel(
+              user,
+              1,
+              init,
+              data.role,
+              null,
+              null,
+              null,
+              null,
+              null,
+            );
+          } else {
+            this.emailService.sendEmailTobyVarabel(
+              user,
+              2,
+              init,
+              data.role,
+              null,
+              null,
+              null,
+              null,
+              null,
+            );
+          }
+        },
+        (error) => {
+          console.error('error ==>>', error);
+        },
+      );
     } else {
       throw new BadRequestException(errorMsg);
     }
-  } 
+  }
 
   async idUserHavePermissionToJoinChatGroup(initiative_id: number, user: User) {
     try {

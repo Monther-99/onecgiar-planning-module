@@ -51,7 +51,7 @@ export class InitiativesService {
   async getInitiativesOnly() {
     return firstValueFrom(
       this.http
-        .get(environment.api_url + "/initiatives")
+        .get(environment.api_url + `/initiatives/getAll`)
         .pipe(map((d: any) => d))
     ).catch((e) => false);
   }
