@@ -22,10 +22,23 @@ import { ParametersSettingsComponent } from "./admin/parameters-settings/paramet
 import { PopoverManagementComponent } from "./admin/popover-management/popover-management.component";
 import { EmailsComponent } from "./admin/emails/emails.component";
 import { TrackPORBsComponent } from "./admin/track-porbs/track-porbs.component";
+import { UnderMaintenancePageComponent } from "./under-maintenance-page/under-maintenance-page.component";
+import { UserGuard } from "./guards/under-maintenance.guard";
 
 const routes: Routes = [
-  { path: "", component: InitiativesComponent, canActivate: [AuthGuard] },
+  {
+    path: "under",
+    component: UnderMaintenancePageComponent,
+  },
+
+  {
+    path: "",
+    component: InitiativesComponent,
+    canActivate: [UserGuard],
+  },
+
   { path: "auth", component: AuthComponent },
+
   {
     path: "admin",
     component: AdminComponent,
@@ -49,27 +62,27 @@ const routes: Routes = [
   {
     path: "initiative/:id/:code/submission",
     component: SubmissionComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
   {
     path: "initiative/:id/:code/submission/center",
     component: SubmissionComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
   {
     path: "initiative/:id/:code/submited-versions",
     component: SubmitedVersionsComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
   {
     path: "initiative/:id/:code/submited-versions/:id",
     component: SubmitedVersionComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
   {
     path: "initiative/:id/:code/team-members",
     component: TeamMembersComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
   { path: "denied", component: AccessDeniedComponent },
   {
@@ -78,7 +91,7 @@ const routes: Routes = [
   },
 
   {
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
     path: "team-members",
     component: TeamMembersComponent,
   },

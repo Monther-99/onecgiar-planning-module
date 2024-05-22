@@ -88,6 +88,7 @@ import { TimeagoModule } from "ngx-timeago";
 import { CustomMessageComponent } from "./custom-message/custom-message.component";
 import { TrackPORBsComponent } from "./admin/track-porbs/track-porbs.component";
 import { HighchartsChartModule } from "highcharts-angular";
+import { UnderMaintenancePageComponent } from './under-maintenance-page/under-maintenance-page.component';
 
 @NgModule({
   declarations: [
@@ -138,6 +139,7 @@ import { HighchartsChartModule } from "highcharts-angular";
     EmailBodyComponent,
     CustomMessageComponent,
     TrackPORBsComponent,
+    UnderMaintenancePageComponent,
   ],
   imports: [
     BrowserModule,
