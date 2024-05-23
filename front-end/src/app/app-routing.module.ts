@@ -62,27 +62,27 @@ const routes: Routes = [
   {
     path: "initiative/:id/:code/submission",
     component: SubmissionComponent,
-    canActivate: [AdminGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: "initiative/:id/:code/submission/center",
     component: SubmissionComponent,
-    canActivate: [AdminGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: "initiative/:id/:code/submited-versions",
     component: SubmitedVersionsComponent,
-    canActivate: [AdminGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: "initiative/:id/:code/submited-versions/:id",
     component: SubmitedVersionComponent,
-    canActivate: [AdminGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: "initiative/:id/:code/team-members",
     component: TeamMembersComponent,
-    canActivate: [AdminGuard],
+    canActivate: [AuthGuard],
   },
   { path: "denied", component: AccessDeniedComponent },
   {
@@ -91,7 +91,7 @@ const routes: Routes = [
   },
 
   {
-    canActivate: [AdminGuard],
+    canActivate: [AuthGuard],
     path: "team-members",
     component: TeamMembersComponent,
   },
