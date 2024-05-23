@@ -20,6 +20,7 @@ import { InitiativeRoles } from 'src/entities/initiative-roles.entity';
 import { EmailService } from 'src/email/email.service';
 import { User, userRole } from 'src/entities/user.entity';
 import { ChatMessageRepositoryService } from './chat-group-repository/chat-group-repository.service';
+import { Result } from 'src/entities/result.entity';
 
 @Injectable()
 export class InitiativesService {
@@ -51,13 +52,15 @@ export class InitiativesService {
   constructor(
     private readonly httpService: HttpService,
     @InjectRepository(Initiative)
-    private initiativeRepository: Repository<Initiative>,
+    public initiativeRepository: Repository<Initiative>,
     @InjectRepository(WorkPackage)
     private workPackageRepository: Repository<WorkPackage>,
     @InjectRepository(InitiativeRoles)
     public iniRolesRepository: Repository<InitiativeRoles>,
     @InjectRepository(User)
     public userRepository: Repository<User>,
+    @InjectRepository(Result)
+    public resultRepository: Repository<Result>,
     private emailService: EmailService,
     private chatGroupRepositoryService: ChatMessageRepositoryService,
   ) {}
