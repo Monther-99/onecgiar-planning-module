@@ -54,6 +54,51 @@ export class InitiativesController {
     return 'Initiatives imported successfully';
   }
 
+  @Get('data-import/:init_id/:uuid')
+  @ApiBearerAuth()
+  async importDatada(@Param('init_id') init_id,@Param('uuid') uuid) {
+
+      let Tocdata = await firstValueFrom(
+        this.httpService
+          .get(process.env.TOC_API + '/toc/' + uuid)
+          .pipe(
+            map((dd: any) =>
+            dd.data.data.filter(
+                (d) =>
+                  ((d.category == 'WP' && !d.group) ||
+                    d.category == 'OUTPUT' ||
+                    d.category == 'EOI' ||
+                    d.category == 'OUTCOME') &&
+                    d?.flow_id == dd?.data?.version_id,
+              )
+            )
+          ),
+      );
+  
+  
+        let resultValues: any[] = await this.initiativesService.resultRepository.find({
+          where: {
+            initiative_id: init_id
+          }
+        });
+  
+  // console.log(resultValues.length,Tocdata.length)
+  let data=[]
+        for(let res of resultValues) {
+          for(let toc of Tocdata) {
+            if(res.result_uuid == toc.id) {
+              data.push(res.id,toc.related_node_id)
+              await this.initiativesService.resultRepository.update(res.id, {
+                result_uuid: toc.related_node_id
+              })
+           } 
+          }
+        }
+        
+    
+    return { msg: 'imported',data }
+  }
+
 
   @Get('data-import')
   @ApiBearerAuth()
